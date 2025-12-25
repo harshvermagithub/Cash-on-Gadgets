@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "id": "a71eff01-a29a-4aa5-b513-65ac23c36d7d",
+      "email": "test@example.com",
+      "passwordHash": "$2b$10$koBJVgVeIqUbss9PRo/MbOhVqXDLrzhbYS3nVzo8rSiVfcN3l2YmW",
+      "name": "Test User**** ****"
+    }
+  ],
+  "orders": [
+    {
+      "id": "fd14aa56-d726-4ee3-b0b0-0744e6ee483b",
+      "userId": "a71eff01-a29a-4aa5-b513-65ac23c36d7d",
+      "device": "iPhone 13 (4 GB / 64 GB)",
+      "price": 5000,
+      "date": "2025-12-25T01:13:29.597Z",
+      "status": "Pending Pickup"
+    }
+  ]
+}
