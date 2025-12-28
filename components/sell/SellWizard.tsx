@@ -9,36 +9,34 @@ import VariantSelector from './VariantSelector';
 import QuotePreview from './QuotePreview';
 import ChecklistWizard from './ChecklistWizard';
 import FinalQuote from './FinalQuote';
-import { brands, models, variants } from '@/lib/data';
+import { Brand, Model, Variant } from '@/lib/store';
 
 type Step = 'brand' | 'model' | 'variant' | 'quote_preview' | 'checklist' | 'final_quote';
 
-export default function SellWizard() {
+interface SellWizardProps {
+    initialBrands: Brand[];
+}
+
+export default function SellWizard({ initialBrands }: SellWizardProps) {
     const [step, setStep] = useState<Step>('brand');
 
-    const [selectedBrand, setSelectedBrand] = useState<string>('');
-    const [selectedModel, setSelectedModel] = useState<string>('');
-    const [selectedVariant, setSelectedVariant] = useState<string>('');
+    const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
+    const [selectedModel, setSelectedModel] = useState<Model | null>(null);
+    const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
     const [answers, setAnswers] = useState<Record<string, unknown>>({});
 
-    // Derived data
-    const brandName = brands.find(b => b.id === selectedBrand)?.name || '';
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const model = ((models as any)[selectedBrand])?.find((m: any) => m.id === selectedModel);
-    const variant = variants.find(v => v.id === selectedVariant);
-
-    const handleBrandSelect = (id: string) => {
-        setSelectedBrand(id);
+    const handleBrandSelect = (brand: Brand) => {
+        setSelectedBrand(brand);
         setStep('model');
     };
 
-    const handleModelSelect = (id: string) => {
-        setSelectedModel(id);
+    const handleModelSelect = (model: Model) => {
+        setSelectedModel(model);
         setStep('variant');
     };
 
-    const handleVariantSelect = (id: string) => {
-        setSelectedVariant(id);
+    const handleVariantSelect = (variant: Variant) => {
+        setSelectedVariant(variant);
         setStep('quote_preview');
     };
 
@@ -47,44 +45,45 @@ export default function SellWizard() {
             <AnimatePresence mode="wait">
                 {step === 'brand' && (
                     <motion.div key="brand" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                        <BrandSelector onSelect={handleBrandSelect} />
+                        <BrandSelector brands={initialBrands} onSelect={handleBrandSelect} />
                     </motion.div>
                 )}
 
-                {step === 'model' && (
+                {step === 'model' && selectedBrand && (
                     <motion.div key="model" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                         <ModelSelector
-                            brandId={selectedBrand}
+                            brandId={selectedBrand.id}
                             onSelect={handleModelSelect}
                             onBack={() => setStep('brand')}
                         />
                     </motion.div>
                 )}
 
-                {step === 'variant' && (
+                {step === 'variant' && selectedModel && (
                     <motion.div key="variant" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                         <VariantSelector
+                            modelId={selectedModel.id}
                             onSelect={handleVariantSelect}
                             onBack={() => setStep('model')}
                         />
                     </motion.div>
                 )}
 
-                {step === 'quote_preview' && variant && (
+                {step === 'quote_preview' && selectedVariant && selectedBrand && selectedModel && (
                     <motion.div key="quote" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                         <QuotePreview
-                            basePrice={variant.basePrice}
-                            deviceDetails={`${brandName} ${model?.name} (${variant.name})`}
+                            basePrice={selectedVariant.basePrice}
+                            deviceDetails={`${selectedBrand.name} ${selectedModel.name} (${selectedVariant.name})`}
                             onGetExactValue={() => setStep('checklist')}
                             onBack={() => setStep('variant')}
                         />
                     </motion.div>
                 )}
 
-                {step === 'checklist' && model && variant && (
+                {step === 'checklist' && selectedModel && selectedVariant && (
                     <motion.div key="checklist" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                         <ChecklistWizard
-                            deviceInfo={{ name: model.name, variant: variant.name, img: model.img }}
+                            deviceInfo={{ name: selectedModel.name, variant: selectedVariant.name, img: selectedModel.img }}
                             onComplete={(collectedAnswers) => {
                                 setAnswers(collectedAnswers);
                                 setStep('final_quote');
@@ -93,12 +92,12 @@ export default function SellWizard() {
                     </motion.div>
                 )}
 
-                {step === 'final_quote' && model && variant && (
+                {step === 'final_quote' && selectedModel && selectedVariant && (
                     <motion.div key="final" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
                         <FinalQuote
-                            basePrice={variant.basePrice}
+                            basePrice={selectedVariant.basePrice}
                             answers={answers}
-                            deviceInfo={{ name: model.name, variant: variant.name }}
+                            deviceInfo={{ name: selectedModel.name, variant: selectedVariant.name }}
                         />
                     </motion.div>
                 )}

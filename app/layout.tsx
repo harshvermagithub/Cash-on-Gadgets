@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cash On Gadgets - Sell Your Used Smartphone",
+  title: "Fonzkart - Sell Your Used Smartphone",
   description: "Get the best price for your used smartphone instantly.",
 };
 

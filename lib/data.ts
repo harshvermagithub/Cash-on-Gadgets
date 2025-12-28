@@ -1,13 +1,20 @@
 
 export const brands = [
-    { id: 'apple', name: 'Apple', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' },
-    { id: 'samsung', name: 'Samsung', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg' },
-    { id: 'xiaomi', name: 'Xiaomi', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_2021.svg' },
-    { id: 'oneplus', name: 'OnePlus', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2b/OnePlus_Logo.svg' },
+    { id: 'apple', name: 'Apple', logo: 'https://cdn.simpleicons.org/apple/black' },
+    { id: 'samsung', name: 'Samsung', logo: 'https://cdn.simpleicons.org/samsung/1428A0' },
+    { id: 'xiaomi', name: 'Xiaomi', logo: 'https://cdn.simpleicons.org/xiaomi/FF6900' },
+    { id: 'oneplus', name: 'OnePlus', logo: 'https://cdn.simpleicons.org/oneplus/F5010C' },
     { id: 'vivo', name: 'Vivo', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/Vivo_mobile_logo.png' },
-    { id: 'oppo', name: 'Oppo', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/13/OPPO_Logo_wiki.png' },
-    { id: 'realme', name: 'Realme', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/Realme-realme-_logo_box-RGB-01.svg' },
-    { id: 'google', name: 'Google', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg' },
+    { id: 'oppo', name: 'Oppo', logo: '/brands/oppo.svg' },
+    { id: 'realme', name: 'Realme', logo: '/brands/realme.svg' },
+    { id: 'google', name: 'Google', logo: 'https://cdn.simpleicons.org/google/4285F4' },
+    { id: 'motorola', name: 'Motorola', logo: '/brands/motorola_black.svg' },
+    { id: 'nothing', name: 'Nothing', logo: '/brands/nothing_large.svg' },
+    { id: 'asus', name: 'Asus', logo: 'https://cdn.simpleicons.org/asus/006CE1' },
+    { id: 'sony', name: 'Sony', logo: 'https://cdn.simpleicons.org/sony/000000' },
+    { id: 'poco', name: 'Poco', logo: '/brands/poco.svg' },
+    { id: 'iqoo', name: 'iQOO', logo: '/brands/iqoo.svg' },
+    { id: 'infinix', name: 'Infinix', logo: '/brands/infinix.svg' },
 ];
 
 export const models = {
@@ -20,6 +27,19 @@ export const models = {
         { id: 'iphone-13', name: 'iPhone 13', img: 'https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-13.jpg' },
         { id: 'iphone-14', name: 'iPhone 14', img: 'https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-14.jpg' },
     ],
+    'samsung': [],
+    'oneplus': [],
+    'vivo': [],
+    'oppo': [],
+    'realme': [],
+    'google': [],
+    'motorola': [],
+    'nothing': [],
+    'asus': [],
+    'sony': [],
+    'poco': [],
+    'iqoo': [],
+    'infinix': [],
     // Add others as needed
 };
 

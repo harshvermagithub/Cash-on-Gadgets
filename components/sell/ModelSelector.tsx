@@ -1,24 +1,33 @@
 
-import { models } from "@/lib/data";
+'use client';
+
+import { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import Image from "next/image";
+import { Model } from '@/lib/store';
+import { fetchModels } from '@/actions/catalog';
 
 interface ModelSelectorProps {
     brandId: string;
-    onSelect: (modelId: string) => void;
+    onSelect: (model: Model) => void;
     onBack: () => void;
 }
 
-interface Model {
-    id: string;
-    name: string;
-    img: string;
-}
-
 export default function ModelSelector({ brandId, onSelect, onBack }: ModelSelectorProps) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const brandModels: Model[] = (models as any)[brandId] || [];
+    const [models, setModels] = useState<Model[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        let mounted = true;
+        fetchModels(brandId).then(data => {
+            if (mounted) {
+                setModels(data);
+                setIsLoading(false);
+            }
+        });
+        return () => { mounted = false; };
+    }, [brandId]);
 
     return (
         <div className="space-y-6">
@@ -29,21 +38,23 @@ export default function ModelSelector({ brandId, onSelect, onBack }: ModelSelect
                 <h2 className="text-2xl font-bold">Select your Model</h2>
             </div>
 
-            {brandModels.length === 0 ? (
+            {isLoading ? (
+                <div className="flex justify-center py-20">
+                    <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                </div>
+            ) : models.length === 0 ? (
                 <div className="text-center py-10 text-muted-foreground">
                     No models found for this brand in our database yet.
-                    <br />
-                    (Try Xiaomi or Apple for demo)
                 </div>
             ) : (
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {brandModels.map((model, index) => (
+                    {models.map((model, index) => (
                         <motion.button
                             key={model.id}
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: index * 0.05 }}
-                            onClick={() => onSelect(model.id)}
+                            onClick={() => onSelect(model)}
                             className="flex flex-col items-center justify-center p-4 border rounded-xl bg-card hover:border-primary hover:shadow-lg transition-all text-center"
                         >
                             <div className="relative w-24 h-32 mb-4">

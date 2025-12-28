@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Smartphone, User, LogOut } from 'lucide-react';
 import { getSession, logout } from '@/lib/session';
 import { ThemeToggle } from './theme-toggle';
+import { Logo } from './Logo';
 
 export default async function Header() {
     const session = await getSession();
@@ -10,9 +11,8 @@ export default async function Header() {
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
             <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-                <Link href="/" className="flex items-center gap-2 text-xl font-bold tracking-tight text-primary">
-                    <Smartphone className="h-6 w-6" />
-                    <span>Cash On Gadgets</span>
+                <Link href="/" className="flex items-center gap-2">
+                    <Logo className="h-8 w-auto text-primary" />
                 </Link>
 
                 <nav className="flex items-center gap-4">
@@ -22,6 +22,11 @@ export default async function Header() {
                     <Link href="/orders" className="text-sm font-medium hover:text-primary transition-colors">
                         My Orders
                     </Link>
+                    {session && (
+                        <Link href="/admin" className="text-sm font-medium hover:text-primary transition-colors">
+                            Admin Panel
+                        </Link>
+                    )}
                     <ThemeToggle />
 
                     {session ? (

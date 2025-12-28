@@ -5,7 +5,13 @@ import { db } from '@/lib/store';
 import { getSession } from '@/lib/session';
 import { redirect } from 'next/navigation';
 
-export async function placeOrder(device: string, variant: string, price: number) {
+export async function placeOrder(
+    device: string,
+    variant: string,
+    price: number,
+    address: string,
+    location: { lat: number; lng: number } | null
+) {
     const session = await getSession();
     if (!session || !session.user) {
         throw new Error('Unauthorized');
@@ -18,6 +24,8 @@ export async function placeOrder(device: string, variant: string, price: number)
         price,
         date: new Date().toISOString(),
         status: 'Pending Pickup',
+        address,
+        location
     };
 
     db.addOrder(order);

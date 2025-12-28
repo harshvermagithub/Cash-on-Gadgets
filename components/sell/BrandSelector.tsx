@@ -1,13 +1,14 @@
 
-import { brands } from "@/lib/data";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { Brand } from "@/lib/store";
 
 interface BrandSelectorProps {
-    onSelect: (brandId: string) => void;
+    brands: Brand[];
+    onSelect: (brand: Brand) => void;
 }
 
-export default function BrandSelector({ onSelect }: BrandSelectorProps) {
+export default function BrandSelector({ brands, onSelect }: BrandSelectorProps) {
     return (
         <div className="space-y-6">
             <h2 className="text-2xl font-bold text-center">Select your Brand</h2>
@@ -18,10 +19,10 @@ export default function BrandSelector({ onSelect }: BrandSelectorProps) {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        onClick={() => onSelect(brand.id)}
+                        onClick={() => onSelect(brand)}
                         className="flex flex-col items-center justify-center p-6 border rounded-xl bg-card hover:border-primary hover:shadow-lg transition-all aspect-square group"
                     >
-                        <div className="relative w-16 h-16 mb-4 filter grayscale group-hover:grayscale-0 transition-all">
+                        <div className="relative w-16 h-16 mb-4 transition-all">
                             <Image src={brand.logo} alt={brand.name} fill className="object-contain" />
                         </div>
                         <span className="font-medium">{brand.name}</span>
