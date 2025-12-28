@@ -27,7 +27,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/orders"
-                className="inline-flex items-center justify-center h-14 px-8 rounded-full bg-white border-2 border-input text-foreground font-semibold text-lg hover:bg-accent hover:border-accent transition-all duration-300"
+                className="inline-flex items-center justify-center h-14 px-8 rounded-full bg-white border-2 border-input text-black dark:text-black font-semibold text-lg hover:bg-gray-100 hover:border-accent transition-all duration-300"
               >
                 Track Order
               </Link>
@@ -36,10 +36,10 @@ export default function Home() {
 
           <div className="flex-1 relative animate-in zoom-in-50 fade-in duration-1000 delay-200">
             {/* Abstract Phone Graphic Placeholder */}
-            <div className="relative z-10 w-full aspect-square bg-gradient-to-tr from-gray-100 to-white rounded-[3rem] shadow-2xl border-8 border-white p-8 flex items-center justify-center">
-              <div className="absolute inset-0 bg-grid-slate-200/50 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] rounded-[2.5rem]" />
+            <div className="relative z-10 w-full aspect-square bg-gradient-to-tr from-gray-100 to-white dark:from-gray-800 dark:to-gray-950 rounded-[3rem] shadow-2xl border-8 border-white dark:border-gray-800 p-8 flex items-center justify-center">
+              <div className="absolute inset-0 bg-grid-slate-200/50 dark:bg-grid-slate-700/50 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] rounded-[2.5rem]" />
               <Zap className="w-32 h-32 text-primary/20" />
-              <div className="absolute bottom-10 left-10 right-10 p-6 bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50">
+              <div className="absolute bottom-10 left-10 right-10 p-6 bg-white/80 dark:bg-card/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 dark:border-white/10">
                 <div className="flex items-center justify-between mb-2">
                   <div className="h-4 w-24 bg-gray-200 rounded-full" />
                   <div className="h-4 w-12 bg-green-100 text-green-700 text-xs font-bold rounded-full flex items-center justify-center">$$$</div>
@@ -61,7 +61,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-card">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-10">
             {[

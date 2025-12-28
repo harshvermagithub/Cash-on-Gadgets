@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { Smartphone, User, LogOut } from 'lucide-react';
 import { getSession, logout } from '@/lib/session';
+import { ThemeToggle } from './theme-toggle';
 
 export default async function Header() {
     const session = await getSession();
@@ -21,6 +22,7 @@ export default async function Header() {
                     <Link href="/orders" className="text-sm font-medium hover:text-primary transition-colors">
                         My Orders
                     </Link>
+                    <ThemeToggle />
 
                     {session ? (
                         <div className="flex items-center gap-4">

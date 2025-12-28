@@ -92,7 +92,7 @@ export default function ChecklistWizard({ deviceInfo, onComplete }: ChecklistWiz
                                             }}
                                             className={`flex flex-col items-center justify-center p-6 border-2 rounded-xl transition-all h-full ${isSelected ? 'border-primary bg-primary/5' : 'hover:border-primary/50'}`}
                                         >
-                                            <div className={`mb-3 p-3 rounded-full ${isSelected ? 'bg-white' : 'bg-accent'}`}>
+                                            <div className={`mb-3 p-3 rounded-full ${isSelected ? 'bg-background' : 'bg-accent'}`}>
                                                 <span className={isSelected ? 'text-primary' : 'text-muted-foreground'}>
                                                     {opt.icon ? renderIcon(opt.icon) : <Smartphone className="w-6 h-6" />}
                                                 </span>
@@ -121,7 +121,7 @@ export default function ChecklistWizard({ deviceInfo, onComplete }: ChecklistWiz
             <div className="w-full lg:w-80 space-y-6">
                 <div className="bg-card border rounded-2xl p-6 sticky top-24">
                     <div className="flex items-start gap-4 mb-6 pb-6 border-b">
-                        <div className="w-16 h-20 relative bg-white rounded overflow-hidden">
+                        <div className="w-16 h-20 relative bg-white dark:bg-muted rounded overflow-hidden">
                             <Image src={deviceInfo.img} alt={deviceInfo.name} fill className="object-contain" />
                         </div>
                         <div>
