@@ -28,12 +28,13 @@
       "device": "iPhone 14 (4 GB / 64 GB)",
       "price": 2000,
       "date": "2025-12-28T17:47:14.969Z",
-      "status": "Pending Pickup",
+      "status": "assigned",
       "address": "003",
       "location": {
         "lat": 12.898657585624855,
         "lng": 77.52405043311391
-      }
+      },
+      "riderId": "b2e5bd69-8e4e-4c45-9751-744d55e5791e"
     }
   ],
   "brands": [
@@ -175,6 +176,15 @@
       "modelId": "generic",
       "name": "8 GB / 128 GB",
       "basePrice": 7000
+    }
+  ],
+  "riders": [
+    {
+      "id": "b2e5bd69-8e4e-4c45-9751-744d55e5791e",
+      "name": "Hari",
+      "phone": "+917766775566",
+      "status": "available",
+      "password": "123123"
     }
   ]
 }

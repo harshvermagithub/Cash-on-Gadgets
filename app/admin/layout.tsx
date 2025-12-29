@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { getSession } from '@/lib/session';
 import { redirect } from 'next/navigation';
-import { LayoutDashboard, Smartphone, Layers, Tag, LogOut, ExternalLink } from 'lucide-react';
+import { LayoutDashboard, Smartphone, Layers, Tag, LogOut, ExternalLink, Users, ShoppingCart } from 'lucide-react';
 
 export default async function AdminLayout({
     children,
@@ -39,7 +39,18 @@ export default async function AdminLayout({
                     </Link>
                     <Link href="/admin/variants" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-primary/10 hover:text-primary transition-colors">
                         <Tag className="w-5 h-5" />
-                        Variants
+                        Pricing
+                    </Link>
+                    <div className="pt-4 pb-2">
+                        <p className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Logistics</p>
+                    </div>
+                    <Link href="/admin/riders" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-primary/10 hover:text-primary transition-colors">
+                        <Users className="w-5 h-5" />
+                        Executives
+                    </Link>
+                    <Link href="/admin/orders" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg hover:bg-primary/10 hover:text-primary transition-colors">
+                        <ShoppingCart className="w-5 h-5" />
+                        Orders
                     </Link>
                 </nav>
                 <div className="absolute bottom-0 w-64 p-4 border-t">

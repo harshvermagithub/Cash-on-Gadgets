@@ -69,8 +69,23 @@ export default async function AdminDashboard() {
                         </div>
                         <p className="text-sm text-muted-foreground">Set base prices and variants for specific models.</p>
                     </Link>
+                    <Link href="/admin/riders" className="p-6 border rounded-xl hover:bg-muted/50 transition-colors flex flex-col gap-2">
+                        <div className="flex items-center gap-2 font-semibold">
+                            <PlusCircle className="w-5 h-5 text-orange-600" />
+                            Manage Executives
+                        </div>
+                        <p className="text-sm text-muted-foreground">Add and manage delivery partners and executives.</p>
+                    </Link>
+                    <Link href="/admin/orders" className="p-6 border rounded-xl hover:bg-muted/50 transition-colors flex flex-col gap-2">
+                        <div className="flex items-center gap-2 font-semibold">
+                            <ShoppingCart className="w-5 h-5 text-indigo-600" />
+                            View Orders
+                        </div>
+                        <p className="text-sm text-muted-foreground">Track orders and assign riders for pickup.</p>
+                    </Link>
                 </div>
             </div>
         </div>
     );
+
 }

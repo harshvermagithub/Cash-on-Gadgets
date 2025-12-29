@@ -11,7 +11,16 @@ interface User {
     name: string;
 }
 
-interface Order {
+
+export interface Rider {
+    id: string;
+    name: string;
+    phone: string;
+    status: 'available' | 'busy' | 'offline';
+    password?: string | null;
+}
+
+export interface Order {
     id: string;
     userId: string;
     device: string;
@@ -23,6 +32,7 @@ interface Order {
         lat: number;
         lng: number;
     } | null;
+    riderId?: string; // Assigned rider
 }
 
 export interface Brand {
@@ -40,7 +50,7 @@ export interface Model {
 
 export interface Variant {
     id: string;
-    modelId: string; // Linking variant to model
+    modelId: string;
     name: string;
     basePrice: number;
 }
@@ -51,26 +61,26 @@ interface DB {
     brands: Brand[];
     models: Model[];
     variants: Variant[];
+    riders: Rider[];
 }
 
 function readDB(): DB {
     if (!fs.existsSync(DB_PATH)) {
-        // Initialize with empty arrays if file doesn't exist
-        return { users: [], orders: [], brands: [], models: [], variants: [] };
+        return { users: [], orders: [], brands: [], models: [], variants: [], riders: [] };
     }
     try {
         const data = fs.readFileSync(DB_PATH, 'utf-8');
         const parsed = JSON.parse(data);
-        // Ensure all arrays exist even if DB file is old
         return {
             users: parsed.users || [],
             orders: parsed.orders || [],
             brands: parsed.brands || [],
             models: parsed.models || [],
-            variants: parsed.variants || []
+            variants: parsed.variants || [],
+            riders: parsed.riders || []
         };
     } catch (error) {
-        return { users: [], orders: [], brands: [], models: [], variants: [] };
+        return { users: [], orders: [], brands: [], models: [], variants: [], riders: [] };
     }
 }
 
@@ -93,9 +103,54 @@ export const db = {
         const data = readDB();
         return data.orders.filter(o => o.userId === userId);
     },
+    getAllOrders: () => {
+        const data = readDB();
+        return data.orders; // For admin
+    },
     addOrder: (order: Order) => {
         const data = readDB();
         data.orders.push(order);
+        writeDB(data);
+    },
+    updateOrderRider: (orderId: string, riderId: string) => {
+        const data = readDB();
+        const order = data.orders.find(o => o.id === orderId);
+        if (order) {
+            order.riderId = riderId;
+            order.status = 'assigned'; // Auto-update status when rider assigned
+            writeDB(data);
+            return true;
+        }
+        return false;
+    },
+    updateOrderStatus: (orderId: string, status: string) => {
+        const data = readDB();
+        const order = data.orders.find(o => o.id === orderId);
+        if (order) {
+            order.status = status;
+            writeDB(data);
+            return true;
+        }
+        return false;
+    },
+    // Rider Methods
+    getRiders: () => readDB().riders,
+    addRider: (rider: Rider) => {
+        const data = readDB();
+        data.riders.push(rider);
+        writeDB(data);
+    },
+    updateRiderPassword: (id: string, password: string) => {
+        const data = readDB();
+        const rider = data.riders.find(r => r.id === id);
+        if (rider) {
+            rider.password = password;
+            writeDB(data);
+        }
+    },
+    deleteRider: (id: string) => {
+        const data = readDB();
+        data.riders = data.riders.filter(r => r.id !== id);
         writeDB(data);
     },
     // Catalog Methods

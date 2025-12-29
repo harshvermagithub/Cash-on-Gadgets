@@ -91,3 +91,37 @@ export async function deleteVariant(id: string) {
     revalidatePath('/admin/variants');
     return { success: true };
 }
+
+// --- Riders ---
+
+export async function addRider(name: string, phone: string) {
+    await requireAdmin();
+    db.addRider({
+        id: randomUUID(),
+        name,
+        phone,
+        status: 'available',
+        password: null
+    });
+    revalidatePath('/admin/riders');
+    return { success: true };
+}
+
+export async function deleteRider(id: string) {
+    await requireAdmin();
+    db.deleteRider(id);
+    revalidatePath('/admin/riders');
+    return { success: true };
+}
+
+// --- Orders ---
+
+export async function assignRider(orderId: string, riderId: string) {
+    await requireAdmin();
+    const success = db.updateOrderRider(orderId, riderId);
+    if (!success) throw new Error('Order not found');
+
+    revalidatePath('/admin');
+    revalidatePath('/admin/orders');
+    return { success: true };
+}
