@@ -33,6 +33,7 @@ export interface Order {
         lng: number;
     } | null;
     riderId?: string; // Assigned rider
+    answers?: any; // Questionnaire answers
 }
 
 export interface Brand {

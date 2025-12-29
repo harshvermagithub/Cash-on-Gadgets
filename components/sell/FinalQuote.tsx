@@ -69,7 +69,7 @@ export default function FinalQuote({ basePrice, answers, deviceInfo }: FinalQuot
 
         setIsSubmitting(true);
         try {
-            await placeOrder(deviceInfo.name, deviceInfo.variant, finalPrice, address, location);
+            await placeOrder(deviceInfo.name, deviceInfo.variant, finalPrice, address, location, answers);
             router.push('/orders');
         } catch (error) {
             // If unauthorized, redirect to login
@@ -117,8 +117,8 @@ export default function FinalQuote({ basePrice, answers, deviceInfo }: FinalQuot
                         onClick={handleGetLocation}
                         type="button"
                         className={`w-full py-4 border-2 border-dashed rounded-xl flex items-center justify-center gap-2 transition-all duration-300 group ${location
-                                ? 'border-green-500 bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                                : 'border-primary/30 hover:border-primary hover:bg-primary/5'
+                            ? 'border-green-500 bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                            : 'border-primary/30 hover:border-primary hover:bg-primary/5'
                             }`}
                     >
                         {isGettingLocation ? (

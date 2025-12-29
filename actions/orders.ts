@@ -10,7 +10,8 @@ export async function placeOrder(
     variant: string,
     price: number,
     address: string,
-    location: { lat: number; lng: number } | null
+    location: { lat: number; lng: number } | null,
+    answers: any
 ) {
     const session = await getSession();
     if (!session || !session.user) {
@@ -25,7 +26,8 @@ export async function placeOrder(
         date: new Date().toISOString(),
         status: 'Pending Pickup',
         address,
-        location
+        location,
+        answers
     };
 
     db.addOrder(order);
