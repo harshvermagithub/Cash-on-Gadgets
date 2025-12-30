@@ -35,6 +35,36 @@
         "lng": 77.52405043311391
       },
       "riderId": "b2e5bd69-8e4e-4c45-9751-744d55e5791e"
+    },
+    {
+      "id": "b0960565-e8a7-44d6-a6db-ff48d7579375",
+      "userId": "9ebbf493-36e2-441a-9795-ef10b260072a",
+      "device": "iPhone 14 (8 GB / 128 GB)",
+      "price": 3500,
+      "date": "2025-12-30T15:18:54.393Z",
+      "status": "assigned",
+      "address": "033",
+      "location": {
+        "lat": 12.898678509770372,
+        "lng": 77.52403134838607
+      },
+      "answers": {
+        "calls": true,
+        "touch": false,
+        "screen_original": true,
+        "screen_defects": [
+          "scratch_screen",
+          "panel_broken"
+        ],
+        "functional_problems": [
+          "back_camera",
+          "battery"
+        ],
+        "accessories": [
+          "charger"
+        ]
+      },
+      "riderId": "b2e5bd69-8e4e-4c45-9751-744d55e5791e"
     }
   ],
   "brands": [
@@ -92,11 +122,6 @@
       "id": "asus",
       "name": "Asus",
       "logo": "https://cdn.simpleicons.org/asus/006CE1"
-    },
-    {
-      "id": "sony",
-      "name": "Sony",
-      "logo": "https://cdn.simpleicons.org/sony/000000"
     },
     {
       "id": "poco",

@@ -41,20 +41,20 @@ export default function OrderList({ orders, executiveName }: { orders: any[], ex
             </div>
 
             {orders.length === 0 ? (
-                <div className="text-center py-20 bg-white dark:bg-card rounded-2xl border">
+                <div className="text-center py-20 bg-card rounded-2xl border">
                     <p className="text-muted-foreground">No assigned orders yet.</p>
                 </div>
             ) : (
                 <div className="space-y-4">
                     {orders.map((order) => (
-                        <div key={order.id} className="bg-white dark:bg-card border rounded-2xl p-6 shadow-sm space-y-4">
+                        <div key={order.id} className="bg-card border rounded-2xl p-6 shadow-sm space-y-4">
                             <div className="flex justify-between items-start">
                                 <div>
                                     <div className="flex items-center gap-2 mb-2">
-                                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold uppercase ${order.status === 'assigned' ? 'bg-blue-100 text-blue-700' :
-                                            order.status === 'picked_up' ? 'bg-purple-100 text-purple-700' :
-                                                order.status === 'completed' ? 'bg-green-100 text-green-700' :
-                                                    'bg-gray-100 text-gray-700'
+                                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold uppercase ${order.status === 'assigned' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' :
+                                            order.status === 'picked_up' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' :
+                                                order.status === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' :
+                                                    'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
                                             }`}>
                                             {order.status}
                                         </span>
@@ -64,14 +64,14 @@ export default function OrderList({ orders, executiveName }: { orders: any[], ex
                                         </span>
                                     </div>
                                     <h3 className="text-lg font-bold">{order.device}</h3>
-                                    <p className="text-green-600 font-bold font-mono text-xl">₹{order.price.toLocaleString()}</p>
+                                    <p className="text-green-600 dark:text-green-400 font-bold font-mono text-xl">₹{order.price.toLocaleString()}</p>
                                 </div>
                                 {order.location && (
                                     <a
                                         href={`https://www.google.com/maps/search/?api=1&query=${order.location.lat},${order.location.lng}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="p-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition-colors"
+                                        className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
                                     >
                                         <Navigation className="w-6 h-6" />
                                     </a>
@@ -119,9 +119,9 @@ export default function OrderList({ orders, executiveName }: { orders: any[], ex
                                             }}
                                         />
 
-                                        <div className="bg-white dark:bg-card border p-3 rounded-lg flex justify-between items-center">
+                                        <div className="bg-card border p-3 rounded-lg flex justify-between items-center">
                                             <span>System Offered Price</span>
-                                            <span className="font-bold text-green-600">₹{order.price.toLocaleString()}</span>
+                                            <span className="font-bold text-green-600 dark:text-green-400">₹{order.price.toLocaleString()}</span>
                                         </div>
                                         <button
                                             onClick={() => {
@@ -140,7 +140,7 @@ export default function OrderList({ orders, executiveName }: { orders: any[], ex
 
                                 {order.status === 'picked_up' && (
                                     <div className="pt-4 border-t space-y-3">
-                                        <div className="bg-purple-100 text-purple-700 p-3 rounded-lg text-sm text-center font-medium">
+                                        <div className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 p-3 rounded-lg text-sm text-center font-medium">
                                             Device verified & payment done. <br /> Please deliver to hub.
                                         </div>
                                         <button
@@ -155,7 +155,7 @@ export default function OrderList({ orders, executiveName }: { orders: any[], ex
                                 )}
 
                                 {order.status === 'completed' && (
-                                    <div className="text-center text-green-600 font-medium py-2 bg-green-50 rounded-lg">
+                                    <div className="text-center text-green-600 dark:text-green-400 font-medium py-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
                                         Order Completed Successfully
                                     </div>
                                 )}
@@ -190,7 +190,7 @@ function VerificationChecklist({ isVerified, onToggle }: { isVerified: boolean; 
 
     if (isVerified) {
         return (
-            <div className="p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2 text-green-700 text-sm">
+            <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg flex items-center gap-2 text-green-700 dark:text-green-400 text-sm">
                 <CheckCircle2 className="w-5 h-5" />
                 <span>Verification Completed</span>
                 <button onClick={onToggle} className="ml-auto text-xs underline">Undo</button>
@@ -199,7 +199,7 @@ function VerificationChecklist({ isVerified, onToggle }: { isVerified: boolean; 
     }
 
     return (
-        <div className="space-y-2 bg-white dark:bg-card border p-4 rounded-xl">
+        <div className="space-y-2 bg-card border p-4 rounded-xl">
             <div className="flex items-center gap-2 text-sm">
                 <input type="checkbox" id="chk-physical" checked={checkedItems.physical} onChange={() => handleCheck('physical')} className="w-4 h-4 rounded border-gray-300" />
                 <label htmlFor="chk-physical">Physical Condition (Scratches/Dents)</label>
@@ -224,7 +224,7 @@ function VerificationChecklist({ isVerified, onToggle }: { isVerified: boolean; 
             <button
                 onClick={onToggle}
                 disabled={!allChecked}
-                className="w-full mt-2 py-2 text-xs font-bold bg-slate-900 text-white rounded-lg disabled:opacity-50"
+                className="w-full mt-2 py-2 text-xs font-bold bg-primary text-primary-foreground rounded-lg disabled:opacity-50"
             >
                 Confirm Verification
             </button>

@@ -15,9 +15,9 @@ export default async function AdminLayout({
     }
 
     return (
-        <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="flex min-h-screen bg-muted/20">
             {/* Sidebar */}
-            <aside className="w-64 bg-white dark:bg-card border-r hidden md:block">
+            <aside className="w-64 bg-card border-r hidden md:block">
                 <div className="p-6 border-b">
                     <Link href="/admin" className="flex items-center gap-2 font-bold text-xl text-primary">
                         <LayoutDashboard className="w-6 h-6" />

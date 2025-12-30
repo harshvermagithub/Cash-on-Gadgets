@@ -20,7 +20,7 @@ export default function BrandSelector({ brands, onSelect }: BrandSelectorProps) 
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.05 }}
                         onClick={() => onSelect(brand)}
-                        className="flex flex-col items-center justify-center p-6 border rounded-xl bg-card hover:border-primary hover:shadow-lg transition-all aspect-square group"
+                        className="flex flex-col items-center justify-center p-6 border rounded-xl bg-white text-black hover:border-primary hover:shadow-lg transition-all aspect-square group"
                     >
                         <div className="relative w-16 h-16 mb-4 transition-all">
                             <Image src={brand.logo} alt={brand.name} fill className="object-contain" />
