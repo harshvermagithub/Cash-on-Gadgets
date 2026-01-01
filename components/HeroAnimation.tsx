@@ -14,7 +14,7 @@ export default function HeroAnimation() {
                         opacity: [0.3, 0.5, 0.3],
                     }}
                     transition={{ duration: 8, repeat: Infinity }}
-                    className="absolute w-64 h-64 bg-violet-500/20 rounded-full blur-[80px] -translate-x-10"
+                    className="absolute w-64 h-64 bg-green-500/20 rounded-full blur-[80px] -translate-x-10"
                 />
                 <motion.div
                     animate={{
@@ -22,7 +22,7 @@ export default function HeroAnimation() {
                         opacity: [0.3, 0.5, 0.3],
                     }}
                     transition={{ duration: 10, repeat: Infinity, delay: 1 }}
-                    className="absolute w-64 h-64 bg-fuchsia-500/20 rounded-full blur-[80px] translate-x-10"
+                    className="absolute w-64 h-64 bg-emerald-500/20 rounded-full blur-[80px] translate-x-10"
                 />
             </div>
 
@@ -45,16 +45,16 @@ export default function HeroAnimation() {
                         <motion.div
                             animate={{ top: ['0%', '100%'] }}
                             transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                            className="absolute top-0 left-0 right-0 h-1 bg-violet-500 shadow-[0_0_15px_rgba(139,92,246,0.8)] z-10 opacity-70"
+                            className="absolute top-0 left-0 right-0 h-1 bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.8)] z-10 opacity-70"
                         />
 
                         {/* Status Icon */}
                         <motion.div
                             animate={{ scale: [1, 1.1, 1] }}
                             transition={{ duration: 2, repeat: Infinity }}
-                            className="w-16 h-16 rounded-2xl bg-violet-500/20 flex items-center justify-center mb-6 border border-violet-500/30"
+                            className="w-16 h-16 rounded-2xl bg-green-500/20 flex items-center justify-center mb-6 border border-green-500/30"
                         >
-                            <Smartphone className="w-8 h-8 text-violet-400" />
+                            <Smartphone className="w-8 h-8 text-green-400" />
                         </motion.div>
 
                         {/* Skeleton Text */}

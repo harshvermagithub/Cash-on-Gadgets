@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight, Zap, ShieldCheck, CheckCircle, Smartphone, Truck, Banknote, Star } from 'lucide-react';
+import { ArrowRight, Zap, ShieldCheck, CheckCircle, Smartphone, Bike, Banknote, Star } from 'lucide-react';
 import HeroAnimation from '@/components/HeroAnimation';
 
 
@@ -14,23 +14,23 @@ export default function Home() {
             {/* Hero Section */}
             <section className="relative pt-20 pb-32 md:pt-32 md:pb-48 overflow-hidden bg-background">
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-                    <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
-                    <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl" />
+                    <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-green-500/10 rounded-full blur-3xl" />
+                    <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-3xl" />
                 </div>
 
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
                         <div className="flex-1 space-y-8 animate-in slide-in-from-bottom-8 fade-in-20 duration-700">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-semibold">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-semibold border border-green-200">
                                 <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                                 </span>
                                 Trusted by 1,000+ Customers
                             </div>
                             <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground leading-[1.1]">
                                 Smart way to <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">sell your phone.</span>
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">sell your phone.</span>
                             </h1>
                             <p className="text-xl text-muted-foreground leading-relaxed max-w-lg">
                                 Get the best value for your device in minutes. Instant cash at your doorstep. No haggling, no headaches.
@@ -39,14 +39,14 @@ export default function Home() {
                             <div className="flex flex-col sm:flex-row gap-4 pt-4">
                                 <Link
                                     href="/sell"
-                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-primary text-primary-foreground font-semibold text-lg shadow-lg shadow-primary/25 hover:bg-primary/90 hover:scale-[1.02] transition-all duration-300 group"
+                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-primary text-primary-foreground font-semibold text-lg shadow-lg shadow-green-500/25 hover:bg-primary/90 hover:scale-[1.02] transition-all duration-300 group"
                                 >
                                     Get Exact Value
                                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                                 </Link>
                                 <Link
                                     href="/orders"
-                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-card border text-foreground font-semibold text-lg hover:bg-accent/50 transition-all duration-300"
+                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-white border border-green-100 text-foreground font-semibold text-lg hover:bg-green-50 transition-all duration-300"
                                 >
                                     Track Order
                                 </Link>
@@ -54,13 +54,13 @@ export default function Home() {
 
                             <div className="flex items-center gap-6 pt-4 text-sm font-medium text-muted-foreground">
                                 <div className="flex items-center gap-2">
-                                    <CheckCircle className="w-4 h-4 text-primary" /> Instant Payment
+                                    <CheckCircle className="w-4 h-4 text-green-600" /> Instant Payment
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <CheckCircle className="w-4 h-4 text-primary" /> Doorstep Pickup
+                                    <CheckCircle className="w-4 h-4 text-green-600" /> Doorstep Pickup
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <CheckCircle className="w-4 h-4 text-primary" /> Safe & Secure
+                                    <CheckCircle className="w-4 h-4 text-green-600" /> Safe & Secure
                                 </div>
                             </div>
                         </div>
@@ -73,36 +73,36 @@ export default function Home() {
             </section>
 
             {/* Brands Marquee & Stats Section */}
-            <section className="py-12 border-y bg-muted/20">
+            <section className="py-12 border-y bg-emerald-50/50">
                 <div className="container mx-auto px-6 mb-12">
-                    <p className="text-center text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-8">We Accept All Major Brands</p>
-                    <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500 items-center">
+                    <p className="text-center text-sm font-semibold text-green-700/60 uppercase tracking-wider mb-8">We Accept All Major Brands</p>
+                    <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 items-center">
                         {/* Simple Text Logos for Brands (keeping it cleaner than icons for now) */}
-                        <span className="text-2xl font-bold text-gray-400 hover:text-gray-900 transition-colors cursor-default">Apple</span>
-                        <span className="text-2xl font-bold text-gray-400 hover:text-blue-600 transition-colors cursor-default">Samsung</span>
-                        <span className="text-2xl font-bold text-gray-400 hover:text-red-500 transition-colors cursor-default">OnePlus</span>
-                        <span className="text-2xl font-bold text-gray-400 hover:text-orange-500 transition-colors cursor-default">Xiaomi</span>
-                        <span className="text-2xl font-bold text-gray-400 hover:text-blue-400 transition-colors cursor-default">Vivo</span>
-                        <span className="text-2xl font-bold text-gray-400 hover:text-green-500 transition-colors cursor-default">Oppo</span>
+                        <span className="text-2xl font-bold text-gray-400 hover:text-green-800 transition-colors cursor-default">Apple</span>
+                        <span className="text-2xl font-bold text-gray-400 hover:text-green-800 transition-colors cursor-default">Samsung</span>
+                        <span className="text-2xl font-bold text-gray-400 hover:text-green-800 transition-colors cursor-default">OnePlus</span>
+                        <span className="text-2xl font-bold text-gray-400 hover:text-green-800 transition-colors cursor-default">Xiaomi</span>
+                        <span className="text-2xl font-bold text-gray-400 hover:text-green-800 transition-colors cursor-default">Vivo</span>
+                        <span className="text-2xl font-bold text-gray-400 hover:text-green-800 transition-colors cursor-default">Oppo</span>
                     </div>
                 </div>
 
                 <div className="container mx-auto px-6">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-gray-200/50">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-green-200/50">
                         <div className="p-4">
-                            <h3 className="text-3xl md:text-4xl font-bold text-primary mb-2">50K+</h3>
+                            <h3 className="text-3xl md:text-4xl font-bold text-green-600 mb-2">50K+</h3>
                             <p className="text-sm text-muted-foreground font-medium">Gadgets Sold</p>
                         </div>
                         <div className="p-4">
-                            <h3 className="text-3xl md:text-4xl font-bold text-fuchsia-600 mb-2">₹10Cr+</h3>
+                            <h3 className="text-3xl md:text-4xl font-bold text-emerald-600 mb-2">₹10Cr+</h3>
                             <p className="text-sm text-muted-foreground font-medium">Cash Paid</p>
                         </div>
                         <div className="p-4">
-                            <h3 className="text-3xl md:text-4xl font-bold text-violet-600 mb-2">100+</h3>
+                            <h3 className="text-3xl md:text-4xl font-bold text-teal-600 mb-2">100+</h3>
                             <p className="text-sm text-muted-foreground font-medium">Cities Covered</p>
                         </div>
                         <div className="p-4">
-                            <h3 className="text-3xl md:text-4xl font-bold text-pink-600 mb-2">4.8★</h3>
+                            <h3 className="text-3xl md:text-4xl font-bold text-lime-600 mb-2">4.8★</h3>
                             <p className="text-sm text-muted-foreground font-medium">User Rating</p>
                         </div>
                     </div>
@@ -110,7 +110,8 @@ export default function Home() {
             </section>
 
             {/* How It Works Section - Dynamic & Animated */}
-            <section className="py-24 bg-background overflow-hidden">
+            <section className="py-24 bg-background overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-green-100 rounded-full blur-[100px] opacity-30 -z-10" />
                 <div className="container mx-auto px-6">
                     <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
                         <motion.h2
@@ -118,7 +119,7 @@ export default function Home() {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
                             viewport={{ once: true }}
-                            className="text-3xl md:text-4xl font-bold uppercase tracking-wide"
+                            className="text-3xl md:text-4xl font-bold uppercase tracking-wide text-green-900"
                         >
                             HOW IT WORKS
                         </motion.h2>
@@ -127,7 +128,7 @@ export default function Home() {
                             whileInView={{ width: 80 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                             viewport={{ once: true }}
-                            className="h-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 mx-auto rounded-full"
+                            className="h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full"
                         />
                     </div>
 
@@ -144,38 +145,38 @@ export default function Home() {
                                 whileHover={{ scale: 1.05 }}
                                 className="relative w-48 h-48 md:w-64 md:h-64 flex items-center justify-center cursor-pointer"
                             >
-                                <div className="absolute inset-0 bg-violet-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="absolute inset-0 bg-green-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                                 {/* Animated Phone Element */}
-                                <div className="relative w-32 h-56 bg-gray-900 rounded-[2rem] border-4 border-gray-800 shadow-2xl flex flex-col items-center overflow-hidden">
+                                <div className="relative w-32 h-56 bg-slate-900 rounded-[2rem] border-4 border-slate-800 shadow-2xl flex flex-col items-center overflow-hidden">
                                     <div className="w-12 h-4 bg-black rounded-b-xl mb-2 z-10" />
-                                    <div className="w-full flex-1 bg-gray-800 p-2 flex flex-col items-center justify-center gap-3">
+                                    <div className="w-full flex-1 bg-slate-800 p-2 flex flex-col items-center justify-center gap-3">
                                         <motion.div
                                             animate={{ scale: [1, 1.1, 1] }}
                                             transition={{ duration: 2, repeat: Infinity }}
-                                            className="w-12 h-12 rounded-full bg-violet-500/20 flex items-center justify-center"
+                                            className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center"
                                         >
-                                            <Smartphone className="w-6 h-6 text-violet-400" />
+                                            <Smartphone className="w-6 h-6 text-green-400" />
                                         </motion.div>
                                         <div className="space-y-1 w-full px-2">
                                             <motion.div
                                                 initial={{ width: "20%" }}
                                                 whileInView={{ width: "80%" }}
                                                 transition={{ duration: 1, delay: 0.5 }}
-                                                className="h-1.5 bg-gray-600 rounded-full"
+                                                className="h-1.5 bg-slate-600 rounded-full"
                                             />
                                             <motion.div
                                                 initial={{ width: "20%" }}
                                                 whileInView={{ width: "60%" }}
                                                 transition={{ duration: 1, delay: 0.7 }}
-                                                className="h-1.5 bg-gray-600 rounded-full"
+                                                className="h-1.5 bg-slate-600 rounded-full"
                                             />
                                         </div>
                                         <motion.div
                                             initial={{ scale: 0, opacity: 0 }}
                                             whileInView={{ scale: 1, opacity: 1 }}
                                             transition={{ type: "spring", stiffness: 200, delay: 1 }}
-                                            className="px-3 py-1 bg-green-500 text-[10px] font-bold text-white rounded-full mt-2"
+                                            className="px-3 py-1 bg-emerald-500 text-[10px] font-bold text-white rounded-full mt-2"
                                         >
                                             ₹15,000
                                         </motion.div>
@@ -183,9 +184,9 @@ export default function Home() {
                                 </div>
                             </motion.div>
                             <div className="relative">
-                                <div className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center text-white font-bold text-lg mb-4 mx-auto shadow-lg relative z-10 ring-4 ring-background">1</div>
+                                <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold text-lg mb-4 mx-auto shadow-lg relative z-10 ring-4 ring-background">1</div>
                             </div>
-                            <h3 className="text-xl font-bold">Get Your Device Valuation</h3>
+                            <h3 className="text-xl font-bold text-green-900">Get Your Device Valuation</h3>
                             <p className="text-muted-foreground text-sm max-w-xs leading-relaxed">
                                 Download the Cashonphone app, create an account, answer a couple of questions about your phone condition and get the best price.
                             </p>
@@ -203,15 +204,15 @@ export default function Home() {
                                 whileHover={{ scale: 1.05 }}
                                 className="relative w-48 h-48 md:w-64 md:h-64 flex items-center justify-center cursor-pointer"
                             >
-                                <div className="absolute inset-0 bg-fuchsia-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="absolute inset-0 bg-teal-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                                {/* Animated Truck Element */}
+                                {/* Animated Bike Element */}
                                 <div className="relative">
                                     <motion.div
                                         animate={{ x: [-10, 10, -10] }}
                                         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                                     >
-                                        <Truck className="w-24 h-24 text-fuchsia-600 drop-shadow-lg" />
+                                        <Bike className="w-24 h-24 text-teal-600 drop-shadow-lg" />
                                     </motion.div>
                                     <motion.div
                                         animate={{ x: [10, -10, 10], opacity: [0.3, 0.6, 0.3] }}
@@ -221,9 +222,9 @@ export default function Home() {
                                 </div>
                             </motion.div>
                             <div className="relative">
-                                <div className="w-10 h-10 rounded-full bg-fuchsia-600 flex items-center justify-center text-white font-bold text-lg mb-4 mx-auto shadow-lg relative z-10 ring-4 ring-background">2</div>
+                                <div className="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold text-lg mb-4 mx-auto shadow-lg relative z-10 ring-4 ring-background">2</div>
                             </div>
-                            <h3 className="text-xl font-bold">Schedule Pickup</h3>
+                            <h3 className="text-xl font-bold text-green-900">Schedule Pickup</h3>
                             <p className="text-muted-foreground text-sm max-w-xs leading-relaxed">
                                 If satisfied with the price, choose a time slot of your convenience. Our field agent will give you a visit at your chosen time.
                             </p>
@@ -241,7 +242,7 @@ export default function Home() {
                                 whileHover={{ scale: 1.05 }}
                                 className="relative w-48 h-48 md:w-64 md:h-64 flex items-center justify-center cursor-pointer"
                             >
-                                <div className="absolute inset-0 bg-green-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="absolute inset-0 bg-lime-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                                 {/* Animated Cash Element */}
                                 <div className="relative">
@@ -253,7 +254,7 @@ export default function Home() {
                                         transition={{ duration: 4, repeat: Infinity }}
                                         className="relative z-10"
                                     >
-                                        <Banknote className="w-24 h-24 text-green-600 drop-shadow-lg" />
+                                        <Banknote className="w-24 h-24 text-lime-600 drop-shadow-lg" />
                                         <motion.div
                                             animate={{ scale: [0.8, 1.1, 0.8], opacity: [0, 1, 0] }}
                                             transition={{ duration: 2, repeat: Infinity }}
@@ -267,9 +268,9 @@ export default function Home() {
                                 </div>
                             </motion.div>
                             <div className="relative">
-                                <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold text-lg mb-4 mx-auto shadow-lg relative z-10 ring-4 ring-background">3</div>
+                                <div className="w-10 h-10 rounded-full bg-lime-600 flex items-center justify-center text-white font-bold text-lg mb-4 mx-auto shadow-lg relative z-10 ring-4 ring-background">3</div>
                             </div>
-                            <h3 className="text-xl font-bold">Get Paid</h3>
+                            <h3 className="text-xl font-bold text-green-900">Get Paid</h3>
                             <p className="text-muted-foreground text-sm max-w-xs leading-relaxed">
                                 Get paid in cash or online transfer for your used Phone. We accept cash, credit card, debit card and bank transfer for repair and sell.
                             </p>
@@ -334,7 +335,7 @@ export default function Home() {
             </section>
 
             {/* Why Choose Us Section - Dynamic & Animated */}
-            <section className="py-24 bg-muted/20 overflow-hidden">
+            <section className="py-24 bg-green-50/30 overflow-hidden">
                 <div className="container mx-auto px-6">
                     <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
                         <motion.h2
@@ -342,7 +343,7 @@ export default function Home() {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
                             viewport={{ once: true }}
-                            className="text-3xl md:text-4xl font-bold uppercase tracking-wide"
+                            className="text-3xl md:text-4xl font-bold uppercase tracking-wide text-green-900"
                         >
                             WHY CHOOSE US
                         </motion.h2>
@@ -351,7 +352,7 @@ export default function Home() {
                             whileInView={{ width: 80 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                             viewport={{ once: true }}
-                            className="h-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 mx-auto rounded-full"
+                            className="h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full"
                         />
                     </div>
 
@@ -363,19 +364,19 @@ export default function Home() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
-                            className="flex items-center gap-6 bg-background/50 p-6 rounded-3xl border border-transparent hover:border-violet-200 transition-all duration-300 group cursor-default"
+                            className="flex items-center gap-6 bg-white/60 p-6 rounded-3xl border border-transparent hover:border-green-200 transition-all duration-300 group cursor-default"
                         >
-                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-violet-100/50 rounded-2xl group-hover:bg-violet-100 transition-colors">
+                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-green-100/50 rounded-2xl group-hover:bg-green-100 transition-colors">
                                 <motion.div
                                     animate={{ rotateY: [0, 180, 0] }}
                                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                    className="w-12 h-12 rounded-full border-4 border-violet-500 flex items-center justify-center bg-white shadow-sm"
+                                    className="w-12 h-12 rounded-full border-4 border-green-500 flex items-center justify-center bg-white shadow-sm"
                                 >
-                                    <span className="font-bold text-violet-700 text-xl">₹</span>
+                                    <span className="font-bold text-green-700 text-xl">₹</span>
                                 </motion.div>
                             </div>
                             <div className="space-y-2">
-                                <h3 className="text-xl font-bold group-hover:text-violet-600 transition-colors">Amazing Prices</h3>
+                                <h3 className="text-xl font-bold group-hover:text-green-700 transition-colors">Amazing Prices</h3>
                                 <p className="text-muted-foreground text-sm leading-relaxed">
                                     Buying or selling, we guarantee the best market rates for your device.
                                 </p>
@@ -389,18 +390,18 @@ export default function Home() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.1 }}
-                            className="flex items-center gap-6 bg-background/50 p-6 rounded-3xl border border-transparent hover:border-fuchsia-200 transition-all duration-300 group cursor-default"
+                            className="flex items-center gap-6 bg-white/60 p-6 rounded-3xl border border-transparent hover:border-teal-200 transition-all duration-300 group cursor-default"
                         >
-                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-fuchsia-100/50 rounded-2xl group-hover:bg-fuchsia-100 transition-colors">
+                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-teal-100/50 rounded-2xl group-hover:bg-teal-100 transition-colors">
                                 <motion.div
                                     animate={{ scale: [1, 1.2, 1] }}
                                     transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                                 >
-                                    <Zap className="w-10 h-10 text-fuchsia-500 fill-fuchsia-500" />
+                                    <Zap className="w-10 h-10 text-teal-500 fill-teal-500" />
                                 </motion.div>
                             </div>
                             <div className="space-y-2">
-                                <h3 className="text-xl font-bold group-hover:text-fuchsia-600 transition-colors">Quick & Fast Service</h3>
+                                <h3 className="text-xl font-bold group-hover:text-teal-600 transition-colors">Quick & Fast Service</h3>
                                 <p className="text-muted-foreground text-sm leading-relaxed">
                                     Get mobile in a click at your home/office instantly. No waiting.
                                 </p>
@@ -414,9 +415,9 @@ export default function Home() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.2 }}
-                            className="flex items-center gap-6 bg-background/50 p-6 rounded-3xl border border-transparent hover:border-green-200 transition-all duration-300 group cursor-default"
+                            className="flex items-center gap-6 bg-white/60 p-6 rounded-3xl border border-transparent hover:border-lime-200 transition-all duration-300 group cursor-default"
                         >
-                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-green-100/50 rounded-2xl group-hover:bg-green-100 transition-colors">
+                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-lime-100/50 rounded-2xl group-hover:bg-lime-100 transition-colors">
                                 <motion.div
                                     animate={{ rotate: [0, 10, -10, 0] }}
                                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
