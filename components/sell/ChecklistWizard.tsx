@@ -105,15 +105,15 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete }: Ch
                                                     : [...current, opt.id];
                                                 handleAnswer(currentStep.id, updated);
                                             }}
-                                            className={`flex flex-col items-center justify-center p-6 border-2 rounded-xl transition-all h-full ${isSelected ? 'border-primary bg-primary/5' : 'hover:border-primary/50'}`}
+                                            className={`relative flex flex-col items-center justify-center p-8 border-2 rounded-xl transition-all min-h-[140px] ${isSelected ? 'border-primary bg-primary/5 shadow-md' : 'border-input hover:border-primary/50 hover:shadow-sm'}`}
                                         >
-                                            <div className={`mb-3 p-3 rounded-full ${isSelected ? 'bg-background' : 'bg-accent'}`}>
+                                            <div className={`mb-4 p-4 rounded-full ${isSelected ? 'bg-primary/10' : 'bg-accent'}`}>
                                                 <span className={isSelected ? 'text-primary' : 'text-muted-foreground'}>
-                                                    {opt.icon ? renderIcon(opt.icon) : <Smartphone className="w-6 h-6" />}
+                                                    {opt.icon ? renderIcon(opt.icon) : <Smartphone className="w-8 h-8" />}
                                                 </span>
                                             </div>
                                             <span className={`text-sm font-medium text-center ${isSelected ? 'text-primary' : ''}`}>{opt.label}</span>
-                                            {isSelected && <div className="absolute top-2 right-2 text-primary"><CheckCircle2 className="w-5 h-5" /></div>}
+                                            {isSelected && <div className="absolute top-3 right-3 text-primary"><CheckCircle2 className="w-6 h-6" /></div>}
                                         </button>
                                     );
                                 })}
