@@ -1,6 +1,6 @@
 
 import Link from 'next/link';
-import { Smartphone, User, LogOut } from 'lucide-react';
+import { User, LogOut } from 'lucide-react';
 import { getSession, logout } from '@/lib/session';
 import { ThemeToggle } from './theme-toggle';
 import { Logo } from './Logo';

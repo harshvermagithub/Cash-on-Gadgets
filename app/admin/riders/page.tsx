@@ -5,7 +5,7 @@ import RiderManager from "@/components/admin/RiderManager";
 export const dynamic = 'force-dynamic';
 
 export default async function RidersPage() {
-    const riders = db.getRiders();
+    const riders = await db.getRiders();
 
     return (
         <div className="space-y-6">

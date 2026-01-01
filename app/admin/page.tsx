@@ -3,9 +3,9 @@ import { Layers, Smartphone, Tag, ShoppingCart, PlusCircle } from "lucide-react"
 import Link from 'next/link';
 
 export default async function AdminDashboard() {
-    const brands = db.getBrands();
-    const models = db.getModels();
-    const variants = db.getVariants();
+    const brands = await db.getBrands();
+    const models = await db.getModels();
+    const variants = await db.getVariants();
     // Orders are separate but nice to see
     // const orders = db.getOrders(..); // Need to get all orders, store logic only gets by user currently.
 

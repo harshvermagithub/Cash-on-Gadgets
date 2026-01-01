@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { getSession } from '@/lib/session';
 import { redirect } from 'next/navigation';
-import { LayoutDashboard, Smartphone, Layers, Tag, LogOut, ExternalLink, Users, ShoppingCart } from 'lucide-react';
+import { LayoutDashboard, Smartphone, Layers, Tag, ExternalLink, Users, ShoppingCart } from 'lucide-react';
 
 export default async function AdminLayout({
     children,

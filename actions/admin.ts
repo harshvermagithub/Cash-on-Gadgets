@@ -1,4 +1,3 @@
-
 'use server';
 
 import { db } from '@/lib/store';
@@ -19,12 +18,12 @@ async function requireAdmin() {
 // --- Brands ---
 
 export async function getBrands() {
-    return db.getBrands();
+    return await db.getBrands();
 }
 
 export async function addBrand(name: string, logo: string) {
     await requireAdmin();
-    db.addBrand({
+    await db.addBrand({
         id: name.toLowerCase().replace(/\s+/g, '-'), // Generate ID from name
         name,
         logo
@@ -36,7 +35,15 @@ export async function addBrand(name: string, logo: string) {
 
 export async function deleteBrand(id: string) {
     await requireAdmin();
-    db.deleteBrand(id);
+    await db.deleteBrand(id);
+    revalidatePath('/admin/brands');
+    revalidatePath('/sell');
+    return { success: true };
+}
+
+export async function updateBrand(id: string, name: string, logo: string) {
+    await requireAdmin();
+    await db.updateBrand(id, name, logo);
     revalidatePath('/admin/brands');
     revalidatePath('/sell');
     return { success: true };
@@ -45,12 +52,12 @@ export async function deleteBrand(id: string) {
 // --- Models ---
 
 export async function getModels(brandId?: string) {
-    return db.getModels(brandId);
+    return await db.getModels(brandId);
 }
 
 export async function addModel(brandId: string, name: string, img: string) {
     await requireAdmin();
-    db.addModel({
+    await db.addModel({
         id: randomUUID(),
         brandId,
         name,
@@ -60,9 +67,16 @@ export async function addModel(brandId: string, name: string, img: string) {
     return { success: true };
 }
 
+export async function updateModel(id: string, brandId: string, name: string, img: string) {
+    await requireAdmin();
+    await db.updateModel(id, brandId, name, img);
+    revalidatePath('/admin/models');
+    return { success: true };
+}
+
 export async function deleteModel(id: string) {
     await requireAdmin();
-    db.deleteModel(id);
+    await db.deleteModel(id);
     revalidatePath('/admin/models');
     return { success: true };
 }
@@ -70,12 +84,12 @@ export async function deleteModel(id: string) {
 // --- Variants ---
 
 export async function getVariants(modelId?: string) {
-    return db.getVariants(modelId);
+    return await db.getVariants(modelId);
 }
 
 export async function addVariant(modelId: string, name: string, basePrice: number) {
     await requireAdmin();
-    db.addVariant({
+    await db.addVariant({
         id: randomUUID(),
         modelId,
         name,
@@ -85,9 +99,16 @@ export async function addVariant(modelId: string, name: string, basePrice: numbe
     return { success: true };
 }
 
+export async function updateVariant(id: string, modelId: string, name: string, basePrice: number) {
+    await requireAdmin();
+    await db.updateVariant(id, modelId, name, basePrice);
+    revalidatePath('/admin/variants');
+    return { success: true };
+}
+
 export async function deleteVariant(id: string) {
     await requireAdmin();
-    db.deleteVariant(id);
+    await db.deleteVariant(id);
     revalidatePath('/admin/variants');
     return { success: true };
 }
@@ -96,7 +117,7 @@ export async function deleteVariant(id: string) {
 
 export async function addRider(name: string, phone: string) {
     await requireAdmin();
-    db.addRider({
+    await db.addRider({
         id: randomUUID(),
         name,
         phone,
@@ -109,7 +130,7 @@ export async function addRider(name: string, phone: string) {
 
 export async function deleteRider(id: string) {
     await requireAdmin();
-    db.deleteRider(id);
+    await db.deleteRider(id);
     revalidatePath('/admin/riders');
     return { success: true };
 }
@@ -118,7 +139,7 @@ export async function deleteRider(id: string) {
 
 export async function assignRider(orderId: string, riderId: string) {
     await requireAdmin();
-    const success = db.updateOrderRider(orderId, riderId);
+    const success = await db.updateOrderRider(orderId, riderId);
     if (!success) throw new Error('Order not found');
 
     revalidatePath('/admin');

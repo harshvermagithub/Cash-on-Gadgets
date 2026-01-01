@@ -5,9 +5,9 @@ import { db } from '@/lib/store';
 import { login } from '@/lib/session';
 import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 
-export async function signup(prevState: any, formData: FormData) {
+export async function signup(prevState: { error?: string } | null, formData: FormData) {
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
@@ -16,7 +16,7 @@ export async function signup(prevState: any, formData: FormData) {
         return { error: 'Please fill all fields' };
     }
 
-    const existingUser = db.findUserByEmail(email);
+    const existingUser = await db.findUserByEmail(email);
     if (existingUser) {
         return { error: 'Email already registered' };
     }
@@ -25,13 +25,13 @@ export async function signup(prevState: any, formData: FormData) {
     const id = crypto.randomUUID();
     const passwordHash = await bcrypt.hash(password, 10);
 
-    db.addUser({ id, email, passwordHash, name });
+    await db.addUser({ id, email, passwordHash, name });
 
     await login({ id, email, name });
     redirect('/');
 }
 
-export async function signin(prevState: any, formData: FormData) {
+export async function signin(prevState: { error?: string } | null, formData: FormData) {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
@@ -39,7 +39,7 @@ export async function signin(prevState: any, formData: FormData) {
         return { error: 'Please fill all fields' };
     }
 
-    const user = db.findUserByEmail(email);
+    const user = await db.findUserByEmail(email);
     if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
         return { error: 'Invalid email or password' };
     }
@@ -48,6 +48,6 @@ export async function signin(prevState: any, formData: FormData) {
     redirect('/');
 }
 
-export async function createOrderAction(device: string, variant: string, price: number) {
+export async function createOrderAction(_device: string, _variant: string, _price: number) {
     // This action will be called from client side
 }

@@ -2,8 +2,9 @@
 'use client';
 
 import { useState } from 'react';
-import { addVariant, deleteVariant } from '@/actions/admin';
-import { Trash2, Plus, Loader2 } from 'lucide-react';
+import { addVariant, updateVariant, deleteVariant } from '@/actions/admin';
+import { Trash2, Plus, Loader2, Pencil, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface Brand {
     id: string;
@@ -23,8 +24,6 @@ interface Variant {
     basePrice: number;
 }
 
-import { useRouter } from 'next/navigation';
-
 export default function VariantManager({
     initialVariants,
     brands,
@@ -36,6 +35,7 @@ export default function VariantManager({
 }) {
     const router = useRouter();
     // Form State
+    const [editingId, setEditingId] = useState<string | null>(null);
     const [selectedBrand, setSelectedBrand] = useState(brands[0]?.id || '');
     const [selectedModel, setSelectedModel] = useState('');
 
@@ -71,15 +71,35 @@ export default function VariantManager({
 
         setIsLoading(true);
         try {
-            await addVariant(selectedModel, name, Number(price));
-            setName('');
-            setPrice('');
+            if (editingId) {
+                await updateVariant(editingId, selectedModel, name, Number(price));
+            } else {
+                await addVariant(selectedModel, name, Number(price));
+            }
+            resetForm();
             router.refresh();
-        } catch (error) {
-            alert('Failed to add variant');
+        } catch {
+            alert(editingId ? 'Failed to update variant' : 'Failed to add variant');
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleEdit = (variant: Variant) => {
+        const model = models.find(m => m.id === variant.modelId);
+        if (model) {
+            setEditingId(variant.id);
+            setSelectedBrand(model.brandId);
+            setSelectedModel(variant.modelId);
+            setName(variant.name);
+            setPrice(variant.basePrice.toString());
+        }
+    };
+
+    const resetForm = () => {
+        setEditingId(null);
+        setName('');
+        setPrice('');
     };
 
     const handleDelete = async (id: string) => {
@@ -87,7 +107,7 @@ export default function VariantManager({
         try {
             await deleteVariant(id);
             router.refresh();
-        } catch (error) {
+        } catch {
             alert('Failed to delete variant');
         }
     };
@@ -95,7 +115,14 @@ export default function VariantManager({
     return (
         <div className="space-y-8">
             <div className="bg-card border rounded-xl p-6">
-                <h3 className="text-lg font-bold mb-4">Add New Variant</h3>
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-bold">{editingId ? 'Edit Variant' : 'Add New Variant'}</h3>
+                    {editingId && (
+                        <button onClick={resetForm} className="text-sm text-red-500 flex items-center gap-1 hover:underline">
+                            <X className="w-4 h-4" /> Cancel Edit
+                        </button>
+                    )}
+                </div>
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
                     <div className="space-y-2">
                         <label className="text-sm font-medium">Brand</label>
@@ -147,9 +174,9 @@ export default function VariantManager({
                     </div>
                     <button
                         disabled={isLoading || !selectedModel}
-                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 flex justify-center"
+                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 flex justify-center h-[42px] items-center gap-2"
                     >
-                        {isLoading ? <Loader2 className="animate-spin" /> : <Plus className="w-5 h-5" />}
+                        {isLoading ? <Loader2 className="animate-spin" /> : (editingId ? 'Update' : <Plus className="w-5 h-5" />)}
                     </button>
                 </form>
             </div>
@@ -175,7 +202,6 @@ export default function VariantManager({
                             value={filterModel}
                             onChange={(e) => setFilterModel(e.target.value)}
                             className="p-2 border rounded-lg bg-background"
-                            disabled={filterBrand === 'all' && false}
                         >
                             <option value="all">All Models</option>
                             {filteredModels.map(m => (
@@ -222,13 +248,22 @@ export default function VariantManager({
                                         <td className="p-4 font-medium">{variant.name}</td>
                                         <td className="p-4 font-mono font-bold text-right">₹{variant.basePrice.toLocaleString()}</td>
                                         <td className="p-4 text-right">
-                                            <button
-                                                onClick={() => handleDelete(variant.id)}
-                                                className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors inline-block"
-                                                title="Delete Variant"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
+                                            <div className="flex justify-end gap-2">
+                                                <button
+                                                    onClick={() => handleEdit(variant)}
+                                                    className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors inline-block"
+                                                    title="Edit Variant"
+                                                >
+                                                    <Pencil className="w-4 h-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(variant.id)}
+                                                    className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors inline-block"
+                                                    title="Delete Variant"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 );

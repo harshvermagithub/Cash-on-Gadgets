@@ -1,11 +1,22 @@
 
-import { SignJWT, jwtVerify } from 'jose';
+import { SignJWT, jwtVerify, JWTPayload } from 'jose';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+// import { redirect } from 'next/navigation';
 
 const KEY = new TextEncoder().encode(process.env.AUTH_SECRET || 'secret_key_123');
 
-export async function encrypt(payload: any) {
+export interface SessionUser {
+    id: string;
+    email: string;
+    name: string;
+}
+
+export interface SessionPayload extends JWTPayload {
+    user: SessionUser;
+    expires: Date | string;
+}
+
+export async function encrypt(payload: JWTPayload) {
     return await new SignJWT(payload)
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
@@ -13,19 +24,19 @@ export async function encrypt(payload: any) {
         .sign(KEY);
 }
 
-export async function decrypt(input: string): Promise<any> {
+export async function decrypt(input: string): Promise<SessionPayload> {
     const { payload } = await jwtVerify(input, KEY, {
         algorithms: ['HS256'],
     });
-    return payload;
+    return payload as SessionPayload;
 }
 
-export async function getSession() {
+export async function getSession(): Promise<SessionPayload | null> {
     const session = (await cookies()).get('session')?.value;
     if (!session) return null;
     try {
         return await decrypt(session);
-    } catch (error) {
+    } catch {
         return null;
     }
 }

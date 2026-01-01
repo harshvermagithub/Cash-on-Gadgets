@@ -3,7 +3,7 @@
 
 import { db } from '@/lib/store';
 import { getSession } from '@/lib/session';
-import { redirect } from 'next/navigation';
+// import { redirect } from 'next/navigation';
 
 export async function placeOrder(
     device: string,
@@ -11,7 +11,7 @@ export async function placeOrder(
     price: number,
     address: string,
     location: { lat: number; lng: number } | null,
-    answers: any
+    answers: unknown
 ) {
     const session = await getSession();
     if (!session || !session.user) {
@@ -30,7 +30,7 @@ export async function placeOrder(
         answers
     };
 
-    db.addOrder(order);
+    await db.addOrder(order);
     return { success: true };
 }
 
@@ -38,5 +38,5 @@ export async function getUserOrders() {
     const session = await getSession();
     if (!session || !session.user) return [];
 
-    return db.getOrders(session.user.id);
+    return await db.getOrders(session.user.id);
 }

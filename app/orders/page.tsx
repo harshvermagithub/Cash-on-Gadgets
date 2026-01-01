@@ -28,7 +28,7 @@ export default async function OrdersPage() {
                 </div>
             ) : (
                 <div className="grid gap-6">
-                    {orders.map((order: any) => (
+                    {orders.map((order) => (
                         <div key={order.id} className="bg-card border rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                             <div className="flex items-start gap-4">
                                 <div className="bg-primary/10 p-3 rounded-lg">

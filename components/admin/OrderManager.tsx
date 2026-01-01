@@ -26,7 +26,7 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
         try {
             await assignRider(orderId, riderId);
             router.refresh();
-        } catch (error) {
+        } catch {
             alert('Failed to assign rider');
         } finally {
             setAssigningId(null);

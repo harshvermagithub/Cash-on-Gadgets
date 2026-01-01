@@ -5,8 +5,8 @@ import OrderManager from "@/components/admin/OrderManager";
 export const dynamic = 'force-dynamic';
 
 export default async function OrdersPage() {
-    const orders = db.getAllOrders();
-    const riders = db.getRiders();
+    const orders = await db.getAllOrders();
+    const riders = await db.getRiders();
 
     return (
         <div className="space-y-6">

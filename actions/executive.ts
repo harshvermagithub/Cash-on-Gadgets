@@ -1,4 +1,3 @@
-
 'use server';
 
 import { db } from '@/lib/store';
@@ -7,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 export async function loginExecutive(phone: string, password?: string) {
-    const riders = db.getRiders();
+    const riders = await db.getRiders();
     const executive = riders.find(r => r.phone === phone);
 
     if (!executive) {
@@ -36,12 +35,12 @@ export async function loginExecutive(phone: string, password?: string) {
 }
 
 export async function onboardExecutive(id: string, password: string) {
-    const riders = db.getRiders();
+    const riders = await db.getRiders();
     const executive = riders.find(r => r.id === id);
 
     if (!executive) return { success: false, error: 'Executive not found' };
 
-    db.updateRiderPassword(id, password);
+    await db.updateRiderPassword(id, password);
 
     const cookieStore = await cookies();
     cookieStore.set('executive_id', executive.id, { httpOnly: true, path: '/' });
@@ -60,7 +59,7 @@ export async function getExecutiveSession() {
     const executiveId = cookieStore.get('executive_id')?.value;
     if (!executiveId) return null;
 
-    const riders = db.getRiders();
+    const riders = await db.getRiders();
     return riders.find(r => r.id === executiveId) || null;
 }
 
@@ -68,7 +67,7 @@ export async function getExecutiveOrders() {
     const executive = await getExecutiveSession();
     if (!executive) return [];
 
-    const allOrders = db.getAllOrders();
+    const allOrders = await db.getAllOrders();
     // Filter orders assigned to this executive
     return allOrders.filter(o => o.riderId === executive.id);
 }
@@ -77,7 +76,7 @@ export async function updateOrderStatus(orderId: string, status: string) {
     const executive = await getExecutiveSession();
     if (!executive) throw new Error('Unauthorized');
 
-    db.updateOrderStatus(orderId, status);
+    await db.updateOrderStatus(orderId, status);
     revalidatePath('/pickup/dashboard');
     return { success: true };
 }

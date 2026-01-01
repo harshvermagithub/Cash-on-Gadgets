@@ -10,24 +10,32 @@ import { fetchModels } from '@/actions/catalog';
 
 interface ModelSelectorProps {
     brandId: string;
+    category?: string;
     onSelect: (model: Model) => void;
     onBack: () => void;
 }
 
-export default function ModelSelector({ brandId, onSelect, onBack }: ModelSelectorProps) {
+export default function ModelSelector({ brandId, category, onSelect, onBack }: ModelSelectorProps) {
     const [models, setModels] = useState<Model[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         let mounted = true;
-        fetchModels(brandId).then(data => {
-            if (mounted) {
-                setModels(data);
-                setIsLoading(false);
-            }
-        });
+
+        fetchModels(brandId, category)
+            .then(data => {
+                if (mounted) {
+                    setModels(data);
+                    setIsLoading(false);
+                }
+            })
+            .catch(err => {
+                console.error("Failed to fetch models:", err);
+                if (mounted) setIsLoading(false);
+            });
+
         return () => { mounted = false; };
-    }, [brandId]);
+    }, [brandId, category]);
 
     return (
         <div className="space-y-6">
@@ -57,8 +65,12 @@ export default function ModelSelector({ brandId, onSelect, onBack }: ModelSelect
                             onClick={() => onSelect(model)}
                             className="flex flex-col items-center justify-center p-4 border rounded-xl bg-card hover:border-primary hover:shadow-lg transition-all text-center"
                         >
-                            <div className="relative w-24 h-32 mb-4">
-                                <Image src={model.img} alt={model.name} fill className="object-contain" />
+                            <div className="relative w-24 h-32 mb-4 flex items-center justify-center">
+                                {model.img && (model.img.startsWith('/') || model.img.startsWith('http')) ? (
+                                    <Image src={model.img} alt={model.name} fill className="object-contain" />
+                                ) : (
+                                    <span className="text-3xl font-bold text-gray-400">{model.name[0]}</span>
+                                )}
                             </div>
                             <span className="font-medium text-sm">{model.name}</span>
                         </motion.button>

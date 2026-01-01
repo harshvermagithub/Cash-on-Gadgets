@@ -9,11 +9,12 @@ import { fetchVariants } from '@/actions/catalog';
 
 interface VariantSelectorProps {
     modelId: string;
+    category?: string;
     onSelect: (variant: Variant) => void;
     onBack: () => void;
 }
 
-export default function VariantSelector({ modelId, onSelect, onBack }: VariantSelectorProps) {
+export default function VariantSelector({ modelId, category, onSelect, onBack }: VariantSelectorProps) {
     const [variants, setVariants] = useState<Variant[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -21,11 +22,8 @@ export default function VariantSelector({ modelId, onSelect, onBack }: VariantSe
         let mounted = true;
         async function load() {
             try {
-                let v = await fetchVariants(modelId);
-                // Fallback to generic if specific variants not found
-                if (v.length === 0) {
-                    v = await fetchVariants('generic');
-                }
+                // Pass category to fetchVariants if provided
+                const v = await fetchVariants(modelId, category);
                 if (mounted) {
                     setVariants(v);
                     setIsLoading(false);
@@ -38,7 +36,7 @@ export default function VariantSelector({ modelId, onSelect, onBack }: VariantSe
         load();
 
         return () => { mounted = false; };
-    }, [modelId]);
+    }, [modelId, category]);
 
     return (
         <div className="space-y-6">

@@ -38,8 +38,8 @@ export default function PickupLoginPage() {
                     setError(res.error);
                 }
             }
-        } catch (err) {
-            console.error(err);
+        } catch {
+            console.error('Error in phone check');
         } finally {
             setIsLoading(false);
         }
@@ -52,7 +52,7 @@ export default function PickupLoginPage() {
         try {
             const res = await loginExecutive(phone, password);
             if (res?.error) setError(res.error);
-        } catch (err) {
+        } catch {
             // Success redirect throws
         } finally {
             setIsLoading(false);

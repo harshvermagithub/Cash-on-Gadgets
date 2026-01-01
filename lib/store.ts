@@ -1,24 +1,15 @@
+import { prisma } from '@/lib/db';
+import { Rider as PrismaRider, Brand as PrismaBrand, Model as PrismaModel, Variant as PrismaVariant, Order as PrismaOrder } from '@prisma/client';
 
-import fs from 'fs';
-import path from 'path';
-
-const DB_PATH = path.join(process.cwd(), 'data.json');
-
-interface User {
+// Re-export interfaces for app compatibility, though Prisma types are preferred
+export interface User {
     id: string;
     email: string;
     passwordHash: string;
     name: string;
 }
 
-
-export interface Rider {
-    id: string;
-    name: string;
-    phone: string;
-    status: 'available' | 'busy' | 'offline';
-    password?: string | null;
-}
+export type Rider = PrismaRider;
 
 export interface Order {
     id: string;
@@ -32,168 +23,168 @@ export interface Order {
         lat: number;
         lng: number;
     } | null;
-    riderId?: string; // Assigned rider
-    answers?: any; // Questionnaire answers
+    riderId?: string | null;
+    answers?: unknown;
 }
 
-export interface Brand {
-    id: string;
-    name: string;
-    logo: string;
-}
-
-export interface Model {
-    id: string;
-    brandId: string;
-    name: string;
-    img: string;
-}
-
-export interface Variant {
-    id: string;
-    modelId: string;
-    name: string;
-    basePrice: number;
-}
-
-interface DB {
-    users: User[];
-    orders: Order[];
-    brands: Brand[];
-    models: Model[];
-    variants: Variant[];
-    riders: Rider[];
-}
-
-function readDB(): DB {
-    if (!fs.existsSync(DB_PATH)) {
-        return { users: [], orders: [], brands: [], models: [], variants: [], riders: [] };
-    }
-    try {
-        const data = fs.readFileSync(DB_PATH, 'utf-8');
-        const parsed = JSON.parse(data);
-        return {
-            users: parsed.users || [],
-            orders: parsed.orders || [],
-            brands: parsed.brands || [],
-            models: parsed.models || [],
-            variants: parsed.variants || [],
-            riders: parsed.riders || []
-        };
-    } catch (error) {
-        return { users: [], orders: [], brands: [], models: [], variants: [], riders: [] };
-    }
-}
-
-function writeDB(data: DB) {
-    fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
-}
+export type Brand = PrismaBrand;
+export type Model = PrismaModel;
+export type Variant = PrismaVariant;
 
 export const db = {
-    getUsers: () => readDB().users,
-    addUser: (user: User) => {
-        const data = readDB();
-        data.users.push(user);
-        writeDB(data);
+    getUsers: async () => {
+        return await prisma.user.findMany();
     },
-    findUserByEmail: (email: string) => {
-        const data = readDB();
-        return data.users.find(u => u.email === email);
+    addUser: async (user: User) => {
+        await prisma.user.create({
+            data: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                passwordHash: user.passwordHash
+            }
+        });
     },
-    getOrders: (userId: string) => {
-        const data = readDB();
-        return data.orders.filter(o => o.userId === userId);
+    findUserByEmail: async (email: string) => {
+        return await prisma.user.findUnique({ where: { email } });
     },
-    getAllOrders: () => {
-        const data = readDB();
-        return data.orders; // For admin
+    getOrders: async (userId: string) => {
+        const orders = await prisma.order.findMany({ where: { userId } });
+        return orders.map(mapPrismaOrderToAppOrder);
     },
-    addOrder: (order: Order) => {
-        const data = readDB();
-        data.orders.push(order);
-        writeDB(data);
+    getAllOrders: async () => {
+        const orders = await prisma.order.findMany();
+        return orders.map(mapPrismaOrderToAppOrder);
     },
-    updateOrderRider: (orderId: string, riderId: string) => {
-        const data = readDB();
-        const order = data.orders.find(o => o.id === orderId);
-        if (order) {
-            order.riderId = riderId;
-            order.status = 'assigned'; // Auto-update status when rider assigned
-            writeDB(data);
+    addOrder: async (order: Order) => {
+        await prisma.order.create({
+            data: {
+                id: order.id,
+                userId: order.userId,
+                device: order.device,
+                price: order.price,
+                status: order.status,
+                address: order.address,
+                locationLat: order.location?.lat,
+                locationLng: order.location?.lng,
+                answers: order.answers ? JSON.stringify(order.answers) : null,
+                createdAt: new Date(order.date), // Assuming ISO string is passed
+            }
+        });
+    },
+    updateOrderRider: async (orderId: string, riderId: string) => {
+        try {
+            await prisma.order.update({
+                where: { id: orderId },
+                data: { riderId, status: 'assigned' }
+            });
             return true;
+        } catch {
+            return false;
         }
-        return false;
     },
-    updateOrderStatus: (orderId: string, status: string) => {
-        const data = readDB();
-        const order = data.orders.find(o => o.id === orderId);
-        if (order) {
-            order.status = status;
-            writeDB(data);
+    updateOrderStatus: async (orderId: string, status: string) => {
+        try {
+            await prisma.order.update({
+                where: { id: orderId },
+                data: { status }
+            });
             return true;
+        } catch {
+            return false;
         }
-        return false;
     },
+
     // Rider Methods
-    getRiders: () => readDB().riders,
-    addRider: (rider: Rider) => {
-        const data = readDB();
-        data.riders.push(rider);
-        writeDB(data);
+    getRiders: async () => {
+        return await prisma.rider.findMany();
     },
-    updateRiderPassword: (id: string, password: string) => {
-        const data = readDB();
-        const rider = data.riders.find(r => r.id === id);
-        if (rider) {
-            rider.password = password;
-            writeDB(data);
-        }
+    addRider: async (rider: { id: string, name: string, phone: string, status?: string, password?: string | null }) => {
+        await prisma.rider.create({
+            data: {
+                id: rider.id,
+                name: rider.name,
+                phone: rider.phone,
+                status: rider.status || 'available',
+                password: rider.password
+            }
+        });
     },
-    deleteRider: (id: string) => {
-        const data = readDB();
-        data.riders = data.riders.filter(r => r.id !== id);
-        writeDB(data);
+    updateRiderPassword: async (id: string, password: string) => {
+        await prisma.rider.update({
+            where: { id },
+            data: { password }
+        });
     },
-    // Catalog Methods
-    getBrands: () => readDB().brands,
-    addBrand: (brand: Brand) => {
-        const data = readDB();
-        data.brands.push(brand);
-        writeDB(data);
+    deleteRider: async (id: string) => {
+        await prisma.rider.delete({ where: { id } });
     },
-    deleteBrand: (id: string) => {
-        const data = readDB();
-        data.brands = data.brands.filter(b => b.id !== id);
-        writeDB(data);
+
+    // Brand Methods
+    getBrands: async () => {
+        return await prisma.brand.findMany();
     },
-    getModels: (brandId?: string) => {
-        const data = readDB();
-        if (brandId) return data.models.filter(m => m.brandId === brandId);
-        return data.models;
+    addBrand: async (brand: Brand) => {
+        await prisma.brand.create({ data: brand });
     },
-    addModel: (model: Model) => {
-        const data = readDB();
-        data.models.push(model);
-        writeDB(data);
+    updateBrand: async (id: string, name: string, logo: string) => {
+        await prisma.brand.update({
+            where: { id },
+            data: { name, logo }
+        });
     },
-    deleteModel: (id: string) => {
-        const data = readDB();
-        data.models = data.models.filter(m => m.id !== id);
-        writeDB(data);
+    deleteBrand: async (id: string) => {
+        await prisma.brand.delete({ where: { id } });
     },
-    getVariants: (modelId?: string) => {
-        const data = readDB();
-        if (modelId) return data.variants.filter(v => v.modelId === modelId);
-        return data.variants;
+
+    // Model Methods
+    getModels: async (brandId?: string) => {
+        if (brandId) return await prisma.model.findMany({ where: { brandId } });
+        return await prisma.model.findMany();
     },
-    addVariant: (variant: Variant) => {
-        const data = readDB();
-        data.variants.push(variant);
-        writeDB(data);
+    addModel: async (model: Model) => {
+        await prisma.model.create({ data: model });
     },
-    deleteVariant: (id: string) => {
-        const data = readDB();
-        data.variants = data.variants.filter(v => v.id !== id);
-        writeDB(data);
+    updateModel: async (id: string, brandId: string, name: string, img: string) => {
+        await prisma.model.update({
+            where: { id },
+            data: { brandId, name, img }
+        });
+    },
+    deleteModel: async (id: string) => {
+        await prisma.model.delete({ where: { id } });
+    },
+
+    // Variant Methods
+    getVariants: async (modelId?: string) => {
+        if (modelId) return await prisma.variant.findMany({ where: { modelId } });
+        return await prisma.variant.findMany();
+    },
+    addVariant: async (variant: Variant) => {
+        await prisma.variant.create({ data: variant });
+    },
+    updateVariant: async (id: string, modelId: string, name: string, basePrice: number) => {
+        await prisma.variant.update({
+            where: { id },
+            data: { modelId, name, basePrice }
+        });
+    },
+    deleteVariant: async (id: string) => {
+        await prisma.variant.delete({ where: { id } });
     }
 };
+
+function mapPrismaOrderToAppOrder(o: PrismaOrder): Order {
+    return {
+        id: o.id,
+        userId: o.userId,
+        device: o.device,
+        price: o.price,
+        date: o.createdAt.toISOString(),
+        status: o.status,
+        address: o.address,
+        location: (o.locationLat && o.locationLng) ? { lat: o.locationLat, lng: o.locationLng } : null,
+        riderId: o.riderId,
+        answers: o.answers ? JSON.parse(o.answers) : null
+    };
+}

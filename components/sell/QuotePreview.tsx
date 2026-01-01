@@ -1,5 +1,5 @@
 
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import { ArrowLeft, Check } from "lucide-react";
 
 interface QuotePreviewProps {
@@ -7,20 +7,23 @@ interface QuotePreviewProps {
     deviceDetails: string;
     onGetExactValue: () => void;
     onBack: () => void;
+    isRepair?: boolean;
 }
 
-export default function QuotePreview({ basePrice, deviceDetails, onGetExactValue, onBack }: QuotePreviewProps) {
+export default function QuotePreview({ basePrice, deviceDetails, onGetExactValue, onBack, isRepair }: QuotePreviewProps) {
     return (
-        <div className="max-w-xl mx-auto space-y-8 py-10">
+        <div className="max-w-2xl mx-auto space-y-6">
             <div className="flex items-center gap-4 mb-8">
                 <button onClick={onBack} className="p-2 hover:bg-accent rounded-full transition-colors absolute">
                     <ArrowLeft className="w-5 h-5" />
                 </button>
             </div>
 
+            <div className="text-center space-y-2">
+                <h2 className="text-3xl font-bold">{isRepair ? 'Estimated Repair Cost' : 'Your Device Value'}</h2>
+                <p className="text-muted-foreground">{deviceDetails}</p>
+            </div>
             <div className="text-center space-y-4">
-                <h2 className="text-3xl font-bold">{deviceDetails}</h2>
-                <p className="text-muted-foreground">Estimated Value</p>
                 <div className="text-5xl font-extrabold text-primary">
                     ₹{basePrice.toLocaleString()}
                     <span className="text-lg text-muted-foreground font-normal ml-2">max value</span>

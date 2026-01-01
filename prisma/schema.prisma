@@ -1,3 +1,5 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -5,15 +7,26 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model User {
   id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  password      String?
-  emailVerified DateTime?
-  image         String?
+  name          String
+  email         String    @unique
+  passwordHash  String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  orders        Order[]
+}
+
+model Rider {
+  id            String    @id @default(cuid())
+  name          String
+  phone         String
+  status        String    @default("available") // available, busy, offline
+  password      String?   // Optional for now as per interface
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   
@@ -25,15 +38,45 @@ model Order {
   userId          String
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   
-  brand           String
-  model           String
-  variant         String
-  price           Int
-  status          String   @default("PENDING") // PENDING, CONFIRMED, COMPLETED, CANCELLED
+  riderId         String?
+  rider           Rider?   @relation(fields: [riderId], references: [id])
   
-  // Store JSON details about condition if needed, but for now simple
-  conditionSummary String? // e.g. "Good Condition, Original Charger"
+  device          String   // Combined "Name (Variant)" string stored currently
+  price           Int
+  status          String   @default("Pending Pickup")
+  
+  address         String
+  locationLat     Float?
+  locationLng     Float?
+  
+  answers         String?  // Stored as JSON string
   
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+}
+
+model Brand {
+  id    String  @id // specific ID (e.g. 'apple')
+  name  String
+  logo  String
+  
+  models Model[]
+}
+
+model Model {
+  id      String  @id @default(cuid())
+  brandId String
+  brand   Brand   @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  name    String
+  img     String
+  
+  variants Variant[]
+}
+
+model Variant {
+  id        String  @id @default(cuid())
+  modelId   String
+  model     Model   @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  name      String
+  basePrice Int
 }

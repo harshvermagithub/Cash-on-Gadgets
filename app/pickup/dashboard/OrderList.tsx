@@ -5,8 +5,17 @@ import { useState } from 'react';
 import { updateOrderStatus, logoutExecutive } from '@/actions/executive';
 import { MapPin, Phone, Calendar, CheckCircle2, Navigation, LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Order } from '@/lib/store';
 
-export default function OrderList({ orders, executiveName }: { orders: any[], executiveName: string }) {
+interface OrderAnswers {
+    accessories?: string[];
+    screen_defects?: string[];
+    functional_problems?: string[];
+    calls?: boolean;
+    touch?: boolean;
+}
+
+export default function OrderList({ orders, executiveName }: { orders: Order[], executiveName: string }) {
     const router = useRouter();
     const [updatingId, setUpdatingId] = useState<string | null>(null);
     const [verifiedOrders, setVerifiedOrders] = useState<Set<string>>(new Set());
@@ -17,7 +26,7 @@ export default function OrderList({ orders, executiveName }: { orders: any[], ex
         try {
             await updateOrderStatus(id, newStatus);
             router.refresh();
-        } catch (e) {
+        } catch {
             alert('Failed to update');
         } finally {
             setUpdatingId(null);
@@ -97,11 +106,11 @@ export default function OrderList({ orders, executiveName }: { orders: any[], ex
                                         <div className="bg-muted/50 p-3 rounded-lg text-xs space-y-1">
                                             {order.answers ? (
                                                 <>
-                                                    <p><span className="font-medium">Accesories:</span> {order.answers.accessories?.join(', ') || 'None'}</p>
-                                                    <p><span className="font-medium">Screen Defects:</span> {order.answers.screen_defects?.length > 0 ? order.answers.screen_defects.join(', ') : 'None'}</p>
-                                                    <p><span className="font-medium">Functional Issues:</span> {order.answers.functional_problems?.length > 0 ? order.answers.functional_problems.join(', ') : 'None'}</p>
-                                                    <p><span className="font-medium">Calls Working:</span> {order.answers.calls === false ? 'No' : 'Yes'}</p>
-                                                    <p><span className="font-medium">Touch Working:</span> {order.answers.touch === false ? 'No' : 'Yes'}</p>
+                                                    <p><span className="font-medium">Accesories:</span> {(order.answers as OrderAnswers).accessories?.join(', ') || 'None'}</p>
+                                                    <p><span className="font-medium">Screen Defects:</span> {(order.answers as OrderAnswers).screen_defects && (order.answers as OrderAnswers).screen_defects!.length > 0 ? (order.answers as OrderAnswers).screen_defects!.join(', ') : 'None'}</p>
+                                                    <p><span className="font-medium">Functional Issues:</span> {(order.answers as OrderAnswers).functional_problems && (order.answers as OrderAnswers).functional_problems!.length > 0 ? (order.answers as OrderAnswers).functional_problems!.join(', ') : 'None'}</p>
+                                                    <p><span className="font-medium">Calls Working:</span> {(order.answers as OrderAnswers).calls === false ? 'No' : 'Yes'}</p>
+                                                    <p><span className="font-medium">Touch Working:</span> {(order.answers as OrderAnswers).touch === false ? 'No' : 'Yes'}</p>
                                                 </>
                                             ) : (
                                                 <p className="text-muted-foreground italic">No details available.</p>

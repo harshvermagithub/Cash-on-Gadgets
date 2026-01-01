@@ -3,8 +3,8 @@ import { db } from "@/lib/store";
 import ModelManager from "@/components/admin/ModelManager";
 
 export default async function AdminModelsPage() {
-    const brands = db.getBrands();
-    const models = db.getModels();
+    const brands = await db.getBrands();
+    const models = await db.getModels();
 
     return (
         <div className="space-y-6">

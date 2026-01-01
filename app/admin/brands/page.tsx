@@ -3,7 +3,7 @@ import { db } from "@/lib/store";
 import BrandManager from "@/components/admin/BrandManager";
 
 export default async function AdminBrandsPage() {
-    const brands = db.getBrands();
+    const brands = await db.getBrands();
 
     return (
         <div className="space-y-6">

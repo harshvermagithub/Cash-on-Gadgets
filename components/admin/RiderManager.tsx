@@ -23,7 +23,7 @@ export default function RiderManager({ initialRiders }: { initialRiders: Rider[]
             setName('');
             setPhone('');
             router.refresh();
-        } catch (error) {
+        } catch {
             alert('Failed to add rider');
         } finally {
             setIsLoading(false);
@@ -35,7 +35,7 @@ export default function RiderManager({ initialRiders }: { initialRiders: Rider[]
         try {
             await deleteRider(id);
             router.refresh();
-        } catch (error) {
+        } catch {
             alert('Failed to delete rider');
         }
     };

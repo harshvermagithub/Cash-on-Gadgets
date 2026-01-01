@@ -1,14 +1,22 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, Zap, ShieldCheck, CheckCircle, Smartphone, Bike, Banknote, Star } from 'lucide-react';
 import HeroAnimation from '@/components/HeroAnimation';
+import CategorySelector from '@/components/sell/CategorySelector';
+import { useRouter } from 'next/navigation';
 
 
 
 export default function Home() {
+    const router = useRouter();
+
+    const handleCategorySelect = (category: string) => {
+        router.push(`/sell?category=${category}`);
+    };
+
     return (
         <div className="flex flex-col min-h-screen">
             {/* Hero Section */}
@@ -33,7 +41,7 @@ export default function Home() {
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">sell your phone.</span>
                             </h1>
                             <p className="text-xl text-muted-foreground leading-relaxed max-w-lg">
-                                Get the best value for your device in minutes. Instant cash at your doorstep. No haggling, no headaches.
+                                Experience the smart way to sell. Get maximum value and instant cash at your doorstep—no negotiations, just a seamless, premium service.
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -68,6 +76,15 @@ export default function Home() {
                         <div className="flex-1 relative w-full h-[500px] max-w-[600px] animate-in zoom-in-50 fade-in duration-1000 delay-200 perspective-1000 flex items-center justify-center">
                             <HeroAnimation />
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Category Selection Section */}
+            <section className="py-20 bg-muted/30 border-y">
+                <div className="container mx-auto px-6">
+                    <div className="max-w-4xl mx-auto">
+                        <CategorySelector onSelect={handleCategorySelect} />
                     </div>
                 </div>
             </section>
@@ -188,7 +205,7 @@ export default function Home() {
                             </div>
                             <h3 className="text-xl font-bold text-green-900">Get Your Device Valuation</h3>
                             <p className="text-muted-foreground text-sm max-w-xs leading-relaxed">
-                                Download the Cashonphone app, create an account, answer a couple of questions about your phone condition and get the best price.
+                                Answer a few questions about your phone condition and get the best price.
                             </p>
                         </motion.div>
 
@@ -226,7 +243,7 @@ export default function Home() {
                             </div>
                             <h3 className="text-xl font-bold text-green-900">Schedule Pickup</h3>
                             <p className="text-muted-foreground text-sm max-w-xs leading-relaxed">
-                                If satisfied with the price, choose a time slot of your convenience. Our field agent will give you a visit at your chosen time.
+                                Choose a time slot of your convenience. Our field agent will give you a visit at your chosen time and place.
                             </p>
                         </motion.div>
 
@@ -272,7 +289,7 @@ export default function Home() {
                             </div>
                             <h3 className="text-xl font-bold text-green-900">Get Paid</h3>
                             <p className="text-muted-foreground text-sm max-w-xs leading-relaxed">
-                                Get paid in cash or online transfer for your used Phone. We accept cash, credit card, debit card and bank transfer for repair and sell.
+                                Get paid instantly at your doorstep once your device is verified. No delays, no hidden charges.
                             </p>
                         </motion.div>
                     </div>
@@ -285,7 +302,7 @@ export default function Home() {
                     <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
                         <div className="space-y-4 max-w-2xl">
                             <h2 className="text-3xl md:text-4xl font-bold">Loved by 1000+ Customers</h2>
-                            <p className="text-muted-foreground">Don't just take our word for it. Here's what people are saying about Fonzkart.</p>
+                            <p className="text-muted-foreground">Don&apos;t just take our word for it. Here&apos;s what people are saying about Fonzkart.</p>
                         </div>
                         <div className="flex items-center gap-1">
                             {[1, 2, 3, 4, 5].map(v => <Star key={v} className="w-6 h-6 fill-yellow-400 text-yellow-400" />)}
@@ -318,7 +335,7 @@ export default function Home() {
                                 <div className="flex items-center gap-1">
                                     {[1, 2, 3, 4, 5].map(v => <Star key={v} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
                                 </div>
-                                <p className="text-lg leading-relaxed">"{review.text}"</p>
+                                <p className="text-lg leading-relaxed">&quot;{review.text}&quot;</p>
                                 <div className="flex items-center gap-4 pt-2">
                                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white font-bold text-lg">
                                         {review.initial}

@@ -8,21 +8,24 @@ import Image from 'next/image';
 
 interface ChecklistWizardProps {
     deviceInfo: { name: string; variant: string; img: string };
+    category?: string;
     onComplete: (answers: Record<string, unknown>) => void;
 }
 
-export default function ChecklistWizard({ deviceInfo, onComplete }: ChecklistWizardProps) {
+export default function ChecklistWizard({ deviceInfo, category, onComplete }: ChecklistWizardProps) {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
-    const [answers, setAnswers] = useState<Record<string, any>>({});
+    const [answers, setAnswers] = useState<Record<string, unknown>>({});
 
-    const currentStep = questionnaireSteps[currentStepIndex];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const steps = (questionnaireSteps as any)[category || 'smartphone'] || (questionnaireSteps as any)['smartphone'];
+    const currentStep = steps[currentStepIndex];
 
     const handleAnswer = (key: string, value: unknown) => {
         setAnswers(prev => ({ ...prev, [key]: value }));
     };
 
     const handleNext = () => {
-        if (currentStepIndex < questionnaireSteps.length - 1) {
+        if (currentStepIndex < steps.length - 1) {
             setCurrentStepIndex(prev => prev + 1);
             window.scrollTo(0, 0);
         } else {
@@ -31,12 +34,24 @@ export default function ChecklistWizard({ deviceInfo, onComplete }: ChecklistWiz
     };
 
     const renderIcon = (iconName: string) => {
+        // Handle explicit Lucide icon names
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const IconComponent = (Icons as any)[iconName.replace(/_([a-z])/g, (g: any) => g[1].toUpperCase())];
+        const IconComponent = (Icons as any)[iconName];
         if (IconComponent) {
-            return <IconComponent className="w-6 h-6" />;
+            return <IconComponent className="w-8 h-8" />; // Increased size for better visibility
         }
-        return <Smartphone className="w-6 h-6" />;
+
+        // Handle case-insensitive or snake_case conversion if needed, though we will try to use direct names in data
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const PascalCase = iconName.split(/_| /).map((w: string) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const IconComponent2 = (Icons as any)[PascalCase];
+        if (IconComponent2) {
+            return <IconComponent2 className="w-8 h-8" />;
+        }
+
+        // Fallback
+        return <AlertTriangle className="w-8 h-8" />;
     };
 
     return (
@@ -55,7 +70,7 @@ export default function ChecklistWizard({ deviceInfo, onComplete }: ChecklistWiz
                         transition={{ duration: 0.3 }}
                         className="space-y-8"
                     >
-                        {currentStep.questions && currentStep.questions.map((q: any) => (
+                        {currentStep.questions && currentStep.questions.map((q: { id: string; text: string; subtext: string }) => (
                             <div key={q.id} className="space-y-3">
                                 <h3 className="font-semibold text-lg">{q.text}</h3>
                                 <p className="text-sm text-muted-foreground">{q.subtext}</p>
@@ -78,13 +93,13 @@ export default function ChecklistWizard({ deviceInfo, onComplete }: ChecklistWiz
 
                         {(currentStep.type === 'multi-select' || currentStep.type === 'multi-select-grid') && (
                             <div className={`grid gap-4 ${currentStep.type === 'multi-select-grid' ? 'grid-cols-2 md:grid-cols-4' : 'grid-cols-1 md:grid-cols-2'}`}>
-                                {currentStep.options?.map((opt: any) => {
-                                    const isSelected = answers[currentStep.id]?.includes(opt.id);
+                                {currentStep.options?.map((opt: { id: string; label: string; icon?: string }) => {
+                                    const isSelected = (answers[currentStep.id] as string[])?.includes(opt.id);
                                     return (
                                         <button
                                             key={opt.id}
                                             onClick={() => {
-                                                const current = answers[currentStep.id] || [];
+                                                const current = (answers[currentStep.id] as string[]) || [];
                                                 const updated = current.includes(opt.id)
                                                     ? current.filter((id: string) => id !== opt.id)
                                                     : [...current, opt.id];
@@ -121,8 +136,12 @@ export default function ChecklistWizard({ deviceInfo, onComplete }: ChecklistWiz
             <div className="w-full lg:w-80 space-y-6">
                 <div className="bg-card border rounded-2xl p-6 sticky top-24">
                     <div className="flex items-start gap-4 mb-6 pb-6 border-b">
-                        <div className="w-16 h-20 relative bg-white dark:bg-muted rounded overflow-hidden">
-                            <Image src={deviceInfo.img} alt={deviceInfo.name} fill className="object-contain" />
+                        <div className="w-16 h-20 relative bg-white dark:bg-muted rounded overflow-hidden flex items-center justify-center">
+                            {deviceInfo.img && (deviceInfo.img.startsWith('/') || deviceInfo.img.startsWith('http')) ? (
+                                <Image src={deviceInfo.img} alt={deviceInfo.name} fill className="object-contain" />
+                            ) : (
+                                <span className="text-xl font-bold text-gray-400">{deviceInfo.name[0]}</span>
+                            )}
                         </div>
                         <div>
                             <h3 className="font-bold text-sm">{deviceInfo.name}</h3>
@@ -143,11 +162,11 @@ export default function ChecklistWizard({ deviceInfo, onComplete }: ChecklistWiz
                             </ul>
                         </div>
 
-                        {answers.screen_defects?.length > 0 && (
+                        {(answers.screen_defects as string[] | undefined) && (answers.screen_defects as string[]).length > 0 && (
                             <div className="space-y-2">
                                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Physical Defects</p>
                                 <ul className="text-sm space-y-1">
-                                    {answers.screen_defects.map((def: string) => (
+                                    {(answers.screen_defects as string[]).map((def: string) => (
                                         <li key={def} className="text-amber-600 flex gap-2"><AlertTriangle className="w-4 h-4" /> {def.replace('_', ' ')}</li>
                                     ))}
                                 </ul>

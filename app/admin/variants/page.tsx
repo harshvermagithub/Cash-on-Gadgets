@@ -3,9 +3,9 @@ import { db } from "@/lib/store";
 import VariantManager from "@/components/admin/VariantManager";
 
 export default async function AdminVariantsPage() {
-    const brands = db.getBrands();
-    const models = db.getModels();
-    const variants = db.getVariants();
+    const brands = await db.getBrands();
+    const models = await db.getModels();
+    const variants = await db.getVariants();
 
     return (
         <div className="space-y-6">

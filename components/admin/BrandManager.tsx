@@ -2,9 +2,9 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { addBrand, deleteBrand } from '@/actions/admin';
+import { addBrand, updateBrand, deleteBrand } from '@/actions/admin';
 import { uploadImage } from '@/actions/upload';
-import { Trash2, Plus, Loader2, Upload } from 'lucide-react';
+import { Trash2, Plus, Loader2, Upload, Pencil, X } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -16,6 +16,7 @@ interface Brand {
 
 export default function BrandManager({ initialBrands }: { initialBrands: Brand[] }) {
     const router = useRouter();
+    const [editingId, setEditingId] = useState<string | null>(null);
     const [name, setName] = useState('');
     const [logo, setLogo] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -28,15 +29,30 @@ export default function BrandManager({ initialBrands }: { initialBrands: Brand[]
 
         setIsLoading(true);
         try {
-            await addBrand(name, logo);
-            setName('');
-            setLogo('');
+            if (editingId) {
+                await updateBrand(editingId, name, logo);
+            } else {
+                await addBrand(name, logo);
+            }
+            resetForm();
             router.refresh();
-        } catch (error) {
-            alert('Failed to add brand');
+        } catch {
+            alert(editingId ? 'Failed to update brand' : 'Failed to add brand');
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleEdit = (brand: Brand) => {
+        setEditingId(brand.id);
+        setName(brand.name);
+        setLogo(brand.logo);
+    };
+
+    const resetForm = () => {
+        setEditingId(null);
+        setName('');
+        setLogo('');
     };
 
     const handleDelete = async (id: string) => {
@@ -44,7 +60,7 @@ export default function BrandManager({ initialBrands }: { initialBrands: Brand[]
         try {
             await deleteBrand(id);
             router.refresh();
-        } catch (error) {
+        } catch {
             alert('Failed to delete brand');
         }
     };
@@ -75,7 +91,14 @@ export default function BrandManager({ initialBrands }: { initialBrands: Brand[]
     return (
         <div className="space-y-8">
             <div className="bg-card border rounded-xl p-6">
-                <h3 className="text-lg font-bold mb-4">Add New Brand</h3>
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-bold">{editingId ? 'Edit Brand' : 'Add New Brand'}</h3>
+                    {editingId && (
+                        <button onClick={resetForm} className="text-sm text-red-500 flex items-center gap-1 hover:underline">
+                            <X className="w-4 h-4" /> Cancel Edit
+                        </button>
+                    )}
+                </div>
                 <form onSubmit={handleSubmit} className="flex gap-4 items-end">
                     <div className="flex-1 space-y-2">
                         <label className="text-sm font-medium">Brand Name</label>
@@ -115,9 +138,9 @@ export default function BrandManager({ initialBrands }: { initialBrands: Brand[]
                     </div>
                     <button
                         disabled={isLoading || isUploading}
-                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 h-[42px]"
+                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 h-[42px] flex items-center gap-2"
                     >
-                        {isLoading ? <Loader2 className="animate-spin" /> : <Plus className="w-5 h-5" />}
+                        {isLoading ? <Loader2 className="animate-spin" /> : (editingId ? 'Update' : <Plus className="w-5 h-5" />)}
                     </button>
                 </form>
             </div>
@@ -126,17 +149,31 @@ export default function BrandManager({ initialBrands }: { initialBrands: Brand[]
                 {initialBrands.map((brand) => (
                     <div key={brand.id} className="p-4 border rounded-xl flex items-center justify-between bg-card">
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 relative bg-gray-50 rounded-lg p-2">
-                                <Image src={brand.logo} alt={brand.name} fill className="object-contain" />
+                            <div className="w-12 h-12 relative bg-gray-50 rounded-lg p-2 flex items-center justify-center">
+                                {brand.logo && (brand.logo.startsWith('/') || brand.logo.startsWith('http')) ? (
+                                    <Image src={brand.logo} alt={brand.name} fill className="object-contain" />
+                                ) : (
+                                    <span className="text-xl font-bold text-gray-400">{brand.name[0]}</span>
+                                )}
                             </div>
                             <span className="font-bold">{brand.name}</span>
                         </div>
-                        <button
-                            onClick={() => handleDelete(brand.id)}
-                            className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
-                        >
-                            <Trash2 className="w-4 h-4" />
-                        </button>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => handleEdit(brand)}
+                                className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                                title="Edit"
+                            >
+                                <Pencil className="w-4 h-4" />
+                            </button>
+                            <button
+                                onClick={() => handleDelete(brand.id)}
+                                className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                                title="Delete"
+                            >
+                                <Trash2 className="w-4 h-4" />
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>
