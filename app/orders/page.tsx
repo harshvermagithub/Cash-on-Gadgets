@@ -36,10 +36,49 @@ export default async function OrdersPage() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-lg">{order.device}</h3>
-                                    <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
-                                        <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {new Date(order.date).toLocaleDateString()}</span>
-                                        <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {new Date(order.date).toLocaleTimeString()}</span>
-                                    </div>
+
+                                    {/* Pickup Schedule Display */}
+                                    {(() => {
+                                        const answers = (typeof order.answers === 'string')
+                                            ? JSON.parse(order.answers)
+                                            : (order.answers as Record<string, any> || {});
+
+                                        const isExpress = !!answers.isExpress;
+                                        const scheduledDate = answers.scheduledDate ? new Date(answers.scheduledDate) : null;
+                                        const scheduledSlot = answers.scheduledSlot;
+
+                                        if (isExpress) {
+                                            return (
+                                                <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold border border-amber-200">
+                                                    ⚡ Express Pickup (3 Hours)
+                                                </div>
+                                            );
+                                        }
+
+                                        if (scheduledDate && scheduledSlot) {
+                                            return (
+                                                <div className="flex flex-col gap-1 mt-1">
+                                                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                                        <span className="flex items-center gap-1">
+                                                            <Calendar className="w-3 h-3" />
+                                                            {scheduledDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                                                        </span>
+                                                        <span className="flex items-center gap-1">
+                                                            <Clock className="w-3 h-3" />
+                                                            {scheduledSlot.split(' - ')[0]} {/* Simplified time */}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            );
+                                        }
+
+                                        // Fallback to order creation date if no schedule info
+                                        return (
+                                            <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
+                                                <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {new Date(order.date).toLocaleDateString()}</span>
+                                            </div>
+                                        );
+                                    })()}
                                 </div>
                             </div>
 

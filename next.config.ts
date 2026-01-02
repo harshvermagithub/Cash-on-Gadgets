@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'www.lg.com' },
       { protocol: 'https', hostname: 'i01.appmifile.com' },
       { protocol: 'https', hostname: 'images.samsung.com' },
+      { protocol: 'https', hostname: 'placehold.co' },
     ],
   },
 };

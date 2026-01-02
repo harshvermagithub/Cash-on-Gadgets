@@ -21,22 +21,42 @@ export async function getBrands() {
     return await db.getBrands();
 }
 
-export async function addBrand(name: string, logo: string) {
+export async function addBrand(name: string, logo: string, category?: string) {
     await requireAdmin();
-    await db.addBrand({
-        id: name.toLowerCase().replace(/\s+/g, '-'), // Generate ID from name
-        name,
-        logo
-    });
-    revalidatePath('/admin/brands');
-    revalidatePath('/sell'); // Update the main sell page too
-    return { success: true };
+    const id = name.toLowerCase().replace(/\s+/g, '-');
+
+    // Check if brand exists to append category instead of fail/duplicate
+    const existing = await db.getBrand(id);
+
+    if (existing) {
+        if (category) {
+            await db.addCategoryToBrand(id, category);
+        }
+        // Update details (last write wins for name/logo)
+        await db.updateBrand(id, name, logo);
+    } else {
+        await db.addBrand({
+            id,
+            name,
+            logo,
+            categories: category ? [category] : []
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any);
+    }
+
+    revalidatePath(`/admin/category/${category}`);
+    revalidatePath('/sell');
+    return { success: true, id };
 }
 
-export async function deleteBrand(id: string) {
+export async function deleteBrand(id: string, category?: string) {
     await requireAdmin();
-    await db.deleteBrand(id);
-    revalidatePath('/admin/brands');
+    if (category) {
+        await db.removeCategoryFromBrand(id, category);
+    } else {
+        await db.deleteBrand(id);
+    }
+    revalidatePath(`/admin/category/${category}`);
     revalidatePath('/sell');
     return { success: true };
 }
@@ -55,21 +75,23 @@ export async function getModels(brandId?: string) {
     return await db.getModels(brandId);
 }
 
-export async function addModel(brandId: string, name: string, img: string) {
+export async function addModel(brandId: string, name: string, img: string, category: string = 'smartphone') {
     await requireAdmin();
     await db.addModel({
         id: randomUUID(),
         brandId,
         name,
-        img
-    });
+        img,
+        category
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any);
     revalidatePath('/admin/models');
     return { success: true };
 }
 
-export async function updateModel(id: string, brandId: string, name: string, img: string) {
+export async function updateModel(id: string, brandId: string, name: string, img: string, category: string = 'smartphone') {
     await requireAdmin();
-    await db.updateModel(id, brandId, name, img);
+    await db.updateModel(id, brandId, name, img, category);
     revalidatePath('/admin/models');
     return { success: true };
 }
@@ -144,5 +166,19 @@ export async function assignRider(orderId: string, riderId: string) {
 
     revalidatePath('/admin');
     revalidatePath('/admin/orders');
+    return { success: true };
+}
+
+// --- Evaluation Rules ---
+
+export async function getEvaluationRules(category: string) {
+    return await db.getEvaluationRules(category);
+}
+
+export async function upsertEvaluationRule(data: { category: string, questionKey: string, answerKey: string, label: string, deductionAmount: number, deductionPercent: number }) {
+    await requireAdmin();
+    await db.upsertEvaluationRule(data);
+    revalidatePath(`/admin/category/${data.category}`);
+    revalidatePath('/sell');
     return { success: true };
 }

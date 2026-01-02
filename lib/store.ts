@@ -30,6 +30,7 @@ export interface Order {
 export type Brand = PrismaBrand;
 export type Model = PrismaModel;
 export type Variant = PrismaVariant;
+export type EvaluationRule = import('@prisma/client').EvaluationRule;
 
 export const db = {
     getUsers: async () => {
@@ -121,11 +122,50 @@ export const db = {
     },
 
     // Brand Methods
-    getBrands: async () => {
+    getBrands: async (category?: string) => {
+        if (category) {
+            return await prisma.brand.findMany({
+                where: {
+                    categories: {
+                        has: category
+                    }
+                }
+            });
+        }
         return await prisma.brand.findMany();
     },
     addBrand: async (brand: Brand) => {
+        // If categories passed in brand object, they are saved.
+        // We generally use higher level logic to handle upserts now.
         await prisma.brand.create({ data: brand });
+    },
+    addCategoryToBrand: async (id: string, category: string) => {
+        const brand = await prisma.brand.findUnique({ where: { id } });
+        if (brand && !brand.categories.includes(category)) {
+            await prisma.brand.update({
+                where: { id },
+                data: { categories: { push: category } }
+            });
+        }
+    },
+    getBrand: async (id: string) => {
+        return await prisma.brand.findUnique({ where: { id } });
+    },
+    removeCategoryFromBrand: async (id: string, category: string) => {
+        const brand = await prisma.brand.findUnique({ where: { id } });
+        if (!brand) return;
+        const newCats = brand.categories.filter(c => c !== category);
+        if (newCats.length !== brand.categories.length) {
+            if (newCats.length === 0) {
+                // No categories left, delete brand
+                await prisma.brand.delete({ where: { id } });
+            } else {
+                await prisma.brand.update({
+                    where: { id },
+                    data: { categories: newCats }
+                });
+            }
+        }
     },
     updateBrand: async (id: string, name: string, logo: string) => {
         await prisma.brand.update({
@@ -138,17 +178,20 @@ export const db = {
     },
 
     // Model Methods
-    getModels: async (brandId?: string) => {
-        if (brandId) return await prisma.model.findMany({ where: { brandId } });
-        return await prisma.model.findMany();
+    getModels: async (brandId?: string, category?: string) => {
+        const where: any = {};
+        if (brandId) where.brandId = brandId;
+        if (category) where.category = category;
+
+        return await prisma.model.findMany({ where });
     },
     addModel: async (model: Model) => {
         await prisma.model.create({ data: model });
     },
-    updateModel: async (id: string, brandId: string, name: string, img: string) => {
+    updateModel: async (id: string, brandId: string, name: string, img: string, category: string = 'smartphone') => {
         await prisma.model.update({
             where: { id },
-            data: { brandId, name, img }
+            data: { brandId, name, img, category }
         });
     },
     deleteModel: async (id: string) => {
@@ -171,6 +214,30 @@ export const db = {
     },
     deleteVariant: async (id: string) => {
         await prisma.variant.delete({ where: { id } });
+    },
+
+    // Evaluation Rule Methods
+    getEvaluationRules: async (category: string) => {
+        return await prisma.evaluationRule.findMany({
+            where: { category }
+        });
+    },
+    upsertEvaluationRule: async (data: { category: string, questionKey: string, answerKey: string, label: string, deductionAmount: number, deductionPercent: number }) => {
+        await prisma.evaluationRule.upsert({
+            where: {
+                category_questionKey_answerKey: {
+                    category: data.category,
+                    questionKey: data.questionKey,
+                    answerKey: data.answerKey
+                }
+            },
+            create: data,
+            update: {
+                deductionAmount: data.deductionAmount,
+                deductionPercent: data.deductionPercent,
+                label: data.label
+            }
+        });
     }
 };
 

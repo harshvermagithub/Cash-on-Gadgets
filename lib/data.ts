@@ -135,6 +135,9 @@ export const questionnaireSteps = {
                 { id: 'dead_spot', label: 'Dead Spot/Visible line on screen', icon: 'ScanLine' },
                 { id: 'dent_body', label: 'Scratch/Dent on device body', icon: 'ShieldAlert' },
                 { id: 'panel_broken', label: 'Device panel missing/broken', icon: 'XCircle' },
+                { id: 'loose_screen', label: 'Screen coming out/Loose', icon: 'Maximize' },
+                { id: 'heavy_scratch', label: 'Heavy scratches on screen', icon: 'Scan' },
+                { id: 'loose_panel', label: 'Back Panel Loose/Gap', icon: 'Minimize' },
             ]
         },
         {

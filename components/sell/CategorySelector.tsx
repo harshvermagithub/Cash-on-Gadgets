@@ -9,7 +9,7 @@ interface CategorySelectorProps {
 const categories = [
     { id: 'smartphone', name: 'Smartphone', icon: Smartphone, available: true },
     { id: 'tablet', name: 'Tablet', icon: Tablet, available: true },
-    { id: 'watch', name: 'Smartwatch', icon: Watch, available: true },
+    { id: 'smartwatch', name: 'Smartwatch', icon: Watch, available: true },
     { id: 'console', name: 'Gaming Console', icon: Gamepad2, available: true },
     { id: 'tv', name: 'Smart TV', icon: Tv, available: true },
     { id: 'repair', name: 'Repair Device', icon: Wrench, available: true },

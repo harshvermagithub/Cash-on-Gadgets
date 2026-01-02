@@ -17,11 +17,12 @@ type Step = 'category' | 'brand' | 'model' | 'variant' | 'quote_preview' | 'chec
 interface SellWizardProps {
     initialBrands: Brand[];
     initialCategory?: string;
+    user?: any; // Session User
 }
 
 import { fetchBrands } from '@/actions/catalog';
 
-export default function SellWizard({ initialBrands, initialCategory }: SellWizardProps) {
+export default function SellWizard({ initialBrands, initialCategory, user }: SellWizardProps) {
     // If a category is provided via info, we start at 'brand' selection (skipping category select)
     // Exception: If category is 'repair', we treat it as smartphone but set isRepair=true
 
@@ -116,6 +117,7 @@ export default function SellWizard({ initialBrands, initialCategory }: SellWizar
                         <VariantSelector
                             modelId={selectedModel?.id || ''}
                             category={category}
+                            brand={selectedBrand}
                             onSelect={handleVariantSelect}
                             onBack={() => setStep('model')}
                         />
@@ -156,7 +158,10 @@ export default function SellWizard({ initialBrands, initialCategory }: SellWizar
                                 name: `${selectedBrand?.name} ${selectedModel.name}`,
                                 variant: selectedVariant.name
                             }}
+                            category={category}
                             isRepair={isRepair}
+                            user={user}
+                            onRecalculate={() => setStep('checklist')}
                         />
                     </motion.div>
                 )}

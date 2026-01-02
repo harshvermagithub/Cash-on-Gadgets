@@ -60,6 +60,7 @@ model Brand {
   id    String  @id // specific ID (e.g. 'apple')
   name  String
   logo  String
+  categories String[] @default([])
   
   models Model[]
 }
@@ -70,6 +71,7 @@ model Model {
   brand   Brand   @relation(fields: [brandId], references: [id], onDelete: Cascade)
   name    String
   img     String
+  category String @default("smartphone") // smartphone, tablet, smartwatch, laptop, console, tv
   
   variants Variant[]
 }
@@ -80,4 +82,21 @@ model Variant {
   model     Model   @relation(fields: [modelId], references: [id], onDelete: Cascade)
   name      String
   basePrice Int
+}
+
+model EvaluationRule {
+  id               String   @id @default(cuid())
+  category         String   // e.g. "smartphone"
+  
+  questionKey      String   // e.g. "screen_defects" or "calls"
+  answerKey        String   // e.g. "loose_screen" or "false"
+  label            String   // e.g. "Loose Screen"
+  
+  deductionAmount  Int      @default(0) // Flat amount
+  deductionPercent Float    @default(0) // Percentage (0-100)
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([category, questionKey, answerKey])
 }

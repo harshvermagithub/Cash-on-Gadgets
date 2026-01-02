@@ -10,11 +10,12 @@ import { fetchVariants } from '@/actions/catalog';
 interface VariantSelectorProps {
     modelId: string;
     category?: string;
+    brand?: { name: string } | null;
     onSelect: (variant: Variant) => void;
     onBack: () => void;
 }
 
-export default function VariantSelector({ modelId, category, onSelect, onBack }: VariantSelectorProps) {
+export default function VariantSelector({ modelId, category, brand, onSelect, onBack }: VariantSelectorProps) {
     const [variants, setVariants] = useState<Variant[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -37,6 +38,14 @@ export default function VariantSelector({ modelId, category, onSelect, onBack }:
 
         return () => { mounted = false; };
     }, [modelId, category]);
+
+    const formatVariantName = (name: string) => {
+        // If Apple, assume variants are like "4GB / 64GB" or "4GB/64GB" and strip the RAM
+        if (brand?.name === 'Apple') {
+            return name.replace(/^\d+\s*GB\s*[\/\-]\s*/i, '');
+        }
+        return name;
+    }
 
     return (
         <div className="space-y-6">
@@ -69,7 +78,7 @@ export default function VariantSelector({ modelId, category, onSelect, onBack }:
                             <div className="p-3 bg-accent rounded-full group-hover:bg-primary/20 transition-colors">
                                 <Smartphone className="w-6 h-6 text-muted-foreground group-hover:text-primary" />
                             </div>
-                            <span className="font-semibold text-lg">{variant.name}</span>
+                            <span className="font-semibold text-lg">{formatVariantName(variant.name)}</span>
                         </motion.button>
                     ))}
                 </div>

@@ -14,7 +14,12 @@ interface Brand {
     logo: string;
 }
 
-export default function BrandManager({ initialBrands }: { initialBrands: Brand[] }) {
+interface BrandManagerProps {
+    initialBrands: Brand[];
+    category?: string;
+}
+
+export default function BrandManager({ initialBrands, category }: BrandManagerProps) {
     const router = useRouter();
     const [editingId, setEditingId] = useState<string | null>(null);
     const [name, setName] = useState('');
@@ -30,9 +35,12 @@ export default function BrandManager({ initialBrands }: { initialBrands: Brand[]
         setIsLoading(true);
         try {
             if (editingId) {
+                // Update is usually global properties (name/logo). 
+                // We might want to restrict this or allow it. 
+                // For now, updating name/logo updates it everywhere.
                 await updateBrand(editingId, name, logo);
             } else {
-                await addBrand(name, logo);
+                await addBrand(name, logo, category);
             }
             resetForm();
             router.refresh();
@@ -56,9 +64,9 @@ export default function BrandManager({ initialBrands }: { initialBrands: Brand[]
     };
 
     const handleDelete = async (id: string) => {
-        if (!confirm('Are you sure? This will delete associated models too.')) return;
+        if (!confirm('Are you sure? This will remove the brand from this category.')) return;
         try {
-            await deleteBrand(id);
+            await deleteBrand(id, category);
             router.refresh();
         } catch {
             alert('Failed to delete brand');

@@ -66,6 +66,41 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                         <Smartphone className="w-5 h-5 text-gray-500" />
                                         {order.device}
                                     </h3>
+
+                                    {/* Pickup Schedule Badge */}
+                                    {(() => {
+                                        const answers = (typeof order.answers === 'string')
+                                            ? JSON.parse(order.answers)
+                                            : (order.answers as Record<string, any> || {});
+
+                                        const isExpress = !!answers.isExpress;
+                                        const scheduledDate = answers.scheduledDate ? new Date(answers.scheduledDate) : null;
+                                        const scheduledSlot = answers.scheduledSlot;
+
+                                        if (isExpress) {
+                                            return (
+                                                <div className="mt-1 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold border border-amber-200 w-fit">
+                                                    ⚡ Express Pickup (3H)
+                                                </div>
+                                            );
+                                        }
+
+                                        if (scheduledDate && scheduledSlot) {
+                                            return (
+                                                <div className="mt-1 text-xs text-muted-foreground flex items-center gap-3 bg-muted/50 w-fit px-2 py-1 rounded">
+                                                    <span className="flex items-center gap-1 font-medium text-foreground">
+                                                        <Calendar className="w-3 h-3" />
+                                                        {scheduledDate.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' })}
+                                                    </span>
+                                                    <span className="flex items-center gap-1">
+                                                        <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                                                        {scheduledSlot}
+                                                    </span>
+                                                </div>
+                                            );
+                                        }
+                                        return null;
+                                    })()}
                                     <div className="text-lg font-mono font-bold text-green-600">
                                         ₹{order.price.toLocaleString()}
                                     </div>

@@ -48,26 +48,26 @@ export default async function AdminDashboard() {
             <div className="space-y-4">
                 <h2 className="text-xl font-bold">Quick Actions</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <Link href="/admin/brands" className="p-6 border rounded-xl hover:bg-muted/50 transition-colors flex flex-col gap-2">
+                    <Link href="/admin/category/smartphone" className="p-6 border rounded-xl hover:bg-muted/50 transition-colors flex flex-col gap-2">
                         <div className="flex items-center gap-2 font-semibold">
-                            <PlusCircle className="w-5 h-5 text-blue-600" />
-                            Manage Brands
+                            <Smartphone className="w-5 h-5 text-blue-600" />
+                            Manage Smartphones
                         </div>
-                        <p className="text-sm text-muted-foreground">Add or remove smartphone brands and updated logos.</p>
+                        <p className="text-sm text-muted-foreground">Manage brands, models, and pricing for smartphones.</p>
                     </Link>
-                    <Link href="/admin/models" className="p-6 border rounded-xl hover:bg-muted/50 transition-colors flex flex-col gap-2">
+                    <Link href="/admin/category/tablet" className="p-6 border rounded-xl hover:bg-muted/50 transition-colors flex flex-col gap-2">
                         <div className="flex items-center gap-2 font-semibold">
                             <PlusCircle className="w-5 h-5 text-green-600" />
-                            Manage Models
+                            Manage Tablets
                         </div>
-                        <p className="text-sm text-muted-foreground">Update device models and assign them to brands.</p>
+                        <p className="text-sm text-muted-foreground">Manage brands, models, and pricing for tablets.</p>
                     </Link>
-                    <Link href="/admin/variants" className="p-6 border rounded-xl hover:bg-muted/50 transition-colors flex flex-col gap-2">
+                    <Link href="/admin/category/laptop" className="p-6 border rounded-xl hover:bg-muted/50 transition-colors flex flex-col gap-2">
                         <div className="flex items-center gap-2 font-semibold">
                             <PlusCircle className="w-5 h-5 text-purple-600" />
-                            Manage Pricing
+                            Manage Laptops
                         </div>
-                        <p className="text-sm text-muted-foreground">Set base prices and variants for specific models.</p>
+                        <p className="text-sm text-muted-foreground">Manage brands, models, and pricing for laptops.</p>
                     </Link>
                     <Link href="/admin/riders" className="p-6 border rounded-xl hover:bg-muted/50 transition-colors flex flex-col gap-2">
                         <div className="flex items-center gap-2 font-semibold">

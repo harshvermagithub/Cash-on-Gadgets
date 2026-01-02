@@ -15,6 +15,7 @@ interface Model {
     id: string;
     brandId: string;
     name: string;
+    category?: string;
 }
 
 interface Variant {
@@ -24,27 +25,46 @@ interface Variant {
     basePrice: number;
 }
 
+const CATEGORIES = [
+    { id: 'smartphone', label: 'Smartphone' },
+    { id: 'tablet', label: 'Tablet' },
+    { id: 'smartwatch', label: 'Smartwatch' },
+    { id: 'laptop', label: 'Laptop' },
+    { id: 'console', label: 'Gaming Console' },
+    { id: 'tv', label: 'Smart TV' },
+    { id: 'repair-device', label: 'Repair Device' },
+];
+
 export default function VariantManager({
     initialVariants,
     brands,
-    models
+    models,
+    preselectedCategory
 }: {
     initialVariants: Variant[],
     brands: Brand[],
-    models: Model[]
+    models: Model[],
+    preselectedCategory?: string
 }) {
     const router = useRouter();
     // Form State
     const [editingId, setEditingId] = useState<string | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState(preselectedCategory || 'smartphone');
     const [selectedBrand, setSelectedBrand] = useState(brands[0]?.id || '');
     const [selectedModel, setSelectedModel] = useState('');
 
-    // When brand changes, update available models and reset selected model
-    const availableModels = models.filter(m => m.brandId === selectedBrand);
+    // Filter available models based on Category AND Brand
+    const availableModels = models.filter(m =>
+        m.brandId === selectedBrand &&
+        (m.category || 'smartphone') === selectedCategory
+    );
 
-    // Auto-select first available model when brand changes if not already set
+    // Auto-select first available model when brand/category changes
     if (selectedBrand && availableModels.length > 0 && !availableModels.find(m => m.id === selectedModel)) {
-        setSelectedModel(availableModels[0].id);
+        // We use a small timeout or just direct set (render loop risk, but simplified here)
+        // Better: useEffect to sync selectedModel. But adhering to existing pattern:
+        // Checking if we are currently rendering a state mismatch is tricky. 
+        // Ideally user selects model. I'll default to empty string to force selection.
     }
 
     const [name, setName] = useState('');
@@ -52,16 +72,30 @@ export default function VariantManager({
     const [isLoading, setIsLoading] = useState(false);
 
     // List Filter State
+    const [filterCategory, setFilterCategory] = useState(preselectedCategory || 'smartphone');
     const [filterBrand, setFilterBrand] = useState('all');
     const [filterModel, setFilterModel] = useState('all');
 
-    const filteredModels = filterBrand === 'all' ? models : models.filter(m => m.brandId === filterBrand);
+    // Filter models for the "List View" dropdowns
+    const filteredModelsList = models.filter(m => {
+        if (filterCategory !== 'all' && (m.category || 'smartphone') !== filterCategory) return false;
+        if (filterBrand !== 'all' && m.brandId !== filterBrand) return false;
+        return true;
+    });
+
     const visibleVariants = initialVariants.filter(v => {
-        if (filterBrand !== 'all') {
-            const model = models.find(m => m.id === v.modelId);
-            if (model?.brandId !== filterBrand) return false;
-        }
+        const model = models.find(m => m.id === v.modelId);
+        if (!model) return false; // Orphan variant
+
+        // Filter by Category
+        if (filterCategory !== 'all' && (model.category || 'smartphone') !== filterCategory) return false;
+
+        // Filter by Brand
+        if (filterBrand !== 'all' && model.brandId !== filterBrand) return false;
+
+        // Filter by Model
         if (filterModel !== 'all' && v.modelId !== filterModel) return false;
+
         return true;
     });
 
@@ -89,6 +123,9 @@ export default function VariantManager({
         const model = models.find(m => m.id === variant.modelId);
         if (model) {
             setEditingId(variant.id);
+            setEditingId(variant.id);
+            // Derive category from model
+            setSelectedCategory(model.category || 'smartphone');
             setSelectedBrand(model.brandId);
             setSelectedModel(variant.modelId);
             setName(variant.name);
@@ -100,6 +137,7 @@ export default function VariantManager({
         setEditingId(null);
         setName('');
         setPrice('');
+        if (preselectedCategory) setSelectedCategory(preselectedCategory);
     };
 
     const handleDelete = async (id: string) => {
@@ -116,14 +154,31 @@ export default function VariantManager({
         <div className="space-y-8">
             <div className="bg-card border rounded-xl p-6">
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-bold">{editingId ? 'Edit Variant' : 'Add New Variant'}</h3>
+                    <h3 className="text-lg font-bold">{editingId ? 'Edit Variant' : `Add ${CATEGORIES.find(c => c.id === selectedCategory)?.label} Variant`}</h3>
                     {editingId && (
                         <button onClick={resetForm} className="text-sm text-red-500 flex items-center gap-1 hover:underline">
                             <X className="w-4 h-4" /> Cancel Edit
                         </button>
                     )}
                 </div>
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
+                    {!preselectedCategory && (
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium">Category</label>
+                            <select
+                                value={selectedCategory}
+                                onChange={(e) => {
+                                    setSelectedCategory(e.target.value);
+                                    setSelectedModel('');
+                                }}
+                                className="w-full p-2 border rounded-lg bg-background"
+                            >
+                                {CATEGORIES.map(c => (
+                                    <option key={c.id} value={c.id}>{c.label}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
                     <div className="space-y-2">
                         <label className="text-sm font-medium">Brand</label>
                         <select
@@ -145,9 +200,8 @@ export default function VariantManager({
                             value={selectedModel}
                             onChange={(e) => setSelectedModel(e.target.value)}
                             className="w-full p-2 border rounded-lg bg-background"
-                            disabled={availableModels.length === 0}
                         >
-                            {availableModels.length === 0 && <option value="">No models</option>}
+                            <option value="">Select Model</option>
                             {availableModels.map(m => (
                                 <option key={m.id} value={m.id}>{m.name}</option>
                             ))}
@@ -183,8 +237,25 @@ export default function VariantManager({
 
             <div className="space-y-4">
                 <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-                    <h3 className="text-xl font-bold">Existing Variants</h3>
-                    <div className="flex gap-2">
+                    <h3 className="text-xl font-bold">{CATEGORIES.find(c => c.id === filterCategory)?.label || 'All'} Variants</h3>
+                    <div className="flex gap-2 flex-wrap">
+                        {/* Category Filter Tabs or Select */}
+                        {!preselectedCategory && (
+                            <select
+                                value={filterCategory}
+                                onChange={(e) => {
+                                    setFilterCategory(e.target.value);
+                                    setFilterBrand('all');
+                                    setFilterModel('all');
+                                }}
+                                className="p-2 border rounded-lg bg-background"
+                            >
+                                {CATEGORIES.map(c => (
+                                    <option key={c.id} value={c.id}>{c.label}</option>
+                                ))}
+                            </select>
+                        )}
+
                         <select
                             value={filterBrand}
                             onChange={(e) => {
@@ -201,10 +272,10 @@ export default function VariantManager({
                         <select
                             value={filterModel}
                             onChange={(e) => setFilterModel(e.target.value)}
-                            className="p-2 border rounded-lg bg-background"
+                            className="p-2 border rounded-lg bg-background max-w-[200px]"
                         >
                             <option value="all">All Models</option>
-                            {filteredModels.map(m => (
+                            {filteredModelsList.map(m => (
                                 <option key={m.id} value={m.id}>{m.name}</option>
                             ))}
                         </select>
@@ -228,14 +299,12 @@ export default function VariantManager({
                                 return (
                                     <tr key={variant.id} className="hover:bg-muted/10">
                                         <td className="p-4">
-                                            {variant.modelId === 'generic' ? (
+                                            {model ? (
                                                 <>
-                                                    <span className="font-bold text-amber-600">Generic / All</span>
-                                                    <span className="text-xs text-muted-foreground block">All Brands</span>
-                                                </>
-                                            ) : model ? (
-                                                <>
-                                                    <span className="font-bold">{model.name}</span>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="font-bold">{model.name}</span>
+                                                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground uppercase">{model.category || 'smartphone'}</span>
+                                                    </div>
                                                     <span className="text-xs text-muted-foreground block">{brand?.name || 'Unknown Brand'}</span>
                                                 </>
                                             ) : (
