@@ -124,13 +124,18 @@ export const db = {
     // Brand Methods
     getBrands: async (category?: string) => {
         if (category) {
-            return await prisma.brand.findMany({
-                where: {
-                    categories: {
-                        has: category
-                    }
-                }
-            });
+            const where: any = {
+                OR: [
+                    { categories: { has: category } }
+                ]
+            };
+
+            // Legacy fallback: untagged brands appear in smartphone section
+            if (category === 'smartphone') {
+                where.OR.push({ categories: { equals: [] } });
+            }
+
+            return await prisma.brand.findMany({ where });
         }
         return await prisma.brand.findMany();
     },
@@ -181,7 +186,18 @@ export const db = {
     getModels: async (brandId?: string, category?: string) => {
         const where: any = {};
         if (brandId) where.brandId = brandId;
-        if (category) where.category = category;
+
+        if (category) {
+            if (category === 'smartphone') {
+                where.OR = [
+                    { category: 'smartphone' },
+                    { category: '' },
+                    { category: null }
+                ];
+            } else {
+                where.category = category;
+            }
+        }
 
         return await prisma.model.findMany({ where });
     },
