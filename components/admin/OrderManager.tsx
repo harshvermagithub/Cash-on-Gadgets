@@ -4,7 +4,8 @@
 import { useState } from 'react';
 import { assignRider } from '@/actions/admin';
 import { Rider, Order } from '@/lib/store'; // Need to export Order from store/lib
-import { Calendar, MapPin, Smartphone, User, CheckCircle2 } from 'lucide-react';
+import { Calendar, MapPin, Smartphone, User, CheckCircle2, Eye, X } from 'lucide-react';
+import OrderDetails from '@/components/OrderDetails';
 import { useRouter } from 'next/navigation';
 
 // Quick fix if Order isn't exported from store (it wasn't in my previous view)
@@ -19,6 +20,7 @@ import { useRouter } from 'next/navigation';
 export default function OrderManager({ initialOrders, riders }: { initialOrders: Order[], riders: Rider[] }) {
     const router = useRouter();
     const [assigningId, setAssigningId] = useState<string | null>(null);
+    const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
 
     const handleAssign = async (orderId: string, riderId: string) => {
         if (!riderId) return;
@@ -108,6 +110,13 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                         <MapPin className="w-4 h-4 mt-0.5" />
                                         <span>{order.address || "Location captured via GPS"}</span>
                                     </div>
+
+                                    <button
+                                        onClick={() => setViewingOrder(order)}
+                                        className="text-sm font-medium text-primary hover:underline flex items-center gap-1 mt-1"
+                                    >
+                                        <Eye className="w-4 h-4" /> View Evaluation Details
+                                    </button>
                                 </div>
 
                                 <div className="w-full lg:w-auto min-w-[300px] border-t lg:border-t-0 lg:border-l pt-4 lg:pt-0 lg:pl-6 space-y-4">
@@ -151,6 +160,22 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                             </div>
                         );
                     })}
+                </div>
+            )}
+
+            {viewingOrder && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+                    <div className="bg-background rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+                        <div className="p-4 border-b flex justify-between items-center sticky top-0 bg-background/95 backdrop-blur z-10">
+                            <h3 className="font-bold text-lg">Evaluation Details</h3>
+                            <button onClick={() => setViewingOrder(null)} className="p-2 hover:bg-muted rounded-full">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="p-6">
+                            <OrderDetails order={viewingOrder} />
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

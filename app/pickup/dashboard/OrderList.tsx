@@ -3,9 +3,10 @@
 
 import { useState } from 'react';
 import { updateOrderStatus, logoutExecutive } from '@/actions/executive';
-import { MapPin, Phone, Calendar, CheckCircle2, Navigation, LogOut, Zap } from 'lucide-react';
+import { MapPin, Phone, Calendar, CheckCircle2, Navigation, LogOut, Zap, Eye, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Order } from '@/lib/store';
+import OrderDetails from '@/components/OrderDetails';
 
 interface OrderAnswers {
     accessories?: string[];
@@ -22,6 +23,7 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
     const router = useRouter();
     const [updatingId, setUpdatingId] = useState<string | null>(null);
     const [verifiedOrders, setVerifiedOrders] = useState<Set<string>>(new Set());
+    const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
 
     const handleStatusUpdate = async (id: string, newStatus: string) => {
         if (!confirm(`Mark order as ${newStatus}?`)) return;
@@ -106,6 +108,12 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                                         <Phone className="w-4 h-4 text-muted-foreground" />
                                         <a href="#" className="hover:underline">Contact Customer</a>
                                     </div>
+                                    <button
+                                        onClick={() => setViewingOrder(order)}
+                                        className="w-full mt-2 py-2 text-sm font-bold border rounded-lg hover:bg-accent flex items-center justify-center gap-2 bg-white dark:bg-black/20"
+                                    >
+                                        <Eye className="w-4 h-4" /> View Full Report & Condition
+                                    </button>
                                 </div>
 
                                 {order.status === 'assigned' && (
@@ -179,6 +187,22 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                             </div>
                         </div>
                     ))}
+                </div>
+            )}
+
+            {viewingOrder && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+                    <div className="bg-background rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+                        <div className="p-4 border-b flex justify-between items-center sticky top-0 bg-background/95 backdrop-blur z-10">
+                            <h3 className="font-bold text-lg">Evaluation Report</h3>
+                            <button onClick={() => setViewingOrder(null)} className="p-2 hover:bg-muted rounded-full">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="p-6">
+                            <OrderDetails order={viewingOrder} />
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
