@@ -20,6 +20,8 @@ export const metadata: Metadata = {
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
 
+import Footer from "@/components/Footer";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,6 +43,7 @@ export default function RootLayout({
           <main className="flex-1">
             {children}
           </main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

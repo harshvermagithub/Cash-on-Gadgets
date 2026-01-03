@@ -23,3 +23,5 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+// Force restart

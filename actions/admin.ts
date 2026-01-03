@@ -51,13 +51,28 @@ export async function addBrand(name: string, logo: string, category?: string) {
 
 export async function deleteBrand(id: string, category?: string) {
     await requireAdmin();
+
     if (category) {
-        await db.removeCategoryFromBrand(id, category);
+        // Check if brand actually has this category
+        const brand = await db.getBrand(id);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const b = brand as any;
+
+        if (b && b.categories && b.categories.includes(category)) {
+            await db.removeCategoryFromBrand(id, category);
+        } else if (b && (!b.categories || b.categories.length === 0)) {
+            // It's an orphan/untagged brand appearing via fallback (e.g. smartphone)
+            // User likely wants to delete this garbage entry entirely.
+            // Attempt full delete (will fail if constraints exist, but for 'as' it should work)
+            await db.deleteBrand(id);
+        }
     } else {
         await db.deleteBrand(id);
     }
-    revalidatePath(`/admin/category/${category}`);
+
+    if (category) revalidatePath(`/admin/category/${category}`);
     revalidatePath('/sell');
+    revalidatePath('/admin/brands'); // General refresh
     return { success: true };
 }
 

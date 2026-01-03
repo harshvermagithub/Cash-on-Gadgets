@@ -91,29 +91,47 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete }: Ch
                             </div>
                         ))}
 
-                        {(currentStep.type === 'multi-select' || currentStep.type === 'multi-select-grid') && (
-                            <div className={`grid gap-4 ${currentStep.type === 'multi-select-grid' ? 'grid-cols-2 md:grid-cols-4' : 'grid-cols-1 md:grid-cols-2'}`}>
-                                {currentStep.options?.map((opt: { id: string; label: string; icon?: string }) => {
-                                    const isSelected = (answers[currentStep.id] as string[])?.includes(opt.id);
+                        {(currentStep.type === 'multi-select' || currentStep.type === 'multi-select-grid' || currentStep.type === 'single-select') && (
+                            <div className={`grid gap-4 ${currentStep.type === 'multi-select-grid' || currentStep.type === 'single-select' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2' : 'grid-cols-1 md:grid-cols-2'}`}>
+                                {currentStep.options?.map((opt: { id: string; label: string; description?: string; icon?: string }) => {
+                                    const isMulti = currentStep.type !== 'single-select';
+                                    const isSelected = isMulti
+                                        ? (answers[currentStep.id] as string[])?.includes(opt.id)
+                                        : answers[currentStep.id] === opt.id;
+
                                     return (
                                         <button
                                             key={opt.id}
                                             onClick={() => {
-                                                const current = (answers[currentStep.id] as string[]) || [];
-                                                const updated = current.includes(opt.id)
-                                                    ? current.filter((id: string) => id !== opt.id)
-                                                    : [...current, opt.id];
-                                                handleAnswer(currentStep.id, updated);
+                                                if (isMulti) {
+                                                    const current = (answers[currentStep.id] as string[]) || [];
+                                                    const updated = current.includes(opt.id)
+                                                        ? current.filter((id: string) => id !== opt.id)
+                                                        : [...current, opt.id];
+                                                    handleAnswer(currentStep.id, updated);
+                                                } else {
+                                                    // Single select behavior: Toggle off if clicked again? Or just select. usually just select.
+                                                    handleAnswer(currentStep.id, opt.id);
+                                                    // Optionally auto-advance? User didn't ask.
+                                                }
                                             }}
-                                            className={`relative flex flex-col items-center justify-center p-8 border-2 rounded-xl transition-all min-h-[140px] ${isSelected ? 'border-primary bg-primary/5 shadow-md' : 'border-input hover:border-primary/50 hover:shadow-sm'}`}
+                                            className={`relative flex flex-col items-start text-left p-6 border-2 rounded-xl transition-all ${isSelected ? 'border-primary bg-primary/5 shadow-md' : 'border-input hover:border-primary/50 hover:shadow-sm'}`}
                                         >
-                                            <div className={`mb-4 p-4 rounded-full ${isSelected ? 'bg-primary/10' : 'bg-accent'}`}>
-                                                <span className={isSelected ? 'text-primary' : 'text-muted-foreground'}>
-                                                    {opt.icon ? renderIcon(opt.icon) : <Smartphone className="w-8 h-8" />}
-                                                </span>
+                                            <div className="flex w-full items-start gap-4">
+                                                <div className={`p-3 rounded-full flex-shrink-0 ${isSelected ? 'bg-primary/10' : 'bg-muted'}`}>
+                                                    <span className={isSelected ? 'text-primary' : 'text-muted-foreground'}>
+                                                        {opt.icon ? renderIcon(opt.icon) : (isMulti ? <AlertTriangle className="w-6 h-6" /> : <CheckCircle2 className="w-6 h-6" />)}
+                                                    </span>
+                                                </div>
+                                                <div className="flex-1">
+                                                    <span className={`block font-bold text-lg mb-1 ${isSelected ? 'text-primary' : ''}`}>{opt.label}</span>
+                                                    {/* Render Description if available */}
+                                                    {opt.description && (
+                                                        <span className="text-sm text-muted-foreground leading-snug block">{opt.description}</span>
+                                                    )}
+                                                </div>
+                                                {isSelected && <div className="text-primary"><CheckCircle2 className="w-6 h-6" /></div>}
                                             </div>
-                                            <span className={`text-sm font-medium text-center ${isSelected ? 'text-primary' : ''}`}>{opt.label}</span>
-                                            {isSelected && <div className="absolute top-3 right-3 text-primary"><CheckCircle2 className="w-6 h-6" /></div>}
                                         </button>
                                     );
                                 })}
@@ -152,23 +170,38 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete }: Ch
                     <div className="space-y-4">
                         <h4 className="font-semibold text-sm">Device Evaluation</h4>
 
-                        <div className="space-y-2">
-                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Functional Status</p>
-                            <ul className="text-sm space-y-2">
-                                {answers.calls === false && <li className="text-red-500 flex gap-2"><XCircle className="w-4 h-4" /> Calls not working</li>}
-                                {answers.touch === false && <li className="text-red-500 flex gap-2"><XCircle className="w-4 h-4" /> Touch faulty</li>}
-                                {answers.screen_original === true && <li className="text-green-600 flex gap-2"><Check className="w-4 h-4" /> Original Screen</li>}
-                                {Object.keys(answers).length === 0 && <li className="text-muted-foreground italic">Pending...</li>}
-                            </ul>
-                        </div>
-
-                        {(answers.screen_defects as string[] | undefined) && (answers.screen_defects as string[]).length > 0 && (
+                        {/* Physical Condition Summary */}
+                        {(answers.physical_condition as string) && (
                             <div className="space-y-2">
-                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Physical Defects</p>
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Physical Condition</p>
+                                <div className="text-sm font-medium text-primary flex items-center gap-2">
+                                    <Icons.Smartphone className="w-4 h-4" />
+                                    {steps.find((s: any) => s.id === 'physical_condition')?.options?.find((o: any) => o.id === answers.physical_condition)?.label as string}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Functional Issues Summary */}
+                        {(answers.functional_issues as string[] | undefined) && (answers.functional_issues as string[]).length > 0 && (
+                            <div className="space-y-2">
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Functional Problems</p>
                                 <ul className="text-sm space-y-1">
-                                    {(answers.screen_defects as string[]).map((def: string) => (
-                                        <li key={def} className="text-amber-600 flex gap-2"><AlertTriangle className="w-4 h-4" /> {def.replace('_', ' ')}</li>
-                                    ))}
+                                    {(answers.functional_issues as string[]).map((issueId: string) => {
+                                        const label = (steps.find((s: any) => s.id === 'functional_issues')?.options?.find((o: any) => o.id === issueId)?.label || issueId) as string;
+                                        return (
+                                            <li key={issueId} className="text-red-500 flex gap-2"><Icons.AlertCircle className="w-4 h-4" /> {label}</li>
+                                        );
+                                    })}
+                                </ul>
+                            </div>
+                        )}
+
+                        {/* Old/Other Categories Fallback (Tablet/etc using Boolean) */}
+                        {category !== 'smartphone' && (
+                            <div className="space-y-2">
+                                <ul className="text-sm space-y-2">
+                                    {answers.power === false && <li className="text-red-500 flex gap-2"><Icons.XCircle className="w-4 h-4" /> Power Issue</li>}
+                                    {answers.screen === false && <li className="text-red-500 flex gap-2"><Icons.XCircle className="w-4 h-4" /> Screen Issue</li>}
                                 </ul>
                             </div>
                         )}

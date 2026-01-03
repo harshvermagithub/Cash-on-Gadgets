@@ -116,28 +116,41 @@ export const variants = variantSets.smartphone;
 export const questionnaireSteps = {
     'smartphone': [
         {
-            id: 'core_functionality',
-            title: 'Tell us more about your device?',
-            subtitle: 'Please answer a few questions about your device.',
-            questions: [
-                { id: 'calls', text: 'Are you able to make and receive calls?', subtext: 'Check your device for cellular network connectivity issues.', type: 'boolean' },
-                { id: 'touch', text: 'Is your device\'s touch screen working properly?', subtext: 'Check the touch screen functionality of your phone.', type: 'boolean' },
-                { id: 'screen_original', text: 'Is your phone\'s screen original?', subtext: 'Pick "Yes" if screen was never changed or was changed by Authorized Service Center.', type: 'boolean' }
+            id: 'physical_condition',
+            title: 'Tell us more about your device questions',
+            subtitle: 'Select screen\'s physical condition',
+            type: 'single-select',
+            options: [
+                { id: 'flawless', label: 'Flawless', description: 'No signs of usage', icon: 'Sparkles' },
+                { id: 'good', label: 'Good', description: 'Normal signs of usage', icon: 'Smile' },
+                { id: 'average', label: 'Average', description: 'Minor scratches', icon: 'MinusCircle' },
+                { id: 'below_average', label: 'Below Average', description: 'Screen crack, Dead pixel, Lines on screen', icon: 'AlertTriangle' },
             ]
         },
         {
-            id: 'screen_defects',
-            title: 'Select screen/body defects that are applicable!',
-            subtitle: 'Please provide correct details',
-            type: 'multi-select',
+            id: 'functional_issues',
+            title: 'Functional Problems',
+            subtitle: 'Select any issues your device has (Check if applicable)',
+            type: 'multi-select-grid',
             options: [
-                { id: 'scratch_screen', label: 'Broken/scratch on device screen', icon: 'Smartphone' },
-                { id: 'dead_spot', label: 'Dead Spot/Visible line on screen', icon: 'ScanLine' },
-                { id: 'dent_body', label: 'Scratch/Dent on device body', icon: 'ShieldAlert' },
-                { id: 'panel_broken', label: 'Device panel missing/broken', icon: 'XCircle' },
-                { id: 'loose_screen', label: 'Screen coming out/Loose', icon: 'Maximize' },
-                { id: 'heavy_scratch', label: 'Heavy scratches on screen', icon: 'Scan' },
-                { id: 'loose_panel', label: 'Back Panel Loose/Gap', icon: 'Minimize' },
+                { id: 'front_camera', label: 'Front Camera', icon: 'Camera' },
+                { id: 'back_camera', label: 'Back Camera', icon: 'Camera' },
+                { id: 'finger_sensor', label: 'Finger Touch Sensor', icon: 'Fingerprint' },
+                { id: 'face_sensor', label: 'Face Sensor', icon: 'User' },
+                { id: 'power_button', label: 'Power Button', icon: 'Power' },
+                { id: 'volume_button', label: 'Volume Button', icon: 'Volume2' },
+                { id: 'wifi', label: 'WiFi', icon: 'Wifi' },
+                { id: 'sim1', label: 'Sim 1', icon: 'Smartphone' },
+                { id: 'sim2', label: 'Sim 2', icon: 'Smartphone' },
+                { id: 'speaker', label: 'Speaker', icon: 'Speaker' },
+                { id: 'audio_ic', label: 'Audio IC', icon: 'Music' },
+                { id: 'silent_button', label: 'Silent Button', icon: 'BellOff' },
+                { id: 'charging_port', label: 'Charging Port', icon: 'Plug' },
+                { id: 'camera_glass', label: 'Camera Glass Broken', icon: 'CameraOff' },
+                { id: 'microphone', label: 'Microphone', icon: 'Mic' },
+                { id: 'bluetooth', label: 'Bluetooth', icon: 'Bluetooth' },
+                { id: 'vibrator', label: 'Vibrator', icon: 'Vibrate' },
+                { id: 'proximity', label: 'Proximity Sensor', icon: 'Move' },
             ]
         },
         {
@@ -227,6 +240,41 @@ export const questionnaireSteps = {
                 { id: 'display', text: 'Is the display perfect?', subtext: 'No lines, dots, or color issues.', type: 'boolean' },
                 { id: 'remote', text: 'Original Remote available?', subtext: '', type: 'boolean' },
                 { id: 'wifi', text: 'Smart features (WiFi) working?', subtext: '', type: 'boolean' }
+            ]
+        }
+    ],
+    'laptop': [
+        {
+            id: 'core_functionality',
+            title: 'Laptop Basics',
+            subtitle: 'Quick health check.',
+            questions: [
+                { id: 'power', text: 'Does it power on & boot?', subtext: '', type: 'boolean' },
+                { id: 'ports', text: 'Do all USB/Charging ports work?', subtext: '', type: 'boolean' },
+                { id: 'screen_working', text: 'Is the Display functioning?', subtext: 'No flicker or dead pixels.', type: 'boolean' },
+                { id: 'keyboard', text: 'Keyboard & Trackpad working?', subtext: '', type: 'boolean' }
+            ]
+        },
+        {
+            id: 'physical_condition',
+            title: 'Physical Condition',
+            subtitle: 'Any damage?',
+            type: 'multi-select',
+            options: [
+                { id: 'screen_damage', label: 'Broken Screen/Hinges', icon: 'Laptop' },
+                { id: 'body_damage', label: 'Heavy Dents/Cracks on Body', icon: 'ShieldAlert' },
+                { id: 'battery_dead', label: 'Battery Dead/Not Charging', icon: 'Battery' },
+                { id: 'keys_missing', label: 'Keys Missing/Broken', icon: 'Keyboard' },
+            ]
+        },
+        {
+            id: 'specs',
+            title: 'System Specs',
+            subtitle: 'Confirm configuration',
+            type: 'multi-select',
+            options: [
+                { id: 'charger_missing', label: 'Original Charger Missing', icon: 'Plug' },
+                { id: 'box_missing', label: 'Original Box Missing', icon: 'Box' }
             ]
         }
     ]

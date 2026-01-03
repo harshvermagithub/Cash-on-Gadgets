@@ -157,9 +157,15 @@ export default function BrandManager({ initialBrands, category }: BrandManagerPr
                 {initialBrands.map((brand) => (
                     <div key={brand.id} className="p-4 border rounded-xl flex items-center justify-between bg-card">
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 relative bg-gray-50 rounded-lg p-2 flex items-center justify-center">
+                            <div className="w-12 h-12 relative bg-slate-100 dark:bg-slate-800 border dark:border-slate-700 rounded-lg p-2 flex items-center justify-center overflow-hidden">
                                 {brand.logo && (brand.logo.startsWith('/') || brand.logo.startsWith('http')) ? (
-                                    <Image src={brand.logo} alt={brand.name} fill className="object-contain" />
+                                    <Image
+                                        src={brand.logo}
+                                        alt={brand.name}
+                                        fill
+                                        className="object-contain"
+                                        style={{ filter: 'var(--brand-logo-filter)' }}
+                                    />
                                 ) : (
                                     <span className="text-xl font-bold text-gray-400">{brand.name[0]}</span>
                                 )}

@@ -63,7 +63,7 @@ export default function Home() {
                                 </Link>
                                 <Link
                                     href="/orders"
-                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-white border border-green-100 text-foreground font-semibold text-lg hover:bg-green-50 transition-all duration-300"
+                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-white dark:bg-slate-800 border border-green-100 dark:border-slate-700 text-slate-900 dark:text-white font-semibold text-lg hover:bg-green-50 dark:hover:bg-slate-700 transition-all duration-300"
                                 >
                                     Track Order
                                 </Link>
@@ -98,37 +98,37 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Brands Marquee & Stats Section */}
-            <section className="py-12 border-y bg-emerald-50/50">
+            {/* Brands Marquee & Stats Section - ALWAYS DARK MODE */}
+            <section className="py-12 border-y bg-slate-900 border-slate-800">
                 <div className="container mx-auto px-6 mb-12">
-                    <p className="text-center text-sm font-semibold text-green-700/60 uppercase tracking-wider mb-8">We Accept All Major Brands</p>
+                    <p className="text-center text-sm font-semibold text-green-400/60 uppercase tracking-wider mb-8">We Accept All Major Brands</p>
                     <div className="flex flex-wrap justify-center gap-8 md:gap-16 items-center">
-                        <span className="text-2xl font-bold text-slate-800 hover:text-black transition-colors cursor-default">Apple</span>
-                        <span className="text-2xl font-bold text-blue-700 hover:text-blue-800 transition-colors cursor-default">Samsung</span>
-                        <span className="text-2xl font-bold text-red-600 hover:text-red-700 transition-colors cursor-default">OnePlus</span>
-                        <span className="text-2xl font-bold text-orange-500 hover:text-orange-600 transition-colors cursor-default">Xiaomi</span>
-                        <span className="text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors cursor-default">Vivo</span>
-                        <span className="text-2xl font-bold text-emerald-600 hover:text-emerald-700 transition-colors cursor-default">Oppo</span>
+                        <span className="text-2xl font-bold text-slate-200 hover:text-white transition-colors cursor-default">Apple</span>
+                        <span className="text-2xl font-bold text-blue-400 hover:text-blue-300 transition-colors cursor-default">Samsung</span>
+                        <span className="text-2xl font-bold text-red-400 hover:text-red-300 transition-colors cursor-default">OnePlus</span>
+                        <span className="text-2xl font-bold text-orange-400 hover:text-orange-300 transition-colors cursor-default">Xiaomi</span>
+                        <span className="text-2xl font-bold text-blue-400 hover:text-blue-300 transition-colors cursor-default">Vivo</span>
+                        <span className="text-2xl font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-default">Oppo</span>
                     </div>
                 </div>
 
                 <div className="container mx-auto px-6">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-green-200/50">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-slate-700">
                         <div className="p-4">
-                            <h3 className="text-3xl md:text-4xl font-bold text-green-600 mb-2">50K+</h3>
-                            <p className="text-sm text-muted-foreground font-medium">Gadgets Sold</p>
+                            <h3 className="text-3xl md:text-4xl font-bold text-green-400 mb-2">50K+</h3>
+                            <p className="text-sm text-slate-400 font-medium">Gadgets Sold</p>
                         </div>
                         <div className="p-4">
-                            <h3 className="text-3xl md:text-4xl font-bold text-emerald-600 mb-2">₹10Cr+</h3>
-                            <p className="text-sm text-muted-foreground font-medium">Cash Paid</p>
+                            <h3 className="text-3xl md:text-4xl font-bold text-emerald-400 mb-2">₹10Cr+</h3>
+                            <p className="text-sm text-slate-400 font-medium">Cash Paid</p>
                         </div>
                         <div className="p-4">
-                            <h3 className="text-3xl md:text-4xl font-bold text-teal-600 mb-2">100+</h3>
-                            <p className="text-sm text-muted-foreground font-medium">Cities Covered</p>
+                            <h3 className="text-3xl md:text-4xl font-bold text-teal-400 mb-2">100+</h3>
+                            <p className="text-sm text-slate-400 font-medium">Cities Covered</p>
                         </div>
                         <div className="p-4">
-                            <h3 className="text-3xl md:text-4xl font-bold text-lime-600 mb-2">4.8★</h3>
-                            <p className="text-sm text-muted-foreground font-medium">User Rating</p>
+                            <h3 className="text-3xl md:text-4xl font-bold text-lime-400 mb-2">4.8★</h3>
+                            <p className="text-sm text-slate-400 font-medium">User Rating</p>
                         </div>
                     </div>
                 </div>
@@ -157,8 +157,8 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Why Choose Us Section - Dynamic & Animated */}
-            <section className="py-24 bg-green-50/30 overflow-hidden">
+            {/* Why Choose Us Section - ALWAYS DARK MODE */}
+            <section className="py-24 bg-slate-900 overflow-hidden">
                 <div className="container mx-auto px-6">
                     <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
                         <motion.h2
@@ -166,7 +166,7 @@ export default function Home() {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
                             viewport={{ once: true }}
-                            className="text-3xl md:text-4xl font-bold uppercase tracking-wide text-green-900"
+                            className="text-3xl md:text-4xl font-bold uppercase tracking-wide text-green-400"
                         >
                             WHY CHOOSE US
                         </motion.h2>
@@ -182,25 +182,25 @@ export default function Home() {
                     <div className="grid md:grid-cols-3 gap-8">
                         {/* Benefit 1: Prices */}
                         <motion.div
-                            whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
+                            whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3)" }}
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
-                            className="flex items-center gap-6 bg-white/60 p-6 rounded-3xl border border-transparent hover:border-green-200 transition-all duration-300 group cursor-default"
+                            className="flex items-center gap-6 bg-slate-800 p-6 rounded-3xl border border-slate-700 hover:border-green-600 transition-all duration-300 group cursor-default"
                         >
-                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-green-100/50 rounded-2xl group-hover:bg-green-100 transition-colors">
+                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-green-900/20 rounded-2xl group-hover:bg-green-900/40 transition-colors">
                                 <motion.div
                                     animate={{ rotateY: [0, 180, 0] }}
                                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                    className="w-12 h-12 rounded-full border-4 border-green-500 flex items-center justify-center bg-white shadow-sm"
+                                    className="w-12 h-12 rounded-full border-4 border-green-500 flex items-center justify-center bg-slate-900 shadow-sm"
                                 >
-                                    <span className="font-bold text-green-700 text-xl">₹</span>
+                                    <span className="font-bold text-green-400 text-xl">₹</span>
                                 </motion.div>
                             </div>
                             <div className="space-y-2">
-                                <h3 className="text-xl font-bold group-hover:text-green-700 transition-colors">Amazing Prices</h3>
-                                <p className="text-muted-foreground text-sm leading-relaxed">
+                                <h3 className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">Amazing Prices</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">
                                     Buying or selling, we guarantee the best market rates for your device.
                                 </p>
                             </div>
@@ -208,24 +208,24 @@ export default function Home() {
 
                         {/* Benefit 2: Speed */}
                         <motion.div
-                            whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
+                            whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3)" }}
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.1 }}
-                            className="flex items-center gap-6 bg-white/60 p-6 rounded-3xl border border-transparent hover:border-teal-200 transition-all duration-300 group cursor-default"
+                            className="flex items-center gap-6 bg-slate-800 p-6 rounded-3xl border border-slate-700 hover:border-teal-600 transition-all duration-300 group cursor-default"
                         >
-                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-teal-100/50 rounded-2xl group-hover:bg-teal-100 transition-colors">
+                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-teal-900/20 rounded-2xl group-hover:bg-teal-900/40 transition-colors">
                                 <motion.div
                                     animate={{ scale: [1, 1.2, 1] }}
                                     transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                                 >
-                                    <Zap className="w-10 h-10 text-teal-500 fill-teal-500" />
+                                    <Zap className="w-10 h-10 text-teal-400 fill-teal-400" />
                                 </motion.div>
                             </div>
                             <div className="space-y-2">
-                                <h3 className="text-xl font-bold group-hover:text-teal-600 transition-colors">Quick & Fast Service</h3>
-                                <p className="text-muted-foreground text-sm leading-relaxed">
+                                <h3 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">Quick & Fast Service</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">
                                     Get mobile in a click at your home/office instantly. No waiting.
                                 </p>
                             </div>
@@ -233,24 +233,24 @@ export default function Home() {
 
                         {/* Benefit 3: Safety */}
                         <motion.div
-                            whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
+                            whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3)" }}
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.2 }}
-                            className="flex items-center gap-6 bg-white/60 p-6 rounded-3xl border border-transparent hover:border-lime-200 transition-all duration-300 group cursor-default"
+                            className="flex items-center gap-6 bg-slate-800 p-6 rounded-3xl border border-slate-700 hover:border-lime-600 transition-all duration-300 group cursor-default"
                         >
-                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-lime-100/50 rounded-2xl group-hover:bg-lime-100 transition-colors">
+                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-lime-900/20 rounded-2xl group-hover:bg-lime-900/40 transition-colors">
                                 <motion.div
                                     animate={{ rotate: [0, 10, -10, 0] }}
                                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                                 >
-                                    <ShieldCheck className="w-10 h-10 text-green-600" />
+                                    <ShieldCheck className="w-10 h-10 text-green-400" />
                                 </motion.div>
                             </div>
                             <div className="space-y-2">
-                                <h3 className="text-xl font-bold group-hover:text-green-600 transition-colors">Safety Guaranteed</h3>
-                                <p className="text-muted-foreground text-sm leading-relaxed">
+                                <h3 className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">Safety Guaranteed</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">
                                     We are the safest hands for your device security. 100% Data Wipe.
                                 </p>
                             </div>

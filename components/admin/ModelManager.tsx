@@ -247,7 +247,7 @@ export default function ModelManager({ initialModels, brands, preselectedCategor
                     {visibleModels.map((model) => (
                         <div key={model.id} className="p-4 border rounded-xl flex items-center justify-between bg-card">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 relative bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
+                                <div className="w-12 h-12 relative bg-slate-100 dark:bg-slate-800 border dark:border-slate-700 rounded-lg overflow-hidden flex items-center justify-center">
                                     {model.img && (model.img.startsWith('/') || model.img.startsWith('http')) ? (
                                         <Image src={model.img} alt={model.name} fill className="object-cover" />
                                     ) : (

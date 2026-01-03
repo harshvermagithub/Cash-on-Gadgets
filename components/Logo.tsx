@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShoppingCart } from 'lucide-react';
 
 export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
     return (
@@ -15,7 +14,10 @@ export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
                     {/* Top Row: F inside Phone + ONZ */}
                     <div className="flex items-center justify-center gap-0.5 mb-0.5">
                         {/* F inside Smartphone */}
-                        <div className="relative w-4 h-6 flex items-center justify-center bg-slate-800 rounded-[3px] border border-slate-700 shadow-inner overflow-hidden">
+                        <div
+                            className="relative w-4 h-6 flex items-center justify-center rounded-[3px] border border-slate-700 dark:border-white/20 shadow-inner overflow-hidden transition-colors duration-300"
+                            style={{ backgroundColor: 'var(--logo-box-bg)' }}
+                        >
                             {/* Flicker Animation */}
                             <motion.span
                                 animate={{ opacity: [1, 0, 1, 0, 1, 1, 0.2, 1] }}
@@ -24,18 +26,29 @@ export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
                                     repeat: Infinity,
                                     times: [0, 0.1, 0.2, 0.3, 0.4, 0.8, 0.9, 1]
                                 }}
-                                className="font-black text-sm text-green-500 font-mono"
+                                className="font-black text-sm font-mono transition-colors duration-300"
+                                style={{ color: 'var(--logo-f-color)' }}
                             >
                                 F
                             </motion.span>
                         </div>
 
-                        <span className="font-black text-lg text-slate-800 tracking-tighter">ONZ</span>
+                        <span
+                            className="font-black text-lg tracking-tighter transition-colors duration-300"
+                            style={{ color: 'var(--logo-text)' }}
+                        >
+                            ONZ
+                        </span>
                     </div>
 
                     {/* Bottom Row: KA + Cash/Rupee + T */}
                     <div className="flex items-center justify-center gap-0.5">
-                        <span className="font-bold text-xs text-slate-600 tracking-tight">KA</span>
+                        <span
+                            className="font-bold text-xs tracking-tight transition-colors duration-300"
+                            style={{ color: 'var(--logo-ka-t-color)' }}
+                        >
+                            KA
+                        </span>
 
                         {/* R replacement: Vertical Cash with Rupee */}
                         <div className="relative w-3 h-4 bg-green-600 rounded-[2px] border border-green-700 flex items-center justify-center shadow-sm -mt-0.5">
@@ -52,7 +65,12 @@ export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
                             </motion.span>
                         </div>
 
-                        <span className="font-bold text-xs text-slate-600 tracking-tight">T</span>
+                        <span
+                            className="font-bold text-xs tracking-tight transition-colors duration-300"
+                            style={{ color: 'var(--logo-ka-t-color)' }}
+                        >
+                            T
+                        </span>
                     </div>
                 </div>
 
@@ -63,8 +81,8 @@ export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
                     viewBox="0 0 28 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="text-slate-900"
-                    style={{ overflow: 'visible' }}
+                    className="transition-colors duration-300"
+                    style={{ color: 'var(--logo-cart-color)', overflow: 'visible' }}
                 >
                     {/* Wheels positioned wider */}
                     <path
@@ -94,6 +112,5 @@ export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
         </div>
     );
 };
-
 
 export default Logo;

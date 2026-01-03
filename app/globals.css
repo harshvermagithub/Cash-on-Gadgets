@@ -132,7 +132,35 @@
   body {
     @apply bg-background text-foreground;
   }
+}
 
+/* Custom Utilities for Logo Filtering */
+:root {
+  --brand-logo-filter: brightness(0);
+
+  /* LOGO VARIABLES - Light Mode */
+  --logo-box-bg: #1e293b;
+  /* slate-800 */
+  --logo-text: #1e293b;
+  /* slate-800 */
+  --logo-cart-color: #0f172a;
+  /* slate-900 */
+  --logo-f-color: #22c55e;
+  /* green-500 */
+  --logo-ka-t-color: #475569;
+  /* slate-600 */
+}
+
+.dark {
+  --brand-logo-filter: brightness(0) invert(1);
+
+  /* LOGO VARIABLES - Dark Mode */
+  --logo-box-bg: #ffffff;
+  --logo-text: #ffffff;
+  --logo-cart-color: #ffffff;
+  --logo-f-color: #16a34a;
+  /* green-600 */
+  --logo-ka-t-color: #ffffff;
 }
 
 @layer utilities {

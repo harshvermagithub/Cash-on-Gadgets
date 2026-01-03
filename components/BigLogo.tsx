@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -21,28 +20,42 @@ export const BigLogo = () => {
             <div className="relative flex items-center justify-start">
                 {/* The Cart Container - Tilted Left - Left Origin for Alignment */}
                 {/* Reduced scale to prevent overlap, adjusted padding in parent container */}
+
                 <div className="relative -rotate-3 origin-left scale-[2] md:scale-[2.8] lg:scale-[3.5] ml-4">
                     {/* Content Inside the Cart - Gap Reduced by Half */}
                     <div className="absolute top-[2.5%] left-1/2 -translate-x-[48%] flex flex-col items-start leading-none z-10">
-
                         {/* Row 1: F O N Z */}
                         <div className="flex items-center gap-[1px]">
                             {/* F inside Phone */}
-                            <div className="relative w-4 h-6 flex items-center justify-center bg-slate-800 rounded-[3px] border border-slate-700 shadow-inner overflow-hidden">
+                            <div
+                                className="relative w-4 h-6 flex items-center justify-center rounded-[3px] border border-slate-700 dark:border-white/20 shadow-inner overflow-hidden transition-colors duration-300"
+                                style={{ backgroundColor: 'var(--logo-box-bg)' }}
+                            >
                                 <motion.span
                                     animate={blinkAnimation}
                                     transition={blinkTransition}
-                                    className="font-black text-sm text-green-500 font-mono"
+                                    className="font-black text-sm font-mono transition-colors duration-300"
+                                    style={{ color: 'var(--logo-f-color)' }}
                                 >
                                     F
                                 </motion.span>
                             </div>
-                            <span className="font-black text-lg text-slate-800 tracking-tighter">ONZ</span>
+                            <span
+                                className="font-black text-lg tracking-tighter transition-colors duration-300"
+                                style={{ color: 'var(--logo-text)' }}
+                            >
+                                ONZ
+                            </span>
                         </div>
 
                         {/* Row 2: K A ₹ T (Staggered to start under Z) */}
                         <div className="flex items-center gap-[1px] ml-[38px] -mt-[2px]">
-                            <span className="font-bold text-xs text-slate-600 tracking-tight">KA</span>
+                            <span
+                                className="font-bold text-xs tracking-tight transition-colors duration-300"
+                                style={{ color: 'var(--logo-ka-t-color)' }}
+                            >
+                                KA
+                            </span>
                             <div className="relative w-3 h-4 bg-green-600 rounded-[2px] border border-green-700 flex items-center justify-center shadow-sm -mt-0.5">
                                 <motion.span
                                     animate={blinkAnimation}
@@ -52,9 +65,13 @@ export const BigLogo = () => {
                                     ₹
                                 </motion.span>
                             </div>
-                            <span className="font-bold text-xs text-slate-600 tracking-tight">T</span>
+                            <span
+                                className="font-bold text-xs tracking-tight transition-colors duration-300"
+                                style={{ color: 'var(--logo-ka-t-color)' }}
+                            >
+                                T
+                            </span>
                         </div>
-
                     </div>
 
                     {/* Custom Shopping Cart Graphic - Gap Reduced by Half */}
@@ -64,8 +81,8 @@ export const BigLogo = () => {
                         viewBox="0 0 38 24"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        className="text-slate-900 mt-1.5"
-                        style={{ overflow: 'visible' }}
+                        className="mt-1.5 transition-colors duration-300"
+                        style={{ color: 'var(--logo-cart-color)', overflow: 'visible' }}
                     >
                         {/* Rear Wheel */}
                         <path

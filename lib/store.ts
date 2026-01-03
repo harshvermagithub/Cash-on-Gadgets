@@ -136,9 +136,14 @@ export const db = {
                 where.OR.push({ categories: { equals: [] } });
             }
 
-            return await prisma.brand.findMany({ where });
+            return await prisma.brand.findMany({
+                where,
+                orderBy: { name: 'asc' }
+            });
         }
-        return await prisma.brand.findMany();
+        return await prisma.brand.findMany({
+            orderBy: { name: 'asc' }
+        });
     },
     addBrand: async (brand: Brand) => {
         // If categories passed in brand object, they are saved.

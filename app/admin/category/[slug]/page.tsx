@@ -6,7 +6,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
     const { slug } = await params;
 
     // Fetch Data Server Side
-    const brands = await db.getBrands(); // We fetch all brands for now because filtering strictly by category might hide brands that are valid but have no models YET.
+    const brands = await db.getBrands(slug); // Fetch filtered brands for this category
     // Ideally user wants filtered brands view? 
     // "BrandManager" handles generic brands. Let's pass all brands so they can be selected.
 
