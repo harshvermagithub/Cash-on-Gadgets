@@ -200,11 +200,13 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                 <div className="bg-gradient-to-br from-primary/10 to-accent/50 p-10 rounded-[2.5rem] border border-primary/20 text-center space-y-4 shadow-xl relative overflow-hidden group">
                     <div className="absolute inset-0 bg-white/40 backdrop-blur-3xl -z-10" />
 
-                    <p className="text-sm font-bold uppercase tracking-widest text-primary/80">Your Final Offer</p>
+                    <div className="inline-block px-4 py-1.5 rounded-full bg-slate-900/10 dark:bg-white/10 text-primary-dark font-bold text-sm tracking-widest uppercase mb-2">
+                        Your Final Offer
+                    </div>
                     <div className="text-7xl font-black text-foreground tracking-tight flex items-center justify-center gap-2">
                         {isCalculating ? <Loader2 className="w-16 h-16 animate-spin text-primary" /> : `₹${finalPrice.toLocaleString()}`}
                     </div>
-                    <p className="text-sm text-muted-foreground font-medium bg-white/50 inline-block px-4 py-1 rounded-full">
+                    <p className="text-sm font-medium bg-slate-900 text-white inline-block px-4 py-1.5 rounded-full shadow-md">
                         Price valid for 3 days
                     </p>
                 </div>
@@ -380,13 +382,13 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center justify-between">
-                                <h4 className="font-bold text-foreground">Express Pickup</h4>
+                                <h4 className={`font-bold ${isExpress ? 'text-slate-900' : 'text-foreground'}`}>Express Pickup</h4>
                                 <div className="flex items-center gap-2">
-                                    <span className="text-xs text-muted-foreground line-through">₹50</span>
+                                    <span className={`text-xs ${isExpress ? 'text-slate-500' : 'text-muted-foreground'} line-through`}>₹50</span>
                                     <span className="text-sm font-bold text-green-600">FREE</span>
                                 </div>
                             </div>
-                            <p className="text-xs text-muted-foreground mt-0.5">Pickup within 3 hours</p>
+                            <p className={`text-xs mt-0.5 ${isExpress ? 'text-slate-600' : 'text-muted-foreground'}`}>Pickup within 3 hours</p>
                         </div>
                         <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${isExpress ? 'border-amber-500 bg-amber-500' : 'border-slate-300'}`}>
                             {isExpress && <CheckCircle className="w-4 h-4 text-white" />}

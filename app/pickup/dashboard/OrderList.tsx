@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { updateOrderStatus, logoutExecutive } from '@/actions/executive';
-import { MapPin, Phone, Calendar, CheckCircle2, Navigation, LogOut } from 'lucide-react';
+import { MapPin, Phone, Calendar, CheckCircle2, Navigation, LogOut, Zap } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Order } from '@/lib/store';
 
@@ -13,6 +13,9 @@ interface OrderAnswers {
     functional_problems?: string[];
     calls?: boolean;
     touch?: boolean;
+    isExpress?: boolean;
+    scheduledDate?: string;
+    scheduledSlot?: string;
 }
 
 export default function OrderList({ orders, executiveName }: { orders: Order[], executiveName: string }) {
@@ -59,7 +62,7 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                         <div key={order.id} className="bg-card border rounded-2xl p-6 shadow-sm space-y-4">
                             <div className="flex justify-between items-start">
                                 <div>
-                                    <div className="flex items-center gap-2 mb-2">
+                                    <div className="flex items-center gap-2 mb-2 flex-wrap">
                                         <span className={`px-2 py-0.5 rounded-full text-xs font-bold uppercase ${order.status === 'assigned' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' :
                                             order.status === 'picked_up' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' :
                                                 order.status === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' :
@@ -67,6 +70,11 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                                             }`}>
                                             {order.status}
                                         </span>
+                                        {!!order.answers && (order.answers as OrderAnswers).isExpress && (
+                                            <span className="px-2 py-0.5 rounded-full text-xs font-bold uppercase bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 flex items-center gap-1 border border-amber-200 dark:border-amber-800">
+                                                <Zap className="w-3 h-3 fill-current" /> Express
+                                            </span>
+                                        )}
                                         <span className="text-xs text-muted-foreground flex items-center gap-1">
                                             <Calendar className="w-3 h-3" />
                                             {new Date(order.date).toLocaleDateString()}

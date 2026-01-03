@@ -219,8 +219,13 @@ export const db = {
 
     // Variant Methods
     getVariants: async (modelId?: string) => {
-        if (modelId) return await prisma.variant.findMany({ where: { modelId } });
-        return await prisma.variant.findMany();
+        if (modelId) return await prisma.variant.findMany({
+            where: { modelId },
+            orderBy: { basePrice: 'asc' }
+        });
+        return await prisma.variant.findMany({
+            orderBy: { basePrice: 'asc' }
+        });
     },
     addVariant: async (variant: Variant) => {
         await prisma.variant.create({ data: variant });
