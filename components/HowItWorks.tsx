@@ -176,7 +176,7 @@ export default function HowItWorks() {
                         <div className="space-y-2">
                             <h3 className="text-xl font-bold text-slate-900">Schedule Pickup</h3>
                             <p className="text-slate-500 text-sm leading-relaxed">
-                                Our verified "Fonzkart" agent will visit your location at your chosen time slot for inspection.
+                                Our verified Fonzkart agent will visit your location at your chosen time slot for pick up and not inspection.
                             </p>
                         </div>
                     </motion.div>
@@ -237,7 +237,7 @@ export default function HowItWorks() {
                         <div className="space-y-2">
                             <h3 className="text-xl font-bold text-slate-900">Get Paid Instantly</h3>
                             <p className="text-slate-500 text-sm leading-relaxed">
-                                Money is transferred to your account instantly via UPI or Cash before our agent leaves.
+                                Money is transferred to your account instantly before our agent leaves your place.
                             </p>
                         </div>
                     </motion.div>

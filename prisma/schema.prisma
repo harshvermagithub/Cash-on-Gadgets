@@ -61,6 +61,7 @@ model Brand {
   name  String
   logo  String
   categories String[] @default([])
+  priority   Int      @default(100)
   
   models Model[]
 }

@@ -145,6 +145,10 @@ export default function SellWizard({ initialBrands, initialCategory, user }: Sel
                                 setAnswers(collectedAnswers);
                                 setStep('final_quote');
                             }}
+                            onBack={() => {
+                                if (isRepair) setStep('variant');
+                                else setStep('quote_preview');
+                            }}
                         />
                     </motion.div>
                 )}

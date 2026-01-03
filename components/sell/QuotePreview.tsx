@@ -13,9 +13,10 @@ interface QuotePreviewProps {
 export default function QuotePreview({ basePrice, deviceDetails, onGetExactValue, onBack, isRepair }: QuotePreviewProps) {
     return (
         <div className="max-w-2xl mx-auto space-y-6">
-            <div className="flex items-center gap-4 mb-8">
-                <button onClick={onBack} className="p-2 hover:bg-accent rounded-full transition-colors absolute">
+            <div className="flex items-center gap-2 mb-6">
+                <button onClick={onBack} className="flex items-center gap-2 p-2 hover:bg-accent rounded-lg transition-colors text-muted-foreground hover:text-foreground">
                     <ArrowLeft className="w-5 h-5" />
+                    <span className="font-medium">Back</span>
                 </button>
             </div>
 

@@ -21,7 +21,7 @@ export async function getBrands() {
     return await db.getBrands();
 }
 
-export async function addBrand(name: string, logo: string, category?: string) {
+export async function addBrand(name: string, logo: string, category?: string, priority: number = 100) {
     await requireAdmin();
     const id = name.toLowerCase().replace(/\s+/g, '-');
 
@@ -32,8 +32,8 @@ export async function addBrand(name: string, logo: string, category?: string) {
         if (category) {
             await db.addCategoryToBrand(id, category);
         }
-        // Update details (last write wins for name/logo)
-        await db.updateBrand(id, name, logo);
+        // Update details (last write wins for name/logo/priority)
+        await db.updateBrand(id, name, logo, priority);
     } else {
         await db.addBrand({
             id,
@@ -76,9 +76,9 @@ export async function deleteBrand(id: string, category?: string) {
     return { success: true };
 }
 
-export async function updateBrand(id: string, name: string, logo: string) {
+export async function updateBrand(id: string, name: string, logo: string, priority?: number) {
     await requireAdmin();
-    await db.updateBrand(id, name, logo);
+    await db.updateBrand(id, name, logo, priority);
     revalidatePath('/admin/brands');
     revalidatePath('/sell');
     return { success: true };

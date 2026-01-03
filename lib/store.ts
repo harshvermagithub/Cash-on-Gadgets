@@ -138,11 +138,11 @@ export const db = {
 
             return await prisma.brand.findMany({
                 where,
-                orderBy: { name: 'asc' }
+                orderBy: [{ priority: 'asc' }, { name: 'asc' }]
             });
         }
         return await prisma.brand.findMany({
-            orderBy: { name: 'asc' }
+            orderBy: [{ priority: 'asc' }, { name: 'asc' }]
         });
     },
     addBrand: async (brand: Brand) => {
@@ -178,10 +178,10 @@ export const db = {
             }
         }
     },
-    updateBrand: async (id: string, name: string, logo: string) => {
+    updateBrand: async (id: string, name: string, logo: string, priority?: number) => {
         await prisma.brand.update({
             where: { id },
-            data: { name, logo }
+            data: { name, logo, priority }
         });
     },
     deleteBrand: async (id: string) => {

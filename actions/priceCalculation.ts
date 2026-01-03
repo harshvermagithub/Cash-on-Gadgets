@@ -17,12 +17,34 @@ export async function calculatePrice(basePrice: number, answers: Record<string, 
         if (answers.touch === false) finalPrice *= 0.7;
         if (answers.screen_original === false) finalPrice *= 0.9;
 
-        const defects = answers.screen_defects as string[] | undefined;
-        // Default 500 per defect
-        if (defects && defects.length > 0) finalPrice -= (defects.length * 500);
+        // Screen Condition Deductions
+        const screen = answers.physical_condition as string;
+        if (screen === 'good') finalPrice -= basePrice * 0.10;
+        else if (screen === 'average') finalPrice -= basePrice * 0.20;
+        else if (screen === 'below_average') finalPrice -= basePrice * 0.40;
 
+        // Body Condition Deductions
+        const body = answers.body_condition as string;
+        if (body === 'good') finalPrice -= basePrice * 0.07;
+        else if (body === 'average') finalPrice -= basePrice * 0.14;
+        else if (body === 'below_average') finalPrice -= basePrice * 0.35;
+
+        // Functional Problems (4% per issue)
         const problems = answers.functional_problems as string[] | undefined;
-        if (problems && problems.length > 0) finalPrice -= (problems.length * 300);
+        if (problems && problems.length > 0) {
+            finalPrice -= (basePrice * 0.04 * problems.length);
+        }
+
+        // Warranty (Bonus)
+        const warranty = answers.warranty as string;
+        if (warranty === '3_months') finalPrice += basePrice * 0.05;
+        else if (warranty === '6_months') finalPrice += basePrice * 0.07;
+        else if (warranty === '9_months') finalPrice += basePrice * 0.08;
+        else if (warranty === '12_months') finalPrice += basePrice * 0.10;
+
+        // Original Bill (Deduction if missing)
+        const bill = answers.bill as string;
+        if (bill === 'no') finalPrice -= basePrice * 0.15;
 
         const accessories = answers.accessories as string[] | undefined;
         if (accessories?.includes('charger')) finalPrice += 200;

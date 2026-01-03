@@ -10,9 +10,10 @@ interface ChecklistWizardProps {
     deviceInfo: { name: string; variant: string; img: string };
     category?: string;
     onComplete: (answers: Record<string, unknown>) => void;
+    onBack?: () => void;
 }
 
-export default function ChecklistWizard({ deviceInfo, category, onComplete }: ChecklistWizardProps) {
+export default function ChecklistWizard({ deviceInfo, category, onComplete, onBack }: ChecklistWizardProps) {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [answers, setAnswers] = useState<Record<string, unknown>>({});
 
@@ -28,6 +29,8 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete }: Ch
         if (currentStepIndex > 0) {
             setCurrentStepIndex(prev => prev - 1);
             window.scrollTo(0, 0);
+        } else if (currentStepIndex === 0 && onBack) {
+            onBack();
         }
     };
 
@@ -38,6 +41,30 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete }: Ch
         } else {
             onComplete(answers);
         }
+    };
+
+    const isStepValid = () => {
+        if (!currentStep) return false;
+        // Require selection for single-select steps (Physical, Body, Warranty, Bill)
+        if (currentStep.type === 'single-select') {
+            return !!answers[currentStep.id];
+        }
+        // Boolean questions? (Tablets/etc) - Require all answered?
+        if (currentStep.questions) {
+            // Check if all questions have a boolean answer (true or false, not undefined)
+            return currentStep.questions.every((q: any) => typeof answers[q.id] === 'boolean');
+        }
+        if (currentStep.type === 'combined-step') {
+            // Hardcoded validation for known sections in combined step, or iterate
+            // Assuming warranty and bill are required single-selects
+            // We can check if all single-select sections have answers
+            return currentStep.sections.every((sec: any) => {
+                if (sec.type === 'single-select') return !!answers[sec.id];
+                return true;
+            });
+        }
+        // Multi-select steps are optional (can proceed with none)
+        return true;
     };
 
     const renderIcon = (iconName: string) => {
@@ -117,9 +144,8 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete }: Ch
                                                         : [...current, opt.id];
                                                     handleAnswer(currentStep.id, updated);
                                                 } else {
-                                                    // Single select behavior: Toggle off if clicked again? Or just select. usually just select.
+                                                    // Single select behavior
                                                     handleAnswer(currentStep.id, opt.id);
-                                                    // Optionally auto-advance? User didn't ask.
                                                 }
                                             }}
                                             className={`relative flex flex-col items-start text-left p-6 border-2 rounded-xl transition-all ${isSelected ? 'border-primary bg-primary/5 shadow-md' : 'border-input hover:border-primary/50 hover:shadow-sm'}`}
@@ -144,11 +170,62 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete }: Ch
                                 })}
                             </div>
                         )}
+
+                        {currentStep.type === 'combined-step' && (
+                            <div className="space-y-10">
+                                {currentStep.sections.map((section: any) => (
+                                    <div key={section.id} className="space-y-4">
+                                        <h3 className="font-semibold text-lg border-b pb-2">{section.title}</h3>
+                                        <div className={`grid gap-4 ${section.type === 'single-select' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2' : 'grid-cols-1 md:grid-cols-2'}`}>
+                                            {section.options?.map((opt: { id: string; label: string; description?: string; icon?: string }) => {
+                                                const isMulti = section.type !== 'single-select';
+                                                const isSelected = isMulti
+                                                    ? (answers[section.id] as string[])?.includes(opt.id)
+                                                    : answers[section.id] === opt.id;
+
+                                                return (
+                                                    <button
+                                                        key={opt.id}
+                                                        onClick={() => {
+                                                            if (isMulti) {
+                                                                const current = (answers[section.id] as string[]) || [];
+                                                                const updated = current.includes(opt.id)
+                                                                    ? current.filter((id: string) => id !== opt.id)
+                                                                    : [...current, opt.id];
+                                                                handleAnswer(section.id, updated);
+                                                            } else {
+                                                                handleAnswer(section.id, opt.id);
+                                                            }
+                                                        }}
+                                                        className={`relative flex flex-col items-start text-left p-4 border-2 rounded-xl transition-all ${isSelected ? 'border-primary bg-primary/5 shadow-md' : 'border-input hover:border-primary/50 hover:shadow-sm'}`}
+                                                    >
+                                                        <div className="flex w-full items-start gap-4">
+                                                            <div className={`p-2 rounded-full flex-shrink-0 ${isSelected ? 'bg-primary/10' : 'bg-muted'}`}>
+                                                                <span className={isSelected ? 'text-primary' : 'text-muted-foreground'}>
+                                                                    {opt.icon ? renderIcon(opt.icon) : (isMulti ? <AlertTriangle className="w-5 h-5" /> : <CheckCircle2 className="w-5 h-5" />)}
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex-1">
+                                                                <span className={`block font-bold text-base mb-1 ${isSelected ? 'text-primary' : ''}`}>{opt.label}</span>
+                                                                {opt.description && (
+                                                                    <span className="text-xs text-muted-foreground leading-snug block">{opt.description}</span>
+                                                                )}
+                                                            </div>
+                                                            {isSelected && <div className="text-primary"><CheckCircle2 className="w-5 h-5" /></div>}
+                                                        </div>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </motion.div>
                 </AnimatePresence>
 
                 <div className="mt-10 flex justify-between items-center">
-                    {currentStepIndex > 0 ? (
+                    {(currentStepIndex > 0 || onBack) ? (
                         <button
                             onClick={handleBack}
                             className="flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold px-4 py-2 transition-colors rounded-lg hover:bg-muted"
@@ -158,7 +235,11 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete }: Ch
                     ) : <div></div>}
                     <button
                         onClick={handleNext}
-                        className="flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-lg font-bold hover:bg-primary/90 transition-all shadow-md hover:shadow-lg"
+                        disabled={!isStepValid()}
+                        className={`flex items-center gap-2 px-8 py-3 rounded-lg font-bold transition-all shadow-md ${!isStepValid()
+                            ? 'bg-muted text-muted-foreground cursor-not-allowed opacity-70'
+                            : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg'
+                            }`}
                     >
                         Continue <ArrowRight className="w-5 h-5" />
                     </button>
@@ -219,6 +300,28 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete }: Ch
                                         );
                                     })}
                                 </ul>
+                            </div>
+                        )}
+
+                        {/* Warranty Summary */}
+                        {(answers.warranty as string) && (
+                            <div className="space-y-2">
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Warranty</p>
+                                <div className="text-sm font-medium text-primary flex items-center gap-2">
+                                    <Icons.Clock className="w-4 h-4" />
+                                    {steps.find((s: any) => s.id === 'warranty')?.options?.find((o: any) => o.id === answers.warranty)?.label as string}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Bill Summary */}
+                        {(answers.bill as string) && (
+                            <div className="space-y-2">
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Original Bill</p>
+                                <div className="text-sm font-medium text-primary flex items-center gap-2">
+                                    <Icons.FileText className="w-4 h-4" />
+                                    {steps.find((s: any) => s.id === 'bill')?.options?.find((o: any) => o.id === answers.bill)?.label as string}
+                                </div>
                             </div>
                         )}
 

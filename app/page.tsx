@@ -115,16 +115,16 @@ export default function Home() {
                 <div className="container mx-auto px-6">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-slate-700">
                         <div className="p-4">
-                            <h3 className="text-3xl md:text-4xl font-bold text-green-400 mb-2">50K+</h3>
-                            <p className="text-sm text-slate-400 font-medium">Gadgets Sold</p>
+                            <h3 className="text-3xl md:text-4xl font-bold text-green-400 mb-2">5K+</h3>
+                            <p className="text-sm text-slate-400 font-medium">Devices Bought</p>
                         </div>
                         <div className="p-4">
-                            <h3 className="text-3xl md:text-4xl font-bold text-emerald-400 mb-2">₹10Cr+</h3>
+                            <h3 className="text-3xl md:text-4xl font-bold text-emerald-400 mb-2">₹10L+</h3>
                             <p className="text-sm text-slate-400 font-medium">Cash Paid</p>
                         </div>
                         <div className="p-4">
-                            <h3 className="text-3xl md:text-4xl font-bold text-teal-400 mb-2">100+</h3>
-                            <p className="text-sm text-slate-400 font-medium">Cities Covered</p>
+                            <h3 className="text-3xl md:text-4xl font-bold text-teal-400 mb-2">Bengaluru</h3>
+                            <p className="text-sm text-slate-400 font-medium">& Outskirts Covered</p>
                         </div>
                         <div className="p-4">
                             <h3 className="text-3xl md:text-4xl font-bold text-lime-400 mb-2">4.8★</h3>

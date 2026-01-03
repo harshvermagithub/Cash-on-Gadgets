@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 const DEVICES = [
     {
         name: "iPhone 17 Pro Max",
-        value: "₹1,15,000",
+        value: "₹75,000",
         color: "#1a1a1b",
         highlight: "#4a4a4b",
         brand: "Apple",
@@ -16,7 +16,7 @@ const DEVICES = [
     },
     {
         name: "iPhone 16",
-        value: "₹95,000",
+        value: "₹62,000",
         color: "#F1B8D1",
         highlight: "#ffdaeb",
         brand: "Apple",
@@ -25,7 +25,7 @@ const DEVICES = [
     },
     {
         name: "Samsung S25 Ultra",
-        value: "₹1,00,000",
+        value: "₹65,000",
         color: "#0f0f0f",
         highlight: "#2a2a2a",
         brand: "Samsung",
@@ -34,7 +34,7 @@ const DEVICES = [
     },
     {
         name: "Samsung S24 Ultra",
-        value: "₹90,000",
+        value: "₹58,000",
         color: "#D9D5C1",
         highlight: "#f5f1de",
         brand: "Samsung",
@@ -43,7 +43,7 @@ const DEVICES = [
     },
     {
         name: "Pixel 9 Pro",
-        value: "₹85,000",
+        value: "₹55,000",
         color: "#1c1c1c",
         highlight: "#333333",
         brand: "Google",
