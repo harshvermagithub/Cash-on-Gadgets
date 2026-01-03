@@ -3,6 +3,8 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Banknote, CheckCircle2, Truck } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import RiderIllustration from './RiderIllustration'
 
 const PHONES = [
     {
@@ -141,7 +143,7 @@ export default function HowItWorks() {
                             </div>
                         </motion.div>
 
-                        <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold text-lg shadow-lg ring-4 ring-white">1</div>
+                        <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold text-lg shadow-lg ring-4 ring-white mt-8">1</div>
 
                         <div className="space-y-2">
                             <h3 className="text-xl font-bold text-slate-900">Get Device Valuation</h3>
@@ -165,70 +167,11 @@ export default function HowItWorks() {
                         >
                             <div className="absolute inset-0 bg-teal-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                            <div className="relative w-full h-full p-4">
-                                <motion.div
-                                    animate={{
-                                        y: [-1, 1, -1]
-                                    }}
-                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                    className="relative w-full h-full flex items-center justify-center"
-                                >
-
-                                    {/* Road/Path */}
-                                    <div className="absolute bottom-10 w-32 h-1 bg-slate-200 rounded-full" />
-
-                                    {/* Animated Delivery Truck */}
-                                    <motion.div
-                                        animate={{
-                                            x: [-10, 10, -10],
-                                            y: [0, -2, 0]
-                                        }}
-                                        transition={{
-                                            x: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                                            y: { duration: 0.5, repeat: Infinity, ease: "easeInOut" }
-                                        }}
-                                        className="relative z-10"
-                                    >
-                                        <div className="bg-green-100 p-4 rounded-2xl border-2 border-green-500 shadow-xl relative">
-                                            <Truck className="w-12 h-12 text-green-600" />
-
-                                            {/* Branding on Truck */}
-                                            <div className="absolute -right-2 -top-2 bg-green-600 text-[8px] text-white font-bold px-1.5 py-0.5 rounded-md">
-                                                FONZ
-                                            </div>
-                                        </div>
-
-                                        {/* Speed Lines */}
-                                        <motion.div
-                                            animate={{ opacity: [0, 1, 0], x: [10, -10] }}
-                                            transition={{ duration: 1, repeat: Infinity }}
-                                            className="absolute top-1/2 -left-6 space-y-1"
-                                        >
-                                            <div className="w-4 h-0.5 bg-green-300 rounded-full" />
-                                            <div className="w-6 h-0.5 bg-green-300 rounded-full ml-2" />
-                                        </motion.div>
-                                    </motion.div>
-
-                                    {/* Calendar/Date Badge */}
-                                    <motion.div
-                                        animate={{ scale: [1, 1.1, 1] }}
-                                        transition={{ duration: 2, repeat: Infinity }}
-                                        className="absolute top-8 right-6 bg-white border border-slate-100 p-2 rounded-xl shadow-lg z-20"
-                                    >
-                                        <div className="text-[10px] font-bold text-slate-400 text-center leading-none mb-0.5">PICK</div>
-                                        <div className="text-lg font-black text-slate-800 text-center leading-none">24</div>
-                                    </motion.div>
-
-                                    {/* Additional Speed Lines (Positioned Relative to Container) */}
-                                    <motion.div
-                                        animate={{ x: [-20, -60], opacity: [1, 0] }}
-                                        transition={{ duration: 0.6, repeat: Infinity, ease: "linear" }}
-                                        className="absolute bottom-1/2 left-4 w-12 h-0.5 bg-slate-200 rounded-full"
-                                    />
-                                </motion.div>
+                            <div className="w-full h-full">
+                                <RiderIllustration />
                             </div>
                         </motion.div>
-                        <div className="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold text-lg shadow-lg ring-4 ring-white">2</div>
+                        <div className="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold text-lg shadow-lg ring-4 ring-white mt-8">2</div>
 
                         <div className="space-y-2">
                             <h3 className="text-xl font-bold text-slate-900">Schedule Pickup</h3>
@@ -289,7 +232,7 @@ export default function HowItWorks() {
                             </div>
                         </motion.div>
 
-                        <div className="w-10 h-10 rounded-full bg-lime-600 flex items-center justify-center text-white font-bold text-lg shadow-lg ring-4 ring-white">3</div>
+                        <div className="w-10 h-10 rounded-full bg-lime-600 flex items-center justify-center text-white font-bold text-lg shadow-lg ring-4 ring-white mt-8">3</div>
 
                         <div className="space-y-2">
                             <h3 className="text-xl font-bold text-slate-900">Get Paid Instantly</h3>

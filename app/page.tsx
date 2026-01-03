@@ -8,6 +8,7 @@ import HowItWorks from '@/components/HowItWorks';
 import HeroAnimation from '@/components/HeroAnimation';
 import { ReviewsMarquee } from '@/components/ReviewsMarquee';
 import CategorySelector from '@/components/sell/CategorySelector';
+import { BigLogo } from '@/components/BigLogo';
 import { useRouter } from 'next/navigation';
 
 
@@ -38,6 +39,12 @@ export default function Home() {
                                 </span>
                                 Trusted by 1,000+ Customers
                             </div>
+
+                            {/* Custom Big Logo */}
+                            <div className="w-full -ml-2">
+                                <BigLogo />
+                            </div>
+
                             <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground leading-[1.1]">
                                 Smart way to <br />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">sell your device.</span>

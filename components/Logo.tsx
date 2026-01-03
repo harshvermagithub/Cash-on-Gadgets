@@ -39,7 +39,17 @@ export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
 
                         {/* R replacement: Vertical Cash with Rupee */}
                         <div className="relative w-3 h-4 bg-green-600 rounded-[2px] border border-green-700 flex items-center justify-center shadow-sm -mt-0.5">
-                            <span className="text-[8px] text-white font-bold">₹</span>
+                            <motion.span
+                                animate={{ opacity: [1, 0, 1, 0, 1, 1, 0.2, 1] }}
+                                transition={{
+                                    duration: 2.5,
+                                    repeat: Infinity,
+                                    times: [0, 0.1, 0.2, 0.3, 0.4, 0.8, 0.9, 1]
+                                }}
+                                className="text-[8px] text-white font-bold"
+                            >
+                                ₹
+                            </motion.span>
                         </div>
 
                         <span className="font-bold text-xs text-slate-600 tracking-tight">T</span>
