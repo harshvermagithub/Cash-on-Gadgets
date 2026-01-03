@@ -128,6 +128,18 @@ export const questionnaireSteps = {
             ]
         },
         {
+            id: 'body_condition',
+            title: 'Body Condition',
+            subtitle: 'Select the condition of the device body (back panel/frame)',
+            type: 'single-select',
+            options: [
+                { id: 'flawless', label: 'Flawless', description: 'No scratches or dents', icon: 'Sparkles' },
+                { id: 'good', label: 'Good', description: 'Minor scratches, no dents', icon: 'Smile' },
+                { id: 'average', label: 'Average', description: 'Visible scratches and minor dents', icon: 'MinusCircle' },
+                { id: 'below_average', label: 'Below Average', description: 'Heavy dents, cracks, or bent frame', icon: 'AlertTriangle' },
+            ]
+        },
+        {
             id: 'functional_issues',
             title: 'Functional Problems',
             subtitle: 'Select any issues your device has (Check if applicable)',

@@ -24,6 +24,13 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete }: Ch
         setAnswers(prev => ({ ...prev, [key]: value }));
     };
 
+    const handleBack = () => {
+        if (currentStepIndex > 0) {
+            setCurrentStepIndex(prev => prev - 1);
+            window.scrollTo(0, 0);
+        }
+    };
+
     const handleNext = () => {
         if (currentStepIndex < steps.length - 1) {
             setCurrentStepIndex(prev => prev + 1);
@@ -140,10 +147,18 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete }: Ch
                     </motion.div>
                 </AnimatePresence>
 
-                <div className="mt-10 flex justify-end">
+                <div className="mt-10 flex justify-between items-center">
+                    {currentStepIndex > 0 ? (
+                        <button
+                            onClick={handleBack}
+                            className="flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold px-4 py-2 transition-colors rounded-lg hover:bg-muted"
+                        >
+                            <Icons.ArrowLeft className="w-5 h-5" /> Back
+                        </button>
+                    ) : <div></div>}
                     <button
                         onClick={handleNext}
-                        className="flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-lg font-bold hover:bg-primary/90 transition-all"
+                        className="flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3 rounded-lg font-bold hover:bg-primary/90 transition-all shadow-md hover:shadow-lg"
                     >
                         Continue <ArrowRight className="w-5 h-5" />
                     </button>
@@ -177,6 +192,17 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete }: Ch
                                 <div className="text-sm font-medium text-primary flex items-center gap-2">
                                     <Icons.Smartphone className="w-4 h-4" />
                                     {steps.find((s: any) => s.id === 'physical_condition')?.options?.find((o: any) => o.id === answers.physical_condition)?.label as string}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Body Condition Summary */}
+                        {(answers.body_condition as string) && (
+                            <div className="space-y-2">
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Body Condition</p>
+                                <div className="text-sm font-medium text-primary flex items-center gap-2">
+                                    <Icons.Shield className="w-4 h-4" />
+                                    {steps.find((s: any) => s.id === 'body_condition')?.options?.find((o: any) => o.id === answers.body_condition)?.label as string}
                                 </div>
                             </div>
                         )}
