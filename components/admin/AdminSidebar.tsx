@@ -1,6 +1,6 @@
-
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -14,7 +14,9 @@ import {
     Wrench,
     Users,
     ShoppingCart,
-    ExternalLink
+    ExternalLink,
+    Menu,
+    X
 } from 'lucide-react';
 
 const CATEGORIES = [
@@ -29,10 +31,16 @@ const CATEGORIES = [
 
 export default function AdminSidebar() {
     const pathname = usePathname();
+    const [isOpen, setIsOpen] = useState(false);
 
-    return (
-        <aside className="w-64 bg-card border-r hidden md:flex flex-col h-screen sticky top-0">
-            <div className="p-6 border-b shrink-0">
+    // Close mobile menu on navigation
+    useEffect(() => {
+        setIsOpen(false);
+    }, [pathname]);
+
+    const SidebarNav = () => (
+        <div className="flex flex-col h-full">
+            <div className="p-6 border-b shrink-0 flex items-center justify-between">
                 <Link href="/admin" className="flex items-center gap-2 font-bold text-xl text-primary">
                     <LayoutDashboard className="w-6 h-6" />
                     <span>Admin Panel</span>
@@ -96,6 +104,47 @@ export default function AdminSidebar() {
                     View Website
                 </Link>
             </div>
-        </aside>
+        </div>
+    );
+
+    return (
+        <>
+            {/* Desktop Sidebar (Left side, fixed on desktop) */}
+            <aside className="w-64 bg-card border-r hidden lg:flex flex-col h-screen sticky top-0 shrink-0">
+                <SidebarNav />
+            </aside>
+
+            {/* Mobile/Tablet Header (Top, visible on small screens) */}
+            <div className="lg:hidden p-4 bg-card border-b flex items-center justify-between sticky top-0 z-30 shadow-sm">
+                <Link href="/admin" className="font-bold flex items-center gap-2 text-primary text-lg">
+                    <LayoutDashboard className="w-5 h-5" /> Admin Panel
+                </Link>
+                <button
+                    onClick={() => setIsOpen(true)}
+                    className="p-2 border rounded-lg hover:bg-muted transition-colors"
+                >
+                    <Menu className="w-5 h-5" />
+                </button>
+            </div>
+
+            {/* Mobile Overlay Menu */}
+            {isOpen && (
+                <div className="fixed inset-0 z-50 lg:hidden">
+                    <div
+                        className="fixed inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200"
+                        onClick={() => setIsOpen(false)}
+                    />
+                    <aside className="relative w-64 h-full bg-card shadow-2xl flex flex-col animate-in slide-in-from-left duration-200">
+                        <button
+                            onClick={() => setIsOpen(false)}
+                            className="absolute right-4 top-6 z-10 p-1 hover:bg-muted rounded-full"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                        <SidebarNav />
+                    </aside>
+                </div>
+            )}
+        </>
     );
 }

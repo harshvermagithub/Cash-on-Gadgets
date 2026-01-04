@@ -17,7 +17,7 @@ export default async function AdminLayout({
     }
 
     return (
-        <div className="flex min-h-screen bg-muted/20">
+        <div className="flex min-h-screen bg-muted/20 flex-col lg:flex-row">
             {/* Sidebar */}
             <AdminSidebar />
 
