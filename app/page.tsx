@@ -30,7 +30,7 @@ export default function Home() {
                 </div>
 
                 <div className="container mx-auto px-6">
-                    <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
+                    <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
                         <div className="flex-1 space-y-8 animate-in slide-in-from-bottom-8 fade-in-20 duration-700">
                             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-semibold border border-green-200">
                                 <span className="relative flex h-2 w-2">
@@ -123,7 +123,7 @@ export default function Home() {
                             <p className="text-sm text-slate-400 font-medium">Cash Paid</p>
                         </div>
                         <div className="p-4">
-                            <h3 className="text-3xl md:text-4xl font-bold text-teal-400 mb-2">Bengaluru</h3>
+                            <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-teal-400 mb-2">Bengaluru</h3>
                             <p className="text-sm text-slate-400 font-medium">& Outskirts Covered</p>
                         </div>
                         <div className="p-4">
@@ -187,7 +187,7 @@ export default function Home() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
-                            className="flex items-center gap-6 bg-slate-800 p-6 rounded-3xl border border-slate-700 hover:border-green-600 transition-all duration-300 group cursor-default"
+                            className="flex flex-col items-center text-center gap-6 bg-slate-800 p-6 rounded-3xl border border-slate-700 hover:border-green-600 transition-all duration-300 group cursor-default"
                         >
                             <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-green-900/20 rounded-2xl group-hover:bg-green-900/40 transition-colors">
                                 <motion.div
@@ -213,7 +213,7 @@ export default function Home() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.1 }}
-                            className="flex items-center gap-6 bg-slate-800 p-6 rounded-3xl border border-slate-700 hover:border-teal-600 transition-all duration-300 group cursor-default"
+                            className="flex flex-col items-center text-center gap-6 bg-slate-800 p-6 rounded-3xl border border-slate-700 hover:border-teal-600 transition-all duration-300 group cursor-default"
                         >
                             <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-teal-900/20 rounded-2xl group-hover:bg-teal-900/40 transition-colors">
                                 <motion.div
@@ -238,7 +238,7 @@ export default function Home() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.2 }}
-                            className="flex items-center gap-6 bg-slate-800 p-6 rounded-3xl border border-slate-700 hover:border-lime-600 transition-all duration-300 group cursor-default"
+                            className="flex flex-col items-center text-center gap-6 bg-slate-800 p-6 rounded-3xl border border-slate-700 hover:border-lime-600 transition-all duration-300 group cursor-default"
                         >
                             <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-lime-900/20 rounded-2xl group-hover:bg-lime-900/40 transition-colors">
                                 <motion.div

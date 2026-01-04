@@ -80,13 +80,9 @@ export default function Footer() {
                     <div className="space-y-4">
                         <h3 className="font-bold text-lg">Contact</h3>
                         <ul className="space-y-3 text-sm text-muted-foreground">
-                            <li className="flex items-start gap-3">
-                                <MapPin className="h-5 w-5 text-green-600 shrink-0" />
-                                <span>123 Tech Park, Cyber City,<br />Gurugram, Haryana 122002</span>
-                            </li>
                             <li className="flex items-center gap-3">
                                 <Phone className="h-5 w-5 text-green-600 shrink-0" />
-                                <span>+91 98765 43210</span>
+                                <span>+91 90603 36060</span>
                             </li>
                             <li className="flex items-center gap-3">
                                 <Mail className="h-5 w-5 text-green-600 shrink-0" />
