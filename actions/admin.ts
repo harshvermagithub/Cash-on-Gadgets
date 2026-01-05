@@ -20,6 +20,33 @@ async function requireAdmin() {
 
 // --- Brands ---
 
+export async function getAdmins() {
+    await requireAdmin();
+    return await db.getAdmins();
+}
+
+export async function addAdmin(email: string) {
+    await requireAdmin();
+    const user = await db.findUserByEmail(email);
+    if (!user) return { success: false, error: 'User not found. They must register first.' };
+
+    await db.updateUserRole(email, 'ADMIN');
+    revalidatePath('/admin/admins');
+    return { success: true };
+}
+
+export async function removeAdmin(email: string) {
+    await requireAdmin();
+    const session = await getSession();
+    if (session?.user?.email === email) {
+        return { success: false, error: 'Cannot remove yourself from admins' };
+    }
+
+    await db.updateUserRole(email, 'USER');
+    revalidatePath('/admin/admins');
+    return { success: true };
+}
+
 export async function getBrands() {
     return await db.getBrands();
 }

@@ -32,7 +32,7 @@ export default function BrandSelector({ brands, onSelect, onBack }: BrandSelecto
                         onClick={() => onSelect(brand)}
                         className="flex flex-col items-center justify-center p-6 border rounded-xl bg-white text-black hover:border-primary hover:shadow-lg transition-all aspect-square group"
                     >
-                        <div className="relative w-32 h-32 mb-4 transition-all flex items-center justify-center">
+                        <div className="relative mb-4 transition-all flex items-center justify-center w-48 h-48 sm:w-56 sm:h-56">
                             {brand.logo && (brand.logo.startsWith('/') || brand.logo.startsWith('http')) ? (
                                 <Image src={brand.logo} alt={brand.name} fill className="object-contain" />
                             ) : (

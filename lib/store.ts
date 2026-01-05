@@ -54,6 +54,15 @@ export const db = {
     findUserByEmail: async (email: string) => {
         return await prisma.user.findUnique({ where: { email } });
     },
+    updateUserRole: async (email: string, role: string) => {
+        await prisma.user.update({
+            where: { email },
+            data: { role }
+        });
+    },
+    getAdmins: async () => {
+        return await prisma.user.findMany({ where: { role: 'ADMIN' } });
+    },
     getOrders: async (userId: string) => {
         const orders = await prisma.order.findMany({ where: { userId } });
         return orders.map(mapPrismaOrderToAppOrder);
@@ -208,6 +217,15 @@ export const db = {
 
         return await prisma.model.findMany({
             where,
+            orderBy: [{ priority: 'asc' }, { name: 'asc' }]
+        });
+    },
+    searchModels: async (query: string) => {
+        return await prisma.model.findMany({
+            where: {
+                name: { contains: query, mode: 'insensitive' }
+            },
+            take: 5,
             orderBy: [{ priority: 'asc' }, { name: 'asc' }]
         });
     },

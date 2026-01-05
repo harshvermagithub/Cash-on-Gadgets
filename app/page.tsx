@@ -9,6 +9,9 @@ import HeroAnimation from '@/components/HeroAnimation';
 import { ReviewsMarquee } from '@/components/ReviewsMarquee';
 import CategorySelector from '@/components/sell/CategorySelector';
 import { BigLogo } from '@/components/BigLogo';
+import { Logo } from '@/components/Logo';
+import { HomeSearch } from '@/components/HomeSearch';
+import { BrandRail } from '@/components/BrandRail';
 import { useRouter } from 'next/navigation';
 
 
@@ -30,9 +33,9 @@ export default function Home() {
                 </div>
 
                 <div className="container mx-auto px-6">
-                    <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+                    <div className="flex flex-col xl:flex-row items-center gap-12 xl:gap-20">
                         <div className="flex-1 space-y-8 animate-in slide-in-from-bottom-8 fade-in-20 duration-700">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-semibold border border-green-200">
+                            <div className="hidden xl:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-semibold border border-green-200">
                                 <span className="relative flex h-2 w-2">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
@@ -40,12 +43,39 @@ export default function Home() {
                                 Trusted by 1,000+ Customers
                             </div>
 
-                            {/* Custom Big Logo */}
-                            <div className="w-full -ml-2">
+                            {/* Custom Big Logo Area - Responsive Split */}
+
+                            {/* Mobile Hero View (Text Banner + Search + Brands) */}
+                            <div className="block xl:hidden w-full space-y-6 pt-2 mb-20">
+                                <div className="px-5 py-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-3xl border border-green-100 dark:border-green-900/50 text-center shadow-sm relative overflow-hidden">
+                                    <h1 className="text-3xl font-black text-green-600 dark:text-green-500 tracking-tighter mb-1">FONZKART</h1>
+                                    <p className="text-xs text-green-700 dark:text-green-400 font-bold uppercase tracking-widest mb-4">Instant Cash for Gadgets</p>
+
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/60 dark:bg-black/20 text-green-800 dark:text-green-400 text-[10px] font-bold border border-green-200/50 backdrop-blur-md shadow-sm">
+                                        <span className="relative flex h-1.5 w-1.5">
+                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+                                        </span>
+                                        Trusted by 1,000+ Customers
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-center items-center pt-36 pb-20">
+                                    <div className="scale-[3.5] origin-center transform">
+                                        <Logo />
+                                    </div>
+                                </div>
+
+                                <HomeSearch />
+                                <BrandRail />
+                            </div>
+
+                            {/* Desktop/Tablet Hero View (Original BigLogo) */}
+                            <div className="hidden xl:block w-full -ml-2">
                                 <BigLogo />
                             </div>
 
-                            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground leading-[1.1]">
+                            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.2] md:leading-[1.1]">
                                 Smart way to <br />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">sell your device.</span>
                             </h1>
