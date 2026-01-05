@@ -1,7 +1,7 @@
 
 import Link from 'next/link';
 import { User, LogOut } from 'lucide-react';
-import { getSession, logout } from '@/lib/session';
+import { getSession, logout, isAdmin } from '@/lib/session';
 import { ThemeToggle } from './theme-toggle';
 import { Logo } from './Logo';
 
@@ -22,7 +22,7 @@ export default async function Header() {
                     <Link href="/orders" className="text-sm font-medium hover:text-primary transition-colors">
                         My Orders
                     </Link>
-                    {session && session.user?.role === 'ADMIN' && (
+                    {session && isAdmin(session.user) && (
                         <Link href="/admin" className="text-sm font-medium hover:text-primary transition-colors">
                             Admin Panel
                         </Link>

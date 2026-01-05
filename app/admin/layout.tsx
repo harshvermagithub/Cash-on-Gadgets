@@ -1,6 +1,6 @@
 
 import Link from 'next/link';
-import { getSession } from '@/lib/session';
+import { getSession, isAdmin } from '@/lib/session';
 import { redirect } from 'next/navigation';
 import { LayoutDashboard, Smartphone, Layers, Tag, ExternalLink, Users, ShoppingCart } from 'lucide-react';
 
@@ -12,7 +12,7 @@ export default async function AdminLayout({
     children: React.ReactNode;
 }) {
     const session = await getSession();
-    if (!session || !session.user || session.user.role !== 'ADMIN') {
+    if (!session || !session.user || !isAdmin(session.user)) {
         redirect('/');
     }
 

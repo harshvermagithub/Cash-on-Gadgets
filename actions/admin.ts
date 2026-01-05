@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from '@/lib/store';
-import { getSession } from '@/lib/session';
+import { getSession, isAdmin } from '@/lib/session';
 import { revalidatePath } from 'next/cache';
 import { randomUUID } from 'crypto';
 
@@ -11,8 +11,11 @@ async function requireAdmin() {
     if (!session || !session.user) {
         throw new Error('Unauthorized');
     }
-    // In a real app, check specifically for admin role or email
-    // if (session.user.email !== 'admin@fonzkart.com') throw new Error('Forbidden');
+
+    if (!isAdmin(session.user)) {
+        console.log(`[Auth] Blocked non-admin user: ${session.user.email} (${session.user.role})`);
+        throw new Error('Forbidden: Admin access required');
+    }
 }
 
 // --- Brands ---

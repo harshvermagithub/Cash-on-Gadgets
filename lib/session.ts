@@ -12,6 +12,13 @@ export interface SessionUser {
     role: string;
 }
 
+export const ADMIN_EMAILS = ['admin@fonzkart.com', 'mobilesouls.in@gmail.com'];
+
+export function isAdmin(user: SessionUser) {
+    if (!user) return false;
+    return ADMIN_EMAILS.includes(user.email) || user.role === 'ADMIN';
+}
+
 export interface SessionPayload extends JWTPayload {
     user: SessionUser;
     expires: Date | string;
