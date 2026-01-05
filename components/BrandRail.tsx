@@ -9,12 +9,12 @@ import Link from 'next/link';
 import { Brand } from '@/lib/store';
 
 const CATEGORY_OPTIONS = [
-    { id: 'smartphone', label: 'Phone', icon: Smartphone, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-900/20' },
-    { id: 'laptop', label: 'Laptop', icon: Laptop, color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-900/20' },
-    { id: 'tablet', label: 'Tablet', icon: Tablet, color: 'text-pink-500', bg: 'bg-pink-50 dark:bg-pink-900/20' },
-    { id: 'smartwatch', label: 'Watch', icon: Watch, color: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-900/20' },
-    { id: 'console', label: 'Console', icon: Gamepad2, color: 'text-indigo-500', bg: 'bg-indigo-50 dark:bg-indigo-900/20' },
-    { id: 'repair-device', label: 'Repair', icon: Wrench, color: 'text-red-500', bg: 'bg-red-50 dark:bg-red-900/20' },
+    { id: 'smartphone', label: 'Phone', icon: Smartphone, color: 'text-blue-500' },
+    { id: 'laptop', label: 'Laptop', icon: Laptop, color: 'text-purple-500' },
+    { id: 'tablet', label: 'Tablet', icon: Tablet, color: 'text-pink-500' },
+    { id: 'smartwatch', label: 'Watch', icon: Watch, color: 'text-orange-500' },
+    { id: 'console', label: 'Console', icon: Gamepad2, color: 'text-indigo-500' },
+    { id: 'repair-device', label: 'Repair', icon: Wrench, color: 'text-red-500' },
 ];
 
 export function BrandRail() {
@@ -42,14 +42,14 @@ export function BrandRail() {
                         <button
                             key={brand.id}
                             onClick={() => setSelectedBrand(brand)}
-                            className="flex flex-col items-center gap-3 min-w-[180px] group focus:outline-none"
+                            className="flex flex-col items-center gap-2 min-w-[110px] group focus:outline-none"
                         >
-                            <div className="w-48 h-48 rounded-3xl bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 flex items-center justify-center p-6 shadow-sm group-hover:border-green-500 transition-colors">
-                                <div className="relative w-full h-full filter dark:invert-0">
+                            <div className="w-24 h-24 rounded-2xl bg-white border-2 border-slate-100 flex items-center justify-center p-4 shadow-sm group-hover:border-green-500 transition-colors">
+                                <div className="relative w-full h-full">
                                     {brand.logo ? (
                                         <Image src={brand.logo} alt={brand.name} fill className="object-contain" />
                                     ) : (
-                                        <Smartphone className="w-16 h-16 text-slate-400" />
+                                        <Smartphone className="w-8 h-8 text-slate-400" />
                                     )}
                                 </div>
                             </div>
@@ -77,26 +77,26 @@ export function BrandRail() {
                             animate={{ y: 0 }}
                             exit={{ y: "100%" }}
                             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                            className="relative w-full max-w-sm bg-white dark:bg-slate-900 rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden"
+                            className="relative w-full max-w-sm bg-white rounded-2xl md:rounded-3xl shadow-2xl overflow-hidden"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 relative">
+                            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-16 h-16 relative p-1 bg-white border border-slate-100 rounded-xl flex items-center justify-center">
                                         {selectedBrand.logo ? (
-                                            <Image src={selectedBrand.logo} alt={selectedBrand.name} fill className="object-contain" />
+                                            <Image src={selectedBrand.logo} alt={selectedBrand.name} fill className="object-contain p-1" />
                                         ) : (
-                                            <Smartphone className="w-5 h-5 text-slate-400" />
+                                            <Smartphone className="w-8 h-8 text-slate-400" />
                                         )}
                                     </div>
                                     <div>
-                                        <h3 className="font-bold text-slate-900 dark:text-white">Select Category</h3>
-                                        <p className="text-xs text-muted-foreground">What {selectedBrand.name} device?</p>
+                                        <h3 className="font-bold text-lg text-black">Select Category</h3>
+                                        <p className="text-sm text-slate-500 font-medium">For {selectedBrand.name}</p>
                                     </div>
                                 </div>
                                 <button
                                     onClick={() => setSelectedBrand(null)}
-                                    className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+                                    className="p-2 hover:bg-slate-100 rounded-full transition-colors"
                                 >
                                     <X className="w-5 h-5 text-slate-500" />
                                 </button>
@@ -110,10 +110,10 @@ export function BrandRail() {
                                         className="flex flex-col items-center gap-2 group"
                                         onClick={() => setSelectedBrand(null)}
                                     >
-                                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110 shadow-sm ${option.bg} ${option.color}`}>
-                                            <option.icon className="w-7 h-7" />
+                                        <div className={`w-24 h-24 rounded-3xl flex items-center justify-center transition-all group-hover:scale-105 shadow-sm bg-white border-2 border-slate-100 ${option.color}`}>
+                                            <option.icon className="w-14 h-14" />
                                         </div>
-                                        <span className="text-xs font-medium text-slate-600 dark:text-slate-300 group-hover:text-primary transition-colors">
+                                        <span className="text-sm font-bold text-black group-hover:text-primary transition-colors">
                                             {option.label}
                                         </span>
                                     </Link>
