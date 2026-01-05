@@ -314,14 +314,18 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete, onBa
                             </div>
                         )}
 
-                        {/* Bill Summary */}
-                        {(answers.bill as string) && (
+                        {/* Accessories Summary */}
+                        {(answers.accessories as string[] | undefined) && (answers.accessories as string[]).length > 0 && (
                             <div className="space-y-2">
-                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Original Bill</p>
-                                <div className="text-sm font-medium text-primary flex items-center gap-2">
-                                    <Icons.FileText className="w-4 h-4" />
-                                    {steps.find((s: any) => s.id === 'bill')?.options?.find((o: any) => o.id === answers.bill)?.label as string}
-                                </div>
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Accessories Included</p>
+                                <ul className="text-sm space-y-1">
+                                    {(answers.accessories as string[]).map((accId: string) => {
+                                        const label = (steps.find((s: any) => s.id === 'device_details')?.sections?.find((sec: any) => sec.id === 'accessories')?.options?.find((o: any) => o.id === accId)?.label || accId) as string;
+                                        return (
+                                            <li key={accId} className="text-primary flex gap-2 items-center"><Icons.CheckCircle2 className="w-4 h-4" /> {label}</li>
+                                        );
+                                    })}
+                                </ul>
                             </div>
                         )}
 

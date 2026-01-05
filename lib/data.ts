@@ -178,6 +178,7 @@ export const questionnaireSteps = {
                     options: [
                         { id: 'charger', label: 'Original Charger', icon: 'Plug' },
                         { id: 'box', label: 'Original Box', icon: 'Box' },
+                        { id: 'bill', label: 'Original Bill', icon: 'FileText' },
                     ]
                 },
                 {
@@ -185,20 +186,10 @@ export const questionnaireSteps = {
                     title: 'Warranty Period',
                     type: 'single-select',
                     options: [
-                        { id: 'no', label: 'No Warranty', description: 'Warranty expired', icon: 'XCircle' },
-                        { id: '3_months', label: '3 Months +', description: 'Valid for >3 more months', icon: 'Clock' },
-                        { id: '6_months', label: '6 Months +', description: 'Valid for >6 more months', icon: 'Clock' },
-                        { id: '9_months', label: '9 Months +', description: 'Valid for >9 more months', icon: 'Clock' },
-                        { id: '12_months', label: '12 Months', description: 'Full year warranty remaining', icon: 'CheckCircle' },
-                    ]
-                },
-                {
-                    id: 'bill',
-                    title: 'Original Bill',
-                    type: 'single-select',
-                    options: [
-                        { id: 'yes', label: 'Available', description: 'Valid printed/digital bill', icon: 'FileText' },
-                        { id: 'no', label: 'Not Available', description: 'Bill lost or missing', icon: 'X' },
+                        { id: '3_6_months', label: '3 - 6 Months', description: 'Valid for 3 to 6 months', icon: 'Clock' },
+                        { id: '6_9_months', label: '6 - 9 Months', description: 'Valid for 6 to 9 months', icon: 'Clock' },
+                        { id: '9_11_months', label: '9 - 11 Months', description: 'Valid for 9 to 11 months', icon: 'Clock' },
+                        { id: 'no', label: 'No Warranty', description: 'Less than 3 months or Expired', icon: 'XCircle' },
                     ]
                 }
             ]

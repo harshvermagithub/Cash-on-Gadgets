@@ -64,20 +64,7 @@ export default function ModelSelector({ brandId, category, onSelect, onBack }: M
         fetchModels(brandId, category)
             .then(data => {
                 if (mounted) {
-                    // Sort models by Number Descending (Newest First approximation)
-                    // e.g. iPhone 14 > iPhone 13 > iPhone 8
-                    const sorted = [...data].sort((a, b) => {
-                        const getNum = (s: string) => {
-                            if (s.includes('iPhone X')) return 10; // Handle iPhone X specifically
-                            const match = s.match(/(\d+)/);
-                            return match ? parseInt(match[0]) : 0;
-                        };
-                        const numA = getNum(a.name);
-                        const numB = getNum(b.name);
-                        if (numA !== numB) return numB - numA;
-                        return a.name.localeCompare(b.name);
-                    });
-                    setModels(sorted);
+                    setModels(data);
                     setIsLoading(false);
                 }
             })

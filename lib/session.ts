@@ -9,6 +9,7 @@ export interface SessionUser {
     id: string;
     email: string;
     name: string;
+    role: string;
 }
 
 export interface SessionPayload extends JWTPayload {
@@ -32,16 +33,22 @@ export async function decrypt(input: string): Promise<SessionPayload> {
 }
 
 export async function getSession(): Promise<SessionPayload | null> {
-    const session = (await cookies()).get('session')?.value;
-    if (!session) return null;
+    const sessionCookie = (await cookies()).get('session')?.value;
+    if (!sessionCookie) {
+        console.log('DEBUG: No session cookie found');
+        return null;
+    }
     try {
-        return await decrypt(session);
-    } catch {
+        const payload = await decrypt(sessionCookie);
+        console.log('DEBUG: Decrypted payload:', JSON.stringify(payload, null, 2));
+        return payload;
+    } catch (e) {
+        console.log('DEBUG: Session decryption failed', e);
         return null;
     }
 }
 
-export async function login(userData: { id: string; email: string; name: string }) {
+export async function login(userData: { id: string; email: string; name: string; role: string }) {
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 1 week
     const session = await encrypt({ user: userData, expires });
 

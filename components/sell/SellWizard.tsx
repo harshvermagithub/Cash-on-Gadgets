@@ -10,19 +10,21 @@ import VariantSelector from './VariantSelector';
 import QuotePreview from './QuotePreview';
 import ChecklistWizard from './ChecklistWizard';
 import FinalQuote from './FinalQuote';
+import StepLogin from './StepLogin';
 import { Brand, Model, Variant } from '@/lib/store';
 
-type Step = 'category' | 'brand' | 'model' | 'variant' | 'quote_preview' | 'checklist' | 'final_quote';
+type Step = 'category' | 'brand' | 'model' | 'variant' | 'quote_preview' | 'checklist' | 'login_check' | 'final_quote';
 
 interface SellWizardProps {
     initialBrands: Brand[];
     initialCategory?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     user?: any; // Session User
 }
 
 import { fetchBrands } from '@/actions/catalog';
 
-export default function SellWizard({ initialBrands, initialCategory, user }: SellWizardProps) {
+export default function SellWizard({ initialBrands, initialCategory, user: initialUser }: SellWizardProps) {
     // If a category is provided via info, we start at 'brand' selection (skipping category select)
     // Exception: If category is 'repair', we treat it as smartphone but set isRepair=true
 
@@ -45,6 +47,10 @@ export default function SellWizard({ initialBrands, initialCategory, user }: Sel
     const [selectedModel, setSelectedModel] = useState<Model | null>(null);
     const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
     const [answers, setAnswers] = useState<Record<string, unknown>>({});
+
+    // Track user state locally so we can update it after inline login
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [user, setUser] = useState<any>(initialUser);
 
     const handleCategorySelect = async (cat: string) => {
         let targetCategory = cat;
@@ -80,6 +86,11 @@ export default function SellWizard({ initialBrands, initialCategory, user }: Sel
         } else {
             setStep('quote_preview');
         }
+    };
+
+    const handleLoginSuccess = (loggedInUser: any) => {
+        setUser(loggedInUser);
+        setStep('final_quote');
     };
 
     return (
@@ -143,13 +154,23 @@ export default function SellWizard({ initialBrands, initialCategory, user }: Sel
                             category={category}
                             onComplete={(collectedAnswers) => {
                                 setAnswers(collectedAnswers);
-                                setStep('final_quote');
+                                if (user) {
+                                    setStep('final_quote');
+                                } else {
+                                    setStep('login_check');
+                                }
                             }}
                             onBack={() => {
                                 if (isRepair) setStep('variant');
                                 else setStep('quote_preview');
                             }}
                         />
+                    </motion.div>
+                )}
+
+                {step === 'login_check' && (
+                    <motion.div key="login_check" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+                        <StepLogin onSuccess={handleLoginSuccess} />
                     </motion.div>
                 )}
 

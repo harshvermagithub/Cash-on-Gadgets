@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'upload.wikimedia.org' },
       { protocol: 'https', hostname: 'fdn2.gsmarena.com' },
+      { protocol: 'https', hostname: 'fdn.gsmarena.com' },
+      { protocol: 'https', hostname: 'www.gsmarena.com' },
       { protocol: 'https', hostname: 'raw.githubusercontent.com' },
       { protocol: 'https', hostname: 'cdn.simpleicons.org' },
       { protocol: 'https', hostname: '1000logos.net' },

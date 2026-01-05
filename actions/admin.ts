@@ -90,24 +90,36 @@ export async function getModels(brandId?: string) {
     return await db.getModels(brandId);
 }
 
-export async function addModel(brandId: string, name: string, img: string, category: string = 'smartphone') {
+export async function addModel(brandId: string, name: string, img: string, category: string = 'smartphone', priority: number = 100) {
     await requireAdmin();
     await db.addModel({
         id: randomUUID(),
         brandId,
         name,
         img,
-        category
+        category,
+        priority
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     revalidatePath('/admin/models');
     return { success: true };
 }
 
-export async function updateModel(id: string, brandId: string, name: string, img: string, category: string = 'smartphone') {
+export async function updateModel(id: string, brandId: string, name: string, img: string, category: string = 'smartphone', priority: number = 100) {
     await requireAdmin();
-    await db.updateModel(id, brandId, name, img, category);
+    await db.updateModel(id, brandId, name, img, category, priority);
     revalidatePath('/admin/models');
+    return { success: true };
+}
+
+export async function reorderModels(items: { id: string, priority: number }[]) {
+    await requireAdmin();
+    // Use transaction to ensure consistency if possible, or just Promise.all
+    // Prisma transaction is preferred for bulk updates, but simple loops work for small batches.
+    // For SQLite/Postgres with Prisma:
+    await db.updateModelPriorities(items);
+    revalidatePath('/admin/models');
+    revalidatePath('/sell'); // Ensure frontend updates immediately
     return { success: true };
 }
 

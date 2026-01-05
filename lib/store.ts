@@ -5,8 +5,10 @@ import { Rider as PrismaRider, Brand as PrismaBrand, Model as PrismaModel, Varia
 export interface User {
     id: string;
     email: string;
+    phone?: string | null;
     passwordHash: string;
     name: string;
+    role: string;
 }
 
 export type Rider = PrismaRider;
@@ -43,7 +45,9 @@ export const db = {
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                passwordHash: user.passwordHash
+                phone: user.phone,
+                passwordHash: user.passwordHash,
+                role: user.role
             }
         });
     },
@@ -202,16 +206,30 @@ export const db = {
             }
         }
 
-        return await prisma.model.findMany({ where });
+        return await prisma.model.findMany({
+            where,
+            orderBy: [{ priority: 'asc' }, { name: 'asc' }]
+        });
     },
     addModel: async (model: Model) => {
         await prisma.model.create({ data: model });
     },
-    updateModel: async (id: string, brandId: string, name: string, img: string, category: string = 'smartphone') => {
+    updateModel: async (id: string, brandId: string, name: string, img: string, category: string = 'smartphone', priority: number = 100) => {
         await prisma.model.update({
             where: { id },
-            data: { brandId, name, img, category } as any
+            data: { brandId, name, img, category, priority } as any
         });
+    },
+    updateModelPriorities: async (items: { id: string, priority: number }[]) => {
+        // Use a transaction for atomic updates
+        await prisma.$transaction(
+            items.map(item =>
+                prisma.model.update({
+                    where: { id: item.id },
+                    data: { priority: item.priority }
+                })
+            )
+        );
     },
     deleteModel: async (id: string) => {
         await prisma.model.delete({ where: { id } });
