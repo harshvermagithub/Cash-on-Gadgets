@@ -48,8 +48,7 @@ export default function Home() {
                             {/* Mobile Hero View (Text Banner + Search + Brands) */}
                             <div className="block xl:hidden w-full space-y-6 pt-2 mb-20">
                                 <div className="px-5 py-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-3xl border border-green-100 dark:border-green-900/50 text-center shadow-sm relative overflow-hidden">
-                                    <h1 className="text-3xl font-black text-green-600 dark:text-green-500 tracking-tighter mb-1">FONZKART</h1>
-                                    <p className="text-xs text-green-700 dark:text-green-400 font-bold uppercase tracking-widest mb-4">Instant Cash for Gadgets</p>
+
 
                                     <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/60 dark:bg-black/20 text-green-800 dark:text-green-400 text-[10px] font-bold border border-green-200/50 backdrop-blur-md shadow-sm">
                                         <span className="relative flex h-1.5 w-1.5">

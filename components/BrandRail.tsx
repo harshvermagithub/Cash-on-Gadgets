@@ -44,7 +44,7 @@ export function BrandRail() {
                             onClick={() => setSelectedBrand(brand)}
                             className="flex flex-col items-center gap-2 min-w-[110px] group focus:outline-none"
                         >
-                            <div className="w-24 h-24 rounded-2xl bg-white border-2 border-slate-100 flex items-center justify-center p-4 shadow-sm group-hover:border-green-500 transition-colors">
+                            <div className={`w-24 h-24 rounded-2xl bg-white border-2 border-slate-100 flex items-center justify-center shadow-sm group-hover:border-green-500 transition-colors ${brand.name === 'Apple' ? 'p-6' : 'p-4'}`}>
                                 <div className="relative w-full h-full">
                                     {brand.logo ? (
                                         <Image src={brand.logo} alt={brand.name} fill className="object-contain" />
