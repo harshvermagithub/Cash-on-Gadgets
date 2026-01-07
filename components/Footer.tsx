@@ -6,34 +6,12 @@ import { Logo } from '@/components/Logo';
 export default function Footer() {
     return (
         <footer className="w-full border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 pt-16 pb-8">
-            <div className="container px-4 md:px-6">
+            <div className="container mx-auto px-4 md:px-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                     <div className="space-y-4">
                         <Link href="/" className="flex items-center gap-0.5">
                             {/* Single Line Logo with CSS Variables */}
-                            <div className="flex items-center gap-0.5">
-                                <div
-                                    className="relative w-8 h-10 rounded-md border-2 border-slate-800 dark:border-white/20 flex items-center justify-center shadow-sm mr-1 transition-colors duration-300"
-                                    style={{ backgroundColor: 'var(--logo-box-bg)' }}
-                                >
-                                    <span
-                                        className="font-mono font-black text-xl transition-colors duration-300"
-                                        style={{ color: 'var(--logo-f-color)' }}
-                                    >
-                                        F
-                                    </span>
-                                </div>
-                                <div
-                                    className="flex items-baseline font-black tracking-tighter text-2xl transition-colors duration-300"
-                                    style={{ color: 'var(--logo-cart-color)' }}
-                                >
-                                    <span>ONZKA</span>
-                                    <div className="relative w-6 h-8 bg-green-600 rounded-[4px] flex items-center justify-center mx-0.5 self-center -mt-1">
-                                        <span className="text-white font-bold text-sm">₹</span>
-                                    </div>
-                                    <span>T</span>
-                                </div>
-                            </div>
+                            <Logo />
                         </Link>
                         <p className="text-muted-foreground text-sm leading-relaxed">
                             The smartest way to sell your old gadgets. Get instant quotes, free doorstep pickup, and instant payment.
@@ -87,6 +65,10 @@ export default function Footer() {
                             <li className="flex items-center gap-3">
                                 <Mail className="h-5 w-5 text-green-600 shrink-0" />
                                 <span>connect@fonzkart.in</span>
+                            </li>
+                            <li className="flex items-center gap-3">
+                                <MapPin className="h-5 w-5 text-green-600 shrink-0" />
+                                <span>Bengaluru, Karnataka, India</span>
                             </li>
                         </ul>
                     </div>
