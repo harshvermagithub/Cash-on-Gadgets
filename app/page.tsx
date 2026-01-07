@@ -51,7 +51,7 @@ export default function Home() {
 
 
                                 {/* Top Chips Section */}
-                                <div className="flex flex-wrap justify-center gap-3 px-4 pt-0 pb-12">
+                                <div className="flex flex-wrap justify-center gap-3 px-4 pt-12 pb-12">
                                     {/* Chip 1: Trusted */}
                                     <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-default">
                                         <span className="relative flex h-1.5 w-1.5">

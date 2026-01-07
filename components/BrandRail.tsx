@@ -14,8 +14,34 @@ const CATEGORY_OPTIONS = [
     { id: 'tablet', label: 'Tablet', icon: Tablet, color: 'text-pink-500' },
     { id: 'smartwatch', label: 'Watch', icon: Watch, color: 'text-orange-500' },
     { id: 'console', label: 'Console', icon: Gamepad2, color: 'text-indigo-500' },
-    { id: 'repair-device', label: 'Repair', icon: Wrench, color: 'text-red-500' },
 ];
+
+const getBrandCategories = (brandName: string) => {
+    const b = brandName.toLowerCase();
+    const cats = ['smartphone'];
+
+    // Tablets
+    if (['apple', 'samsung', 'xiaomi', 'oneplus', 'lenovo', 'motorola', 'realme', 'google', 'honor', 'huawei', 'oppo', 'vivo'].includes(b)) {
+        cats.push('tablet');
+    }
+
+    // Laptops
+    if (['apple', 'samsung', 'xiaomi', 'lenovo', 'asus', 'hp', 'dell', 'acer', 'msi', 'microsoft', 'honor'].includes(b)) {
+        cats.push('laptop');
+    }
+
+    // Watches - Skipping Apple as requested
+    if (['samsung', 'xiaomi', 'oneplus', 'google', 'huawei', 'honor', 'motorola', 'noise', 'boat', 'fire-boltt'].includes(b)) {
+        cats.push('smartwatch');
+    }
+
+    // Consoles
+    if (['sony', 'microsoft', 'nintendo'].includes(b)) {
+        cats.push('console');
+    }
+
+    return cats;
+};
 
 export function BrandRail() {
     const [brands, setBrands] = useState<Brand[]>([]);
@@ -103,7 +129,7 @@ export function BrandRail() {
                             </div>
 
                             <div className="p-6 grid grid-cols-3 gap-4">
-                                {CATEGORY_OPTIONS.map((option) => (
+                                {CATEGORY_OPTIONS.filter(opt => getBrandCategories(selectedBrand.name).includes(opt.id)).map((option) => (
                                     <Link
                                         key={option.id}
                                         href={`/sell?category=${option.id}&brandId=${selectedBrand.id}`}
