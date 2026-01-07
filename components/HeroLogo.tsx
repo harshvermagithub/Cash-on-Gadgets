@@ -12,12 +12,12 @@ export const HeroLogo = ({ className = "h-14 w-auto" }: { className?: string }) 
                 <div className="absolute bottom-[35%] left-1/2 -translate-x-[50%] flex flex-col items-start leading-none z-10 w-full pb-0 scale-[0.75]">
 
                     {/* Top Row: F inside Phone + ONZ */}
-                    <div className="flex items-center justify-center gap-0.5 mb-0.5 ml-2">
+                    <div className="flex items-center justify-center gap-0.5 mb-0 ml-2">
                         {/* F inside Smartphone */}
                         <div
                             className="relative w-6 h-10 flex flex-col items-center justify-between rounded-[5px] border-2 border-slate-800 dark:border-white/30 bg-white dark:bg-slate-900 shadow-sm overflow-hidden transition-colors duration-300 py-[2px]"
                         >
-                            {/* Notch */}
+                            {/* Notch (Old Style Phone for F) */}
                             <div className="w-2 h-0.5 bg-slate-800 dark:bg-white/50 rounded-full" />
 
                             {/* Straight F */}
@@ -45,17 +45,20 @@ export const HeroLogo = ({ className = "h-14 w-auto" }: { className?: string }) 
                         </span>
                     </div>
 
-                    {/* Bottom Row: KA + Cash/Rupee + T - Shifted Right */}
-                    <div className="flex items-center justify-center gap-0.5 ml-14">
+                    {/* Bottom Row: KA + Cash/Rupee + T - Shifted Right to Align Start of K with Start of Z */}
+                    <div className="flex items-center justify-center gap-0.5 ml-16 -mt-5">
                         <span
-                            className="font-bold text-xs tracking-tight transition-colors duration-300"
-                            style={{ color: 'var(--logo-ka-t-color)' }}
+                            className="font-black text-lg tracking-tighter transition-colors duration-300"
+                            style={{ color: 'var(--logo-text)' }}
                         >
                             KA
                         </span>
 
-                        {/* R replacement: Vertical Cash with Rupee */}
-                        <div className="relative w-6 h-10 bg-green-600 rounded-[5px] border-2 border-green-800 flex items-center justify-center shadow-sm -mt-0.5">
+                        {/* R replacement: iPhone 16 Style with Dynamic Island */}
+                        <div className="relative w-6 h-10 bg-green-600 rounded-[5px] border-2 border-green-800 flex flex-col items-center justify-center shadow-sm overflow-hidden">
+                            {/* Dynamic Island */}
+                            <div className="absolute top-[3px] w-2.5 h-1 bg-black/50 rounded-full z-10" />
+
                             <motion.span
                                 animate={{ opacity: [1, 0, 1, 0, 1, 1, 0.2, 1] }}
                                 transition={{
@@ -63,15 +66,18 @@ export const HeroLogo = ({ className = "h-14 w-auto" }: { className?: string }) 
                                     repeat: Infinity,
                                     times: [0, 0.1, 0.2, 0.3, 0.4, 0.8, 0.9, 1]
                                 }}
-                                className="text-xl text-white font-black"
+                                className="text-lg text-white font-black"
                             >
                                 ₹
                             </motion.span>
+
+                            {/* Home Bar */}
+                            <div className="absolute bottom-[3px] w-2.5 h-0.5 bg-white/30 rounded-full" />
                         </div>
 
                         <span
-                            className="font-bold text-xs tracking-tight transition-colors duration-300"
-                            style={{ color: 'var(--logo-ka-t-color)' }}
+                            className="font-black text-lg tracking-tighter transition-colors duration-300"
+                            style={{ color: 'var(--logo-text)' }}
                         >
                             T
                         </span>
@@ -80,9 +86,9 @@ export const HeroLogo = ({ className = "h-14 w-auto" }: { className?: string }) 
 
                 {/* Custom Shopping Cart Graphic (Elongated & Open Top) */}
                 <svg
-                    width="120"
+                    width="130"
                     height="70"
-                    viewBox="0 0 42 24"
+                    viewBox="0 0 46 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     className="transition-colors duration-300"
@@ -96,17 +102,17 @@ export const HeroLogo = ({ className = "h-14 w-auto" }: { className?: string }) 
                         strokeLinecap="round"
                         strokeLinejoin="round"
                     />
-                    {/* Wheel 2 (Right - Shifted +14 units) */}
+                    {/* Wheel 2 (Right) */}
                     <path
-                        d="M37 20C37 20.5523 36.5523 21 36 21C35.4477 21 35 20.5523 35 20C35 19.4477 35.4477 19 36 19C36.5523 19 37 19.4477 37 20Z"
+                        d="M41 20C41 20.5523 40.5523 21 40 21C39.4477 21 39 20.5523 39 20C39 19.4477 39.4477 19 40 19C40.5523 19 41 19.4477 41 20Z"
                         stroke="currentColor"
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                     />
-                    {/* Elongated Cart Body - Open Top - Extended Right */}
+                    {/* Elongated Cart Body - Open Top */}
                     <path
-                        d="M1 1H4L6.68 14.39C6.8872 15.4284 7.79848 16.1782 8.85764 16.18H36.4182C37.4024 16.18 38.2721 15.5255 38.55 14.58L40 9"
+                        d="M1 1H4L6.68 14.39C6.8872 15.4284 7.79848 16.1782 8.85764 16.18H40.4182C41.4024 16.18 42.2721 15.5255 42.55 14.58L44 9"
                         stroke="currentColor"
                         strokeWidth="1.5"
                         strokeLinecap="round"

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight, Zap, ShieldCheck, CheckCircle, Star } from 'lucide-react';
+import { ArrowRight, Zap, ShieldCheck, CheckCircle, Star, Clock, MapPin, BadgePercent } from 'lucide-react';
 import HowItWorks from '@/components/HowItWorks';
 import HeroAnimation from '@/components/HeroAnimation';
 import { ReviewsMarquee } from '@/components/ReviewsMarquee';
@@ -12,7 +12,7 @@ import { BigLogo } from '@/components/BigLogo';
 import { Logo } from '@/components/Logo';
 import { HomeSearch } from '@/components/HomeSearch';
 import { BrandRail } from '@/components/BrandRail';
-import { HeroLogo } from '@/components/HeroLogo';
+import { HeroLogo } from '../components/HeroLogo';
 import { useRouter } from 'next/navigation';
 
 
@@ -27,7 +27,7 @@ export default function Home() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Hero Section */}
-            <section className="relative pt-20 pb-32 md:pt-32 md:pb-48 overflow-hidden bg-background">
+            <section className="relative pt-0 pb-32 md:pt-32 md:pb-48 overflow-hidden bg-background">
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
                     <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-green-500/10 rounded-full blur-3xl" />
                     <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-3xl" />
@@ -35,7 +35,7 @@ export default function Home() {
 
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col xl:flex-row items-center gap-12 xl:gap-20">
-                        <div className="flex-1 space-y-8 animate-in slide-in-from-bottom-8 fade-in-20 duration-700">
+                        <div className="flex-1 animate-in slide-in-from-bottom-8 fade-in-20 duration-700">
                             <div className="hidden xl:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-semibold border border-green-200">
                                 <span className="relative flex h-2 w-2">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
@@ -47,25 +47,46 @@ export default function Home() {
                             {/* Custom Big Logo Area - Responsive Split */}
 
                             {/* Mobile Hero View (Text Banner + Search + Brands) */}
-                            <div className="block xl:hidden w-full space-y-6 pt-2 mb-20">
+                            <div className="block xl:hidden w-full space-y-6 pt-0 mb-20">
 
 
-                                <div className="flex justify-center items-center pt-36 pb-20">
-                                    <div className="scale-[3.5] origin-center transform">
-                                        <HeroLogo />
-                                    </div>
-                                </div>
-
-                                <HomeSearch />
-                                <div className="flex justify-center mt-2 mb-8 scale-90">
-                                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/60 dark:bg-black/20 text-green-800 dark:text-green-400 text-[10px] font-bold border border-green-200/50 backdrop-blur-md shadow-sm">
+                                {/* Top Chips Section */}
+                                <div className="flex flex-wrap justify-center gap-3 px-4 pt-0 pb-12">
+                                    {/* Chip 1: Trusted */}
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-default">
                                         <span className="relative flex h-1.5 w-1.5">
                                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
                                             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
                                         </span>
                                         Trusted by 1,000+ Customers
                                     </div>
+
+                                    {/* Chip 2: 3 Hours Pickup */}
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-default">
+                                        <Clock className="w-3 h-3 text-green-500" />
+                                        3 Hours Pickup
+                                    </div>
+
+                                    {/* Chip 3: Bangalore */}
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-default">
+                                        <MapPin className="w-3 h-3 text-green-500" />
+                                        Pickup All Over Bangalore
+                                    </div>
+
+                                    {/* Chip 4: Best Price */}
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-default">
+                                        <BadgePercent className="w-3 h-3 text-green-500" />
+                                        Best Price than any other website
+                                    </div>
                                 </div>
+
+                                <div className="flex justify-center items-center pt-24 pb-24">
+                                    <div className="scale-[3.5] origin-center transform">
+                                        <HeroLogo />
+                                    </div>
+                                </div>
+
+                                <HomeSearch />
                                 <BrandRail />
                             </div>
 
