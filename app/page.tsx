@@ -12,6 +12,7 @@ import { BigLogo } from '@/components/BigLogo';
 import { Logo } from '@/components/Logo';
 import { HomeSearch } from '@/components/HomeSearch';
 import { BrandRail } from '@/components/BrandRail';
+import { HeroLogo } from '@/components/HeroLogo';
 import { useRouter } from 'next/navigation';
 
 
@@ -47,9 +48,16 @@ export default function Home() {
 
                             {/* Mobile Hero View (Text Banner + Search + Brands) */}
                             <div className="block xl:hidden w-full space-y-6 pt-2 mb-20">
-                                <div className="px-5 py-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-3xl border border-green-100 dark:border-green-900/50 text-center shadow-sm relative overflow-hidden">
 
 
+                                <div className="flex justify-center items-center pt-36 pb-20">
+                                    <div className="scale-[3.5] origin-center transform">
+                                        <HeroLogo />
+                                    </div>
+                                </div>
+
+                                <HomeSearch />
+                                <div className="flex justify-center mt-2 mb-8 scale-90">
                                     <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/60 dark:bg-black/20 text-green-800 dark:text-green-400 text-[10px] font-bold border border-green-200/50 backdrop-blur-md shadow-sm">
                                         <span className="relative flex h-1.5 w-1.5">
                                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
@@ -58,14 +66,6 @@ export default function Home() {
                                         Trusted by 1,000+ Customers
                                     </div>
                                 </div>
-
-                                <div className="flex justify-center items-center pt-36 pb-20">
-                                    <div className="scale-[3.5] origin-center transform">
-                                        <Logo />
-                                    </div>
-                                </div>
-
-                                <HomeSearch />
                                 <BrandRail />
                             </div>
 
