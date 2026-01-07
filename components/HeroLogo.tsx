@@ -86,33 +86,33 @@ export const HeroLogo = ({ className = "h-14 w-auto" }: { className?: string }) 
 
                 {/* Custom Shopping Cart Graphic (Elongated & Open Top) */}
                 <svg
-                    width="130"
+                    width="120"
                     height="70"
-                    viewBox="0 0 46 24"
+                    viewBox="0 0 50 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     className="transition-colors duration-300"
                     style={{ color: 'var(--logo-cart-color)', overflow: 'visible' }}
                 >
-                    {/* Wheel 1 (Left) */}
+                    {/* Wheel 1 (Left - Shifted +2 -> 12) */}
                     <path
-                        d="M10 20C10 20.5523 9.55228 21 9 21C8.44772 21 8 20.5523 8 20C8 19.4477 8.44772 19 9 19C9.55228 19 10 19.4477 10 20Z"
+                        d="M12 20C12 20.5523 11.5523 21 11 21C10.4477 21 10 20.5523 10 20C10 19.4477 10.4477 19 11 19C11.5523 19 12 19.4477 12 20Z"
                         stroke="currentColor"
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                     />
-                    {/* Wheel 2 (Right) */}
+                    {/* Wheel 2 (Right - Shifted +2 -> 45) */}
                     <path
-                        d="M41 20C41 20.5523 40.5523 21 40 21C39.4477 21 39 20.5523 39 20C39 19.4477 39.4477 19 40 19C40.5523 19 41 19.4477 41 20Z"
+                        d="M45 20C45 20.5523 44.5523 21 44 21C43.4477 21 43 20.5523 43 20C43 19.4477 43.4477 19 44 19C44.5523 19 45 19.4477 45 20Z"
                         stroke="currentColor"
                         strokeWidth="1.5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                     />
-                    {/* Elongated Cart Body - Open Top */}
+                    {/* Elongated Cart Body - Open Top - Shifted Right +2 */}
                     <path
-                        d="M1 1H4L6.68 14.39C6.8872 15.4284 7.79848 16.1782 8.85764 16.18H40.4182C41.4024 16.18 42.2721 15.5255 42.55 14.58L44 9"
+                        d="M3 1H6L8.68 14.39C8.8872 15.4284 9.79848 16.1782 10.8576 16.18H44.4182C45.4024 16.18 46.2721 15.5255 46.55 14.58L48 9"
                         stroke="currentColor"
                         strokeWidth="1.5"
                         strokeLinecap="round"
