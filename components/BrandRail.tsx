@@ -43,13 +43,15 @@ const getBrandCategories = (brandName: string) => {
     return cats;
 };
 
-export function BrandRail() {
-    const [brands, setBrands] = useState<Brand[]>([]);
+export function BrandRail({ initialBrands }: { initialBrands?: Brand[] }) {
+    const [brands, setBrands] = useState<Brand[]>(initialBrands || []);
     const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
 
     useEffect(() => {
-        fetchBrands('smartphone').then(setBrands);
-    }, []);
+        if (!initialBrands || initialBrands.length === 0) {
+            fetchBrands('smartphone').then(setBrands);
+        }
+    }, [initialBrands]);
 
     if (brands.length === 0) return null;
 
