@@ -60,22 +60,10 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                         Trusted by 1,000+ Customers
                                     </div>
 
-                                    {/* Chip 2: 3 Hours Pickup */}
-                                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-default">
-                                        <Clock className="w-3 h-3 text-green-500" />
-                                        3 Hours Pickup
-                                    </div>
-
                                     {/* Chip 3: Bangalore */}
                                     <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-default">
                                         <MapPin className="w-3 h-3 text-green-500" />
                                         Pickup All Over Bangalore
-                                    </div>
-
-                                    {/* Chip 4: Best Price */}
-                                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-default">
-                                        <BadgePercent className="w-3 h-3 text-green-500" />
-                                        Best Price than any other website
                                     </div>
                                 </div>
 

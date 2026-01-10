@@ -14,27 +14,24 @@ export const HeroLogo = ({ className = "h-14 w-auto" }: { className?: string }) 
 
                     {/* Top Row: F inside Phone + ONZ */}
                     <div className="flex items-center justify-center gap-0.5 mb-0 ml-9">
-                        {/* F Logo Box (Smartphone) */}
+                        {/* F Logo Box (Smartphone 3D - Reverted Tilt/Buttons) */}
                         <div
-                            className="relative w-6 h-10 flex flex-col items-center justify-between rounded-[5px] border-2 border-slate-800 dark:border-white/30 bg-black shadow-sm overflow-hidden transition-colors duration-300 py-[2px]"
+                            className="relative w-6 h-10 flex flex-col items-center justify-center rounded-[5px] border-2 border-slate-800 bg-slate-900 shadow-[2px_2px_4px_rgba(0,0,0,0.4)] overflow-hidden transition-all duration-300"
                         >
-                            {/* Notch */}
-                            <div className="w-2 h-0.5 bg-zinc-500 rounded-full" />
-
                             <motion.div
-                                animate={{ opacity: [1, 0.9, 1] }}
+                                animate={{ opacity: [1, 0.4, 1] }}
                                 transition={{
-                                    duration: 2,
+                                    duration: 1.5,
                                     repeat: Infinity,
                                     ease: "easeInOut"
                                 }}
-                                className="w-[90%] flex-1 my-[1px] rounded-[2px] bg-green-500 overflow-hidden relative"
+                                className="w-full h-full bg-green-500 relative"
                             >
                                 <Image src="/logo_final_v3.png" alt="F" fill className="object-cover" />
                             </motion.div>
 
-                            {/* Home Button */}
-                            <div className="w-1 h-1 rounded-full bg-zinc-500" />
+                            {/* Notch */}
+                            <div className="absolute top-0 w-2.5 h-[3px] bg-black rounded-b-[3px] z-10" />
                         </div>
 
                         <span

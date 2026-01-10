@@ -78,8 +78,8 @@ export default function HeroAnimation() {
                 />
             </div>
 
-            {/* Container for alignment */}
-            <div className="relative z-10 flex items-center justify-center gap-8 md:gap-16 w-full max-w-4xl px-4">
+            {/* Container for alignment - Scaled for Mobile Responsiveness */}
+            <div className="relative z-10 flex items-center justify-center gap-2 sm:gap-8 md:gap-16 w-full max-w-4xl px-4 scale-[0.6] sm:scale-100 origin-center transition-transform duration-300">
 
                 {/* 1. THE FLAT PREMIUM PHONE COMPONENT */}
                 <div className="relative w-[180px] h-[360px] sm:w-[220px] sm:h-[440px] shrink-0">

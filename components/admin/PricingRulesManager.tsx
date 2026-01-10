@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { questionnaireSteps } from '@/lib/data';
 import { upsertEvaluationRule } from '@/actions/admin';
 import { EvaluationRule } from '@/lib/store';
@@ -67,8 +67,8 @@ export default function PricingRulesManager({ category, initialRules }: Props) {
                     </thead>
                     <tbody className="divide-y">
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                        {steps.map((step: any) => (
-                            <>
+                        {steps.map((step: any, idx: number) => (
+                            <React.Fragment key={step.id || idx}>
                                 {/* Boolean Questions */}
                                 {step.questions?.map((q: any) => (
                                     <RuleRow
@@ -99,7 +99,7 @@ export default function PricingRulesManager({ category, initialRules }: Props) {
                                         onSave={handleSave}
                                     />
                                 ))}
-                            </>
+                            </React.Fragment>
                         ))}
                     </tbody>
                 </table>
