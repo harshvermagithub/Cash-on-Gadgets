@@ -63,6 +63,10 @@
 */
 
 :root {
+  /* Layout Spacing Variable */
+  --layout-x-spacing: 1.25rem;
+  /* 20px padding for mobile safe area */
+
   --background: 140 30% 98%;
   --foreground: 140 60% 10%;
 
@@ -125,12 +129,24 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
+
+  *,
+  ::after,
+  ::before {
+    box-sizing: border-box;
+    border-color: var(--color-border);
+  }
+
+  html,
+  body {
+    height: 100%;
+    overflow-x: hidden;
+    /* Prevent horizontal overflow/scrolling */
   }
 
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
   }
 }
 
@@ -139,13 +155,13 @@
   --brand-logo-filter: brightness(0);
 
   /* LOGO VARIABLES - Light Mode */
-  --logo-box-bg: #1e293b;
-  /* slate-800 */
+  --logo-box-bg: #000000;
+  /* green-600 */
   --logo-text: #1e293b;
   /* slate-800 */
   --logo-cart-color: #0f172a;
   /* slate-900 */
-  --logo-f-color: #22c55e;
+  --logo-f-color: #ffffff;
   /* green-500 */
   --logo-ka-t-color: #475569;
   /* slate-600 */
@@ -155,10 +171,10 @@
   --brand-logo-filter: brightness(0) invert(1);
 
   /* LOGO VARIABLES - Dark Mode */
-  --logo-box-bg: #ffffff;
+  --logo-box-bg: #000000;
   --logo-text: #ffffff;
   --logo-cart-color: #ffffff;
-  --logo-f-color: #16a34a;
+  --logo-f-color: #ffffff;
   /* green-600 */
   --logo-ka-t-color: #ffffff;
 }

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export const BigLogo = () => {
     // Shared animation props for synchronization
@@ -21,9 +22,9 @@ export const BigLogo = () => {
                 {/* The Cart Container - Tilted Left - Left Origin for Alignment */}
                 {/* Reduced scale to prevent overlap, adjusted padding in parent container */}
 
-                <div className="relative -rotate-3 origin-left scale-[2] md:scale-[2.8] lg:scale-[3.5] ml-4">
+                <div className="relative -rotate-3 origin-left scale-[2] md:scale-[2.8] lg:scale-[3.5] ml-12">
                     {/* Content Inside the Cart - Gap Reduced by Half */}
-                    <div className="absolute top-[2.5%] left-1/2 -translate-x-[48%] flex flex-col items-start leading-none z-10">
+                    <div className="absolute top-[10%] left-1/2 -translate-x-[48%] flex flex-col items-start leading-none z-10">
                         {/* Row 1: F O N Z */}
                         <div className="flex items-center gap-[1px]">
                             {/* F inside Phone */}
@@ -31,14 +32,13 @@ export const BigLogo = () => {
                                 className="relative w-4 h-6 flex items-center justify-center rounded-[3px] border border-slate-700 dark:border-white/20 shadow-inner overflow-hidden transition-colors duration-300"
                                 style={{ backgroundColor: 'var(--logo-box-bg)' }}
                             >
-                                <motion.span
+                                <motion.div
                                     animate={blinkAnimation}
                                     transition={blinkTransition}
-                                    className="font-black text-sm font-mono transition-colors duration-300"
-                                    style={{ color: 'var(--logo-f-color)' }}
+                                    className="w-[85%] h-[85%] rounded-[1px] bg-green-500 overflow-hidden relative"
                                 >
-                                    F
-                                </motion.span>
+                                    <Image src="/logo_final_v3.png" alt="F" fill className="object-cover" />
+                                </motion.div>
                             </div>
                             <span
                                 className="font-black text-lg tracking-tighter transition-colors duration-300"
@@ -76,27 +76,23 @@ export const BigLogo = () => {
 
                     {/* Custom Shopping Cart Graphic - Gap Reduced by Half */}
                     <svg
-                        width="110"
-                        height="70"
-                        viewBox="0 0 38 24"
+                        width="190"
+                        height="80"
+                        viewBox="0 -35 95 65"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                         className="mt-1.5 transition-colors duration-300"
                         style={{ color: 'var(--logo-cart-color)', overflow: 'visible' }}
                     >
-                        {/* Rear Wheel */}
-                        <path
-                            d="M10 20C10 20.5523 9.55228 21 9 21C8.44772 21 8 20.5523 8 20C8 19.4477 8.44772 19 9 19C9.55228 19 10 19.4477 10 20Z"
-                            stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
-                        />
-                        {/* Front Wheel */}
-                        <path
-                            d="M33 20C33 20.5523 32.5523 21 32 21C31.4477 21 31 20.5523 31 20C31 19.4477 31.4477 19 32 19C32.5523 19 33 19.4477 33 20Z"
-                            stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
-                        />
+                        {/* Wheel 1 (Left - r=2.5) */}
+                        <circle cx="10" cy="21" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+
+                        {/* Wheel 2 (Right - r=2.5) */}
+                        <circle cx="76" cy="21" r="2.5" stroke="currentColor" strokeWidth="1.5" />
+
                         {/* Cart Body */}
                         <path
-                            d="M1 1H4L6.68 14.39C6.8872 15.4284 7.79848 16.1782 8.85764 16.18H32.4C33.4 16.18 34.2 15.5 34.5 14.6L36 9"
+                            d="M1 -30H4L6.68 14.39C6.8872 15.4284 7.79848 16.1782 8.85764 16.18H75.4C76.4 16.18 77.2 15.5 77.5 14.6L81 -10"
                             stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
                         />
                     </svg>

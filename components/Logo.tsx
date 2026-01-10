@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
     return (
@@ -13,24 +14,21 @@ export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
 
                     {/* Top Row: F inside Phone + ONZ */}
                     <div className="flex items-center justify-center gap-0.5 mb-0.5">
-                        {/* F inside Smartphone */}
+                        {/* F Logo Box */}
                         <div
-                            className="relative w-4 h-6 flex items-center justify-center rounded-[3px] border border-slate-700 dark:border-white/20 shadow-inner overflow-hidden transition-colors duration-300"
-                            style={{ backgroundColor: 'var(--logo-box-bg)' }}
+                            className="relative w-4 h-6 flex items-center justify-center rounded-[3px] border border-slate-700 dark:border-white/20 shadow-inner overflow-hidden transition-colors duration-300 bg-black"
                         >
-                            {/* Flicker Animation */}
-                            <motion.span
+                            <motion.div
                                 animate={{ opacity: [1, 0, 1, 0, 1, 1, 0.2, 1] }}
                                 transition={{
                                     duration: 2.5,
                                     repeat: Infinity,
                                     times: [0, 0.1, 0.2, 0.3, 0.4, 0.8, 0.9, 1]
                                 }}
-                                className="font-black text-sm font-mono transition-colors duration-300"
-                                style={{ color: 'var(--logo-f-color)' }}
+                                className="w-[85%] h-[85%] rounded-[1px] bg-green-500 overflow-hidden relative"
                             >
-                                F
-                            </motion.span>
+                                <Image src="/logo_final_v3.png" alt="F" fill className="object-cover" />
+                            </motion.div>
                         </div>
 
                         <span
@@ -51,7 +49,9 @@ export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
                         </span>
 
                         {/* R replacement: Vertical Cash with Rupee */}
-                        <div className="relative w-3 h-4 bg-green-600 rounded-[2px] border border-green-700 flex items-center justify-center shadow-sm -mt-0.5">
+                        {/* R replacement: 500 Rupee Note */}
+                        <div className="relative w-3.5 h-5 bg-emerald-50 dark:bg-emerald-950 rounded-[2px] border border-emerald-600 dark:border-emerald-400 flex items-center justify-center shadow-sm -mt-0.5 overflow-hidden">
+                            <span className="absolute top-[0.5px] left-[1px] text-[2px] font-bold text-emerald-800 dark:text-emerald-300">500</span>
                             <motion.span
                                 animate={{ opacity: [1, 0, 1, 0, 1, 1, 0.2, 1] }}
                                 transition={{
@@ -59,11 +59,12 @@ export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
                                     repeat: Infinity,
                                     times: [0, 0.1, 0.2, 0.3, 0.4, 0.8, 0.9, 1]
                                 }}
-                                className="text-[8px] text-white font-bold"
+                                className="text-[6px] text-emerald-800 dark:text-emerald-300 font-bold"
                             >
                                 ₹
                             </motion.span>
                         </div>
+
 
                         <span
                             className="font-bold text-xs tracking-tight transition-colors duration-300"
@@ -108,8 +109,8 @@ export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
                         strokeLinejoin="round"
                     />
                 </svg>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 

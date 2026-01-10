@@ -9,9 +9,10 @@ export const metadata = {
 import { fetchBrands } from "@/actions/catalog";
 import { getSession } from "@/lib/session";
 
-export default async function SellPage(props: { searchParams: Promise<{ category?: string }> }) {
+export default async function SellPage(props: { searchParams: Promise<{ category?: string; brandId?: string }> }) {
     const searchParams = await props.searchParams;
     const category = searchParams.category;
+    const brandId = searchParams.brandId;
     const brands = await fetchBrands(category);
 
     // Fetch user session for auth-dependent flows (e.g., skip phone number step)
@@ -23,6 +24,7 @@ export default async function SellPage(props: { searchParams: Promise<{ category
                 key={category}
                 initialBrands={brands}
                 initialCategory={category}
+                initialBrandId={brandId}
                 user={session?.user}
             />
         </div>

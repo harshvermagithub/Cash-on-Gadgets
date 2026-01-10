@@ -76,6 +76,7 @@ export async function addBrand(name: string, logo: string, category?: string, pr
 
     revalidatePath(`/admin/category/${category}`);
     revalidatePath('/sell');
+    revalidatePath('/');
     return { success: true, id };
 }
 
@@ -102,6 +103,7 @@ export async function deleteBrand(id: string, category?: string) {
 
     if (category) revalidatePath(`/admin/category/${category}`);
     revalidatePath('/sell');
+    revalidatePath('/');
     revalidatePath('/admin/brands'); // General refresh
     return { success: true };
 }
@@ -111,6 +113,7 @@ export async function updateBrand(id: string, name: string, logo: string, priori
     await db.updateBrand(id, name, logo, priority);
     revalidatePath('/admin/brands');
     revalidatePath('/sell');
+    revalidatePath('/');
     return { success: true };
 }
 
@@ -132,6 +135,7 @@ export async function addModel(brandId: string, name: string, img: string, categ
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     revalidatePath('/admin/models');
+    revalidatePath('/');
     return { success: true };
 }
 
@@ -139,6 +143,7 @@ export async function updateModel(id: string, brandId: string, name: string, img
     await requireAdmin();
     await db.updateModel(id, brandId, name, img, category, priority);
     revalidatePath('/admin/models');
+    revalidatePath('/');
     return { success: true };
 }
 
@@ -150,6 +155,7 @@ export async function reorderModels(items: { id: string, priority: number }[]) {
     await db.updateModelPriorities(items);
     revalidatePath('/admin/models');
     revalidatePath('/sell'); // Ensure frontend updates immediately
+    revalidatePath('/');
     return { success: true };
 }
 

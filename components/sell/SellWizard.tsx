@@ -18,13 +18,14 @@ type Step = 'category' | 'brand' | 'model' | 'variant' | 'quote_preview' | 'chec
 interface SellWizardProps {
     initialBrands: Brand[];
     initialCategory?: string;
+    initialBrandId?: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     user?: any; // Session User
 }
 
 import { fetchBrands } from '@/actions/catalog';
 
-export default function SellWizard({ initialBrands, initialCategory, user: initialUser }: SellWizardProps) {
+export default function SellWizard({ initialBrands, initialCategory, initialBrandId, user: initialUser }: SellWizardProps) {
     // If a category is provided via info, we start at 'brand' selection (skipping category select)
     // Exception: If category is 'repair', we treat it as smartphone but set isRepair=true
 
@@ -36,14 +37,19 @@ export default function SellWizard({ initialBrands, initialCategory, user: initi
 
     const resolvedCategory = resolveCategory(initialCategory);
 
-    const [step, setStep] = useState<Step>(initialCategory ? 'brand' : 'category');
+    // Initial Brand Logic
+    const preSelectedBrand = initialBrandId ? initialBrands.find(b => b.id === initialBrandId) : null;
+
+    const [step, setStep] = useState<Step>(
+        preSelectedBrand ? 'model' : (initialCategory ? 'brand' : 'category')
+    );
     const [category, setCategory] = useState<string>(resolvedCategory);
     const [isRepair, setIsRepair] = useState(initialCategory === 'repair');
 
     // We need to maintain local brands state in case category changes
     const [brands, setBrands] = useState<Brand[]>(initialBrands);
 
-    const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
+    const [selectedBrand, setSelectedBrand] = useState<Brand | null>(preSelectedBrand || null);
     const [selectedModel, setSelectedModel] = useState<Model | null>(null);
     const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
     const [answers, setAnswers] = useState<Record<string, unknown>>({});

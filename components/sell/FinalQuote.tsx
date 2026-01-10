@@ -107,9 +107,15 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
             },
             (error) => {
                 console.error(error);
-                setLocationError('Permission denied or unavailable.');
+                let msg = 'Location failed.';
+                if (error.code === 1) msg = 'Permission denied. Please allow location access.';
+                else if (error.code === 2) msg = 'Location unavailable. Try again.';
+                else if (error.code === 3) msg = 'Location request timed out.';
+
+                setLocationError(msg);
                 setIsGettingLocation(false);
-            }
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
         );
     };
 

@@ -276,7 +276,7 @@ export default function Home() {
                             <div className="space-y-2">
                                 <h3 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">Quick & Fast Service</h3>
                                 <p className="text-slate-400 text-sm leading-relaxed">
-                                    Get mobile in a click at your home/office instantly. No waiting.
+                                    Get cash instantly at your doorstep just before the pickup completes. No waiting—payment is processed immediately.
                                 </p>
                             </div>
                         </motion.div>

@@ -18,7 +18,28 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete, onBa
     const [answers, setAnswers] = useState<Record<string, unknown>>({});
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const steps = (questionnaireSteps as any)[category || 'smartphone'] || (questionnaireSteps as any)['smartphone'];
+    // Customize steps based on device type (iPhone Battery Logic)
+    let steps = (questionnaireSteps as any)[category || 'smartphone'] || (questionnaireSteps as any)['smartphone'];
+
+    if (deviceInfo?.name?.toLowerCase().includes('iphone')) {
+        steps = steps.map((step: any) => {
+            if (step.id === 'functional_issues' && step.options) {
+                // Create a shallow copy of options to modify "Battery"
+                const newOptions = step.options.flatMap((opt: any) => {
+                    if (opt.id === 'battery') {
+                        return [
+                            { id: 'battery_health_low', label: 'Battery Health < 85%', icon: 'Battery' },
+                            { id: 'battery_health_high', label: 'Battery Health > 85%', icon: 'Battery' }
+                        ];
+                    }
+                    return opt;
+                });
+                return { ...step, options: newOptions };
+            }
+            return step;
+        });
+    }
+
     const currentStep = steps[currentStepIndex];
 
     const handleAnswer = (key: string, value: unknown) => {
