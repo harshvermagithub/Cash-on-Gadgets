@@ -136,20 +136,29 @@ export const ReviewsMarquee = () => {
 };
 
 const ReviewCard = ({ review }: { review: typeof REVIEWS[0] }) => (
-    <div className="w-[350px] md:w-[400px] flex-shrink-0 p-6 bg-card border rounded-2xl space-y-4 hover:border-primary/50 transition-colors shadow-sm">
-        <div className="flex items-center gap-1">
-            {[1, 2, 3, 4, 5].map(v => <Star key={v} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
-        </div>
-        <p className="text-base leading-relaxed text-muted-foreground line-clamp-3">
-            &quot;{review.text}&quot;
-        </p>
-        <div className="flex items-center gap-3 pt-2">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/80 to-blue-600/80 flex items-center justify-center text-white font-bold text-sm">
-                {review.initial}
+    <div className="relative w-[260px] md:w-[280px] flex-shrink-0 p-6 rounded-2xl shadow-xl border border-white/20 overflow-hidden"
+        style={{
+            background: 'linear-gradient(135deg, #10B981, #065f46)'
+        }}
+    >
+        {/* Dot Pattern Overlay */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,_white_1px,_transparent_1px)] bg-[length:10px_10px]" />
+
+        <div className="relative z-10 space-y-4">
+            <div className="flex items-center gap-1">
+                {[1, 2, 3, 4, 5].map(v => <Star key={v} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
             </div>
-            <div>
-                <h4 className="font-bold text-sm">{review.name}</h4>
-                <p className="text-xs text-muted-foreground">{review.role}</p>
+            <p className="text-sm leading-relaxed text-white/90 line-clamp-4 font-medium">
+                &quot;{review.text}&quot;
+            </p>
+            <div className="flex items-center gap-3 pt-2">
+                <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white font-bold text-sm border border-white/10 shadow-inner">
+                    {review.initial}
+                </div>
+                <div>
+                    <h4 className="font-bold text-sm text-white">{review.name}</h4>
+                    <p className="text-xs text-white/60 font-medium tracking-wide">{review.role}</p>
+                </div>
             </div>
         </div>
     </div>

@@ -48,7 +48,6 @@ export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
                             KA
                         </span>
 
-                        {/* R replacement: Vertical Cash with Rupee */}
                         {/* R replacement: 500 Rupee Note */}
                         <div className="relative w-3.5 h-5 bg-emerald-50 dark:bg-emerald-950 rounded-[2px] border border-emerald-600 dark:border-emerald-400 flex items-center justify-center shadow-sm -mt-0.5 overflow-hidden">
                             <span className="absolute top-[0.5px] left-[1px] text-[2px] font-bold text-emerald-800 dark:text-emerald-300">500</span>

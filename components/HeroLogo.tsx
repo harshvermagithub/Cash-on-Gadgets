@@ -13,7 +13,7 @@ export const HeroLogo = ({ className = "h-14 w-auto" }: { className?: string }) 
                 <div className="absolute bottom-[15%] left-1/2 -translate-x-[50%] flex flex-col items-start leading-none z-10 w-full pb-0 scale-[0.75]">
 
                     {/* Top Row: F inside Phone + ONZ */}
-                    <div className="flex items-center justify-center gap-0.5 mb-0 ml-9">
+                    <div className="flex items-center justify-center gap-0.5 mb-0 ml-4">
                         {/* F Logo Box (Smartphone 3D - Reverted Tilt/Buttons) */}
                         <div
                             className="relative w-6 h-10 flex flex-col items-center justify-center rounded-[5px] border-2 border-slate-800 bg-slate-900 shadow-[2px_2px_4px_rgba(0,0,0,0.4)] overflow-hidden transition-all duration-300"
@@ -43,7 +43,7 @@ export const HeroLogo = ({ className = "h-14 w-auto" }: { className?: string }) 
                     </div>
 
                     {/* Bottom Row: KA + Cash/Rupee + T - Shifted Right to Align Start of K with Start of Z */}
-                    <div className="flex items-center justify-center gap-0.5 ml-22 -mt-5">
+                    <div className="flex items-center justify-center gap-0.5 ml-14 -mt-5">
                         <span
                             className="font-black text-lg tracking-tighter transition-colors duration-300"
                             style={{ color: 'var(--logo-text)' }}
