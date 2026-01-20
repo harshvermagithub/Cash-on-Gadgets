@@ -142,10 +142,10 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                     <div className="flex flex-wrap justify-center gap-8 md:gap-16 items-center">
                         <span className="text-2xl font-bold text-slate-200 hover:text-white transition-colors cursor-default">Apple</span>
                         <span className="text-2xl font-bold text-blue-400 hover:text-blue-300 transition-colors cursor-default">Samsung</span>
-                        <span className="text-2xl font-bold text-red-400 hover:text-red-300 transition-colors cursor-default">OnePlus</span>
-                        <span className="text-2xl font-bold text-orange-400 hover:text-orange-300 transition-colors cursor-default">Xiaomi</span>
                         <span className="text-2xl font-bold text-blue-400 hover:text-blue-300 transition-colors cursor-default">Vivo</span>
-                        <span className="text-2xl font-bold text-emerald-400 hover:text-emerald-300 transition-colors cursor-default">Oppo</span>
+                        <span className="text-2xl font-bold text-red-400 hover:text-red-300 transition-colors cursor-default">OnePlus</span>
+                        <span className="text-2xl font-bold text-slate-200 hover:text-white transition-colors cursor-default">Nothing</span>
+                        <span className="text-2xl font-bold text-yellow-400 hover:text-yellow-300 transition-colors cursor-default">iQOO</span>
                     </div>
                 </div>
 
