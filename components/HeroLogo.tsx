@@ -15,8 +15,8 @@ const SmartphoneSVG = ({ isDark }: { isDark: boolean }) => (
             rx="4"
             strokeWidth="1.5"
             style={{
-                fill: isDark ? '#000000' : '#0f172a', // Filled black in dark mode (as requested)
-                stroke: isDark ? 'white' : '#334155'     // White stroke for visibility
+                fill: isDark ? '#000000' : '#0f172a',
+                stroke: isDark ? 'white' : '#334155'
             }}
             className="transition-colors duration-300"
         />
@@ -27,7 +27,7 @@ const SmartphoneSVG = ({ isDark }: { isDark: boolean }) => (
             width="12"
             height="3"
             rx="1.5"
-            style={{ fill: isDark ? 'white' : 'black' }} // White notch
+            style={{ fill: isDark ? 'white' : 'black' }}
             className="transition-colors duration-300"
         />
         <path d="M2.5 2.5H29.5V20L2.5 35V2.5Z" fill="white" fillOpacity="0.1" />
@@ -81,7 +81,15 @@ const RupeeNoteSVG = ({ isDark }: { isDark: boolean }) => (
 export const HeroLogo = ({ className = "" }: { className?: string }) => {
     const { resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
+
+    // Animation constants
     const cycleDuration = 4;
+    const transitionSettings = {
+        duration: cycleDuration,
+        repeat: Infinity,
+        ease: "easeInOut",
+        times: [0, 0.4, 0.5, 0.9, 1] // Precise timing for snappy crossfade
+    };
 
     useEffect(() => {
         setMounted(true);
@@ -94,16 +102,15 @@ export const HeroLogo = ({ className = "" }: { className?: string }) => {
         <div className={`flex items-center gap-1 select-none ${className}`} aria-label="Fonzkart">
             {/* F / Smartphone Animation */}
             <div className="relative w-8 h-12 flex items-center justify-center mr-0.5">
-                {/* State 1: F Logo */}
+                {/* State 1: F Logo Image */}
                 <motion.div
                     animate={{ opacity: [0, 0, 1, 1, 0] }}
-                    transition={{ duration: cycleDuration, repeat: Infinity, ease: "easeInOut" }}
+                    transition={transitionSettings}
                     className="absolute inset-0 flex items-center justify-center"
                 >
                     <div
                         className="relative w-full h-full p-0.5 transition-[filter] duration-300"
-                        // Removed brightness(0), just using invert to flip colors but keep details
-                        style={{ filter: isDark ? 'invert(1)' : 'none' }}
+                        style={{ filter: isDark ? 'invert(1) hue-rotate(180deg)' : 'none' }}
                     >
                         <Image
                             src="/logo_final_v3.png"
@@ -118,7 +125,7 @@ export const HeroLogo = ({ className = "" }: { className?: string }) => {
                 {/* State 2: Smartphone SVG */}
                 <motion.div
                     animate={{ opacity: [1, 1, 0, 0, 1] }}
-                    transition={{ duration: cycleDuration, repeat: Infinity, ease: "easeInOut" }}
+                    transition={transitionSettings}
                     className="absolute inset-0 flex items-center justify-center z-10"
                 >
                     <SmartphoneSVG isDark={isDark} />
