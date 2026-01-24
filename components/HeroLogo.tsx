@@ -1,10 +1,11 @@
 'use client'
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
 
-const SmartphoneSVG = () => (
+const SmartphoneSVG = ({ isDark }: { isDark: boolean }) => (
     <svg width="100%" height="100%" viewBox="0 0 32 60" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect
             x="1"
@@ -13,15 +14,27 @@ const SmartphoneSVG = () => (
             height="58"
             rx="4"
             strokeWidth="1.5"
-            className="fill-slate-900 dark:fill-slate-950 stroke-slate-700 dark:stroke-slate-400"
+            style={{
+                fill: isDark ? '#000000' : '#0f172a', // Filled black in dark mode (as requested)
+                stroke: isDark ? 'white' : '#334155'     // White stroke for visibility
+            }}
+            className="transition-colors duration-300"
         />
         <rect x="2.5" y="2.5" width="27" height="55" rx="2.5" fill="#10B981" />
-        <rect x="10" y="3" width="12" height="3" rx="1.5" fill="black" />
+        <rect
+            x="10"
+            y="3"
+            width="12"
+            height="3"
+            rx="1.5"
+            style={{ fill: isDark ? 'white' : 'black' }} // White notch
+            className="transition-colors duration-300"
+        />
         <path d="M2.5 2.5H29.5V20L2.5 35V2.5Z" fill="white" fillOpacity="0.1" />
     </svg>
 );
 
-const RupeeNoteSVG = () => (
+const RupeeNoteSVG = ({ isDark }: { isDark: boolean }) => (
     <svg width="100%" height="100%" viewBox="0 0 40 70" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect
             x="1"
@@ -30,7 +43,11 @@ const RupeeNoteSVG = () => (
             height="68"
             rx="2"
             strokeWidth="1"
-            className="fill-slate-200 dark:fill-slate-300 stroke-slate-500 dark:stroke-slate-400"
+            style={{
+                fill: isDark ? '#cbd5e1' : '#e2e8f0',
+                stroke: isDark ? '#94a3b8' : '#64748b'
+            }}
+            className="transition-colors duration-300"
         />
         <rect x="4" y="4" width="32" height="62" rx="1" fill="#D1FAE5" fillOpacity="0.5" />
 
@@ -52,23 +69,51 @@ const RupeeNoteSVG = () => (
         </text>
 
         <line x1="2" y1="50" x2="38" y2="50" stroke="#10B981" strokeWidth="1.5" strokeDasharray="4 2" />
-        <path d="M2 24H38M2 46H38" className="stroke-slate-400 dark:stroke-slate-500" strokeWidth="0.5" />
+        <path
+            d="M2 24H38M2 46H38"
+            style={{ stroke: isDark ? '#64748b' : '#94a3b8' }}
+            strokeWidth="0.5"
+            className="transition-colors duration-300"
+        />
     </svg>
 );
 
 export const HeroLogo = ({ className = "" }: { className?: string }) => {
+    const { resolvedTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
     const cycleDuration = 4;
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    const isDark = mounted && (resolvedTheme === 'dark');
+    const textClass = isDark ? 'text-white' : 'text-slate-900';
 
     return (
         <div className={`flex items-center gap-1 select-none ${className}`} aria-label="Fonzkart">
             {/* F / Smartphone Animation */}
             <div className="relative w-8 h-12 flex items-center justify-center mr-0.5">
                 {/* State 1: F Logo */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="relative w-full h-full p-0.5">
-                        <Image src="/logo_final_v3.png" alt="F" fill className="object-contain" priority />
+                <motion.div
+                    animate={{ opacity: [0, 0, 1, 1, 0] }}
+                    transition={{ duration: cycleDuration, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute inset-0 flex items-center justify-center"
+                >
+                    <div
+                        className="relative w-full h-full p-0.5 transition-[filter] duration-300"
+                        // Removed brightness(0), just using invert to flip colors but keep details
+                        style={{ filter: isDark ? 'invert(1)' : 'none' }}
+                    >
+                        <Image
+                            src="/logo_final_v3.png"
+                            alt="F"
+                            fill
+                            className="object-contain"
+                            priority
+                        />
                     </div>
-                </div>
+                </motion.div>
 
                 {/* State 2: Smartphone SVG */}
                 <motion.div
@@ -76,37 +121,37 @@ export const HeroLogo = ({ className = "" }: { className?: string }) => {
                     transition={{ duration: cycleDuration, repeat: Infinity, ease: "easeInOut" }}
                     className="absolute inset-0 flex items-center justify-center z-10"
                 >
-                    <SmartphoneSVG />
+                    <SmartphoneSVG isDark={isDark} />
                 </motion.div>
             </div>
 
             {/* O N Z K A */}
             <div className="flex items-center tracking-tighter">
-                <span className="font-black text-4xl text-slate-900 dark:text-white tracking-tight">ONZKA</span>
+                <span className={`font-black text-4xl tracking-tight transition-colors duration-300 ${textClass}`}>ONZKA</span>
             </div>
 
             {/* R / Rupee Animation */}
             <div className="relative w-9 h-14 flex items-center justify-center mx-1">
                 {/* State 1: Rupee Symbol */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-black text-4xl text-slate-900 dark:text-white">₹</span>
+                    <span className={`font-black text-4xl transition-colors duration-300 ${textClass}`}>₹</span>
                 </div>
 
-                {/* State 2: 500 Note SVG (Vertical) */}
+                {/* State 2: 500 Note SVG */}
                 <motion.div
                     animate={{ opacity: [0, 0, 1, 1, 0] }}
                     transition={{ duration: cycleDuration, repeat: Infinity, ease: "easeInOut" }}
                     className="absolute inset-0 flex items-center justify-center z-10"
                 >
                     <div className="w-full h-full scale-[1.05]">
-                        <RupeeNoteSVG />
+                        <RupeeNoteSVG isDark={isDark} />
                     </div>
                 </motion.div>
             </div>
 
             {/* T */}
             <div className="flex items-center tracking-tighter">
-                <span className="font-black text-4xl text-slate-900 dark:text-white">T</span>
+                <span className={`font-black text-4xl transition-colors duration-300 ${textClass}`}>T</span>
             </div>
 
         </div>

@@ -6,7 +6,7 @@ interface CategorySelectorProps {
     onSelect: (category: string) => void;
 }
 
-// --- Custom SVG Components ---
+// --- Custom SVG Components (Refined Positioning) ---
 
 const SmartphoneGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,28 +90,22 @@ const TvGraphic = () => (
 
 const RepairGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Exploded View Concept */}
-        {/* Back Panel */}
         <g transform="translate(80, 50) rotate(-5)">
             <rect x="0" y="0" width="55" height="95" rx="4" className="fill-slate-200 dark:fill-slate-800 stroke-slate-400 dark:stroke-slate-600" strokeWidth="1.5" />
             <circle cx="27" cy="30" r="10" className="stroke-slate-400 dark:stroke-slate-600" strokeWidth="1" />
         </g>
 
-        {/* Battery / Internals */}
         <g transform="translate(60, 30) rotate(-5)">
             <rect x="0" y="0" width="53" height="93" rx="3" className="fill-slate-900/10 dark:fill-black/50 stroke-green-500/50" strokeWidth="1" />
             <rect x="5" y="45" width="43" height="40" rx="2" className="fill-black stroke-slate-600" />
-            {/* Chip */}
             <path d="M10 10 H40 V35 H10 Z" className="fill-green-600 dark:fill-green-900 stroke-green-500" />
         </g>
 
-        {/* Front Screen */}
         <g transform="translate(40, 10) rotate(-5)">
             <rect x="0" y="0" width="55" height="95" rx="4" className="fill-blue-50/50 dark:fill-blue-900/20 stroke-blue-500" strokeWidth="1.5" />
             <path d="M0 0 L55 95" className="stroke-white/30" strokeWidth="40" />
         </g>
 
-        {/* Screwdriver Tool */}
         <g transform="translate(130, 40) rotate(20)">
             <path d="M5 0 L15 0 L15 50 L5 50 Z" className="fill-orange-500 stroke-orange-700" />
             <path d="M8 50 L12 50 L12 70 L10 75 L8 70 Z" className="fill-slate-300 stroke-slate-400" />
@@ -198,7 +192,10 @@ export default function CategorySelector({ onSelect }: CategorySelectorProps) {
                     >
                         {/* Text Content */}
                         <div className="absolute top-6 left-6 md:top-8 md:left-8 z-20 w-3/4">
-                            <p className="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60 mb-2">{cat.subtext}</p>
+                            {/* Updated subtext class to use cat.textColor and improved opacity */}
+                            <p className={`text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-70 mb-2 ${cat.textColor}`}>
+                                {cat.subtext}
+                            </p>
                             <h3 className={`text-3xl md:text-4xl font-bold tracking-tight ${cat.textColor} leading-none`}>
                                 {cat.name}
                             </h3>
