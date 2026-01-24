@@ -6,7 +6,7 @@ interface CategorySelectorProps {
     onSelect: (category: string) => void;
 }
 
-// --- Custom SVG Components (Refined Positioning) ---
+// --- Custom SVG Components ---
 
 const SmartphoneGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -55,7 +55,6 @@ const WatchGraphic = () => (
 
 const ConsoleGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Scaled down (0.85) and shifted right to avoid overlapping left text */}
         <g transform="translate(35, 15) scale(0.85)">
             <g transform="translate(130, 10)">
                 <rect x="0" y="0" width="60" height="110" className="fill-slate-900 stroke-slate-700" strokeWidth="1.5" />
@@ -91,15 +90,32 @@ const TvGraphic = () => (
 
 const RepairGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="70" y="20" width="60" height="110" rx="6" className="fill-slate-100 dark:fill-slate-900 stroke-slate-400" strokeWidth="2" />
-        <path d="M70 40 L130 90 M90 100 L110 30" className="stroke-slate-300" strokeWidth="1" />
-        <g transform="translate(40, 80) rotate(-30)">
-            <rect x="0" y="0" width="10" height="60" rx="2" className="fill-orange-500 stroke-orange-600" />
-            <path d="M-5 0 H15 L10 -15 H0 L-5 0" className="fill-slate-400" />
+        {/* Exploded View Concept */}
+        {/* Back Panel */}
+        <g transform="translate(80, 50) rotate(-5)">
+            <rect x="0" y="0" width="55" height="95" rx="4" className="fill-slate-200 dark:fill-slate-800 stroke-slate-400 dark:stroke-slate-600" strokeWidth="1.5" />
+            <circle cx="27" cy="30" r="10" className="stroke-slate-400 dark:stroke-slate-600" strokeWidth="1" />
         </g>
-        <g transform="translate(160, 80) rotate(30)">
-            <rect x="0" y="0" width="10" height="60" rx="2" className="fill-blue-500 stroke-blue-600" />
-            <circle cx="5" cy="0" r="8" className="fill-slate-300" />
+
+        {/* Battery / Internals */}
+        <g transform="translate(60, 30) rotate(-5)">
+            <rect x="0" y="0" width="53" height="93" rx="3" className="fill-slate-900/10 dark:fill-black/50 stroke-green-500/50" strokeWidth="1" />
+            <rect x="5" y="45" width="43" height="40" rx="2" className="fill-black stroke-slate-600" />
+            {/* Chip */}
+            <path d="M10 10 H40 V35 H10 Z" className="fill-green-600 dark:fill-green-900 stroke-green-500" />
+        </g>
+
+        {/* Front Screen */}
+        <g transform="translate(40, 10) rotate(-5)">
+            <rect x="0" y="0" width="55" height="95" rx="4" className="fill-blue-50/50 dark:fill-blue-900/20 stroke-blue-500" strokeWidth="1.5" />
+            <path d="M0 0 L55 95" className="stroke-white/30" strokeWidth="40" />
+        </g>
+
+        {/* Screwdriver Tool */}
+        <g transform="translate(130, 40) rotate(20)">
+            <path d="M5 0 L15 0 L15 50 L5 50 Z" className="fill-orange-500 stroke-orange-700" />
+            <path d="M8 50 L12 50 L12 70 L10 75 L8 70 Z" className="fill-slate-300 stroke-slate-400" />
+            <rect x="3" y="-5" width="14" height="6" rx="1" className="fill-orange-600" />
         </g>
     </svg>
 );
@@ -180,7 +196,7 @@ export default function CategorySelector({ onSelect }: CategorySelectorProps) {
                             border-transparent hover:border-black/5 dark:hover:border-white/10
                         `}
                     >
-                        {/* Text Content - Adjusted Alignment */}
+                        {/* Text Content */}
                         <div className="absolute top-6 left-6 md:top-8 md:left-8 z-20 w-3/4">
                             <p className="text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-60 mb-2">{cat.subtext}</p>
                             <h3 className={`text-3xl md:text-4xl font-bold tracking-tight ${cat.textColor} leading-none`}>
@@ -188,7 +204,7 @@ export default function CategorySelector({ onSelect }: CategorySelectorProps) {
                             </h3>
                         </div>
 
-                        {/* Graphic - Adjusted Positioning & Size */}
+                        {/* Graphic */}
                         <div className="absolute bottom-4 right-4 md:bottom-2 md:right-2 w-40 h-32 md:w-64 md:h-48 transform group-hover:scale-110 transition-transform duration-500 ease-out origin-bottom-right z-10">
                             {cat.component}
                         </div>
