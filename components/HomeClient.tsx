@@ -68,8 +68,8 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                 </div>
 
                                 <div className="flex justify-center items-center py-32">
-                                    <div className="scale-[3.5] origin-center transform flex justify-center items-center">
-                                        <Logo />
+                                    <div className="scale-[1.4] origin-center transform flex justify-center items-center">
+                                        <HeroLogo />
                                     </div>
                                 </div>
 
