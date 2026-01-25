@@ -8,10 +8,10 @@ export default function InitialLoader() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Force loader for a minimum time on initial load/refresh to ensure it's seen
+        // Reduced splash screen duration from 2.2s to 1.2s for a snappier experience
         const timer = setTimeout(() => {
             setIsLoading(false);
-        }, 2200);
+        }, 1200);
 
         return () => clearTimeout(timer);
     }, []);
@@ -22,7 +22,7 @@ export default function InitialLoader() {
                 <motion.div
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.4 }} // Slightly faster exit transition too
                     className="fixed inset-0 z-[9999] flex items-center justify-center bg-white dark:bg-slate-950"
                 >
                     <SVGLoader />

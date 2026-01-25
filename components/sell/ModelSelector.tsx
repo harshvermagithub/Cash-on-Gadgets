@@ -1,12 +1,12 @@
-
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
 import { motion } from "framer-motion";
-import { ArrowLeft, Loader2, Search, X } from "lucide-react";
+import { ArrowLeft, Search, X } from "lucide-react";
 import Image from "next/image";
 import { Model } from '@/lib/store';
 import { fetchModels } from '@/actions/catalog';
+import SVGLoader from "@/components/ui/SVGLoader";
 
 interface ModelSelectorProps {
     brandId: string;
@@ -191,8 +191,8 @@ export default function ModelSelector({ brandId, category, onSelect, onBack }: M
             </div>
 
             {isLoading ? (
-                <div className="flex justify-center py-20">
-                    <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                <div className="min-h-[300px] flex items-center justify-center">
+                    <SVGLoader className="bg-transparent backdrop-blur-none w-full" />
                 </div>
             ) : filteredModels.length === 0 ? (
                 <div className="text-center py-20 text-muted-foreground">

@@ -1,11 +1,11 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
-import { ArrowLeft, Smartphone, Loader2 } from "lucide-react";
+import { ArrowLeft, Smartphone } from "lucide-react";
 import { Variant } from '@/lib/store';
 import { fetchVariants } from '@/actions/catalog';
+import SVGLoader from "@/components/ui/SVGLoader";
 
 interface VariantSelectorProps {
     modelId: string;
@@ -57,8 +57,8 @@ export default function VariantSelector({ modelId, category, brand, onSelect, on
             </div>
 
             {isLoading ? (
-                <div className="flex justify-center py-20">
-                    <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                <div className="min-h-[300px] flex items-center justify-center">
+                    <SVGLoader className="bg-transparent backdrop-blur-none w-full" />
                 </div>
             ) : variants.length === 0 ? (
                 <div className="text-center py-10 text-muted-foreground">
