@@ -21,6 +21,7 @@ import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
 
 import Footer from "@/components/Footer";
+import InitialLoader from "@/components/ui/InitialLoader";
 
 export default function RootLayout({
   children,
@@ -39,6 +40,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          {/* Initial Splash Loader for first visit/refresh */}
+          <InitialLoader />
+
           <Header />
           <main className="flex-1">
             {children}
