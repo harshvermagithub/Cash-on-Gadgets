@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, Transition } from 'framer-motion';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 
@@ -84,11 +84,13 @@ export const HeroLogo = ({ className = "" }: { className?: string }) => {
 
     // Animation constants
     const cycleDuration = 4;
-    const transitionSettings = {
+
+    // TYPED TRANSITION SETTINGS TO FIX BUILD ERROR
+    const transitionSettings: Transition = {
         duration: cycleDuration,
         repeat: Infinity,
         ease: "easeInOut",
-        times: [0, 0.4, 0.5, 0.9, 1] // Precise timing for snappy crossfade
+        times: [0, 0.4, 0.5, 0.9, 1]
     };
 
     useEffect(() => {
