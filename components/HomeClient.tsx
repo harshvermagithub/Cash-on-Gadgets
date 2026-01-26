@@ -35,6 +35,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col xl:flex-row items-center gap-12 xl:gap-20">
                         <div className="flex-1 animate-in slide-in-from-bottom-8 fade-in-20 duration-700">
+                            {/* Desktop Trusted Badge */}
                             <div className="hidden xl:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-semibold border border-green-200">
                                 <span className="relative flex h-2 w-2">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
@@ -43,15 +44,11 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                 Trusted by 1,000+ Customers
                             </div>
 
-                            {/* Custom Big Logo Area - Responsive Split */}
-
                             {/* Mobile Hero View (Text Banner + Search + Brands) */}
                             <div className="block xl:hidden w-full space-y-6 pt-0 mb-20">
 
-
                                 {/* Top Chips Section */}
-                                <div className="flex flex-wrap justify-center gap-3 px-4 pt-12 pb-12">
-                                    {/* Chip 1: Trusted */}
+                                <div className="flex flex-wrap justify-center gap-3 px-4 pt-8 pb-4">
                                     <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-default">
                                         <span className="relative flex h-1.5 w-1.5">
                                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
@@ -59,25 +56,36 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                         </span>
                                         Trusted by 1,000+ Customers
                                     </div>
-
-                                    {/* Chip 3: Bangalore */}
                                     <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-default">
                                         <MapPin className="w-3 h-3 text-green-500" />
                                         Pickup All Over Bangalore
                                     </div>
                                 </div>
 
-                                <div className="flex justify-center items-center py-32">
-                                    <div className="scale-[1.4] origin-center transform flex justify-center items-center">
+                                {/* Main Hero Logo */}
+                                <div className="flex justify-center items-center py-4">
+                                    <div className="scale-[1.2] origin-center transform flex justify-center items-center">
                                         <HeroLogo />
                                     </div>
                                 </div>
 
-                                <HomeSearch />
-                                <BrandRail initialBrands={initialBrands} />
+                                {/* Mobile Hero Carousel - INCREASED MARGINS to prevent overlap */}
+                                <div className="w-full h-[380px] relative mt-4 mb-24 flex items-center justify-center">
+                                    <div className="scale-[0.8] origin-center w-full">
+                                        <HeroAnimation />
+                                    </div>
+                                </div>
+
+                                {/* Search & Brands - Pushed down by mb-24 above */}
+                                <div className="relative z-20 bg-background/80 backdrop-blur-sm pt-4 rounded-xl">
+                                    <HomeSearch />
+                                    <div className="mt-8">
+                                        <BrandRail initialBrands={initialBrands} />
+                                    </div>
+                                </div>
                             </div>
 
-                            {/* Desktop/Tablet Hero View (Original BigLogo) */}
+                            {/* Desktop/Tablet Hero View */}
                             <div className="hidden xl:block w-full -ml-2">
                                 <BigLogo />
                             </div>
@@ -119,7 +127,8 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                             </div>
                         </div>
 
-                        <div className="flex-1 relative w-full h-[500px] max-w-[600px] animate-in zoom-in-50 fade-in duration-1000 delay-200 perspective-1000 flex items-center justify-center">
+                        {/* Desktop Side: Hero Animation */}
+                        <div className="hidden xl:flex flex-1 relative w-full h-[500px] max-w-[600px] animate-in zoom-in-50 fade-in duration-1000 delay-200 perspective-1000 items-center justify-center">
                             <HeroAnimation />
                         </div>
                     </div>
@@ -135,7 +144,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                 </div>
             </section>
 
-            {/* Brands Marquee & Stats Section - ALWAYS DARK MODE */}
+            {/* Brands Marquee & Stats Section */}
             <section className="py-12 border-y bg-slate-900 border-slate-800">
                 <div className="container mx-auto px-6 mb-12">
                     <p className="text-center text-sm font-semibold text-green-400/60 uppercase tracking-wider mb-8">We Accept All Major Brands</p>
@@ -194,7 +203,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                 </div>
             </section>
 
-            {/* Why Choose Us Section - ALWAYS DARK MODE */}
+            {/* Why Choose Us Section */}
             <section className="py-24 bg-slate-900 overflow-hidden">
                 <div className="container mx-auto px-6">
                     <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">

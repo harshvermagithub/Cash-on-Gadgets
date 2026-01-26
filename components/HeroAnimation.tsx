@@ -1,268 +1,301 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { Banknote, RefreshCw, Zap } from 'lucide-react'
+import { Banknote, ArrowRight } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
-const DEVICES = [
+// --- SVGs Definitions ---
+
+const IPhoneSVG = ({ color }: { color: string }) => (
+    <svg viewBox="0 0 100 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="96" height="196" rx="16" fill="#1e293b" stroke="#334155" strokeWidth="1.5" />
+        <rect x="6" y="6" width="88" height="188" rx="12" fill={color} />
+        <rect x="30" y="8" width="40" height="12" rx="6" fill="#000" /> {/* Dynamic Island */}
+        <rect x="8" y="8" width="45" height="45" rx="12" fill="transparent" stroke="rgba(0,0,0,0.1)" strokeWidth="1" /> {/* Cam Bump */}
+        <circle cx="20" cy="20" r="6" fill="#000" />
+        <circle cx="40" cy="30" r="6" fill="#000" />
+        <circle cx="20" cy="40" r="6" fill="#000" />
+    </svg>
+)
+
+const SamsungSVG = ({ color }: { color: string }) => (
+    <svg viewBox="0 0 100 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+        {/* Sharp Square Ultra Body */}
+        <rect x="2" y="2" width="96" height="196" rx="2" fill="#0f172a" stroke="#334155" strokeWidth="1.5" />
+        <rect x="4" y="4" width="92" height="192" rx="1" fill={color} />
+        <circle cx="50" cy="12" r="3" fill="#000" /> {/* Pinhole */}
+        {/* Vertical Traffic Light Cameras */}
+        <circle cx="20" cy="20" r="7" fill="#000" stroke="#334155" strokeWidth="1" />
+        <circle cx="20" cy="40" r="7" fill="#000" stroke="#334155" strokeWidth="1" />
+        <circle cx="20" cy="60" r="7" fill="#000" stroke="#334155" strokeWidth="1" />
+        <circle cx="40" cy="30" r="5" fill="#000" stroke="#334155" strokeWidth="1" />
+    </svg>
+)
+
+const PixelSVG = ({ color }: { color: string }) => (
+    <svg viewBox="0 0 100 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="96" height="196" rx="10" fill="#1e293b" stroke="#334155" strokeWidth="1.5" />
+        <rect x="6" y="6" width="88" height="188" rx="8" fill={color} />
+        <rect x="2" y="30" width="96" height="25" rx="4" fill="#000" /> {/* Visor */}
+        <rect x="15" y="35" width="20" height="15" rx="7" fill="#1e293b" />
+        <circle cx="50" cy="42" r="6" fill="#1e293b" />
+    </svg>
+)
+
+const MacbookSVG = ({ color }: { color: string }) => (
+    <svg viewBox="0 0 200 140" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(10, 20)">
+            <rect x="0" y="0" width="160" height="100" rx="6" fill="#0f172a" stroke="#334155" strokeWidth="2" />
+            <rect x="5" y="5" width="150" height="90" rx="2" fill={color} opacity="0.9" />
+            <path d="M70 5 H90 V12 H70 Z" fill="#000" /> {/* Notch */}
+            <rect x="5" y="95" width="150" height="5" fill="black" opacity="0.1" /> {/* Bezel Chin */}
+            <path d="M-10 100 H170 L170 105 C170 108 166 110 160 110 H0 C-6 110 -10 108 -10 105 Z" fill="#94a3b8" />
+        </g>
+    </svg>
+)
+
+const SurfaceSVG = ({ color }: { color: string }) => (
+    <svg viewBox="0 0 200 140" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(20, 10)">
+            <rect x="0" y="0" width="140" height="100" rx="2" fill={color} stroke="#334155" strokeWidth="2" />
+            <rect x="5" y="5" width="130" height="90" fill="#0f172a" />
+            <path d="M-10 100 H150 L160 115 H-20 Z" fill="#334155" /> {/* Type Cover */}
+        </g>
+    </svg>
+)
+
+const IPadSVG = ({ color }: { color: string }) => (
+    <svg viewBox="0 0 150 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="140" height="190" rx="8" fill="#1e293b" stroke="#334155" strokeWidth="1" />
+        <rect x="12" y="12" width="126" height="176" rx="4" fill={color} />
+        <rect x="135" y="20" width="4" height="30" rx="2" fill="#334155" /> {/* Volume Buttons */}
+        <circle cx="75" cy="180" r="1.5" fill="#fff" opacity="0.5" />
+    </svg>
+)
+
+const GalaxyTabSVG = ({ color }: { color: string }) => (
+    <svg viewBox="0 0 200 140" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(10, 20)">
+            <rect x="0" y="0" width="180" height="110" rx="6" fill="#1e293b" stroke="#334155" strokeWidth="1" />
+            <rect x="8" y="8" width="164" height="94" rx="3" fill={color} />
+            <circle cx="90" cy="6" r="2" fill="#000" /> {/* Cam */}
+        </g>
+    </svg>
+)
+
+const WatchUltraSVG = ({ color }: { color: string }) => (
+    <svg viewBox="0 0 150 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 0 H100 V60 H50 Z" fill={color} />
+        <path d="M50 140 H100 V200 H50 Z" fill={color} />
+        <rect x="30" y="40" width="90" height="110" rx="15" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="4" />
+        <rect x="36" y="46" width="78" height="98" rx="8" fill="#000" />
+        <rect x="120" y="70" width="6" height="20" rx="2" fill="#f97316" /> {/* Action Button */}
+    </svg>
+)
+
+const WatchRoundSVG = ({ color }: { color: string }) => (
+    <svg viewBox="0 0 150 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+        <path d="M55 10 H95 V60 H55 Z" fill={color} />
+        <path d="M55 140 H95 V190 H55 Z" fill={color} />
+        <circle cx="75" cy="100" r="45" fill="#1e293b" stroke="#334155" strokeWidth="4" />
+        <circle cx="75" cy="100" r="38" fill="#000" />
+    </svg>
+)
+
+const CameraSVG = ({ color }: { color: string }) => (
+    <svg viewBox="0 0 200 160" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(10, 30)">
+            <rect x="20" y="0" width="140" height="100" rx="8" fill={color} stroke="#334155" strokeWidth="2" />
+            <rect x="60" y="-15" width="60" height="15" rx="4" fill="#334155" />
+            <circle cx="90" cy="50" r="35" fill="#0f172a" stroke="#475569" strokeWidth="4" />
+            <circle cx="90" cy="50" r="25" fill="#1e1e1e" />
+            <circle cx="95" cy="45" r="8" fill="#fff" opacity="0.3" />
+            <rect x="130" y="5" width="20" height="10" rx="2" fill="#ef4444" />
+        </g>
+    </svg>
+)
+
+// --- Data Structure ---
+
+const GROUPS = [
     {
-        name: "iPhone 17 Pro Max",
-        value: "₹75,000",
-        color: "#1a1a1b",
-        highlight: "#4a4a4b",
-        brand: "Apple",
-        cameraType: "triple",
-        cardCount: 7
+        id: "phones",
+        name: "Smartphones",
+        value: "₹85k+",
+        items: [
+            // Order Re-arranged: Top item (last in array) is Samsung S25 Ultra
+            { type: "pixel", color: "#fef3c7", Component: PixelSVG, rotate: -20, x: -35, y: 15 },
+            { type: "iphone", color: "#475569", Component: IPhoneSVG, rotate: 15, x: 30, y: -5 },
+            { type: "samsung", color: "#d1d5db", Component: SamsungSVG, rotate: 0, x: 0, y: -20 }, // S24 Ultra style (Top)
+        ]
     },
     {
-        name: "iPhone 16",
-        value: "₹62,000",
-        color: "#F1B8D1",
-        highlight: "#ffdaeb",
-        brand: "Apple",
-        cameraType: "dual-vertical",
-        cardCount: 5
+        id: "tablets",
+        name: "Tablets",
+        value: "₹60k+",
+        items: [
+            { type: "ipad-mini", color: "#fca5a5", Component: IPadSVG, rotate: -15, x: -25, y: 10 },
+            { type: "galaxy-tab", color: "#93c5fd", Component: GalaxyTabSVG, rotate: 10, x: 35, y: 15 }, // Landscape 
+            { type: "ipad-pro", color: "#e2e8f0", Component: IPadSVG, rotate: -5, x: 0, y: -10 }, // iPad Pro (Top)
+        ]
     },
     {
-        name: "Samsung S25 Ultra",
-        value: "₹65,000",
-        color: "#0f0f0f",
-        highlight: "#2a2a2a",
-        brand: "Samsung",
-        cameraType: "p-shaped",
-        cardCount: 6
+        id: "laptops",
+        name: "Laptops",
+        value: "₹70k+",
+        items: [
+            { type: "surface", color: "#cbd5e1", Component: SurfaceSVG, rotate: 12, x: 25, y: 5 },
+            { type: "macbook-dark", color: "#334155", Component: MacbookSVG, rotate: -12, x: -25, y: 5 },
+            { type: "macbook-pro", color: "#94a3b8", Component: MacbookSVG, rotate: 0, x: 0, y: -15 }, // Silver Mac (Top)
+        ]
     },
     {
-        name: "Samsung S24 Ultra",
-        value: "₹58,000",
-        color: "#D9D5C1",
-        highlight: "#f5f1de",
-        brand: "Samsung",
-        cameraType: "p-shaped",
-        cardCount: 5
+        id: "watches",
+        name: "Watches",
+        value: "₹45k+",
+        items: [
+            { type: "round", color: "#3b82f6", Component: WatchRoundSVG, rotate: 20, x: 35, y: 5 },
+            { type: "series", color: "#f87171", Component: WatchUltraSVG, rotate: -20, x: -35, y: 15 },
+            { type: "ultra", color: "#f97316", Component: WatchUltraSVG, rotate: 0, x: 0, y: -10 }, // Orange Ultra (Top)
+        ]
     },
     {
-        name: "Pixel 9 Pro",
-        value: "₹55,000",
-        color: "#1c1c1c",
-        highlight: "#333333",
-        brand: "Google",
-        cameraType: "visor",
-        cardCount: 4
+        id: "cameras",
+        name: "Cameras",
+        value: "₹1.2L+",
+        items: [
+            { type: "mirrorless", color: "#334155", Component: CameraSVG, rotate: -10, x: -20, y: 10 },
+            { type: "dslr", color: "#1e293b", Component: CameraSVG, rotate: 10, x: 20, y: -5 },
+            { type: "pro", color: "#0f172a", Component: CameraSVG, rotate: 0, x: 0, y: -15 },
+        ]
     }
 ]
+
 
 export default function HeroAnimation() {
     const [currentIndex, setCurrentIndex] = useState(0)
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % DEVICES.length)
-        }, 4000)
+            setCurrentIndex((prev) => (prev + 1) % GROUPS.length)
+        }, 5000)
         return () => clearInterval(timer)
     }, [])
 
-    const device = DEVICES[currentIndex]
+    const group = GROUPS[currentIndex] || GROUPS[0];
 
     return (
-        <div className="relative w-full h-[450px] md:h-[550px] flex items-center justify-center overflow-visible">
-            {/* Ambient Background Glows */}
-            <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center">
-                <motion.div
-                    animate={{
-                        scale: [1, 1.3, 1],
-                        opacity: [0.2, 0.4, 0.2],
-                    }}
-                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute w-80 h-80 bg-emerald-500/20 rounded-full blur-[100px]"
-                />
+        <div className="relative w-full h-[400px] md:h-[550px] flex items-center justify-center overflow-visible">
+            {/* Background Glow */}
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                <div className="absolute w-64 h-64 md:w-96 md:h-96 bg-green-500/10 rounded-full blur-[80px]" />
             </div>
 
-            {/* Container for alignment - Scaled for Mobile Responsiveness */}
-            <div className="relative z-10 flex items-center justify-center gap-2 sm:gap-8 md:gap-16 w-full max-w-4xl px-4 scale-[0.6] sm:scale-100 origin-center transition-transform duration-300">
+            <div className="relative z-10 flex items-center justify-center gap-2 sm:gap-12 w-full max-w-5xl px-2 scale-[0.68] sm:scale-100 origin-center transition-transform duration-300">
 
-                {/* 1. THE FLAT PREMIUM PHONE COMPONENT */}
-                <div className="relative w-[180px] h-[360px] sm:w-[220px] sm:h-[440px] shrink-0">
+                {/* 1. LEFT SIDE: DEVICE STACK */}
+                <div className="relative w-64 h-72 shrink-0 flex items-center justify-center">
                     <AnimatePresence mode="wait">
                         <motion.div
-                            key={device.name}
-                            initial={{ x: -50, opacity: 0, scale: 0.9 }}
-                            animate={{ x: 0, opacity: 1, scale: 1 }}
-                            exit={{ x: 50, opacity: 0, scale: 0.9 }}
-                            transition={{
-                                duration: 0.6,
-                                type: "spring",
-                                stiffness: 70,
-                                damping: 15
-                            }}
-                            className="absolute inset-0 select-none cursor-default"
+                            key={group.id}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.8, opacity: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="absolute inset-0 flex items-center justify-center"
                         >
-                            <motion.div
-                                animate={{ y: [0, -10, 0] }}
-                                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                                className="w-full h-full relative"
-                            >
-                                {/* Phone Body */}
-                                <div
-                                    className="w-full h-full rounded-[2.8rem] border-[4px] border-slate-800 shadow-2xl relative overflow-hidden group"
-                                    style={{
-                                        backgroundColor: device.color,
-                                    }}
-                                >
-                                    {/* Subtle Gradient Overlay */}
-                                    <div className="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-white/10" />
-
-                                    {/* Camera Module Section */}
-                                    <div className="pt-12 w-full px-8 flex justify-start">
-                                        <div className="relative z-20">
-                                            {device.cameraType === "triple" && (
-                                                <div className="bg-black/10 backdrop-blur-md rounded-[2.5rem] p-4 grid grid-cols-2 gap-2.5 shadow-xl border border-white/5">
-                                                    {[1, 2, 3].map((i) => (
-                                                        <div key={i} className={`${i === 3 ? 'col-span-2 mx-auto' : ''} w-8 h-8 rounded-full bg-slate-950 border border-slate-800 shadow-inner flex items-center justify-center`}>
-                                                            <div className="w-4 h-4 rounded-full bg-slate-900 border border-white/5" />
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                            {device.cameraType === "dual-vertical" && (
-                                                <div className="bg-black/10 backdrop-blur-md rounded-full p-2.5 flex flex-col gap-2.5 shadow-xl border border-white/5">
-                                                    <div className="w-9 h-9 rounded-full bg-slate-950 border border-slate-800 shadow-inner flex items-center justify-center">
-                                                        <div className="w-5 h-5 rounded-full bg-slate-900 border border-white/5" />
-                                                    </div>
-                                                    <div className="w-9 h-9 rounded-full bg-slate-950 border border-slate-800 shadow-inner flex items-center justify-center">
-                                                        <div className="w-5 h-5 rounded-full bg-slate-900 border border-white/5" />
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {device.cameraType === "p-shaped" && (
-                                                <div className="flex gap-3">
-                                                    <div className="flex flex-col gap-3">
-                                                        {[1, 2, 3].map(i => (
-                                                            <div key={i} className="w-8 h-8 rounded-full bg-slate-950 border border-slate-800 shadow-inner flex items-center justify-center">
-                                                                <div className="w-4 h-4 rounded-full bg-slate-900 border border-white/5" />
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                    <div className="flex flex-col gap-3 pt-2">
-                                                        <div className="w-6 h-6 rounded-full bg-slate-950 border border-slate-800" />
-                                                        <div className="w-2.5 h-8 rounded-full bg-slate-900/50 border border-white/5" />
-                                                    </div>
-                                                </div>
-                                            )}
-                                            {device.cameraType === "visor" && (
-                                                <div className="w-[180px] sm:w-[220px] h-14 bg-slate-950/90 absolute left-[-32px] sm:left-[-40px] top-4 flex items-center justify-center gap-6 border-y border-white/5 shadow-xl backdrop-blur-md overflow-hidden">
-                                                    {[1, 2, 3].map(i => (
-                                                        <div key={i} className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 shadow-inner flex items-center justify-center">
-                                                            <div className="w-3 h-3 rounded-full bg-black/40" />
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    {/* Brand Logo */}
-                                    <div className="mt-auto mb-20 flex flex-col items-center gap-1.5 opacity-10">
-                                        <div className="w-6 h-6 rounded-full bg-white/20" />
-                                        <span className="font-bold text-base tracking-[0.4em] uppercase">{device.brand}</span>
-                                    </div>
-
-                                    {/* Name & Series Label - High Visibility Dialog Style */}
-                                    <div className="absolute bottom-12 left-0 right-0 flex justify-center px-4">
-                                        <div className="bg-white/90 backdrop-blur-sm shadow-xl rounded-xl px-4 py-2 border border-white/20 transform hover:scale-105 transition-transform duration-300">
-                                            <span className="text-xs sm:text-sm text-slate-900 font-extrabold uppercase tracking-widest block text-center">
-                                                {device.name}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </motion.div>
+                            {/* Render Items. Last item in array has Highest Z-Index by default render order, but we enforce it via zIndex prop too */}
+                            {group.items.map((item, index) => {
+                                const ItemComponent = item.Component;
+                                return (
+                                    <motion.div
+                                        key={`${group.id}-${index}`}
+                                        initial={{
+                                            x: 0,
+                                            y: -50,
+                                            opacity: 0,
+                                            rotate: 0
+                                        }}
+                                        animate={{
+                                            x: item.x,
+                                            y: item.y,
+                                            opacity: 1,
+                                            rotate: item.rotate,
+                                            zIndex: index // Higher index = Higher stacking
+                                        }}
+                                        transition={{
+                                            type: "spring",
+                                            stiffness: 100,
+                                            damping: 15,
+                                            delay: index * 0.15
+                                        }}
+                                        className={`absolute flex items-center justify-center drop-shadow-2xl ${group.id === 'tablets' || group.name === 'Laptops' || group.name === 'Cameras' ? 'w-48 h-32' : 'w-32 h-64'}`}
+                                    >
+                                        <ItemComponent color={item.color} />
+                                    </motion.div>
+                                )
+                            })}
                         </motion.div>
                     </AnimatePresence>
+
+                    {/* Category Label */}
+                    <div className="absolute -bottom-10 left-0 right-0 text-center z-20">
+                        <motion.div
+                            key={`label-${group.id}`}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="inline-block bg-white/90 backdrop-blur px-5 py-2 rounded-full shadow-lg border border-slate-100"
+                        >
+                            <span className="text-xs font-bold text-slate-800 uppercase tracking-widest whitespace-nowrap">{group.name}</span>
+                        </motion.div>
+                    </div>
                 </div>
 
-
-                {/* 2. THE FLOATING EXCHANGE ICON */}
-                <div className="relative z-20 shrink-0">
+                {/* 2. MIDDLE: ARROW */}
+                <div className="relative z-30 shrink-0 mx-4">
                     <motion.div
-                        animate={{
-                            rotate: 360,
-                            scale: [1, 1.1, 1]
-                        }}
-                        transition={{
-                            rotate: { duration: 15, repeat: Infinity, ease: "linear" },
-                            scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-                        }}
-                        className="w-16 h-16 sm:w-20 sm:h-20 bg-white border border-slate-100 rounded-full flex items-center justify-center shadow-xl ring-8 ring-green-500/5"
+                        animate={{ x: [0, 8, 0], scale: [1, 1.1, 1] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border border-green-100 flex items-center justify-center shadow-lg"
                     >
-                        <RefreshCw className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
+                        <ArrowRight className="text-green-600 w-5 h-5 sm:w-6 sm:h-6" />
                     </motion.div>
                 </div>
 
-
-                {/* 3. THE CASH STACK */}
-                <div className="relative w-[140px] h-[250px] sm:w-[200px] sm:h-[300px] shrink-0">
-                    <div className="relative w-full h-full pt-16">
-                        <AnimatePresence>
-                            {Array.from({ length: device.cardCount }).map((_, i) => (
-                                <motion.div
-                                    key={`${device.name}-${i}`}
-                                    initial={{ y: 60, opacity: 0, scale: 0.8 }}
-                                    animate={{
-                                        y: i * -15,
-                                        x: i * -5,
-                                        opacity: 1,
-                                        scale: 1,
-                                        rotate: i * -3
-                                    }}
-                                    exit={{ y: -60, opacity: 0, scale: 0.8 }}
-                                    transition={{
-                                        delay: i * 0.08,
-                                        type: "spring",
-                                        stiffness: 80,
-                                        damping: 15
-                                    }}
-                                    className="absolute inset-x-0 h-32 rounded-2xl shadow-xl border border-white/20 flex items-center justify-between px-6 overflow-hidden"
-                                    style={{
-                                        zIndex: 10 - i,
-                                        background: i === 0
-                                            ? 'linear-gradient(135deg, #10B981, #065f46)'
-                                            : i === 1
-                                                ? 'linear-gradient(135deg, #059669, #064e3b)'
-                                                : 'linear-gradient(135deg, #047857, #064e3b)',
-                                    }}
-                                >
-                                    <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,_white_1px,_transparent_1px)] bg-[length:10px_10px]" />
-
-                                    <div className="flex flex-col gap-1">
-                                        <span className="text-white/60 text-[10px] font-black tracking-widest uppercase">FONZKART</span>
-                                        <motion.span
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            className="text-white font-black text-xl sm:text-2xl drop-shadow-lg z-10"
-                                        >
-                                            {device.value}
-                                        </motion.span>
-                                    </div>
-                                    <div className="bg-white/10 p-2 rounded-full backdrop-blur-md">
-                                        <Banknote className="text-white/60 w-10 h-10 z-10" />
-                                    </div>
-                                </motion.div>
-                            ))}
+                {/* 3. RIGHT SIDE: CASH STACK */}
+                <div className="relative w-40 sm:w-48 h-64 shrink-0 flex flex-col items-center justify-center">
+                    <div className="relative w-full h-48">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={`cash-${group.id}`}
+                                className="absolute inset-0 flex items-center justify-center"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                            >
+                                {[2, 1, 0].map((offset) => (
+                                    <motion.div
+                                        key={offset}
+                                        initial={{ y: 50, opacity: 0, scale: 0.8 }}
+                                        animate={{
+                                            y: offset * -15,
+                                            opacity: 1,
+                                            scale: 1,
+                                            rotate: offset * -2
+                                        }}
+                                        transition={{ delay: offset * 0.1 }}
+                                        className="absolute w-32 sm:w-40 h-20 sm:h-24 rounded-xl bg-gradient-to-br from-green-500 to-emerald-700 shadow-xl border border-white/20 flex flex-col items-center justify-center z-10"
+                                        style={{ top: '40%' }}
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            <Banknote className="text-white w-5 h-5 sm:w-6 sm:h-6" />
+                                            <span className="text-white font-bold text-base sm:text-lg">{group.value}</span>
+                                        </div>
+                                        <span className="text-[9px] sm:text-[10px] text-white/60 uppercase tracking-widest mt-1">Instant Cash</span>
+                                    </motion.div>
+                                ))}
+                            </motion.div>
                         </AnimatePresence>
-
-                        {/* Instant Tag */}
-                        <motion.div
-                            animate={{
-                                scale: [1, 1.1, 1],
-                                y: [0, -4, 0]
-                            }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                            className="absolute -right-8 top-0 z-40 bg-yellow-400 text-black text-[11px] font-black px-5 py-2 rounded-full shadow-lg flex items-center gap-2 border-2 border-white"
-                        >
-                            <Zap className="w-4 h-4 fill-black" />
-                            INSTANT CASH
-                        </motion.div>
                     </div>
                 </div>
 
