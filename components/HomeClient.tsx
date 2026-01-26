@@ -24,17 +24,18 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
     };
 
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen overflow-x-hidden">
             {/* Hero Section */}
-            <section className="relative pt-0 pb-32 md:pt-32 md:pb-48 overflow-hidden bg-background">
+            <section className="relative pt-0 pb-32 md:pt-32 md:pb-48 overflow-hidden bg-background w-full">
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
                     <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-green-500/10 rounded-full blur-3xl" />
                     <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-3xl" />
                 </div>
 
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 sm:px-6 max-w-[100vw] overflow-x-hidden">
                     <div className="flex flex-col xl:flex-row items-center gap-12 xl:gap-20">
-                        <div className="flex-1 animate-in slide-in-from-bottom-8 fade-in-20 duration-700">
+                        <div className="flex-1 animate-in slide-in-from-bottom-8 fade-in-20 duration-700 w-full max-w-full">
+
                             {/* Desktop Trusted Badge */}
                             <div className="hidden xl:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-semibold border border-green-200">
                                 <span className="relative flex h-2 w-2">
@@ -45,41 +46,43 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                             </div>
 
                             {/* Mobile Hero View (Text Banner + Search + Brands) */}
-                            <div className="block xl:hidden w-full space-y-6 pt-0 mb-20">
+                            <div className="block xl:hidden w-full space-y-4 pt-0 mb-12">
 
                                 {/* Top Chips Section */}
-                                <div className="flex flex-wrap justify-center gap-3 px-4 pt-8 pb-4">
-                                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-default">
+                                <div className="flex flex-wrap justify-center gap-2 px-2 pt-6 pb-2">
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm transition-all cursor-default whitespace-nowrap">
                                         <span className="relative flex h-1.5 w-1.5">
                                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
                                             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
                                         </span>
-                                        Trusted by 1,000+ Customers
+                                        Trusted by 1k+
                                     </div>
-                                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm hover:scale-105 hover:shadow-md transition-all cursor-default">
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm transition-all cursor-default whitespace-nowrap">
                                         <MapPin className="w-3 h-3 text-green-500" />
                                         Pickup All Over Bangalore
                                     </div>
                                 </div>
 
                                 {/* Main Hero Logo */}
-                                <div className="flex justify-center items-center py-4">
-                                    <div className="scale-[1.2] origin-center transform flex justify-center items-center">
+                                <div className="flex justify-center items-center py-2">
+                                    <div className="scale-[1.1] origin-center transform flex justify-center items-center">
                                         <HeroLogo />
                                     </div>
                                 </div>
 
-                                {/* Mobile Hero Carousel - INCREASED MARGINS to prevent overlap */}
-                                <div className="w-full h-[380px] relative mt-4 mb-24 flex items-center justify-center">
-                                    <div className="scale-[0.8] origin-center w-full">
+                                {/* Mobile Hero Carousel - Reduced Space & Scaled Down to prevent overflow */}
+                                <div className="w-full h-[320px] relative mt-2 mb-8 flex items-center justify-center overflow-visible">
+                                    <div className="scale-[0.7] sm:scale-[0.8] origin-center w-full">
                                         <HeroAnimation />
                                     </div>
                                 </div>
 
-                                {/* Search & Brands - Pushed down by mb-24 above */}
-                                <div className="relative z-20 bg-background/80 backdrop-blur-sm pt-4 rounded-xl">
-                                    <HomeSearch />
-                                    <div className="mt-8">
+                                {/* Search & Brands Container - With max-width guard */}
+                                <div className="relative z-20 bg-background/80 backdrop-blur-sm pt-2 rounded-xl w-full max-w-full overflow-hidden">
+                                    <div className="px-1">
+                                        <HomeSearch />
+                                    </div>
+                                    <div className="mt-6 w-full overflow-hidden">
                                         <BrandRail initialBrands={initialBrands} />
                                     </div>
                                 </div>
@@ -90,15 +93,17 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                 <BigLogo />
                             </div>
 
-                            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.2] md:leading-[1.1]">
-                                Smart way to <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">sell your device.</span>
-                            </h1>
-                            <p className="text-xl text-muted-foreground leading-relaxed max-w-lg">
-                                Experience the smart way to sell. Get maximum value and instant cash at your doorstep—no negotiations, just a seamless, premium service.
-                            </p>
+                            <div className="max-w-full overflow-hidden">
+                                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.2] md:leading-[1.1] break-words">
+                                    Smart way to <br />
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">sell your device.</span>
+                                </h1>
+                                <p className="text-xl text-muted-foreground leading-relaxed max-w-lg mt-4">
+                                    Experience the smart way to sell. Get maximum value and instant cash at your doorstep—no negotiations, just a seamless, premium service.
+                                </p>
+                            </div>
 
-                            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                            <div className="flex flex-col sm:flex-row gap-4 pt-6">
                                 <Link
                                     href="/sell"
                                     className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-primary text-primary-foreground font-semibold text-lg shadow-lg shadow-green-500/25 hover:bg-primary/90 hover:scale-[1.02] transition-all duration-300 group"
@@ -114,7 +119,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                 </Link>
                             </div>
 
-                            <div className="flex items-center gap-6 pt-4 text-sm font-medium text-muted-foreground">
+                            <div className="flex items-center gap-6 pt-4 text-sm font-medium text-muted-foreground flex-wrap">
                                 <div className="flex items-center gap-2">
                                     <CheckCircle className="w-4 h-4 text-green-600" /> Instant Payment
                                 </div>
@@ -145,7 +150,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
             </section>
 
             {/* Brands Marquee & Stats Section */}
-            <section className="py-12 border-y bg-slate-900 border-slate-800">
+            <section className="py-12 border-y bg-slate-900 border-slate-800 w-full overflow-hidden">
                 <div className="container mx-auto px-6 mb-12">
                     <p className="text-center text-sm font-semibold text-green-400/60 uppercase tracking-wider mb-8">We Accept All Major Brands</p>
                     <div className="flex flex-wrap justify-center gap-8 md:gap-16 items-center">
@@ -184,7 +189,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
             <HowItWorks />
 
             {/* Reviews Section */}
-            <section className="py-24 overflow-hidden">
+            <section className="py-24 overflow-hidden w-full">
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
                         <div className="space-y-4 max-w-2xl">
@@ -204,7 +209,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
             </section>
 
             {/* Why Choose Us Section */}
-            <section className="py-24 bg-slate-900 overflow-hidden">
+            <section className="py-24 bg-slate-900 overflow-hidden w-full">
                 <div className="container mx-auto px-6">
                     <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
                         <motion.h2
