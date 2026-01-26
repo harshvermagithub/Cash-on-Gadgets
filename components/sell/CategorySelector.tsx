@@ -6,111 +6,267 @@ interface CategorySelectorProps {
     onSelect: (category: string) => void;
 }
 
-// --- Custom SVG Components (Refined Positioning) ---
+// --- Animated SVG Components ---
 
 const SmartphoneGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g transform="translate(140, 40) rotate(15)">
-            <rect x="0" y="0" width="45" height="90" rx="4" className="fill-blue-100 dark:fill-slate-800 stroke-blue-500" strokeWidth="1.5" />
-            <circle cx="22" cy="25" r="12" className="stroke-blue-500" strokeWidth="1" />
-        </g>
-        <g transform="translate(100, 30) rotate(0)">
-            <rect x="0" y="0" width="50" height="100" rx="8" className="fill-slate-100 dark:fill-slate-800 stroke-slate-500" strokeWidth="1.5" />
-            <rect x="15" y="5" width="20" height="6" rx="3" className="fill-black" />
-        </g>
-        <g transform="translate(50, 50) rotate(-10)">
-            <rect x="0" y="0" width="55" height="110" rx="2" className="fill-white dark:fill-slate-900 stroke-slate-900 dark:stroke-slate-100" strokeWidth="1.5" />
-            <rect x="3" y="3" width="49" height="104" className="fill-slate-50 dark:fill-slate-950" />
-            <path d="M0 0 L55 0 L55 110 L0 110 Z" className="fill-transparent" />
-            <path d="M0 0 L55 110" className="stroke-white/20" strokeWidth="40" />
-        </g>
+        <motion.g
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+            <g transform="translate(140, 40) rotate(15)">
+                <rect x="0" y="0" width="45" height="90" rx="4" className="fill-blue-100 dark:fill-slate-800 stroke-blue-500" strokeWidth="1.5" />
+                <rect x="3" y="3" width="39" height="84" className="fill-blue-200/50 dark:fill-slate-700/50" />
+                <path d="M10 20 H35 M10 30 H35 M10 40 H25" className="stroke-blue-500/30" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="22" cy="75" r="5" className="fill-blue-500/20" />
+                <circle cx="22" cy="25" r="12" className="stroke-blue-500" strokeWidth="1" />
+            </g>
+
+            <g transform="translate(100, 30) rotate(0)">
+                <rect x="0" y="0" width="50" height="100" rx="8" className="fill-slate-100 dark:fill-slate-800 stroke-slate-500" strokeWidth="1.5" />
+                <rect x="3" y="15" width="44" height="80" className="fill-slate-200 dark:fill-slate-700" />
+                <rect x="8" y="25" width="34" height="20" rx="2" className="fill-slate-400/20" />
+                <rect x="8" y="50" width="34" height="40" rx="2" className="fill-slate-400/20" />
+                <rect x="15" y="5" width="20" height="6" rx="3" className="fill-black" />
+            </g>
+
+            <g transform="translate(50, 50) rotate(-10)">
+                <rect x="0" y="0" width="55" height="110" rx="2" className="fill-white dark:fill-slate-900 stroke-slate-900 dark:stroke-slate-100" strokeWidth="1.5" />
+                <rect x="3" y="3" width="49" height="104" className="fill-slate-50 dark:fill-slate-950" />
+
+                <g transform="translate(8, 15)">
+                    <rect x="0" y="0" width="10" height="10" rx="2" className="fill-blue-400/70" />
+                    <rect x="15" y="0" width="10" height="10" rx="2" className="fill-green-400/70" />
+                    <rect x="29" y="0" width="10" height="10" rx="2" className="fill-red-400/70" />
+                    <rect x="0" y="15" width="10" height="10" rx="2" className="fill-yellow-400/70" />
+                    <rect x="15" y="15" width="10" height="10" rx="2" className="fill-purple-400/70" />
+                    <rect x="29" y="15" width="10" height="10" rx="2" className="fill-pink-400/70" />
+                    <rect x="0" y="30" width="39" height="30" rx="2" className="fill-slate-700/20" />
+                    <path d="M5 40 H34 M5 48 H25" className="stroke-slate-500/50" strokeWidth="1.5" />
+                </g>
+
+                <motion.path
+                    d="M0 0 L55 0 L55 110 L0 110 Z"
+                    className="fill-white"
+                    animate={{ opacity: [0, 0.08, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <path d="M0 0 L55 110" className="stroke-white/20" strokeWidth="40" />
+            </g>
+        </motion.g>
     </svg>
 );
 
 const TabletGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="80" y="20" width="100" height="130" rx="6" transform="rotate(10 130 85)" className="fill-slate-200 dark:fill-slate-800 stroke-slate-400" strokeWidth="1.5" />
-        <rect x="20" y="60" width="140" height="90" rx="6" className="fill-white dark:fill-slate-950 stroke-slate-800 dark:stroke-slate-100" strokeWidth="1.5" />
-        <rect x="26" y="66" width="128" height="78" className="fill-blue-50 dark:fill-slate-900" />
-        <rect x="30" y="155" width="120" height="8" rx="4" className="fill-white stroke-slate-300" />
+        <motion.g
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        >
+            <rect x="80" y="20" width="100" height="130" rx="6" transform="rotate(10 130 85)" className="fill-slate-200 dark:fill-slate-800 stroke-slate-400" strokeWidth="1.5" />
+
+            <g>
+                <rect x="20" y="60" width="140" height="90" rx="6" className="fill-white dark:fill-slate-950 stroke-slate-800 dark:stroke-slate-100" strokeWidth="1.5" />
+                <rect x="26" y="66" width="128" height="78" className="fill-blue-50 dark:fill-slate-900" />
+
+                <g transform="translate(35, 75)">
+                    <rect x="0" y="0" width="30" height="60" rx="2" className="fill-slate-200 dark:fill-slate-800" />
+                    <rect x="5" y="10" width="20" height="4" rx="1" className="fill-slate-400" />
+                    <rect x="5" y="20" width="20" height="4" rx="1" className="fill-slate-400" />
+                    <rect x="5" y="30" width="20" height="4" rx="1" className="fill-slate-400" />
+
+                    <rect x="35" y="0" width="70" height="40" rx="2" className="fill-blue-200 dark:fill-blue-900" />
+                    <circle cx="70" cy="20" r="10" className="fill-blue-400/50" />
+
+                    <rect x="35" y="45" width="20" height="15" rx="2" className="fill-purple-200 dark:fill-purple-900" />
+                    <rect x="60" y="45" width="20" height="15" rx="2" className="fill-green-200 dark:fill-green-900" />
+                    <rect x="85" y="45" width="20" height="15" rx="2" className="fill-red-200 dark:fill-red-900" />
+                </g>
+
+                <rect x="30" y="155" width="120" height="8" rx="4" className="fill-white stroke-slate-300" />
+            </g>
+        </motion.g>
     </svg>
 );
 
 const WatchGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g transform="translate(30, 40) rotate(-10)">
-            <path d="M25 0 V20 M25 80 V100" className="stroke-slate-300 dark:stroke-slate-700" strokeWidth="40" strokeLinecap="round" />
-            <rect x="0" y="20" width="50" height="60" rx="10" className="fill-slate-900 stroke-slate-600" strokeWidth="2" />
-            <rect x="5" y="25" width="40" height="50" rx="6" className="fill-black" />
-            <circle cx="25" cy="50" r="15" className="stroke-green-500" strokeWidth="3" strokeDasharray="60 100" />
-        </g>
-        <g transform="translate(110, 50)">
-            <path d="M35 0 V20 M35 70 V90" className="stroke-purple-200 dark:stroke-purple-900" strokeWidth="40" strokeLinecap="round" />
-            <circle cx="35" cy="45" r="35" className="fill-white dark:fill-slate-800 stroke-slate-300" strokeWidth="2" />
-            <circle cx="35" cy="45" r="30" className="fill-black" />
-            <path d="M35 55 L30 50 C25 45 25 35 30 35 C35 35 35 40 35 40 C35 40 35 35 40 35 C45 35 45 45 40 50 Z" className="fill-red-500" />
-        </g>
+        <motion.g
+            animate={{ y: [0, -5, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        >
+            <g transform="translate(30, 40) rotate(-10)">
+                <path d="M25 0 V20 M25 80 V100" className="stroke-slate-300 dark:stroke-slate-700" strokeWidth="40" strokeLinecap="round" />
+                <rect x="0" y="20" width="50" height="60" rx="10" className="fill-slate-900 stroke-slate-600" strokeWidth="2" />
+                <rect x="5" y="25" width="40" height="50" rx="6" className="fill-black" />
+
+                <circle cx="25" cy="50" r="10" className="stroke-slate-800" strokeWidth="2.5" />
+                <motion.circle
+                    cx="25" cy="50" r="10"
+                    className="stroke-green-500" strokeWidth="2.5"
+                    strokeDasharray="45 100"
+                    strokeLinecap="round"
+                    animate={{ strokeDashoffset: [45, 10, 45] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    transform="rotate(-90 25 50)"
+                />
+                <text x="25" y="53" textAnchor="middle" fill="white" fontSize="4.5" fontWeight="bold" style={{ fontFamily: 'monospace' }}>5234</text>
+            </g>
+
+            <g transform="translate(110, 50)">
+                <path d="M35 0 V20 M35 70 V90" className="stroke-purple-200 dark:stroke-purple-900" strokeWidth="40" strokeLinecap="round" />
+                <circle cx="35" cy="45" r="35" className="fill-white dark:fill-slate-800 stroke-slate-300" strokeWidth="2" />
+                <circle cx="35" cy="45" r="30" className="fill-black" />
+
+                <g transform="translate(15, 25)">
+                    <path d="M20 5 C20 5 15 0 12 5 C9 0 4 0 4 5 C4 10 20 20 20 20 C20 20 36 10 36 5 C36 0 31 0 28 5 C25 0 20 5 20 5"
+                        className="fill-red-500" transform="scale(0.5) translate(20, 0)" />
+
+                    <path d="M0 25 H10 L15 15 L20 35 L25 10 L30 25 H40"
+                        fill="none" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+
+                    <motion.circle
+                        r="2" fill="#ef4444"
+                        animate={{ offsetDistance: ["0%", "100%"] }}
+                        style={{ offsetPath: "path('M0 25 H10 L15 15 L20 35 L25 10 L30 25 H40')" }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    />
+                    <text x="20" y="45" textAnchor="middle" fill="white" fontSize="7" fontWeight="bold">78 BPM</text>
+                </g>
+            </g>
+        </motion.g>
     </svg>
 );
 
 const ConsoleGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g transform="translate(35, 15) scale(0.85)">
-            <g transform="translate(130, 10)">
-                <rect x="0" y="0" width="60" height="110" className="fill-slate-900 stroke-slate-700" strokeWidth="1.5" />
-                <ellipse cx="30" cy="5" rx="28" ry="8" className="fill-slate-800" />
+        <motion.g
+            transform="translate(35, 15) scale(0.85)"
+            animate={{ y: [0, -5, 0] }}
+            transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+            <g transform="translate(125, 20)">
+                <rect x="0" y="0" width="50" height="100" className="fill-slate-900 stroke-slate-700" strokeWidth="1.5" />
+                <circle cx="10" cy="15" r="2" className="fill-slate-800" />
+                <circle cx="25" cy="15" r="2" className="fill-slate-800" />
+                <circle cx="40" cy="15" r="2" className="fill-slate-800" />
+                <circle cx="10" cy="25" r="2" className="fill-slate-800" />
+                <circle cx="25" cy="25" r="2" className="fill-slate-800" />
+                <circle cx="40" cy="25" r="2" className="fill-slate-800" />
+                <circle cx="25" cy="50" r="8" className="fill-slate-800 stroke-green-600" strokeWidth="1" />
+                <path d="M21 46 L29 54 M29 46 L21 54" className="stroke-green-600" strokeWidth="2" />
+                <motion.circle
+                    cx="40" cy="90" r="4" className="stroke-green-500" strokeWidth="1.5" fill="none"
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                />
             </g>
-            <g transform="translate(70, 5)">
-                <path d="M10 0 C10 -10 40 -10 40 0 V115 C40 125 10 125 10 115 Z" className="fill-white dark:fill-slate-200 stroke-slate-300" strokeWidth="1.5" />
-                <path d="M20 0 V115" className="stroke-blue-500/50" strokeWidth="2" />
+
+            <g transform="translate(60, 20)">
+                <path d="M10 0 C0 10 0 100 10 115 H40 C50 100 50 10 40 0 H10 Z" className="fill-white dark:fill-slate-200 stroke-slate-300" strokeWidth="1.5" />
+                <path d="M15 0 C5 10 5 100 15 115" className="stroke-blue-500/50" strokeWidth="1" fill="none" />
+                <path d="M35 0 C45 10 45 100 35 115" className="stroke-blue-500/50" strokeWidth="1" fill="none" />
+                <path d="M25 50 L30 50 L30 60 L20 60 L20 55 L25 55" className="fill-none stroke-slate-400" strokeWidth="1.5" />
+                <motion.path
+                    d="M15 5 C10 20 10 80 15 110"
+                    className="stroke-blue-400" strokeWidth="2" strokeLinecap="round"
+                    animate={{ opacity: [0.2, 0.8, 0.2] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                />
             </g>
-            <g transform="translate(20, 85)">
-                <rect x="0" y="0" width="80" height="40" rx="2" className="fill-slate-800 stroke-slate-600" />
-                <rect x="5" y="2" width="70" height="36" className="fill-black" />
-                <rect x="-10" y="0" width="10" height="40" rx="2" className="fill-blue-500" />
-                <rect x="80" y="0" width="10" height="40" rx="2" className="fill-red-500" />
+
+            <g transform="translate(20, 95)">
+                <rect x="0" y="0" width="80" height="40" rx="3" className="fill-slate-800 stroke-slate-600" />
+                <rect x="10" y="2" width="60" height="36" className="fill-black" />
+                <rect x="12" y="4" width="56" height="32" className="fill-blue-900/40" />
+                <path d="M15 20 H30 M40 10 L50 20 L40 30" className="stroke-green-400/80" strokeWidth="2" />
+                <circle cx="55" cy="15" r="3" className="fill-red-500/80" />
+                <path d="M0 0 H10 V40 H0 C-2 40 -2 0 0 0" className="fill-blue-500" />
+                <path d="M70 0 H80 C82 0 82 40 80 40 H70 V0" className="fill-red-500" />
+                <circle cx="5" cy="12" r="2" className="fill-slate-900" />
+                <circle cx="5" cy="20" r="2" className="fill-slate-900" />
+                <circle cx="75" cy="15" r="2" className="fill-slate-900" />
+                <circle cx="75" cy="25" r="2" className="fill-slate-900" />
             </g>
-            <g transform="translate(100, 85)">
-                <path d="M0 10 H50 C55 10 55 30 50 30 H40 L30 20 L20 30 H10 C5 30 5 10 0 10" className="fill-white dark:fill-slate-300 stroke-slate-500" strokeWidth="1.5" />
-            </g>
-        </g>
+        </motion.g>
     </svg>
 );
 
 const TvGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g transform="translate(20, 20)">
-            <rect x="0" y="0" width="160" height="100" rx="2" className="fill-black stroke-slate-600" strokeWidth="2" />
-            <rect x="5" y="5" width="150" height="90" className="fill-slate-900" />
-            <path d="M5 95 L40 60 L70 80 L100 40 L155 95 H5" className="fill-white/10" />
-        </g>
-        <path d="M80 120 L120 120 L140 130 H60 L80 120" className="fill-slate-700" />
+        <motion.g
+            animate={{ y: [0, -4, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        >
+            <g transform="translate(20, 20)">
+                <rect x="0" y="0" width="160" height="100" rx="2" className="fill-black stroke-slate-600" strokeWidth="2" />
+                <rect x="5" y="5" width="150" height="90" className="fill-slate-900" />
+
+                <g transform="translate(15, 15)">
+                    <rect x="0" y="0" width="130" height="30" rx="2" className="fill-slate-800" />
+                    <rect x="5" y="5" width="35" height="20" rx="1" className="fill-red-500/20" />
+                    <rect x="45" y="5" width="35" height="20" rx="1" className="fill-blue-500/20" />
+                    <rect x="85" y="5" width="35" height="20" rx="1" className="fill-green-500/20" />
+                    <rect x="0" y="40" width="130" height="30" rx="2" className="fill-slate-800" />
+                    <rect x="5" y="45" width="20" height="20" rx="1" className="fill-purple-500/20" />
+                    <rect x="30" y="45" width="20" height="20" rx="1" className="fill-yellow-500/20" />
+                    <rect x="60" y="50" width="60" height="10" rx="2" className="fill-slate-700" />
+                    <rect x="62" y="52" width="20" height="6" rx="1" className="fill-white" />
+                </g>
+
+                <motion.path
+                    d="M5 95 L40 60 L70 80 L100 40 L155 95 H5" className="fill-white/10"
+                    animate={{ opacity: [0.1, 0.25, 0.1] }}
+                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                />
+            </g>
+            <path d="M80 120 L120 120 L140 130 H60 L80 120" className="fill-slate-700" />
+        </motion.g>
     </svg>
 );
 
 const RepairGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g transform="translate(80, 50) rotate(-5)">
-            <rect x="0" y="0" width="55" height="95" rx="4" className="fill-slate-200 dark:fill-slate-800 stroke-slate-400 dark:stroke-slate-600" strokeWidth="1.5" />
-            <circle cx="27" cy="30" r="10" className="stroke-slate-400 dark:stroke-slate-600" strokeWidth="1" />
-        </g>
+        <motion.g
+            animate={{ y: [0, -5, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        >
+            <g transform="translate(80, 50) rotate(-5)">
+                <rect x="0" y="0" width="55" height="95" rx="4" className="fill-slate-200 dark:fill-slate-800 stroke-slate-400 dark:stroke-slate-600" strokeWidth="1.5" />
+                <circle cx="27" cy="30" r="10" className="stroke-slate-400 dark:stroke-slate-600" strokeWidth="1" />
+            </g>
+            <g transform="translate(60, 30) rotate(-5)">
+                <rect x="0" y="0" width="53" height="93" rx="3" className="fill-slate-900/10 dark:fill-black/50 stroke-green-500/50" strokeWidth="1" />
+                <rect x="5" y="45" width="43" height="40" rx="2" className="fill-black stroke-slate-600" />
+                <path d="M10 10 H40 V35 H10 Z" className="fill-green-600 dark:fill-green-900 stroke-green-500" />
+            </g>
 
-        <g transform="translate(60, 30) rotate(-5)">
-            <rect x="0" y="0" width="53" height="93" rx="3" className="fill-slate-900/10 dark:fill-black/50 stroke-green-500/50" strokeWidth="1" />
-            <rect x="5" y="45" width="43" height="40" rx="2" className="fill-black stroke-slate-600" />
-            <path d="M10 10 H40 V35 H10 Z" className="fill-green-600 dark:fill-green-900 stroke-green-500" />
-        </g>
+            <g transform="translate(40, 10) rotate(-5)">
+                <rect x="0" y="0" width="55" height="95" rx="4" className="fill-blue-50/50 dark:fill-blue-900/20 stroke-blue-500" strokeWidth="1.5" />
+                <motion.rect
+                    x="0" y="0" width="55" height="2" className="fill-blue-500"
+                    animate={{ y: [0, 95, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                />
+                <path d="M0 0 L55 95" className="stroke-white/30" strokeWidth="40" />
+            </g>
 
-        <g transform="translate(40, 10) rotate(-5)">
-            <rect x="0" y="0" width="55" height="95" rx="4" className="fill-blue-50/50 dark:fill-blue-900/20 stroke-blue-500" strokeWidth="1.5" />
-            <path d="M0 0 L55 95" className="stroke-white/30" strokeWidth="40" />
-        </g>
-
-        <g transform="translate(130, 40) rotate(20)">
-            <path d="M5 0 L15 0 L15 50 L5 50 Z" className="fill-orange-500 stroke-orange-700" />
-            <path d="M8 50 L12 50 L12 70 L10 75 L8 70 Z" className="fill-slate-300 stroke-slate-400" />
-            <rect x="3" y="-5" width="14" height="6" rx="1" className="fill-orange-600" />
-        </g>
+            {/* Screwdriver - Hardcoded Visibility with Absolute Coordinates in 140-195 range */}
+            <motion.g
+                animate={{ x: [0, -5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            >
+                {/* Drawn directly with visible coordinates. Top-Right handle, pointing Left-Down slightly */}
+                <g transform="rotate(10 170 110)">
+                    {/* Handle: 180 to 195 */}
+                    <path d="M180 110 L180 120 L195 120 L195 110 Z" className="fill-orange-600 stroke-orange-700" />
+                    {/* Shaft: 180 to 140 */}
+                    <path d="M140 115 L145 118 L180 118 L180 112 L145 112 Z" className="fill-slate-300 stroke-slate-400" />
+                    {/* Cap */}
+                    <rect x="195" y="108" width="4" height="14" rx="1" className="fill-orange-500" />
+                </g>
+            </motion.g>
+        </motion.g>
     </svg>
 );
 
@@ -192,7 +348,6 @@ export default function CategorySelector({ onSelect }: CategorySelectorProps) {
                     >
                         {/* Text Content */}
                         <div className="absolute top-6 left-6 md:top-8 md:left-8 z-20 w-3/4">
-                            {/* Updated subtext class to use cat.textColor and improved opacity */}
                             <p className={`text-[10px] md:text-xs font-bold uppercase tracking-wider opacity-70 mb-2 ${cat.textColor}`}>
                                 {cat.subtext}
                             </p>
