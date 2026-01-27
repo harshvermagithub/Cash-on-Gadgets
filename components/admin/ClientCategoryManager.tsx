@@ -1,12 +1,11 @@
-
 'use client';
 
 import { useState } from 'react';
 import BrandManager from './BrandManager';
 import ModelManager from './ModelManager';
-import VariantManager from './VariantManager';
+// VariantManager is removed as it's merged into ModelManager
 import PricingRulesManager from './PricingRulesManager';
-import { Brand, Model, Variant, EvaluationRule } from '@/lib/store';
+import { Brand, Model, Variant } from '@/lib/store';
 
 interface Props {
     category: string;
@@ -17,10 +16,11 @@ interface Props {
     rules?: any[];
 }
 
-type Tab = 'brands' | 'models' | 'pricing';
+type Tab = 'brands' | 'models' | 'rules';
 
 export default function ClientCategoryManager({ category, brands, models, variants, rules }: Props) {
-    const [activeTab, setActiveTab] = useState<Tab>('models'); // Default to models usually
+    const [activeTab, setActiveTab] = useState<Tab>('models');
+    const [selectedBrandId, setSelectedBrandId] = useState<string>('all');
 
     // Helper for display title
     const titleMap: Record<string, string> = {
@@ -42,12 +42,21 @@ export default function ClientCategoryManager({ category, brands, models, varian
 
     const title = formatTitle(category);
 
+    // Filter logic
+    const filteredModels = selectedBrandId === 'all'
+        ? models
+        : models.filter(m => m.brandId === selectedBrandId);
+
+    // Filter variants that belong to the filtered models
+    // (Optimization: Pass only relevant variants to ModelManager if needed, but easier to pass all and let ModelManager find them per model)
+    const relevantVariants = variants;
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col gap-4">
                 <h1 className="text-3xl font-bold tracking-tight">Manage {title}</h1>
 
-                {/* Tabs */}
+                {/* Main Tab Navigation */}
                 <div className="flex p-1 bg-muted rounded-lg w-fit">
                     <button
                         onClick={() => setActiveTab('brands')}
@@ -65,18 +74,48 @@ export default function ClientCategoryManager({ category, brands, models, varian
                             : 'text-muted-foreground hover:text-foreground'
                             }`}
                     >
-                        Models
+                        Models & Pricing
                     </button>
                     <button
-                        onClick={() => setActiveTab('pricing')}
-                        className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${activeTab === 'pricing'
+                        onClick={() => setActiveTab('rules')}
+                        className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${activeTab === 'rules'
                             ? 'bg-background text-foreground shadow-sm'
                             : 'text-muted-foreground hover:text-foreground'
                             }`}
                     >
-                        Pricing
+                        Condition Rules
                     </button>
                 </div>
+
+                {/* Brand Filter (Visible for Models tab only) */}
+                {activeTab === 'models' && (
+                    <div className="w-full">
+                        <div className="flex overflow-x-auto pb-2 gap-2 [&::-webkit-scrollbar]:hidden items-center">
+                            <span className="text-sm font-medium text-muted-foreground mr-2 shrink-0">Filter:</span>
+                            <button
+                                onClick={() => setSelectedBrandId('all')}
+                                className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap border transition-all ${selectedBrandId === 'all'
+                                        ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+                                        : 'bg-background hover:bg-muted text-muted-foreground border-border'
+                                    }`}
+                            >
+                                All Brands
+                            </button>
+                            {brands.map(brand => (
+                                <button
+                                    key={brand.id}
+                                    onClick={() => setSelectedBrandId(brand.id)}
+                                    className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap border transition-all ${selectedBrandId === brand.id
+                                            ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+                                            : 'bg-background hover:bg-muted text-muted-foreground border-border'
+                                        }`}
+                                >
+                                    {brand.name}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div className="border rounded-xl p-6 bg-card min-h-[500px]">
@@ -94,39 +133,28 @@ export default function ClientCategoryManager({ category, brands, models, varian
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
                             <h2 className="text-xl font-bold">Models</h2>
-                            <p className="text-sm text-muted-foreground">Add or Edit {title} Models</p>
+                            <p className="text-sm text-muted-foreground">
+                                {selectedBrandId !== 'all'
+                                    ? `Managing ${brands.find(b => b.id === selectedBrandId)?.name} Models`
+                                    : `Add or Edit ${title} Models`}
+                            </p>
                         </div>
-                        {/* We pass the category to ModelManager so it defaults new models to this category */}
+                        {/* We pass variants here now */}
                         <ModelManager
                             brands={brands}
-                            initialModels={models}
+                            initialModels={filteredModels}
+                            initialVariants={relevantVariants}
                             preselectedCategory={category}
                         />
                     </div>
                 )}
 
-                {activeTab === 'pricing' && (
+                {activeTab === 'rules' && (
                     <div className="space-y-8">
                         <div>
-                            <div className="flex items-center justify-between mb-4">
-                                <div>
-                                    <h2 className="text-xl font-bold">Base Pricing</h2>
-                                    <p className="text-sm text-muted-foreground">Manage base prices for {title}</p>
-                                </div>
-                            </div>
-                            <VariantManager
-                                brands={brands}
-                                models={models}
-                                initialVariants={variants}
-                                preselectedCategory={category}
-                            />
-                        </div>
-
-                        <div className="pt-8 border-t">
-                            {/* Dynamic Pricing Rules */}
                             <div className="mb-4">
                                 <h2 className="text-xl font-bold">Condition Rules</h2>
-                                <p className="text-sm text-muted-foreground">Configure deductions for specific defects.</p>
+                                <p className="text-sm text-muted-foreground">Configure global deductions for specific defects.</p>
                             </div>
                             <PricingRulesManager category={category} initialRules={rules || []} />
                         </div>

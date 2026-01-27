@@ -3,12 +3,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight, Zap, ShieldCheck, CheckCircle, Star, Clock, MapPin, BadgePercent } from 'lucide-react';
+import { ArrowRight, Zap, ShieldCheck, CheckCircle, Star, Clock, MapPin, BadgePercent, Sparkles } from 'lucide-react';
 import HowItWorks from '@/components/HowItWorks';
 import HeroAnimation from '@/components/HeroAnimation';
 import { ReviewsMarquee } from '@/components/ReviewsMarquee';
 import CategorySelector from '@/components/sell/CategorySelector';
-import { BigLogo } from '@/components/BigLogo';
 import { Logo } from '@/components/Logo';
 import { HomeSearch } from '@/components/HomeSearch';
 import { BrandRail } from '@/components/BrandRail';
@@ -26,122 +25,116 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
     return (
         <div className="flex flex-col min-h-screen overflow-x-hidden">
             {/* Hero Section */}
-            <section className="relative pt-0 pb-32 md:pt-32 md:pb-48 overflow-hidden bg-background w-full">
-                <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-                    <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-green-500/10 rounded-full blur-3xl" />
-                    <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-3xl" />
+            <section className="relative pt-0 pb-32 md:pt-40 md:pb-52 overflow-hidden bg-background w-full">
+                {/* Background FX */}
+                <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 bg-slate-50 dark:bg-slate-950/20">
+                    <div className="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] bg-green-500/10 rounded-full blur-[120px] opacity-60" />
+                    <div className="absolute top-[20%] left-[-10%] w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[100px] opacity-40" />
+                    <div className="absolute bottom-0 right-0 w-full h-px bg-gradient-to-r from-transparent via-green-500/20 to-transparent" />
                 </div>
 
                 <div className="container mx-auto px-4 sm:px-6 max-w-[100vw] overflow-x-hidden">
-                    <div className="flex flex-col xl:flex-row items-center gap-12 xl:gap-20">
-                        <div className="flex-1 animate-in slide-in-from-bottom-8 fade-in-20 duration-700 w-full max-w-full">
+                    <div className="flex flex-col xl:flex-row items-center gap-12 xl:gap-24">
 
-                            {/* Desktop Trusted Badge */}
-                            <div className="hidden xl:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-semibold border border-green-200">
+                        {/* LEFT COLUMN: Content */}
+                        <div className="flex-1 w-full max-w-2xl animate-in slide-in-from-bottom-8 fade-in-20 duration-700 flex flex-col items-start text-left z-20">
+
+                            {/* REBUILT DESKTOP TOP SECTION: No BigLogo. Clean Typography. */}
+
+                            {/* Trust Badge / Pill */}
+                            <div className="hidden xl:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-green-200/60 shadow-sm mb-6 hover:shadow-md transition-all cursor-default w-fit">
                                 <span className="relative flex h-2 w-2">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                                 </span>
-                                Trusted by 1,000+ Customers
+                                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-wide uppercase">India&apos;s Most Trusted Re-commerce</span>
                             </div>
 
-                            {/* Mobile Hero View (Text Banner + Search + Brands) */}
+                            {/* Mobile View Specifics (Logo + Chips) */}
                             <div className="block xl:hidden w-full space-y-4 pt-0 mb-12">
-
-                                {/* Top Chips Section */}
                                 <div className="flex flex-wrap justify-center gap-2 px-2 pt-6 pb-2">
                                     <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm transition-all cursor-default whitespace-nowrap">
-                                        <span className="relative flex h-1.5 w-1.5">
-                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
-                                        </span>
+                                        <Sparkles className="w-3 h-3 text-green-500" />
                                         Trusted by 1k+
                                     </div>
                                     <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm transition-all cursor-default whitespace-nowrap">
                                         <MapPin className="w-3 h-3 text-green-500" />
-                                        Pickup All Over Bangalore
+                                        Bengaluru Pickup
                                     </div>
                                 </div>
-
-                                {/* Main Hero Logo */}
                                 <div className="flex justify-center items-center py-2">
                                     <div className="scale-[1.1] origin-center transform flex justify-center items-center">
                                         <HeroLogo />
                                     </div>
                                 </div>
-
-                                {/* Mobile Hero Carousel - Reduced Space & Scaled Down to prevent overflow */}
-                                <div className="w-full h-[320px] relative mt-2 mb-8 flex items-center justify-center overflow-visible">
-                                    <div className="scale-[0.7] sm:scale-[0.8] origin-center w-full">
+                                <div className="w-full h-[550px] relative mt-2 mb-8 flex items-center justify-center overflow-visible">
+                                    <div className="scale-[1] origin-center w-full h-full">
                                         <HeroAnimation />
                                     </div>
                                 </div>
-
-                                {/* Search & Brands Container - With max-width guard */}
                                 <div className="relative z-20 bg-background/80 backdrop-blur-sm pt-2 rounded-xl w-full max-w-full overflow-hidden">
-                                    <div className="px-1">
-                                        <HomeSearch />
-                                    </div>
-                                    <div className="mt-6 w-full overflow-hidden">
-                                        <BrandRail initialBrands={initialBrands} />
-                                    </div>
+                                    <div className="px-1"><HomeSearch /></div>
+                                    <div className="mt-6 w-full overflow-hidden"><BrandRail initialBrands={initialBrands} /></div>
                                 </div>
                             </div>
 
-                            {/* Desktop/Tablet Hero View */}
-                            <div className="hidden xl:block w-full -ml-2">
-                                <BigLogo />
-                            </div>
-
-                            <div className="max-w-full overflow-hidden">
-                                <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground leading-[1.2] md:leading-[1.1] break-words">
+                            {/* MAIN HEADLINE */}
+                            <div className="max-w-full overflow-hidden relative">
+                                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15] md:leading-[1.1]">
                                     Smart way to <br />
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-500">sell your device.</span>
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 animate-gradient-x">sell your device.</span>
                                 </h1>
-                                <p className="text-xl text-muted-foreground leading-relaxed max-w-lg mt-4">
-                                    Experience the smart way to sell. Get maximum value and instant cash at your doorstep—no negotiations, just a seamless, premium service.
+                                <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed max-w-lg mt-6 font-medium">
+                                    Get the <span className="text-green-600 dark:text-green-400 font-bold">Highest Value</span> for your old smartphone, laptop, or swatch instantly. Doorstep pickup in 24 hours.
                                 </p>
                             </div>
 
-                            <div className="flex flex-col sm:flex-row gap-4 pt-6">
+                            {/* CTA Buttons */}
+                            <div className="flex flex-col sm:flex-row gap-4 pt-8 w-full sm:w-auto">
                                 <Link
                                     href="/sell"
-                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-primary text-primary-foreground font-semibold text-lg shadow-lg shadow-green-500/25 hover:bg-primary/90 hover:scale-[1.02] transition-all duration-300 group"
+                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-slate-900 dark:bg-green-600 text-white font-bold text-lg shadow-xl shadow-green-500/20 hover:bg-slate-800 dark:hover:bg-green-500 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group w-full sm:w-auto"
                                 >
-                                    Get Exact Value
+                                    Check Price
                                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                                 </Link>
                                 <Link
                                     href="/orders"
-                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-white dark:bg-slate-800 border border-green-100 dark:border-slate-700 text-slate-900 dark:text-white font-semibold text-lg hover:bg-green-50 dark:hover:bg-slate-700 transition-all duration-300"
+                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 text-slate-900 dark:text-white font-bold text-lg hover:border-green-200 hover:bg-green-50/50 dark:hover:bg-slate-700 transition-all duration-200 w-full sm:w-auto"
                                 >
                                     Track Order
                                 </Link>
                             </div>
 
-                            <div className="flex items-center gap-6 pt-4 text-sm font-medium text-muted-foreground flex-wrap">
+                            {/* Trust Signals */}
+                            <div className="flex items-center gap-6 pt-8 text-sm font-semibold text-slate-500 dark:text-slate-400 flex-wrap">
                                 <div className="flex items-center gap-2">
-                                    <CheckCircle className="w-4 h-4 text-green-600" /> Instant Payment
+                                    <div className="p-1 rounded-full bg-green-100 dark:bg-green-900/30"><Zap className="w-3.5 h-3.5 text-green-600" /></div>
+                                    Instant Cash
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <CheckCircle className="w-4 h-4 text-green-600" /> Doorstep Pickup
+                                    <div className="p-1 rounded-full bg-blue-100 dark:bg-blue-900/30"><MapPin className="w-3.5 h-3.5 text-blue-600" /></div>
+                                    Doorstep Pickup
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <CheckCircle className="w-4 h-4 text-green-600" /> Safe & Secure
+                                    <div className="p-1 rounded-full bg-purple-100 dark:bg-purple-900/30"><ShieldCheck className="w-3.5 h-3.5 text-purple-600" /></div>
+                                    Safe & Secure
                                 </div>
                             </div>
                         </div>
 
-                        {/* Desktop Side: Hero Animation */}
-                        <div className="hidden xl:flex flex-1 relative w-full h-[500px] max-w-[600px] animate-in zoom-in-50 fade-in duration-1000 delay-200 perspective-1000 items-center justify-center">
+                        {/* RIGHT COLUMN: Desktop Hero Animation */}
+                        <div className="hidden xl:flex flex-1 relative w-full h-[600px] max-w-[700px] animate-in zoom-in-50 fade-in duration-1000 delay-200 perspective-1000 items-center justify-center">
+                            {/* Decorative Blob under Animation */}
+                            <div className="absolute inset-0 bg-gradient-to-tr from-green-500/5 to-emerald-500/5 rounded-full blur-3xl transform scale-90" />
                             <HeroAnimation />
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Category Selection Section */}
-            <section className="py-20 bg-muted/30 border-y">
+            {/* Category Selection Section (unchanged) */}
+            <section className="py-20 bg-slate-50/50 dark:bg-slate-900/20 border-y border-slate-100 dark:border-slate-800">
                 <div className="container mx-auto px-6">
                     <div className="max-w-4xl mx-auto">
                         <CategorySelector onSelect={handleCategorySelect} />

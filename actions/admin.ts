@@ -125,8 +125,9 @@ export async function getModels(brandId?: string) {
 
 export async function addModel(brandId: string, name: string, img: string, category: string = 'smartphone', priority: number = 100) {
     await requireAdmin();
+    const id = randomUUID();
     await db.addModel({
-        id: randomUUID(),
+        id,
         brandId,
         name,
         img,
@@ -136,7 +137,7 @@ export async function addModel(brandId: string, name: string, img: string, categ
     } as any);
     revalidatePath('/admin/models');
     revalidatePath('/');
-    return { success: true };
+    return { success: true, id };
 }
 
 export async function updateModel(id: string, brandId: string, name: string, img: string, category: string = 'smartphone', priority: number = 100) {
@@ -174,14 +175,15 @@ export async function getVariants(modelId?: string) {
 
 export async function addVariant(modelId: string, name: string, basePrice: number) {
     await requireAdmin();
+    const id = randomUUID();
     await db.addVariant({
-        id: randomUUID(),
+        id,
         modelId,
         name,
         basePrice
     });
     revalidatePath('/admin/variants');
-    return { success: true };
+    return { success: true, id };
 }
 
 export async function updateVariant(id: string, modelId: string, name: string, basePrice: number) {
