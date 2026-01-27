@@ -16,6 +16,7 @@ async function requireAdmin() {
         console.log(`[Auth] Blocked non-admin user: ${session.user.email} (${session.user.role})`);
         throw new Error('Forbidden: Admin access required');
     }
+    // return;
 }
 
 // --- Brands ---

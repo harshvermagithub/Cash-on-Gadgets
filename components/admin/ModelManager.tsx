@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { addModel, updateModel, deleteModel, reorderModels, addVariant, updateVariant, deleteVariant } from '@/actions/admin';
 import { uploadImage } from '@/actions/upload';
-import { Trash2, Plus, Loader2, Upload, Pencil, X, GripVertical, Ban } from 'lucide-react';
+import { Trash2, Plus, Loader2, Upload, Pencil, X, GripVertical, Check, ImageIcon, Ban, Search, ChevronDown } from 'lucide-react';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStrategy, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -35,7 +35,6 @@ const CATEGORIES = [
     { id: 'repair-device', label: 'Repair Device' },
 ];
 
-// Sortable Item Component
 function SortableModel({ model, brands, variants, onEdit, onDelete }: { model: Model, brands: Brand[], variants: Variant[], onEdit: (m: Model) => void, onDelete: (id: string) => void }) {
     const {
         attributes,
@@ -52,56 +51,66 @@ function SortableModel({ model, brands, variants, onEdit, onDelete }: { model: M
 
     const modelVariants = variants.filter(v => v.modelId === model.id);
     const minPrice = modelVariants.length > 0 ? Math.min(...modelVariants.map(v => v.basePrice)) : 0;
-    const maxPrice = modelVariants.length > 0 ? Math.max(...modelVariants.map(v => v.basePrice)) : 0;
 
     return (
-        <div ref={setNodeRef} style={style} className="p-4 border rounded-xl flex items-center justify-between bg-card touch-none relative group transition-shadow hover:shadow-md">
+        <div ref={setNodeRef} style={style} className="group relative bg-card hover:bg-accent/5 rounded-xl border transition-all duration-200 hover:shadow-lg flex flex-col overflow-hidden">
+            {/* Action Overlay (Desktop) */}
+            <div className="absolute inset-x-0 top-0 h-full bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none md:block hidden" />
 
-            <div className="flex items-center gap-4 relative z-10 pointer-events-none w-full mr-16">
+            <div className="p-4 flex items-start gap-4">
                 {/* Drag Handle */}
-                <div {...attributes} {...listeners} className="p-2 -ml-2 text-muted-foreground hover:text-primary cursor-grab active:cursor-grabbing pointer-events-auto shrink-0">
+                <div {...attributes} {...listeners} className="mt-1 text-muted-foreground/50 hover:text-foreground cursor-grab active:cursor-grabbing">
                     <GripVertical className="w-5 h-5" />
                 </div>
 
-                <div className="w-12 h-12 relative bg-slate-100 dark:bg-slate-800 border dark:border-slate-700 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
+                {/* Image */}
+                <div className="relative w-16 h-16 shrink-0 rounded-lg border bg-white flex items-center justify-center overflow-hidden">
                     {model.img && (model.img.startsWith('/') || model.img.startsWith('http')) ? (
-                        <Image src={model.img} alt={model.name} fill className="object-cover" />
+                        <Image src={model.img} alt={model.name} fill className="object-contain p-1" />
                     ) : (
-                        <span className="text-xl font-bold text-gray-400">{model.name[0]}</span>
+                        <ImageIcon className="w-6 h-6 text-muted-foreground/30" />
                     )}
                 </div>
 
-                <div className="overflow-hidden">
-                    <div className="flex flex-col">
-                        <div className="flex items-center gap-2">
-                            <p className="font-bold text-sm md:text-base truncate">{model.name}</p>
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between">
+                        <div>
+                            <h4 className="font-semibold text-foreground truncate pr-2">{model.name}</h4>
+                            <p className="text-xs text-muted-foreground">{brands.find(b => b.id === model.brandId)?.name}</p>
                         </div>
-                        <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                            <span>{brands.find(b => b.id === model.brandId)?.name}</span>
-                            {modelVariants.length > 0 && (
-                                <span className="text-primary font-medium bg-primary/10 px-1.5 rounded-sm">
-                                    {modelVariants.length} Variants (Starting ₹{minPrice.toLocaleString()})
-                                </span>
-                            )}
-                        </div>
+                    </div>
+
+                    <div className="mt-2 flex flex-wrap gap-2">
+                        {modelVariants.length > 0 ? (
+                            <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 text-xs font-medium">
+                                <Check className="w-3 h-3" />
+                                <span>{modelVariants.length} Variants</span>
+                                <span className="opacity-60">|</span>
+                                <span>From ₹{minPrice.toLocaleString()}</span>
+                            </div>
+                        ) : (
+                            <div className="inline-flex px-2 py-1 rounded-md bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400 text-xs font-medium">
+                                No Variants
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
 
-            <div className="flex gap-2 relative z-20 pointer-events-auto absolute right-4 top-1/2 -translate-y-1/2">
+            {/* Actions Footer - Improved spacing */}
+            <div className="mt-auto px-4 py-3 border-t bg-muted/20 flex justify-end gap-3 relative z-10">
                 <button
                     onClick={() => onEdit(model)}
-                    className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors bg-card border shadow-sm"
-                    title="Edit Model & Pricing"
+                    className="h-9 px-4 text-xs font-medium rounded-lg bg-background border hover:bg-accent transition-colors flex items-center gap-2 hover:border-primary/50 shadow-sm"
                 >
-                    <Pencil className="w-4 h-4" />
+                    <Pencil className="w-3.5 h-3.5 text-primary" /> Edit
                 </button>
                 <button
                     onClick={() => onDelete(model.id)}
-                    className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors bg-card border shadow-sm"
-                    title="Delete"
+                    className="h-9 w-9 flex items-center justify-center rounded-lg bg-background border hover:bg-destructive/10 hover:border-destructive/50 transition-colors text-destructive shadow-sm"
                 >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3.5 h-3.5" />
                 </button>
             </div>
         </div>
@@ -109,9 +118,8 @@ function SortableModel({ model, brands, variants, onEdit, onDelete }: { model: M
 }
 
 // Local Variant Type for Form
-// Needs id for tracking updates/deletes, but might be temp id for new ones
 type FormVariant = {
-    id: string; // real ID or `temp-${random}`
+    id: string;
     name: string;
     basePrice: number;
     isNew?: boolean;
@@ -155,14 +163,14 @@ export default function ModelManager({ initialModels, initialVariants = [], bran
     const handleDragEnd = async (event: DragEndEvent) => {
         const { active, over } = event;
         if (over && active.id !== over.id) {
-            setModels((items) => {
-                const oldIndex = items.findIndex((item) => item.id === active.id);
-                const newIndex = items.findIndex((item) => item.id === over.id);
-                const newItems = arrayMove(items, oldIndex, newIndex);
-                const updates = newItems.map((model, index) => ({ id: model.id, priority: index + 1 }));
-                reorderModels(updates);
-                return newItems;
-            });
+            const oldIndex = models.findIndex((item) => item.id === active.id);
+            const newIndex = models.findIndex((item) => item.id === over.id);
+            const newItems = arrayMove(models, oldIndex, newIndex);
+
+            setModels(newItems);
+
+            const updates = newItems.map((model, index) => ({ id: model.id, priority: index + 1 }));
+            await reorderModels(updates);
         }
     };
 
@@ -210,10 +218,8 @@ export default function ModelManager({ initialModels, initialVariants = [], bran
     const removeFormVariant = (index: number) => {
         const newVariants = [...formVariants];
         if (newVariants[index].isNew) {
-            // Just remove from array
             newVariants.splice(index, 1);
         } else {
-            // Mark for deletion
             newVariants[index].isDeleted = true;
         }
         setFormVariants(newVariants);
@@ -226,36 +232,24 @@ export default function ModelManager({ initialModels, initialVariants = [], bran
         setIsLoading(true);
         try {
             let targetModelId = editingId;
-
             if (editingId) {
                 await updateModel(editingId, brandId, name, img, category);
             } else {
                 const res = await addModel(brandId, name, img, category);
-                // Note: updated addModel to return { success: true, id: string }
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 targetModelId = (res as any).id;
             }
 
             if (targetModelId) {
-                // Handle Variants
-                // 1. Process deletions
                 const toDelete = formVariants.filter(v => v.isDeleted && !v.isNew);
-                for (const v of toDelete) {
-                    await deleteVariant(v.id);
-                }
+                for (const v of toDelete) await deleteVariant(v.id);
 
-                // 2. Process updates and creates
                 const activeVariants = formVariants.filter(v => !v.isDeleted);
                 for (const v of activeVariants) {
-                    if (v.isNew) {
-                        await addVariant(targetModelId, v.name, Number(v.basePrice));
-                    } else {
-                        // Only update if changed? For now update all to be safe/simple
-                        await updateVariant(v.id, targetModelId, v.name, Number(v.basePrice));
-                    }
+                    if (v.isNew) await addVariant(targetModelId, v.name, Number(v.basePrice));
+                    else await updateVariant(v.id, targetModelId, v.name, Number(v.basePrice));
                 }
             }
-
             resetForm();
             router.refresh();
         } catch (error) {
@@ -279,33 +273,47 @@ export default function ModelManager({ initialModels, initialVariants = [], bran
         } catch { alert('Upload failed'); } finally { setIsUploading(false); }
     };
 
+    // Calculate dynamic stats for the modal header
+    const activeVariantCount = formVariants.filter(v => !v.isDeleted).length;
+
+    // Helper for Select to match Input Height perfectly with custom Chevron
+    const SelectWrapper = ({ children }: { children: React.ReactNode }) => (
+        <div className="relative w-full">
+            {children}
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+        </div>
+    );
+
     return (
-        <div className="space-y-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="relative w-full md:w-64">
+        <div className="space-y-8">
+            {/* Header / Search Area */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="relative w-full md:max-w-md group">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
                     <input
-                        placeholder="Search..."
+                        placeholder="Search models..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-3 pr-8 py-2 border rounded-full bg-background text-sm w-full focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        className="pl-10 pr-10 h-11 w-full border rounded-full bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
                     />
                     {searchQuery && (
-                        <button onClick={() => setSearchQuery('')} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"><X className="w-4 h-4" /></button>
+                        <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1"><X className="w-4 h-4" /></button>
                     )}
                 </div>
                 <button
                     onClick={() => { resetForm(); setIsDialogOpen(true); }}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-all shadow-md font-medium text-sm whitespace-nowrap"
+                    className="h-11 flex items-center gap-2 px-8 bg-foreground text-background rounded-full hover:opacity-90 transition-all shadow-lg hover:shadow-xl font-medium text-sm whitespace-nowrap"
                 >
                     <Plus className="w-4 h-4" />
-                    <span>Add Model</span>
+                    <span>New Model</span>
                 </button>
             </div>
 
+            {/* Model Grid */}
             <div className="space-y-4">
                 <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                     <SortableContext items={visibleModels.map(m => m.id)} strategy={rectSortingStrategy}>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             {visibleModels.map((model) => (
                                 <SortableModel
                                     key={model.id}
@@ -319,159 +327,197 @@ export default function ModelManager({ initialModels, initialVariants = [], bran
                         </div>
                     </SortableContext>
                 </DndContext>
-                {visibleModels.length === 0 && <div className="text-center py-12 text-muted-foreground border-2 border-dashed rounded-xl">No models found</div>}
+                {visibleModels.length === 0 && <div className="text-center py-24 text-muted-foreground border-2 border-dashed rounded-2xl bg-muted/5 flex flex-col items-center justify-center gap-2">
+                    <Search className="w-8 h-8 opacity-20" />
+                    <span>No models match your search.</span>
+                </div>}
             </div>
 
+            {/* Edit/Add Modal */}
             {isDialogOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-                    <div className="bg-card w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border flex flex-col max-h-[90vh]">
-                        <div className="flex items-center justify-between px-6 py-4 border-b bg-muted/30 shrink-0">
-                            <h3 className="text-lg font-bold">{editingId ? 'Edit Model & Pricing' : `Add New Model`}</h3>
-                            <button onClick={resetForm} className="p-2 hover:bg-muted rounded-full text-muted-foreground"><X className="w-5 h-5" /></button>
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
+                    <div className="bg-background w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 border border-white/10 flex flex-col max-h-[90vh]">
+                        {/* Modal Header */}
+                        <div className="px-8 py-5 border-b bg-muted/30 flex items-center justify-between shrink-0">
+                            <div>
+                                <h3 className="text-xl font-bold tracking-tight">{editingId ? 'Edit Model' : 'Create New Model'}</h3>
+                                <p className="text-xs text-muted-foreground mt-0.5">Manage details and variant pricing</p>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <div className="text-xs font-medium px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
+                                    {activeVariantCount} Variants
+                                </div>
+                                <button onClick={resetForm} className="p-2 hover:bg-muted rounded-full text-muted-foreground transition-colors">
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
                         </div>
 
-                        <div className="overflow-y-auto p-6 flex-1">
-                            <form id="model-form" onSubmit={handleSubmit} className="space-y-8">
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-                                    {/* Left: Basic Info */}
-                                    <div className="md:col-span-4 space-y-6 border-r md:pr-8">
-                                        <h4 className="font-semibold text-muted-foreground uppercase text-xs tracking-wider">Model Details</h4>
+                        <div className="overflow-y-auto p-8 flex-1 bg-muted/5">
+                            <form id="model-form" onSubmit={handleSubmit}>
+                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                                    {/* Left Column: Basic Info */}
+                                    <div className="lg:col-span-5 space-y-8">
+                                        <section className="space-y-5">
+                                            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-blue-500" /> Basic Details
+                                            </h4>
 
-                                        {!preselectedCategory && (
-                                            <div className="space-y-2">
-                                                <label className="text-sm font-medium">Device Type</label>
-                                                <select
-                                                    value={category}
-                                                    onChange={(e) => setCategory(e.target.value)}
-                                                    className="w-full p-2.5 border rounded-lg bg-background"
-                                                >
-                                                    {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
-                                                </select>
+                                            <div className="space-y-5">
+                                                {/* Consistent Height & Spacing */}
+                                                {!preselectedCategory && (
+                                                    <div className="space-y-2">
+                                                        <label className="text-sm font-medium">Device Type</label>
+                                                        <SelectWrapper>
+                                                            <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full h-11 px-3 rounded-xl border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition-all appearance-none cursor-pointer hover:border-primary/50">
+                                                                {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
+                                                            </select>
+                                                        </SelectWrapper>
+                                                    </div>
+                                                )}
+
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-medium">Brand</label>
+                                                    <SelectWrapper>
+                                                        <select value={brandId} onChange={(e) => setBrandId(e.target.value)} className="w-full h-11 px-3 rounded-xl border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition-all appearance-none cursor-pointer hover:border-primary/50">
+                                                            {brands.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+                                                        </select>
+                                                    </SelectWrapper>
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-medium">Model Name</label>
+                                                    <input value={name} onChange={(e) => setName(e.target.value)} className="w-full h-11 px-3 rounded-xl border bg-background focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-muted-foreground/50 hover:border-primary/50" placeholder="e.g. iPhone 15 Pro" required />
+                                                </div>
                                             </div>
-                                        )}
+                                        </section>
 
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-medium">Brand</label>
-                                            <select
-                                                value={brandId}
-                                                onChange={(e) => setBrandId(e.target.value)}
-                                                className="w-full p-2.5 border rounded-lg bg-background"
-                                            >
-                                                {brands.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
-                                            </select>
-                                        </div>
+                                        <section className="space-y-5">
+                                            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-purple-500" /> Visuals
+                                            </h4>
 
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-medium">Model Name</label>
-                                            <input
-                                                value={name}
-                                                onChange={(e) => setName(e.target.value)}
-                                                className="w-full p-2.5 border rounded-lg bg-background"
-                                                placeholder="e.g. iPhone 15 Pro"
-                                                required
-                                            />
-                                        </div>
-
-                                        <div className="space-y-4 pt-2">
-                                            <label className="text-sm font-medium">Image</label>
-                                            <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-4 bg-muted/10 min-h-[140px]">
+                                            <div className="border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center gap-4 bg-muted/10 hover:bg-muted/20 transition-colors group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
                                                 {img ? (
-                                                    <div className="relative w-full aspect-square max-w-[120px] rounded-lg overflow-hidden border">
-                                                        <Image src={img} alt="Preview" fill className="object-cover" />
-                                                        <button type="button" onClick={() => setImg('')} className="absolute top-1 right-1 bg-black/50 text-white p-1 rounded-full"><X className="w-3 h-3" /></button>
+                                                    <div className="relative w-32 h-32 rounded-xl overflow-hidden border shadow-sm bg-white p-2">
+                                                        <Image src={img} alt="Preview" fill className="object-contain" />
+                                                        <button type="button" onClick={(e) => { e.stopPropagation(); setImg(''); }} className="absolute top-1 right-1 bg-black/50 hover:bg-destructive text-white p-1 rounded-full backdrop-blur-sm transition-colors"><X className="w-3 h-3" /></button>
                                                     </div>
                                                 ) : (
-                                                    <div className="text-center text-muted-foreground"><Upload className="w-6 h-6 mx-auto mb-2 opacity-50" /><span className="text-xs">Select Image</span></div>
+                                                    <div className="text-center text-muted-foreground">
+                                                        <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                                                            <Upload className="w-5 h-5 opacity-50" />
+                                                        </div>
+                                                        <span className="text-sm font-medium text-foreground">Click to upload image</span>
+                                                        <p className="text-xs opacity-60 mt-1">PNG, JPG up to 2MB</p>
+                                                    </div>
                                                 )}
-                                                <div className="flex gap-2 mt-4 w-full">
-                                                    <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
-                                                    <button type="button" onClick={() => fileInputRef.current?.click()} disabled={isUploading} className="flex-1 py-1.5 bg-muted hover:bg-muted/80 rounded border text-xs">{isUploading ? 'Uploading...' : 'Choose File'}</button>
-                                                </div>
-                                                <input value={img} onChange={(e) => setImg(e.target.value)} className="w-full mt-2 p-1.5 border rounded text-xs" placeholder="Or Image URL" />
+                                                <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
                                             </div>
-                                        </div>
+                                            <input value={img} onChange={(e) => setImg(e.target.value)} className="w-full p-2 rounded-lg border bg-background text-xs text-muted-foreground focus:text-foreground" placeholder="Or paste image URL..." />
+                                        </section>
                                     </div>
 
-                                    {/* Right: Variants */}
-                                    <div className="md:col-span-8 space-y-6">
+                                    {/* Vertical Divider */}
+                                    <div className="hidden lg:block w-px bg-border/50" />
+
+                                    {/* Right Column: Variants */}
+                                    <div className="lg:col-span-6 space-y-6">
                                         <div className="flex items-center justify-between">
-                                            <h4 className="font-semibold text-muted-foreground uppercase text-xs tracking-wider">Pricing & Variants</h4>
+                                            <h4 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-emerald-500" /> Pricing & Variants
+                                            </h4>
                                             <button
                                                 type="button"
                                                 onClick={addFormVariant}
-                                                className="text-xs flex items-center gap-1 text-primary hover:underline font-medium"
+                                                className="text-xs flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-primary/10 text-primary hover:bg-primary/20 font-medium transition-colors"
                                             >
                                                 <Plus className="w-3 h-3" /> Add Variant
                                             </button>
                                         </div>
 
-                                        <div className="space-y-3 bg-muted/10 p-4 rounded-xl border min-h-[300px]">
-                                            <div className="grid grid-cols-12 gap-4 px-2 pb-2 text-xs font-medium text-muted-foreground border-b mb-2">
-                                                <div className="col-span-5">Variant Name (Storage/Spec)</div>
-                                                <div className="col-span-5">Base Price (₹)</div>
-                                                <div className="col-span-2 text-right">Actions</div>
+                                        <div className="bg-card border rounded-2xl shadow-sm overflow-hidden flex flex-col min-h-[400px]">
+                                            <div className="grid grid-cols-12 gap-4 px-5 py-3 text-xs font-bold text-muted-foreground border-b bg-muted/20">
+                                                <div className="col-span-6">Variant Name</div>
+                                                <div className="col-span-4">Base Price</div>
+                                                <div className="col-span-2 text-right">Action</div>
                                             </div>
 
-                                            {formVariants.filter(v => !v.isDeleted).map((variant, idx) => (
-                                                <div key={variant.id || idx} className="grid grid-cols-12 gap-4 items-center animate-in slide-in-from-left-2 duration-200">
-                                                    <div className="col-span-5">
-                                                        <input
-                                                            value={variant.name}
-                                                            onChange={(e) => updateFormVariant(idx, 'name', e.target.value)}
-                                                            className="w-full p-2 border rounded-md bg-background text-sm"
-                                                            placeholder="e.g. 128GB / 8GB RAM"
-                                                        />
+                                            <div className="flex-1 overflow-y-auto max-h-[400px] p-2 space-y-1">
+                                                {formVariants.filter(v => !v.isDeleted).map((variant, idx) => (
+                                                    <div key={variant.id || idx} className="grid grid-cols-12 gap-3 items-center p-2 rounded-lg hover:bg-muted/50 transition-colors group animate-in slide-in-from-right-2 duration-300">
+                                                        <div className="col-span-6">
+                                                            <input
+                                                                value={variant.name}
+                                                                onChange={(e) => updateFormVariant(idx, 'name', e.target.value)}
+                                                                className="w-full h-10 px-3 border-0 bg-transparent font-medium focus:ring-0 placeholder:text-muted-foreground/30"
+                                                                placeholder="e.g. 128GB"
+                                                                autoFocus={variant.isNew && !variant.name}
+                                                            />
+                                                        </div>
+                                                        <div className="col-span-4">
+                                                            <div className="flex items-center border rounded-md overflow-hidden bg-background/50 focus-within:ring-2 ring-primary/20 focus-within:bg-background transition-all h-10">
+                                                                <div className="px-3 py-2 bg-muted/50 text-muted-foreground text-xs font-medium border-r h-full flex items-center">₹</div>
+                                                                <input
+                                                                    type="number"
+                                                                    value={variant.basePrice}
+                                                                    onChange={(e) => updateFormVariant(idx, 'basePrice', e.target.value)}
+                                                                    className="w-full p-2 border-0 outline-none bg-transparent text-sm font-mono h-full"
+                                                                    placeholder="0"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-span-2 flex justify-end">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => removeFormVariant(idx)}
+                                                                className="p-2 text-muted-foreground/50 hover:text-destructive hover:bg-destructive/10 rounded-md transition-all opacity-0 group-hover:opacity-100"
+                                                            >
+                                                                <Trash2 className="w-4 h-4" />
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                    <div className="col-span-5">
-                                                        <input
-                                                            type="number"
-                                                            value={variant.basePrice}
-                                                            onChange={(e) => updateFormVariant(idx, 'basePrice', e.target.value)}
-                                                            className="w-full p-2 border rounded-md bg-background text-sm"
-                                                            placeholder="0"
-                                                        />
-                                                    </div>
-                                                    <div className="col-span-2 flex justify-end">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => removeFormVariant(idx)}
-                                                            className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md transition-colors"
-                                                        >
-                                                            <Trash2 className="w-4 h-4" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            ))}
+                                                ))}
 
-                                            {formVariants.filter(v => !v.isDeleted).length === 0 && (
-                                                <div className="text-center py-8 text-muted-foreground">
-                                                    <p className="text-sm">No variants added yet.</p>
-                                                    <button type="button" onClick={addFormVariant} className="text-primary hover:underline text-sm mt-2">Add your first variant</button>
-                                                </div>
-                                            )}
+                                                {formVariants.filter(v => !v.isDeleted).length === 0 && (
+                                                    <div className="flex flex-col items-center justify-center h-48 text-muted-foreground">
+                                                        <div className="w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center mb-3">
+                                                            <Ban className="w-5 h-5 opacity-30" />
+                                                        </div>
+                                                        <p className="text-sm font-medium">No variants configured</p>
+                                                        <button type="button" onClick={addFormVariant} className="text-xs text-primary mt-2 hover:underline">Add default variant</button>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
 
-                        <div className="flex justify-end gap-3 p-6 border-t bg-muted/10 shrink-0">
-                            <button
-                                type="button"
-                                onClick={resetForm}
-                                className="px-5 py-2.5 text-sm font-medium rounded-lg hover:bg-muted transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                form="model-form"
-                                disabled={isLoading || isUploading}
-                                className="px-8 py-2.5 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all shadow-md disabled:opacity-50 flex items-center gap-2"
-                            >
-                                {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-                                {editingId ? 'Save Changes' : 'Create Model'}
-                            </button>
+                        {/* Footer */}
+                        <div className="px-8 py-5 border-t bg-background shrink-0 flex items-center justify-between">
+                            <div className="text-xs text-muted-foreground hidden md:block">
+                                <span className="font-semibold text-foreground">Tip:</span> Use drag & drop to reorder models in the list view.
+                            </div>
+                            <div className="flex gap-4 w-full md:w-auto justify-end">
+                                <button
+                                    type="button"
+                                    onClick={resetForm}
+                                    className="px-6 py-2.5 text-sm font-medium rounded-xl border hover:bg-muted transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    form="model-form"
+                                    disabled={isLoading || isUploading}
+                                    className="px-8 py-2.5 bg-primary text-primary-foreground rounded-xl font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 disabled:opacity-50 flex items-center gap-2"
+                                >
+                                    {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                                    {editingId ? 'Save Changes' : 'Create Model'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -37,7 +37,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                     <div className="flex flex-col xl:flex-row items-center gap-12 xl:gap-24">
 
                         {/* LEFT COLUMN: Content */}
-                        <div className="flex-1 w-full max-w-2xl animate-in slide-in-from-bottom-8 fade-in-20 duration-700 flex flex-col items-start text-left z-20">
+                        <div className="flex-1 w-full max-w-2xl animate-in slide-in-from-bottom-8 fade-in-20 duration-700 flex flex-col items-center text-center xl:items-start xl:text-left z-20">
 
                             {/* REBUILT DESKTOP TOP SECTION: No BigLogo. Clean Typography. */}
 
@@ -62,7 +62,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                         Bengaluru Pickup
                                     </div>
                                 </div>
-                                <div className="flex justify-center items-center py-2">
+                                <div className="flex justify-center items-center py-2 w-full">
                                     <div className="scale-[1.1] origin-center transform flex justify-center items-center">
                                         <HeroLogo />
                                     </div>
@@ -84,13 +84,13 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                     Smart way to <br />
                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 animate-gradient-x">sell your device.</span>
                                 </h1>
-                                <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed max-w-lg mt-6 font-medium">
-                                    Get the <span className="text-green-600 dark:text-green-400 font-bold">Highest Value</span> for your old smartphone, laptop, or swatch instantly. Doorstep pickup in 24 hours.
+                                <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed max-w-lg mt-6 font-medium mx-auto xl:mx-0">
+                                    Get the <span className="text-green-600 dark:text-green-400 font-bold">Highest Value</span> for your old smartphone, laptop, or Smartwatch instantly. Doorstep pickup in 24 hours.
                                 </p>
                             </div>
 
                             {/* CTA Buttons */}
-                            <div className="flex flex-col sm:flex-row gap-4 pt-8 w-full sm:w-auto">
+                            <div className="flex flex-col sm:flex-row gap-4 pt-8 w-full sm:w-auto justify-center xl:justify-start">
                                 <Link
                                     href="/sell"
                                     className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-slate-900 dark:bg-green-600 text-white font-bold text-lg shadow-xl shadow-green-500/20 hover:bg-slate-800 dark:hover:bg-green-500 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group w-full sm:w-auto"
