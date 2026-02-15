@@ -21,6 +21,34 @@ const SmartphoneSVG = ({ isDark }: { isDark: boolean }) => (
             className="transition-colors duration-300"
         />
         <rect x="2.5" y="2.5" width="27" height="55" rx="2.5" fill="#10B981" />
+        <defs>
+            <filter id="extractF">
+                <feColorMatrix type="matrix" values="5 0 0 0 -1  5 0 0 0 -1  5 0 0 0 -1  0 0 0 1 0" />
+            </filter>
+            <clipPath id="screenClip">
+                <rect x="2.5" y="2.5" width="27" height="55" rx="2.5" />
+            </clipPath>
+            <mask id="fMask">
+                <image
+                    href="/logo_final_v3.png"
+                    x="-8"
+                    y="-6"
+                    width="48"
+                    height="72"
+                    preserveAspectRatio="xMidYMid meet"
+                    filter="url(#extractF)"
+                />
+            </mask>
+        </defs>
+        <rect
+            x="-8"
+            y="-6"
+            width="48"
+            height="72"
+            fill="black"
+            mask="url(#fMask)"
+            clipPath="url(#screenClip)"
+        />
         <rect
             x="10"
             y="3"
