@@ -94,6 +94,10 @@ export default function ModelSelector({ brandId, category, onSelect, onBack }: M
             else if (name.includes('Galaxy A')) uniqueSeries.add('A Series');
             else if (name.includes('Galaxy M')) uniqueSeries.add('M Series');
             else if (name.includes('Galaxy F')) uniqueSeries.add('F Series');
+            else if (name.includes('Galaxy F')) uniqueSeries.add('F Series');
+            else if (name.includes('Galaxy Z Fold') || name.includes('Fold')) uniqueSeries.add('Z Fold Series');
+            else if (name.includes('Galaxy Z Flip') || name.includes('Flip')) uniqueSeries.add('Z Flip Series');
+            // Fallback for generic Z if any (though usually Fold/Flip)
             else if (name.includes('Galaxy Z')) uniqueSeries.add('Z Series');
             else if (name.includes('Galaxy Note')) uniqueSeries.add('Note Series');
 
@@ -168,6 +172,9 @@ export default function ModelSelector({ brandId, category, onSelect, onBack }: M
                 if (activeSeries === 'A Series') return m.name.includes('Galaxy A');
                 if (activeSeries === 'M Series') return m.name.includes('Galaxy M');
                 if (activeSeries === 'F Series') return m.name.includes('Galaxy F');
+                if (activeSeries === 'F Series') return m.name.includes('Galaxy F');
+                if (activeSeries === 'Z Fold Series') return m.name.includes('Fold');
+                if (activeSeries === 'Z Flip Series') return m.name.includes('Flip');
                 if (activeSeries === 'Z Series') return m.name.includes('Galaxy Z');
                 if (activeSeries === 'Note Series') return m.name.includes('Galaxy Note');
 
@@ -267,7 +274,11 @@ export default function ModelSelector({ brandId, category, onSelect, onBack }: M
                                     src={model.img}
                                     alt={model.name}
                                     priority={index < 8}
-                                    scale={EXCLUDED_MODELS.has(model.name) ? 1 : 1.35}
+                                    scale={
+                                        model.name.includes('iPhone')
+                                            ? (EXCLUDED_MODELS.has(model.name) ? 1 : 1.35)
+                                            : 1.05 // Slight scale for others, but not 1.35
+                                    }
                                 />
                             </div>
                             <span className="font-semibold text-sm line-clamp-2">{model.name}</span>
