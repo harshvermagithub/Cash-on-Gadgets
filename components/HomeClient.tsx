@@ -11,7 +11,7 @@ import CategorySelector from '@/components/sell/CategorySelector';
 import { Logo } from '@/components/Logo';
 import { HomeSearch } from '@/components/HomeSearch';
 import { BrandRail } from '@/components/BrandRail';
-import { HeroLogo } from '@/components/HeroLogo';
+import { DynamicLogo } from '@/components/DynamicLogo';
 import { useRouter } from 'next/navigation';
 import { Brand } from '@/lib/store';
 
@@ -33,13 +33,18 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                     <div className="absolute bottom-0 right-0 w-full h-px bg-gradient-to-r from-transparent via-green-500/20 to-transparent" />
                 </div>
 
-                <div className="container mx-auto px-4 sm:px-6 max-w-[100vw] overflow-x-hidden">
+                <div className="container mx-auto px-6 md:px-12 xl:px-20 max-w-[100vw] overflow-x-hidden">
                     <div className="flex flex-col xl:flex-row items-center gap-12 xl:gap-24">
 
                         {/* LEFT COLUMN: Content */}
                         <div className="flex-1 w-full max-w-2xl animate-in slide-in-from-bottom-8 fade-in-20 duration-700 flex flex-col items-center text-center xl:items-start xl:text-left z-20">
 
-                            {/* REBUILT DESKTOP TOP SECTION: No BigLogo. Clean Typography. */}
+                            {/* REBUILT DESKTOP TOP SECTION: Logo + Badge */}
+
+                            {/* Desktop Logo (Added per request) */}
+                            <div className="hidden xl:flex mb-6 scale-[1.3] origin-left">
+                                <DynamicLogo />
+                            </div>
 
                             {/* Trust Badge / Pill */}
                             <div className="hidden xl:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-green-200/60 shadow-sm mb-6 hover:shadow-md transition-all cursor-default w-fit">
@@ -63,8 +68,8 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                     </div>
                                 </div>
                                 <div className="flex justify-center items-center py-2 w-full">
-                                    <div className="scale-[1.1] origin-center transform flex justify-center items-center">
-                                        <HeroLogo />
+                                    <div className="scale-[1.5] origin-center transform flex justify-center items-center py-4">
+                                        <DynamicLogo />
                                     </div>
                                 </div>
                                 <div className="w-full h-[550px] relative mt-2 mb-8 flex items-center justify-center overflow-visible">
@@ -85,7 +90,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 animate-gradient-x">sell your device.</span>
                                 </h1>
                                 <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed max-w-lg mt-6 font-medium mx-auto xl:mx-0">
-                                    Get the <span className="text-green-600 dark:text-green-400 font-bold">Highest Value</span> for your old smartphone, laptop, or Smartwatch instantly. Doorstep pickup in 24 hours.
+                                    Get the <span className="text-green-600 dark:text-green-400 font-bold">Highest Value</span> for your old smartphone, laptop, or Smartwatch instantly. Doorstep pickup in 3 hours.
                                 </p>
                             </div>
 
