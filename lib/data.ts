@@ -122,8 +122,8 @@ export const questionnaireSteps = {
             type: 'single-select',
             options: [
                 { id: 'flawless', label: 'Flawless', description: 'No signs of usage', icon: 'Sparkles' },
-                { id: 'good', label: 'Good', description: 'Normal signs of usage', icon: 'Smile' },
-                { id: 'average', label: 'Average', description: 'Minor scratches', icon: 'MinusCircle' },
+                { id: 'good', label: 'Good', description: 'Minor scratches', icon: 'Smile' },
+                { id: 'average', label: 'Average', description: 'Major scratches', icon: 'MinusCircle' },
                 { id: 'below_average', label: 'Below Average', description: 'Screen crack, Dead pixel, Lines on screen', icon: 'AlertTriangle' },
             ]
         },
@@ -190,8 +190,8 @@ export const questionnaireSteps = {
                     options: [
                         { id: '3_6_months', label: '3 - 6 Months', description: 'Valid for 3 to 6 months', icon: 'Clock' },
                         { id: '6_9_months', label: '6 - 9 Months', description: 'Valid for 6 to 9 months', icon: 'Clock' },
-                        { id: '9_11_months', label: '9 - 11 Months', description: 'Valid for 9 to 11 months', icon: 'Clock' },
-                        { id: 'no', label: 'No Warranty', description: 'Less than 3 months or Expired', icon: 'XCircle' },
+                        { id: '9_11_months', label: 'Above 11 Months', description: 'Valid for more than 11 months', icon: 'Clock' },
+                        { id: 'no', label: 'No Warranty', description: 'Above 11 months or expired', icon: 'XCircle' },
                     ]
                 }
             ]

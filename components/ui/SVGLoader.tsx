@@ -2,9 +2,11 @@
 
 import { motion } from "framer-motion";
 
+import Image from "next/image";
+
 const SmartphoneLoaderSVG = () => (
     <div className="relative w-12 h-20 md:w-16 md:h-24">
-        <svg width="100%" height="100%" viewBox="0 0 32 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-xl">
+        <svg width="100%" height="100%" viewBox="0 0 32 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-xl relative z-20">
             <rect
                 x="1"
                 y="1"
@@ -14,20 +16,34 @@ const SmartphoneLoaderSVG = () => (
                 strokeWidth="1.5"
                 className="fill-slate-100 dark:fill-slate-900 stroke-slate-800 dark:stroke-slate-400"
             />
-            <rect x="2.5" y="2.5" width="27" height="55" rx="2.5" className="fill-white dark:fill-slate-950" />
-            <rect x="10" y="3" width="12" height="3" rx="1.5" className="fill-black dark:fill-white" />
+            {/* Screen cutout (Green to match Brand F Logo) */}
+            <rect x="2.5" y="2.5" width="27" height="55" rx="2.5" className="fill-green-600" />
+
+            {/* Notch */}
+            <rect x="10" y="3" width="12" height="3" rx="1.5" className="fill-slate-800" />
         </svg>
 
-        {/* Animated Scan Line */}
+        {/* F Logo on Screen */}
+        <div className="absolute top-[8%] left-[12%] w-[76%] h-[85%] z-20 flex items-center justify-center opacity-90">
+            <Image
+                src="/logo_final_v3.png"
+                alt="F"
+                fill
+                className="object-contain p-1"
+                priority
+            />
+        </div>
+
+        {/* Animated Scan Line (White for contrast on Green) */}
         <motion.div
-            className="absolute left-[15%] right-[15%] h-0.5 bg-green-500 shadow-[0_0_8px_2px_rgba(16,185,129,0.5)] z-10"
+            className="absolute left-[15%] right-[15%] h-0.5 bg-white shadow-[0_0_8px_2px_rgba(255,255,255,0.5)] z-30"
             animate={{ top: ['10%', '85%', '10%'] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
         />
 
-        {/* Screen Content Pulse */}
+        {/* Screen Content Pulse (White tint) */}
         <motion.div
-            className="absolute inset-x-[15%] top-[10%] bottom-[15%] bg-green-500/10 rounded-sm"
+            className="absolute inset-x-[15%] top-[10%] bottom-[15%] bg-white/20 rounded-sm z-20"
             animate={{ opacity: [0, 1, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
         />

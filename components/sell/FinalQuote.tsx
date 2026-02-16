@@ -5,6 +5,10 @@ import { placeOrder } from '@/actions/orders';
 import { calculatePrice } from '@/actions/priceCalculation';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import dynamic from 'next/dynamic';
+
+// Dynamic Import for Map (Client Only)
+const MapPicker = dynamic(() => import('./MapPicker'), { ssr: false });
 
 interface FinalQuoteProps {
     basePrice: number;
@@ -25,16 +29,6 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
     );
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // ... existing state code ...
-
-    // ... existing calculation code ... (lines 41-76)
-
-    // (Keeping existing code hidden by diff, I will just target the specific blocks or use REPLACE if easier.
-    // Since the file is large, I should touch only the interface and render block.
-    // But replace_file_content works on blocks.)
-
-    // Actually, I'll update the Interface first.
-
     // Form Data
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
@@ -46,6 +40,9 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
     // UI States
     const [isGettingLocation, setIsGettingLocation] = useState(false);
     const [locationError, setLocationError] = useState('');
+    // State for detected address preview
+    const [detectedAddress, setDetectedAddress] = useState('');
+
     const router = useRouter();
 
     // -------------------------------------------------------------------------
@@ -89,6 +86,20 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
     // HANDLERS
     // -------------------------------------------------------------------------
 
+    const fetchAddress = async (lat: number, lng: number) => {
+        try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+            const data = await response.json();
+            if (data && data.display_name) {
+                setDetectedAddress(data.display_name);
+                // Optionally autofill main address if empty? User asked for separate preview box.
+                if (!address) setAddress(data.display_name);
+            }
+        } catch (error) {
+            console.error("Reverse geocoding failed", error);
+        }
+    };
+
     const handleGetLocation = () => {
         setIsGettingLocation(true);
         setLocationError('');
@@ -98,11 +109,12 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
             return;
         }
         navigator.geolocation.getCurrentPosition(
-            (position) => {
-                setLocation({
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                });
+            async (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                setLocation({ lat, lng });
+                await fetchAddress(lat, lng);
                 setIsGettingLocation(false);
             },
             (error) => {
@@ -117,6 +129,14 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
             },
             { enableHighAccuracy: true, timeout: 10000 }
         );
+    };
+
+    const handleMapLocationChange = async (lat: number, lng: number) => {
+        setLocation({ lat, lng });
+        // Optional: Update address on drag end?
+        // User said "User scan actually pinpoint their location".
+        // Updating address is good UX.
+        await fetchAddress(lat, lng);
     };
 
     const handleConfirmOrder = async () => {
@@ -263,6 +283,16 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                         />
                     </div>
 
+                    {/* OR Divider */}
+                    <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-dashed border-gray-300"></div>
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                            <span className="bg-card px-2 text-muted-foreground font-medium">OR</span>
+                        </div>
+                    </div>
+
                     <div className="space-y-3">
                         <label className="block text-sm font-medium">Pin Location</label>
                         <button
@@ -282,12 +312,40 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                             )}
                         </button>
                         {locationError && <p className="text-destructive text-sm text-center">{locationError}</p>}
+
+                        {/* Map Preview Logic */}
+                        <AnimatePresence>
+                            {location && (
+                                <motion.div
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    className="overflow-hidden space-y-2 pt-2"
+                                >
+                                    <div className="p-3 bg-muted/50 rounded-lg border text-sm text-muted-foreground flex items-start gap-2">
+                                        <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                                        <div>
+                                            <span className="font-semibold block text-foreground">Detected Location:</span>
+                                            {detectedAddress || "Fetching address..."}
+                                        </div>
+                                    </div>
+
+                                    {/* Interactive Map */}
+                                    <div className="border rounded-xl overflow-hidden shadow-sm">
+                                        <MapPicker
+                                            center={location}
+                                            onLocationChange={handleMapLocationChange}
+                                        />
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
 
                 <button
                     onClick={() => setBookingStep('schedule')}
-                    disabled={!address || !location}
+                    disabled={!address && !location} // Either Address OR Location is required
                     className="w-full py-4 bg-primary text-primary-foreground font-bold rounded-xl shadow-lg hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                     Continue to Schedule <ArrowRight className="w-5 h-5" />
