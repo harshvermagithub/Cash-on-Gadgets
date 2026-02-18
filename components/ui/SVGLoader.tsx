@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 
 import Image from "next/image";
+import { HeroLogo } from "@/components/HeroLogo";
 
 const SmartphoneLoaderSVG = () => (
     <div className="relative w-12 h-20 md:w-16 md:h-24">
@@ -61,9 +62,7 @@ export default function SVGLoader({ className = "" }: { className?: string }) {
                 <SmartphoneLoaderSVG />
 
                 <div className="flex flex-col items-center gap-1">
-                    <h2 className="text-2xl font-black tracking-tighter text-slate-900 dark:text-white">
-                        FONZKART
-                    </h2>
+                    <HeroLogo className="scale-125" />
                     <div className="flex gap-1">
                         <motion.div
                             className="w-2 h-2 rounded-full bg-green-500"

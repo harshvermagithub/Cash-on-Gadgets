@@ -65,15 +65,24 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
     }, [basePrice, answers, category]);
 
     // -------------------------------------------------------------------------
-    // DATE GENERATION (Next 4 days)
+    // DATE GENERATION (Dynamic based on time)
     // -------------------------------------------------------------------------
+
+    // Helper to check availability
+    const now = new Date();
+    const currentHour = now.getHours();
+
+    // If past 4 PM, start dates from Tomorrow
+    const startDayOffset = currentHour >= 16 ? 1 : 0;
+
     const dates = Array.from({ length: 4 }).map((_, i) => {
         const d = new Date();
-        d.setDate(d.getDate() + i);
+        d.setDate(d.getDate() + i + startDayOffset);
         return {
             day: d.toLocaleDateString('en-US', { weekday: 'short' }),
             date: d.getDate(),
-            fullDate: d.toISOString()
+            fullDate: d.toISOString(),
+            isToday: (d.getDate() === now.getDate() && d.getMonth() === now.getMonth())
         };
     });
 
@@ -81,6 +90,28 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
         "10:00 AM - 02:00 PM",
         "03:00 PM - 07:00 PM"
     ];
+
+    // Filter time slots based on selection
+    const availableSlots = timeSlots.filter(slot => {
+        // If selected date is NOT today, all slots available
+        if (!dates[selectedDate]?.isToday) return true;
+
+        // If Today, check cutoffs
+        if (slot.startsWith("10:00")) {
+            // "10:00 AM - 02:00 PM": Hide after 11 AM
+            return currentHour < 11;
+        }
+        if (slot.startsWith("03:00")) {
+            // "03:00 PM - 07:00 PM": Hide after 4 PM
+            return currentHour < 16;
+        }
+        return true;
+    });
+
+    // Express Availability: Only if today is available (so < 4 PM)
+    // Actually, simply hide if currentHour >= 16.
+    const showExpress = currentHour < 16;
+
 
     // -------------------------------------------------------------------------
     // HANDLERS
@@ -402,7 +433,7 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                         <Clock className="w-4 h-4" /> Select Time Slot
                     </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {timeSlots.map((slot) => (
+                        {availableSlots.length > 0 ? availableSlots.map((slot) => (
                             <button
                                 key={slot}
                                 onClick={() => {
@@ -416,7 +447,11 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                             >
                                 {slot}
                             </button>
-                        ))}
+                        )) : (
+                            <p className="text-sm text-muted-foreground col-span-2 text-center py-4 bg-muted/20 rounded-xl">
+                                No slots available for this date.
+                            </p>
+                        )}
                     </div>
                 </div>
 
@@ -431,28 +466,40 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
 
                 {/* Express Pickup Option */}
                 <div
-                    className={`relative p-5 rounded-2xl border-2 transition-all cursor-pointer overflow-hidden ${isExpress ? 'border-amber-400 bg-amber-50 shadow-md transform scale-[1.02]' : 'border-border bg-card hover:border-amber-200 opacity-90'
+                    className={`relative p-5 rounded-2xl border-2 transition-all overflow-hidden ${!showExpress ? 'border-dashed border-slate-200 bg-slate-50 opacity-80 cursor-not-allowed' :
+                            isExpress ? 'border-amber-400 bg-amber-50 shadow-md transform scale-[1.02] cursor-pointer' :
+                                'border-border bg-card hover:border-amber-200 opacity-90 cursor-pointer'
                         }`}
                     onClick={() => {
+                        if (!showExpress) return;
                         const newState = !isExpress;
                         setIsExpress(newState);
-                        if (newState) setSelectedSlot(''); // Clear slot when enabling express
+                        if (newState) setSelectedSlot('');
                     }}
                 >
                     {isExpress && <div className="absolute top-0 right-0 bg-amber-400 text-amber-950 text-[10px] font-bold px-2 py-1 rounded-bl-xl">SELECTED</div>}
+                    {!showExpress && <div className="absolute top-0 right-0 bg-slate-400 text-white text-[10px] font-bold px-2 py-1 rounded-bl-xl">UNAVAILABLE</div>}
+
                     <div className="flex items-center gap-4">
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${isExpress ? 'bg-amber-100 text-amber-600' : 'bg-slate-100 text-slate-400'}`}>
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${isExpress ? 'bg-amber-100 text-amber-600' : !showExpress ? 'bg-slate-200 text-slate-400' : 'bg-slate-100 text-slate-400'}`}>
                             <Zap className="w-6 h-6 fill-current" />
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center justify-between">
-                                <h4 className={`font-bold ${isExpress ? 'text-slate-900' : 'text-foreground'}`}>Express Pickup</h4>
-                                <div className="flex items-center gap-2">
-                                    <span className={`text-xs ${isExpress ? 'text-slate-500' : 'text-muted-foreground'} line-through`}>₹50</span>
-                                    <span className="text-sm font-bold text-green-600">FREE</span>
-                                </div>
+                                <h4 className={`font-bold ${isExpress ? 'text-slate-900' : !showExpress ? 'text-muted-foreground' : 'text-foreground'}`}>Express Pickup</h4>
+                                {!showExpress ? (
+                                    <span className="text-xs font-bold text-slate-400">CLOSED</span>
+                                ) : (
+                                    <div className="flex items-center gap-2">
+                                        <span className={`text-xs ${isExpress ? 'text-slate-500' : 'text-muted-foreground'} line-through`}>₹50</span>
+                                        <span className="text-sm font-bold text-green-600">FREE</span>
+                                    </div>
+                                )}
                             </div>
-                            <p className={`text-xs mt-0.5 ${isExpress ? 'text-slate-600' : 'text-muted-foreground'}`}>Pickup within 3 hours</p>
+                            <p className={`text-xs mt-0.5 ${isExpress ? 'text-slate-600' : 'text-muted-foreground'}`}>
+                                {!showExpress ? "Orders after 4 PM not valid for today." : "Pickup within 3 hours"}
+                            </p>
+                            {!showExpress && <p className="text-[10px] font-medium text-amber-600 mt-1">Pickup shift ends at 7 PM.</p>}
                         </div>
                         <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${isExpress ? 'border-amber-500 bg-amber-500' : 'border-slate-300'}`}>
                             {isExpress && <CheckCircle className="w-4 h-4 text-white" />}

@@ -1,46 +1,42 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+const brandOrder = [
+    'Apple', 'Samsung', 'OnePlus', 'Google', 'Oppo', 'Vivo',
+    'Xiaomi', 'Motorola', 'Realme', 'Poco', 'iQOO', 'Nothing'
+];
+
 async function main() {
-    console.log("Fixing Brand Priorities...");
+    console.log('Updating Brand Priorities...');
 
-    // Explicit Rank Map
-    const ranks = {
-        'Apple': 1,
-        'Samsung': 2,
-        'OnePlus': 3,
-        'Xiaomi': 4,
-        'Oppo': 5,
-        'Vivo': 6,
-        'Google': 7,
-        'Realme': 8,
-        'Motorola': 9,
-        'Nothing': 10
-    };
+    // Set all to low priority first (e.g. 100)
+    // Actually, just update the ones in the list.
 
-    const brands = await prisma.brand.findMany();
+    for (let i = 0; i < brandOrder.length; i++) {
+        const brandName = brandOrder[i];
+        // Priority: 1 is highest.
+        const priority = i + 1;
 
-    for (const b of brands) {
-        let p = 100; // Default lower priority
-        if (ranks[b.name]) {
-            p = ranks[b.name];
-        } else if (ranks[b.name.trim()]) {
-            p = ranks[b.name.trim()];
-        }
+        // Find brand by name (insensitive)
+        const brand = await prisma.brand.findFirst({
+            where: { name: { equals: brandName, mode: 'insensitive' } }
+        });
 
-        if (b.priority !== p) {
+        if (brand) {
             await prisma.brand.update({
-                where: { id: b.id },
-                data: { priority: p }
+                where: { id: brand.id },
+                data: { priority: priority }
             });
-            console.log(`Updated ${b.name}: ${b.priority} -> ${p}`);
+            console.log(`Updated ${brand.name} to priority ${priority}`);
+        } else {
+            console.log(`Brand ${brandName} not found in DB.`);
+            // Create it? Maybe not.
         }
     }
+
+    console.log('Brand priorities updated.');
 }
 
 main()
-    .catch(e => {
-        console.error(e);
-        process.exit(1);
-    })
+    .catch(e => console.error(e))
     .finally(async () => await prisma.$disconnect());

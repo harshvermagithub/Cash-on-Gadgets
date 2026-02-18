@@ -65,14 +65,14 @@ export function BrandRail({ initialBrands }: { initialBrands?: Brand[] }) {
                     </Link>
                 </div>
 
-                <div className="grid grid-rows-2 grid-flow-col gap-2 overflow-x-auto pb-4 scrollbar-hide -mx-4 px-4 mask-fade-sides">
+                <div className="grid grid-cols-1 min-[340px]:grid-cols-2 min-[480px]:grid-cols-3 sm:grid-cols-4 gap-4 pb-4 px-1">
                     {brands.slice(0, 8).map((brand, i) => (
                         <button
                             key={brand.id}
                             onClick={() => setSelectedBrand(brand)}
-                            className="flex flex-col items-center gap-2 min-w-[90px] group focus:outline-none"
+                            className="flex flex-col items-center gap-2 w-full group focus:outline-none"
                         >
-                            <div className="w-20 h-20 rounded-2xl bg-white border-2 border-slate-100 flex items-center justify-center shadow-sm group-hover:border-green-500 transition-colors p-2">
+                            <div className="w-full aspect-square max-w-[90px] rounded-2xl bg-white border-2 border-slate-100 flex items-center justify-center shadow-sm group-hover:border-green-500 transition-colors p-3">
                                 <div className="relative w-full h-full">
                                     {brand.logo ? (
                                         <Image src={brand.logo} alt={brand.name} fill className="object-contain" />
