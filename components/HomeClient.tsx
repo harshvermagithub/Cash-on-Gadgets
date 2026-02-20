@@ -72,8 +72,8 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                         <DynamicLogo />
                                     </div>
                                 </div>
-                                <div className="w-full h-[550px] relative mt-2 mb-8 flex items-center justify-center overflow-visible">
-                                    <div className="scale-[1] origin-center w-full h-full">
+                                <div className="w-full h-[180px] sm:h-[350px] relative mt-0 mb-16 flex items-center justify-center overflow-visible">
+                                    <div className="origin-center w-full h-full">
                                         <HeroAnimation />
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                 </Link>
                                 <Link
                                     href="/orders"
-                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-white dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 text-slate-900 dark:text-white font-bold text-lg hover:border-green-200 hover:bg-green-50/50 dark:hover:bg-slate-700 transition-all duration-200 w-full sm:w-auto"
+                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-green-500 dark:bg-green-600 text-white font-bold text-lg shadow-xl shadow-green-500/20 hover:bg-green-600 dark:hover:bg-green-500 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 w-full sm:w-auto"
                                 >
                                     Track Order
                                 </Link>

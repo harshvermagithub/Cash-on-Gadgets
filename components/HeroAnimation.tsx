@@ -179,14 +179,14 @@ export default function HeroAnimation() {
     const group = GROUPS[currentIndex] || GROUPS[0];
 
     return (
-        <div className="relative w-full h-full flex flex-col md:flex-row items-center justify-center overflow-visible">
+        <div className="relative w-full h-full flex flex-row items-center justify-center overflow-visible">
             {/* Background Glow */}
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
                 <div className="absolute w-64 h-64 md:w-96 md:h-96 bg-green-500/10 rounded-full blur-[80px]" />
             </div>
 
             {/* Container: Vertical stack on Mobile, Horizontal on Desktop */}
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-center gap-6 sm:gap-12 w-full max-w-5xl px-2 origin-center transition-transform duration-300">
+            <div className="relative z-10 flex flex-row items-center justify-center gap-4 sm:gap-12 w-full max-w-5xl px-0 origin-center transition-transform duration-300 scale-[0.55] sm:scale-100 mt-16 sm:mt-0">
 
                 {/* 1. DEVICE STACK */}
                 <div className="relative w-64 h-64 sm:w-64 sm:h-72 shrink-0 flex items-center justify-center">
@@ -253,18 +253,15 @@ export default function HeroAnimation() {
                         transition={{ duration: 1.5, repeat: Infinity }}
                         className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border border-green-100 flex items-center justify-center shadow-lg"
                     >
-                        {/* Desktop: Right Arrow, Mobile: Down Arrow */}
-                        <div className="hidden md:block">
+                        {/* Always use Right Arrow now that it's horizontal */}
+                        <div className="block">
                             <ArrowRight className="text-green-600 w-5 h-5 sm:w-6 sm:h-6" />
-                        </div>
-                        <div className="block md:hidden">
-                            <ArrowDown className="text-green-600 w-5 h-5" />
                         </div>
                     </motion.div>
                 </div>
 
                 {/* 3. RIGHT SIDE: CASH STACK */}
-                <div className="relative w-40 sm:w-48 h-40 sm:h-64 shrink-0 flex flex-col items-center justify-center">
+                <div className="relative w-48 h-40 sm:h-64 shrink-0 flex flex-col items-center justify-center">
                     <div className="relative w-full h-full sm:h-48 flex items-center justify-center">
                         <AnimatePresence mode="wait">
                             <motion.div
