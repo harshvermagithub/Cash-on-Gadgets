@@ -170,14 +170,18 @@ export const HeroLogo = ({ className = "" }: { className?: string }) => {
             {/* R / Rupee Animation */}
             <div className="relative w-9 h-14 flex items-center justify-center mx-1">
                 {/* State 1: Rupee Symbol */}
-                <div className="absolute inset-0 flex items-center justify-center">
+                <motion.div
+                    animate={{ opacity: [0, 0, 1, 1, 0] }}
+                    transition={transitionSettings}
+                    className="absolute inset-0 flex items-center justify-center"
+                >
                     <span className={`font-black text-4xl transition-colors duration-300 ${textClass}`}>₹</span>
-                </div>
+                </motion.div>
 
                 {/* State 2: 500 Note SVG */}
                 <motion.div
-                    animate={{ opacity: [0, 0, 1, 1, 0] }}
-                    transition={{ duration: cycleDuration, repeat: Infinity, ease: "easeInOut" }}
+                    animate={{ opacity: [1, 1, 0, 0, 1] }}
+                    transition={transitionSettings}
                     className="absolute inset-0 flex items-center justify-center z-10"
                 >
                     <div className="w-full h-full scale-[1.05]">
