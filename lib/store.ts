@@ -64,11 +64,16 @@ export const db = {
         return await prisma.user.findMany({ where: { role: 'ADMIN' } });
     },
     getOrders: async (userId: string) => {
-        const orders = await prisma.order.findMany({ where: { userId } });
+        const orders = await prisma.order.findMany({
+            where: { userId },
+            orderBy: { createdAt: 'desc' }
+        });
         return orders.map(mapPrismaOrderToAppOrder);
     },
     getAllOrders: async () => {
-        const orders = await prisma.order.findMany();
+        const orders = await prisma.order.findMany({
+            orderBy: { createdAt: 'desc' }
+        });
         return orders.map(mapPrismaOrderToAppOrder);
     },
     addOrder: async (order: Order) => {

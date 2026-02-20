@@ -2,8 +2,9 @@
 import { getUserOrders } from '@/actions/orders';
 import { getSession } from '@/lib/session';
 import { redirect } from 'next/navigation';
-import { Smartphone, Calendar, Clock } from 'lucide-react';
+import { Smartphone } from 'lucide-react';
 import Link from 'next/link';
+import OrderCard from '@/components/orders/OrderCard';
 
 export default async function OrdersPage() {
     const session = await getSession();
@@ -29,69 +30,7 @@ export default async function OrdersPage() {
             ) : (
                 <div className="grid gap-6">
                     {orders.map((order) => (
-                        <div key={order.id} className="bg-card border rounded-xl p-6 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                            <div className="flex items-start gap-4">
-                                <div className="bg-primary/10 p-3 rounded-lg">
-                                    <Smartphone className="w-6 h-6 text-primary" />
-                                </div>
-                                <div>
-                                    <h3 className="font-bold text-lg">{order.device}</h3>
-
-                                    {/* Pickup Schedule Display */}
-                                    {(() => {
-                                        const answers = (typeof order.answers === 'string')
-                                            ? JSON.parse(order.answers)
-                                            : (order.answers as Record<string, any> || {});
-
-                                        const isExpress = !!answers.isExpress;
-                                        const scheduledDate = answers.scheduledDate ? new Date(answers.scheduledDate) : null;
-                                        const scheduledSlot = answers.scheduledSlot;
-
-                                        if (isExpress) {
-                                            return (
-                                                <div className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold border border-amber-200">
-                                                    ⚡ Express Pickup (3 Hours)
-                                                </div>
-                                            );
-                                        }
-
-                                        if (scheduledDate && scheduledSlot) {
-                                            return (
-                                                <div className="flex flex-col gap-1 mt-1">
-                                                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                                        <span className="flex items-center gap-1">
-                                                            <Calendar className="w-3 h-3" />
-                                                            {scheduledDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-                                                        </span>
-                                                        <span className="flex items-center gap-1">
-                                                            <Clock className="w-3 h-3" />
-                                                            {scheduledSlot.split(' - ')[0]} {/* Simplified time */}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            );
-                                        }
-
-                                        // Fallback to order creation date if no schedule info
-                                        return (
-                                            <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
-                                                <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {new Date(order.date).toLocaleDateString()}</span>
-                                            </div>
-                                        );
-                                    })()}
-                                </div>
-                            </div>
-
-                            <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end">
-                                <div className="text-right">
-                                    <p className="text-sm text-muted-foreground">Offered Price</p>
-                                    <p className="text-xl font-bold text-primary">₹{order.price.toLocaleString()}</p>
-                                </div>
-                                <div className={`px-4 py-2 rounded-full text-sm font-bold ${order.status === 'Pending Pickup' ? 'bg-amber-100 text-amber-800' : 'bg-green-100 text-green-800'}`}>
-                                    {order.status}
-                                </div>
-                            </div>
-                        </div>
+                        <OrderCard key={order.id} order={order} />
                     ))}
                 </div>
             )}

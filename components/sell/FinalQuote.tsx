@@ -178,7 +178,8 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                 phone,
                 scheduledDate: dates[selectedDate].fullDate,
                 scheduledSlot: selectedSlot,
-                isExpress
+                isExpress,
+                detectedAddress
             };
 
             await placeOrder(deviceInfo.name, deviceInfo.variant, finalPrice, address, location, finalAnswers);
@@ -467,8 +468,8 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                 {/* Express Pickup Option */}
                 <div
                     className={`relative p-5 rounded-2xl border-2 transition-all overflow-hidden ${!showExpress ? 'border-dashed border-slate-200 bg-slate-50 opacity-80 cursor-not-allowed' :
-                            isExpress ? 'border-amber-400 bg-amber-50 shadow-md transform scale-[1.02] cursor-pointer' :
-                                'border-border bg-card hover:border-amber-200 opacity-90 cursor-pointer'
+                        isExpress ? 'border-amber-400 bg-amber-50 shadow-md transform scale-[1.02] cursor-pointer' :
+                            'border-border bg-card hover:border-amber-200 opacity-90 cursor-pointer'
                         }`}
                     onClick={() => {
                         if (!showExpress) return;
