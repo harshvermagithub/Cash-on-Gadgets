@@ -320,9 +320,24 @@ const EarbudsGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
             <g transform="translate(60, 40)">
-                <rect x="10" y="20" width="60" height="50" rx="20" className="fill-white dark:fill-slate-200 stroke-slate-300" strokeWidth="2" />
-                <path d="M10 40 Q40 50 70 40" className="stroke-slate-300" strokeWidth="1.5" fill="none" />
-                <circle cx="40" cy="45" r="3" className="fill-green-500" />
+                {/* Case */}
+                <rect x="15" y="30" width="50" height="40" rx="15" className="fill-white dark:fill-slate-200 stroke-slate-300" strokeWidth="2" />
+                <path d="M15 45 Q40 55 65 45" className="stroke-slate-200" strokeWidth="1.5" fill="none" />
+                <circle cx="40" cy="55" r="2.5" className="fill-green-500" />
+
+                {/* Left Earbud */}
+                <g transform="translate(22, 12)">
+                    <rect x="0" y="5" width="6" height="15" rx="3" className="fill-white dark:fill-slate-100 stroke-slate-300" strokeWidth="1.5" />
+                    <circle cx="3" cy="5" r="6" className="fill-white dark:fill-slate-100 stroke-slate-300" strokeWidth="1.5" />
+                    <circle cx="5" cy="5" r="2" className="fill-slate-900" />
+                </g>
+
+                {/* Right Earbud */}
+                <g transform="translate(42, 12)">
+                    <rect x="6" y="5" width="6" height="15" rx="3" className="fill-white dark:fill-slate-100 stroke-slate-300" strokeWidth="1.5" />
+                    <circle cx="9" cy="5" r="6" className="fill-white dark:fill-slate-100 stroke-slate-300" strokeWidth="1.5" />
+                    <circle cx="7" cy="5" r="2" className="fill-slate-900" />
+                </g>
             </g>
         </motion.g>
     </svg>

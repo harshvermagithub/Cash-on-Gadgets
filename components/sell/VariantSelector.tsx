@@ -26,8 +26,12 @@ export default function VariantSelector({ modelId, category, brand, onSelect, on
                 // Pass category to fetchVariants if provided
                 const v = await fetchVariants(modelId, category);
                 if (mounted) {
-                    setVariants(v);
-                    setIsLoading(false);
+                    if (v.length === 1) {
+                        onSelect(v[0]);
+                    } else {
+                        setVariants(v);
+                        setIsLoading(false);
+                    }
                 }
             } catch (error) {
                 console.error(error);
