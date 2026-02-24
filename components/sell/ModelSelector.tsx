@@ -26,17 +26,19 @@ const EXCLUDED_MODELS = new Set([
 const ModelImage = ({ src, alt, priority = false, scale = 1 }: { src: string, alt: string, priority?: boolean, scale?: number }) => {
     const [error, setError] = useState(false);
 
+    const cleanSrc = useMemo(() => src ? src.split('?')[0] : '', [src]);
+
     // Validate URL format before rendering Next.js Image to prevent "Invalid URL" crash
     const isValid = useMemo(() => {
-        if (!src) return false;
+        if (!cleanSrc) return false;
         try {
-            if (src.startsWith('/') || src.startsWith('data:')) return true;
-            new URL(src); // Check if valid absolute URL
+            if (cleanSrc.startsWith('/') || cleanSrc.startsWith('data:')) return true;
+            new URL(cleanSrc); // Check if valid absolute URL
             return true;
         } catch {
             return false;
         }
-    }, [src]);
+    }, [cleanSrc]);
 
     if (!isValid || error) {
         return (
@@ -48,7 +50,7 @@ const ModelImage = ({ src, alt, priority = false, scale = 1 }: { src: string, al
 
     return (
         <Image
-            src={src}
+            src={cleanSrc}
             alt={alt}
             fill
             priority={priority}
