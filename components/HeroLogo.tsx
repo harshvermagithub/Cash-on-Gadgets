@@ -5,7 +5,7 @@ import { motion, Transition } from 'framer-motion';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 
-const SmartphoneSVG = () => (
+const SmartphoneSVG = ({ forceLight = false }: { forceLight?: boolean }) => (
     <svg width="100%" height="100%" viewBox="0 0 32 60" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect
             x="1"
@@ -14,7 +14,7 @@ const SmartphoneSVG = () => (
             height="58"
             rx="4"
             strokeWidth="1.5"
-            className="fill-[#0f172a] dark:fill-black stroke-[#334155] dark:stroke-white transition-colors duration-300"
+            className={`transition-colors duration-300 ${forceLight ? 'fill-[#0f172a] stroke-[#334155]' : 'fill-[#0f172a] dark:fill-black stroke-[#334155] dark:stroke-white'}`}
         />
         <rect x="2.5" y="2.5" width="27" height="55" rx="2.5" fill="#10B981" />
         <defs>
@@ -51,13 +51,13 @@ const SmartphoneSVG = () => (
             width="12"
             height="3"
             rx="1.5"
-            className="fill-black dark:fill-white transition-colors duration-300"
+            className={`transition-colors duration-300 ${forceLight ? 'fill-black' : 'fill-black dark:fill-white'}`}
         />
         <path d="M2.5 2.5H29.5V20L2.5 35V2.5Z" fill="white" fillOpacity="0.1" />
     </svg>
 );
 
-const RupeeNoteSVG = () => (
+const RupeeNoteSVG = ({ forceLight = false }: { forceLight?: boolean }) => (
     <svg width="100%" height="100%" viewBox="0 0 40 70" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect
             x="1"
@@ -66,7 +66,7 @@ const RupeeNoteSVG = () => (
             height="68"
             rx="2"
             strokeWidth="1"
-            className="fill-[#e2e8f0] dark:fill-[#cbd5e1] stroke-[#64748b] dark:stroke-[#94a3b8] transition-colors duration-300"
+            className={`transition-colors duration-300 ${forceLight ? 'fill-[#e2e8f0] stroke-[#64748b]' : 'fill-[#e2e8f0] dark:fill-[#cbd5e1] stroke-[#64748b] dark:stroke-[#94a3b8]'}`}
         />
         <rect x="4" y="4" width="32" height="62" rx="1" fill="#D1FAE5" fillOpacity="0.5" />
 
@@ -90,20 +90,19 @@ const RupeeNoteSVG = () => (
         <line x1="2" y1="50" x2="38" y2="50" stroke="#10B981" strokeWidth="1.5" strokeDasharray="4 2" />
         <path
             d="M2 24H38M2 46H38"
-            className="stroke-[#94a3b8] dark:stroke-[#64748b] transition-colors duration-300"
+            className={`transition-colors duration-300 strokeWidth="0.5" ${forceLight ? 'stroke-[#94a3b8]' : 'stroke-[#94a3b8] dark:stroke-[#64748b]'}`}
             strokeWidth="0.5"
         />
     </svg>
 );
 
-export const HeroLogo = ({ className = "" }: { className?: string }) => {
+export const HeroLogo = ({ className = "", forceLight = false }: { className?: string, forceLight?: boolean }) => {
     const { resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
     // Animation constants
     const cycleDuration = 4;
 
-    // TYPED TRANSITION SETTINGS TO FIX BUILD ERROR
     const transitionSettings: Transition = {
         duration: cycleDuration,
         repeat: Infinity,
@@ -111,7 +110,8 @@ export const HeroLogo = ({ className = "" }: { className?: string }) => {
         times: [0, 0.4, 0.5, 0.9, 1]
     };
 
-    const textClass = 'text-slate-900 dark:text-white';
+    const textClass = forceLight ? 'text-slate-900' : 'text-slate-900 dark:text-white';
+    const invertClass = forceLight ? '' : 'dark:invert dark:hue-rotate-180';
 
     return (
         <div className={`flex items-center gap-1 select-none ${className}`} aria-label="Fonzkart">
@@ -124,7 +124,7 @@ export const HeroLogo = ({ className = "" }: { className?: string }) => {
                     className="absolute inset-0 flex items-center justify-center"
                 >
                     <div
-                        className="relative w-full h-full p-0.5 transition-[filter] duration-300 dark:invert dark:hue-rotate-180"
+                        className={`relative w-full h-full p-0.5 transition-[filter] duration-300 ${invertClass}`}
                     >
                         <Image
                             src="/logo_final_v3.png"
@@ -142,7 +142,7 @@ export const HeroLogo = ({ className = "" }: { className?: string }) => {
                     transition={transitionSettings}
                     className="absolute inset-0 flex items-center justify-center z-10"
                 >
-                    <SmartphoneSVG />
+                    <SmartphoneSVG forceLight={forceLight} />
                 </motion.div>
             </div>
 
@@ -169,7 +169,7 @@ export const HeroLogo = ({ className = "" }: { className?: string }) => {
                     className="absolute inset-0 flex items-center justify-center z-10"
                 >
                     <div className="w-full h-full scale-[1.05]">
-                        <RupeeNoteSVG />
+                        <RupeeNoteSVG forceLight={forceLight} />
                     </div>
                 </motion.div>
             </div>
