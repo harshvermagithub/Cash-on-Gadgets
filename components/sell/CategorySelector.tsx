@@ -270,6 +270,64 @@ const RepairGraphic = () => (
     </svg>
 );
 
+const LaptopGraphic = () => (
+    <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <motion.g
+            animate={{ y: [0, -4, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        >
+            <g transform="translate(30, 30)">
+                <path d="M10 70 L130 70 L140 85 H0 Z" className="fill-slate-200 dark:fill-slate-800 stroke-slate-400" strokeWidth="2" />
+                <rect x="25" y="10" width="90" height="60" rx="4" className="fill-slate-900 stroke-slate-500" strokeWidth="2" />
+                <rect x="28" y="13" width="84" height="54" rx="2" className="fill-blue-900/40" />
+                <rect x="50" y="75" width="40" height="5" rx="2" className="fill-slate-400 dark:fill-slate-600" />
+            </g>
+        </motion.g>
+    </svg>
+);
+
+const DesktopGraphic = () => (
+    <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <motion.g animate={{ y: [0, -3, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}>
+            <g transform="translate(30, 20)">
+                <rect x="10" y="10" width="100" height="70" rx="4" className="fill-slate-900 stroke-slate-600" strokeWidth="2" />
+                <rect x="14" y="14" width="92" height="62" rx="2" className="fill-black" />
+                <path d="M50 80 V100" className="stroke-slate-500" strokeWidth="8" />
+                <path d="M30 100 H90" className="stroke-slate-500" strokeWidth="6" strokeLinecap="round" />
+                <rect x="120" y="20" width="30" height="80" rx="3" className="fill-slate-800 stroke-slate-600" strokeWidth="2" />
+                <circle cx="135" cy="35" r="5" className="fill-blue-500/80" />
+            </g>
+        </motion.g>
+    </svg>
+);
+
+const CameraGraphic = () => (
+    <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <motion.g animate={{ y: [0, -5, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
+            <g transform="translate(45, 40)">
+                <rect x="0" y="10" width="110" height="70" rx="8" className="fill-slate-800 stroke-slate-600" strokeWidth="2" />
+                <rect x="20" y="0" width="30" height="10" rx="2" className="fill-slate-700 stroke-slate-500" strokeWidth="2" />
+                <circle cx="55" cy="45" r="25" className="fill-slate-900 stroke-slate-500" strokeWidth="4" />
+                <circle cx="55" cy="45" r="15" className="fill-black" />
+                <circle cx="50" cy="40" r="4" className="fill-white/30" />
+                <circle cx="15" cy="25" r="4" className="fill-red-500" />
+            </g>
+        </motion.g>
+    </svg>
+);
+
+const EarbudsGraphic = () => (
+    <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
+            <g transform="translate(60, 40)">
+                <rect x="10" y="20" width="60" height="50" rx="20" className="fill-white dark:fill-slate-200 stroke-slate-300" strokeWidth="2" />
+                <path d="M10 40 Q40 50 70 40" className="stroke-slate-300" strokeWidth="1.5" fill="none" />
+                <circle cx="40" cy="45" r="3" className="fill-green-500" />
+            </g>
+        </motion.g>
+    </svg>
+);
+
 // --- Data ---
 const categories = [
     {
@@ -311,6 +369,38 @@ const categories = [
         component: <TvGraphic />,
         bgColors: 'bg-emerald-50 dark:bg-slate-900',
         textColor: 'text-emerald-900 dark:text-emerald-100'
+    },
+    {
+        id: 'laptop',
+        name: 'Laptops',
+        subtext: 'Macbook / HP / Dell / Lenovo',
+        component: <LaptopGraphic />,
+        bgColors: 'bg-cyan-50 dark:bg-slate-900',
+        textColor: 'text-cyan-900 dark:text-cyan-100'
+    },
+    {
+        id: 'desktop',
+        name: 'Desktops',
+        subtext: 'iMac / HP / Generic',
+        component: <DesktopGraphic />,
+        bgColors: 'bg-teal-50 dark:bg-slate-900',
+        textColor: 'text-teal-900 dark:text-teal-100'
+    },
+    {
+        id: 'camera',
+        name: 'Cameras',
+        subtext: 'Canon / Nikon / Sony',
+        component: <CameraGraphic />,
+        bgColors: 'bg-rose-50 dark:bg-slate-900',
+        textColor: 'text-rose-900 dark:text-rose-100'
+    },
+    {
+        id: 'earbuds',
+        name: 'Earbuds',
+        subtext: 'Airpods / Galaxy Buds',
+        component: <EarbudsGraphic />,
+        bgColors: 'bg-fuchsia-50 dark:bg-slate-900',
+        textColor: 'text-fuchsia-900 dark:text-fuchsia-100'
     },
     {
         id: 'repair',

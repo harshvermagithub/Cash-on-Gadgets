@@ -90,10 +90,59 @@ export default function ModelSelector({ brandId, category, onSelect, onBack }: M
         const uniqueSeries = new Set<string>();
         models.forEach(m => {
             const name = m.name;
-            if (name.includes('Galaxy S')) uniqueSeries.add('S Series');
+            const lowerName = name.toLowerCase();
+
+            // Tablet - Apple
+            if (lowerName.includes('ipad')) {
+                if (lowerName.includes('pro')) uniqueSeries.add('iPad Pro');
+                else if (lowerName.includes('air')) uniqueSeries.add('iPad Air');
+                else if (lowerName.includes('mini')) uniqueSeries.add('iPad mini');
+                else uniqueSeries.add('iPad (Standard)');
+            }
+            // Tablet - Samsung
+            else if (lowerName.includes('galaxy tab')) {
+                if (lowerName.includes('tab s')) uniqueSeries.add('Galaxy Tab S');
+                else if (lowerName.includes('tab a')) uniqueSeries.add('Galaxy Tab A');
+                else uniqueSeries.add('Other Galaxy Tab');
+            }
+            // Tablet - OnePlus
+            else if (lowerName.includes('oneplus pad')) {
+                uniqueSeries.add('OnePlus Pad');
+            }
+            // Tablet - Realme
+            else if (lowerName.includes('realme pad')) {
+                uniqueSeries.add('Realme Pad');
+            }
+            // Tablet - Xiaomi / Poco / etc
+            else if (lowerName.includes('xiaomi pad') || lowerName.includes('mi pad')) {
+                uniqueSeries.add('Xiaomi Pad');
+            }
+            else if (lowerName.includes('redmi pad')) {
+                uniqueSeries.add('Redmi Pad');
+            }
+            else if (lowerName.includes('oppo pad')) {
+                uniqueSeries.add('Oppo Pad');
+            }
+            else if (lowerName.includes('poco pad')) {
+                uniqueSeries.add('Poco Pad');
+            }
+            else if (lowerName.includes('lenovo tab')) {
+                uniqueSeries.add('Lenovo Tab');
+            }
+            else if (lowerName.includes('yoga tab')) {
+                uniqueSeries.add('Lenovo Yoga Tab');
+            }
+            else if (lowerName.includes('moto tab') || lowerName.includes('motorola tab')) {
+                uniqueSeries.add('Moto Tab');
+            }
+            else if (lowerName.includes('nokia t')) {
+                uniqueSeries.add('Nokia T Series');
+            }
+
+            // Smartphone - Samsung
+            else if (name.includes('Galaxy S')) uniqueSeries.add('S Series');
             else if (name.includes('Galaxy A')) uniqueSeries.add('A Series');
             else if (name.includes('Galaxy M')) uniqueSeries.add('M Series');
-            else if (name.includes('Galaxy F')) uniqueSeries.add('F Series');
             else if (name.includes('Galaxy F')) uniqueSeries.add('F Series');
             else if (name.includes('Galaxy Z Fold') || name.includes('Fold')) uniqueSeries.add('Z Fold Series');
             else if (name.includes('Galaxy Z Flip') || name.includes('Flip')) uniqueSeries.add('Z Flip Series');
@@ -119,7 +168,17 @@ export default function ModelSelector({ brandId, category, onSelect, onBack }: M
             else if (name.includes('Reno')) uniqueSeries.add('Reno Series');
         });
 
-        const list = Array.from(uniqueSeries).sort((a, b) => {
+        const list = Array.from(uniqueSeries).sort((a: string, b: string) => {
+            // Tablet sorting (Pro > Air > mini > Standard)
+            if (a.includes('iPad') && b.includes('iPad')) {
+                const order = ['iPad Pro', 'iPad Air', 'iPad mini', 'iPad (Standard)'];
+                return order.indexOf(a) - order.indexOf(b);
+            }
+            if (a.includes('Galaxy Tab') && b.includes('Galaxy Tab')) {
+                const order = ['Galaxy Tab S', 'Galaxy Tab A', 'Other Galaxy Tab'];
+                return order.indexOf(a) - order.indexOf(b);
+            }
+
             // Custom Sort for iPhones
             // Air -> Numbers Desc -> X -> SE
             if (a === 'Air Series') return -1;
@@ -167,11 +226,37 @@ export default function ModelSelector({ brandId, category, onSelect, onBack }: M
                 if (activeSeries === 'X Series') return name.includes('iphone x');
                 if (activeSeries === 'SE Series') return name.includes('se');
 
+                // iPad Filters
+                if (activeSeries === 'iPad Pro') return name.includes('ipad pro');
+                if (activeSeries === 'iPad Air') return name.includes('ipad air');
+                if (activeSeries === 'iPad mini') return name.includes('ipad mini');
+                if (activeSeries === 'iPad (Standard)') return name.includes('ipad') && !name.includes('pro') && !name.includes('air') && !name.includes('mini');
+
+                // Galaxy Tab Filters
+                if (activeSeries === 'Galaxy Tab S') return name.includes('galaxy tab s');
+                if (activeSeries === 'Galaxy Tab A') return name.includes('galaxy tab a');
+                if (activeSeries === 'Other Galaxy Tab') return name.includes('galaxy tab') && !name.includes('tab s') && !name.includes('tab a');
+
+                // OnePlus Pad Filters
+                if (activeSeries === 'OnePlus Pad') return name.includes('oneplus pad');
+
+                // Realme Pad Filters
+                if (activeSeries === 'Realme Pad') return name.includes('realme pad');
+
+                // Other Tablets
+                if (activeSeries === 'Xiaomi Pad') return name.includes('xiaomi pad') || name.includes('mi pad');
+                if (activeSeries === 'Redmi Pad') return name.includes('redmi pad');
+                if (activeSeries === 'Oppo Pad') return name.includes('oppo pad');
+                if (activeSeries === 'Poco Pad') return name.includes('poco pad');
+                if (activeSeries === 'Lenovo Tab') return name.includes('lenovo tab');
+                if (activeSeries === 'Lenovo Yoga Tab') return name.includes('yoga tab');
+                if (activeSeries === 'Moto Tab') return name.includes('moto tab') || name.includes('motorola tab');
+                if (activeSeries === 'Nokia T Series') return name.includes('nokia t');
+
                 // Other Series
                 if (activeSeries === 'S Series') return m.name.includes('Galaxy S');
                 if (activeSeries === 'A Series') return m.name.includes('Galaxy A');
                 if (activeSeries === 'M Series') return m.name.includes('Galaxy M');
-                if (activeSeries === 'F Series') return m.name.includes('Galaxy F');
                 if (activeSeries === 'F Series') return m.name.includes('Galaxy F');
                 if (activeSeries === 'Z Fold Series') return m.name.includes('Fold');
                 if (activeSeries === 'Z Flip Series') return m.name.includes('Flip');
