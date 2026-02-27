@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="40" viewBox="0 0 220 40">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;900&amp;display=swap');
+      
+      .text {
+        font-family: 'Inter', sans-serif;
+        font-weight: 900;
+        font-size: 24px;
+        letter-spacing: -1.2px;
+        fill: #ffffff; /* Explicitly white for transparent background usage */
+      }
+      
+      .rupee {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 20px;
+        fill: #16a34a; /* text-green-600 */
+      }
+      
+      /* Base transforms to handle scaling properly */
+      #k-group { transform-origin: 92px 20px; }
+      #cart-group { transform-origin: 92px 20px; }
+      
+      @keyframes fadeOutK {
+        0%, 45% { opacity: 1; transform: scale(1); }
+        50%, 95% { opacity: 0; transform: scale(0.8); }
+        100% { opacity: 1; transform: scale(1); }
+      }
+      
+      @keyframes fadeInCart {
+        0%, 45% { opacity: 0; transform: scale(0.8); }
+        50%, 95% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0; transform: scale(0.8); }
+      }
+      
+      @keyframes flyInNote {
+        0%, 45% { transform: translate(10px, -20px) scale(0.5) rotate(0deg); opacity: 0; }
+        52%, 95% { transform: translate(0px, 0px) scale(1) rotate(12deg); opacity: 1; }
+        100% { transform: translate(10px, -20px) scale(0.5) rotate(0deg); opacity: 0; }
+      }
+      
+      @keyframes slideOutLetter {
+        0%, 45% { opacity: 1; }
+        50%, 95% { opacity: 0; }
+        100% { opacity: 1; }
+      }
+
+      #k-group { animation: fadeOutK 8s infinite ease-in-out; }
+      #cart-group { animation: fadeInCart 8s infinite ease-in-out; }
+      #note-anim { animation: flyInNote 8s infinite ease-out; } 
+      .letter { animation: slideOutLetter 8s infinite ease-in-out; }
+    </style>
+  </defs>
+
+  <!-- F_Icon (w-5 h-8 = 20x32) -->
+  <g id="f-icon" transform="translate(10, 4)">
+    <rect x="-1" y="-1" width="22" height="34" rx="4" fill="black" stroke="#334155" stroke-width="1" />
+    <rect x="1" y="1.6" width="18" height="28.8" rx="2" fill="#22c55e" />
+    <image x="1" y="1.6" width="18" height="28.8" preserveAspectRatio="xMidYMid slice" href="data:image/png;base64,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"/>
+  </g>
+
+  <!-- ONZ text -->
+  <text x="34" y="30" class="text" fill="white">ONZ</text>
+
+  <!-- K / Cart container -->
+  <g id="dynamic-part">
+    <!-- Cart replacing K -->
+    <g id="cart-group" opacity="0">
+      <!-- M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6 -->
+      <g transform="translate(76, 5) scale(1.1)">
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="9" cy="21" r="1.5" fill="#10b981"/>
+        <circle cx="20" cy="21" r="1.5" fill="#10b981"/>
+      </g>
+      <!-- Note inside cart -->
+      <g id="note-group" transform="translate(86, 12)">
+        <g id="note-anim">
+          <rect x="0" y="0" width="16" height="10" rx="1" fill="#16a34a" stroke="#86efac" stroke-width="1" />
+          <circle cx="5" cy="5" r="3" fill="#4ade80" opacity="0.6" />
+        </g>
+      </g>
+    </g>
+
+    <!-- K -->
+    <g id="k-group">
+      <text x="82" y="30" class="text">K</text>
+    </g>
+    
+    <!-- A -->
+    <g id="a-letter" class="letter">
+      <text x="98" y="30" class="text">A</text>
+    </g>
+
+    <!-- ₹ -->
+    <g id="r-letter" class="letter">
+      <text x="115" y="28" class="rupee">₹</text>
+    </g>
+
+    <!-- T -->
+    <g id="t-letter" class="letter">
+      <text x="131" y="30" class="text">T</text>
+    </g>
+  </g>
+</svg>
