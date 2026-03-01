@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import CategorySelector from './CategorySelector';
 import BrandSelector from './BrandSelector';
@@ -59,6 +59,11 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
     // Track user state locally so we can update it after inline login
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [user, setUser] = useState<any>(initialUser);
+
+    // FIX: Scroll to top of the page smoothly when the step changes
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'auto' });
+    }, [step]);
 
     const handleCategorySelect = async (cat: string) => {
         let targetCategory = cat;

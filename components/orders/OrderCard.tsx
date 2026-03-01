@@ -1,13 +1,64 @@
 'use client';
 
 import { useState } from 'react';
-import { Smartphone, Calendar, Clock, MapPin, ChevronDown, ChevronUp, CheckCircle, Package } from 'lucide-react';
+import { Smartphone, Calendar, Clock, MapPin, ChevronDown, ChevronUp, CheckCircle, Package, Check, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Mock type or import from suitable place
 // Assuming Order comes from a types file or we can define a loose interface here
 interface OrderCardProps {
     order: any;
+}
+
+function OrderStepper({ status }: { status: string }) {
+    const steps = [
+        "Order Placed",
+        "RM Assigned",
+        "Executive Assigned",
+        "Pickup Completed",
+    ];
+
+    const statusStr = (status || '').toLowerCase();
+
+    let completedSteps = 1;
+    if (statusStr.includes('complete') || statusStr.includes('paid') || statusStr.includes('success')) completedSteps = 4;
+    else if (statusStr.includes('executive') || statusStr.includes('rider') || statusStr.includes('field') || statusStr.includes('out for')) completedSteps = 3;
+    else if (statusStr.includes('rm assigned') || statusStr.includes('manager') || statusStr.includes('assigned')) completedSteps = 2;
+
+    return (
+        <div className="w-full py-4 mb-6 mt-2 relative">
+            {/* Background Line */}
+            <div className="absolute top-[34px] left-[15%] right-[15%] h-[3px] bg-muted z-0 rounded-full" />
+            <div
+                className="absolute top-[34px] left-[15%] h-[3px] bg-green-500 z-0 rounded-full transition-all duration-700 ease-in-out"
+                style={{ width: `${Math.min(100, Math.max(0, (completedSteps - 1) * (100 / (steps.length - 1)))) * 0.7}%` }}
+            />
+
+            <div className="flex justify-between items-start relative z-10">
+                {steps.map((step, idx) => {
+                    const isCompleted = idx < completedSteps;
+                    const isPending = idx === completedSteps;
+
+                    return (
+                        <div key={step} className="flex flex-col items-center gap-2 relative z-10 w-1/4">
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center border-[3px] transition-all duration-500 bg-card ${isCompleted ? 'border-green-500 text-green-500 shadow-[0_0_15px_rgba(34,197,94,0.3)]' :
+                                    isPending ? 'border-amber-500 text-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.3)]' :
+                                        'border-muted text-muted-foreground'
+                                }`}>
+                                {isCompleted ? <Check className="w-5 h-5 stroke-[3]" /> : <span className="font-bold">{idx + 1}</span>}
+                            </div>
+                            <span className={`text-[11px] sm:text-xs font-bold text-center px-1 leading-tight ${isCompleted ? 'text-green-600 dark:text-green-500' :
+                                    isPending ? 'text-amber-600 dark:text-amber-500' :
+                                        'text-muted-foreground'
+                                }`}>
+                                {step}
+                            </span>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
 }
 
 export default function OrderCard({ order }: OrderCardProps) {
@@ -35,7 +86,10 @@ export default function OrderCard({ order }: OrderCardProps) {
                     <div className="bg-primary/10 p-3 rounded-lg shrink-0">
                         <Smartphone className="w-6 h-6 text-primary" />
                     </div>
-                    <div>
+                    <div className="flex flex-col">
+                        <span className="text-xs font-bold text-primary uppercase tracking-wider mb-1">
+                            # {(order.id || '').split('-')[0]}
+                        </span>
                         <h3 className="font-bold text-lg">{order.device}</h3>
 
                         {/* Pickup Schedule Display */}
@@ -46,7 +100,7 @@ export default function OrderCard({ order }: OrderCardProps) {
                         ) : (scheduledDate && scheduledSlot) ? (
                             <div className="flex flex-col gap-1 mt-1">
                                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                    <span className="flex items-center gap-1">
+                                    <span suppressHydrationWarning className="flex items-center gap-1">
                                         <Calendar className="w-3 h-3" />
                                         {scheduledDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                                     </span>
@@ -58,7 +112,7 @@ export default function OrderCard({ order }: OrderCardProps) {
                             </div>
                         ) : (
                             <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
-                                <span className="flex items-center gap-1">
+                                <span suppressHydrationWarning className="flex items-center gap-1">
                                     <Calendar className="w-3 h-3" /> {new Date(order.date).toLocaleDateString()}
                                 </span>
                             </div>
@@ -74,7 +128,8 @@ export default function OrderCard({ order }: OrderCardProps) {
                     <div className={`shrink-0 px-4 py-2 rounded-full text-sm font-bold ${order.status === 'Pending Pickup' ? 'bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300' : 'bg-green-100 dark:bg-green-500/20 text-green-800 dark:text-green-300'}`}>
                         {order.status}
                     </div>
-                    <div className="text-muted-foreground hidden sm:block">
+                    <div className="text-primary hidden sm:flex items-center gap-1 font-semibold text-sm hover:underline">
+                        <span>{isExpanded ? 'Hide Info' : 'View Info'}</span>
                         {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                     </div>
                 </div>
@@ -89,6 +144,11 @@ export default function OrderCard({ order }: OrderCardProps) {
                         exit={{ height: 0, opacity: 0 }}
                         className="border-t border-border bg-muted/30"
                     >
+                        {/* Stepper tracking order status */}
+                        <div className="pt-6 px-6 pb-2 border-b border-border/50">
+                            <OrderStepper status={order.status} />
+                        </div>
+
                         <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
 
                             {/* Left Column: Order & Contact Info */}
@@ -100,7 +160,7 @@ export default function OrderCard({ order }: OrderCardProps) {
                                     <div className="space-y-2 text-muted-foreground">
                                         <div className="flex justify-between">
                                             <span>Order Placed On:</span>
-                                            <span className="font-medium text-foreground">{new Date(order.date).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}</span>
+                                            <span suppressHydrationWarning className="font-medium text-foreground">{new Date(order.date).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}</span>
                                         </div>
                                         <div className="flex justify-between">
                                             <span>Contact Number:</span>
@@ -154,7 +214,7 @@ export default function OrderCard({ order }: OrderCardProps) {
                                         <div className="flex justify-between items-start gap-4 pb-3 border-b border-border">
                                             <span className="text-muted-foreground">Screen's Physical Condition</span>
                                             <span className="font-medium text-right text-foreground max-w-[50%] capitalize">
-                                                {(answers.physical_condition as string).replace(/_/g, ' ')}
+                                                {String(answers.physical_condition).replace(/_/g, ' ')}
                                             </span>
                                         </div>
                                     )}
@@ -164,7 +224,7 @@ export default function OrderCard({ order }: OrderCardProps) {
                                         <div className="flex justify-between items-start gap-4 pb-3 border-b border-border">
                                             <span className="text-muted-foreground">Body Condition</span>
                                             <span className="font-medium text-right text-foreground max-w-[50%] capitalize">
-                                                {(answers.body_condition as string).replace(/_/g, ' ')}
+                                                {String(answers.body_condition).replace(/_/g, ' ')}
                                             </span>
                                         </div>
                                     )}
@@ -206,7 +266,7 @@ export default function OrderCard({ order }: OrderCardProps) {
                                         <div className="flex justify-between items-start gap-4">
                                             <span className="text-muted-foreground">Warranty Period</span>
                                             <span className="font-medium text-right text-foreground max-w-[50%] capitalize">
-                                                {(answers.warranty as string).replace(/_/g, ' ').replace('months', 'Months')}
+                                                {String(answers.warranty).replace(/_/g, ' ').replace('months', 'Months')}
                                             </span>
                                         </div>
                                     )}

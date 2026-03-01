@@ -81,7 +81,7 @@ export const DynamicLogo = ({ className = "" }: { className?: string }) => {
                             animate={{ opacity: 1, width: 'auto' }}
                             exit={{ opacity: 0, width: 0 }}
                             transition={{ duration: 0.3 }}
-                            className="text-foreground"
+                            className="text-foreground overflow-hidden whitespace-nowrap flex"
                         >
                             A
                         </motion.span>
@@ -96,7 +96,7 @@ export const DynamicLogo = ({ className = "" }: { className?: string }) => {
                             animate={{ opacity: 1, width: 'auto' }}
                             exit={{ opacity: 0, width: 0 }}
                             transition={{ duration: 0.3 }}
-                            className="text-green-600 flex items-center justify-center font-bold text-xl px-0.5"
+                            className="text-green-600 flex items-center justify-center font-bold text-xl px-0.5 overflow-hidden whitespace-nowrap"
                         >
                             ₹
                         </motion.div>
@@ -111,7 +111,7 @@ export const DynamicLogo = ({ className = "" }: { className?: string }) => {
                             animate={{ opacity: 1, width: 'auto' }}
                             exit={{ opacity: 0, width: 0 }}
                             transition={{ duration: 0.3 }}
-                            className="text-foreground"
+                            className="text-foreground overflow-hidden whitespace-nowrap flex"
                         >
                             T
                         </motion.span>
