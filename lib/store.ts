@@ -15,6 +15,7 @@ export type Rider = PrismaRider;
 
 export interface Order {
     id: string;
+    orderNumber?: number;
     userId: string;
     device: string;
     price: number;
@@ -314,9 +315,10 @@ export const db = {
     }
 };
 
-function mapPrismaOrderToAppOrder(o: PrismaOrder): Order {
+function mapPrismaOrderToAppOrder(o: PrismaOrder & { orderNumber?: number }): Order {
     return {
         id: o.id,
+        orderNumber: o.orderNumber,
         userId: o.userId,
         device: o.device,
         price: o.price,

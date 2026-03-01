@@ -9,8 +9,8 @@ export default async function RidersPage() {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold">Manage Executives</h1>
-            <p className="text-muted-foreground">Add logistics partners and delivery executives.</p>
+            <h1 className="text-3xl font-bold">Manage Field Executives</h1>
+            <p className="text-muted-foreground">Add logistics partners and field executives.</p>
             <RiderManager initialRiders={riders} />
         </div>
     );

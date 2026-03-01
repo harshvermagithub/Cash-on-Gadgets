@@ -43,10 +43,10 @@ export default function RiderManager({ initialRiders }: { initialRiders: Rider[]
     return (
         <div className="space-y-8">
             <div className="bg-card border rounded-xl p-6">
-                <h3 className="text-lg font-bold mb-4">Add New Executive</h3>
+                <h3 className="text-lg font-bold mb-4">Add New Field Executive</h3>
                 <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 items-end">
                     <div className="flex-1 space-y-2 w-full">
-                        <label className="text-sm font-medium">Executive Name</label>
+                        <label className="text-sm font-medium">Field Executive Name</label>
                         <input
                             value={name}
                             onChange={(e) => setName(e.target.value)}

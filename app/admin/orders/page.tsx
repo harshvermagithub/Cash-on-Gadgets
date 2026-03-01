@@ -11,7 +11,7 @@ export default async function OrdersPage() {
     return (
         <div className="space-y-6">
             <h1 className="text-3xl font-bold">Manage Orders</h1>
-            <p className="text-muted-foreground">View incoming sell requests and assign riders for pickup.</p>
+            <p className="text-muted-foreground">View incoming sell requests and assign field executives for pickup.</p>
             <OrderManager initialOrders={orders} riders={riders} />
         </div>
     );

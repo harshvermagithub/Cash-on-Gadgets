@@ -10,7 +10,7 @@ export default function PickupLayout({
         <div className="min-h-screen bg-background flex flex-col">
             <header className="px-6 py-4 border-b bg-card">
                 <Link href="/pickup" className="font-bold text-xl text-primary flex items-center gap-2">
-                    Connect
+                    Field Executive Portal
                 </Link>
             </header>
             <main className="flex-1 p-6">

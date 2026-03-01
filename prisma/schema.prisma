@@ -45,6 +45,7 @@ model Order {
   rider           Rider?   @relation(fields: [riderId], references: [id])
   
   device          String   // Combined "Name (Variant)" string stored currently
+  orderNumber     Int      @unique @default(autoincrement())
   price           Int
   status          String   @default("Pending Pickup")
   

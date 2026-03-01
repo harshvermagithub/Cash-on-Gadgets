@@ -67,7 +67,7 @@ export default function PickupLoginPage() {
                         <Smartphone className="w-8 h-8" />
                     </div>
                     <h1 className="text-2xl font-bold">
-                        {step === 'phone' ? 'Executive Login' : step === 'onboard' ? 'Setup Account' : 'Welcome Back'}
+                        {step === 'phone' ? 'Field Executive Login' : step === 'onboard' ? 'Setup Account' : 'Welcome Back'}
                     </h1>
                     <p className="text-muted-foreground">
                         {step === 'phone' ? 'Enter your registered mobile number.' :

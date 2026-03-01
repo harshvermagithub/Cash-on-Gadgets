@@ -42,9 +42,9 @@ export default function AdminSidebar() {
     const SidebarNav = () => (
         <div className="flex flex-col h-full">
             <div className="p-6 border-b shrink-0 flex items-center justify-between">
-                <Link href="/admin" className="flex items-center gap-2 font-bold text-xl text-primary">
-                    <LayoutDashboard className="w-6 h-6" />
-                    <span>Admin Panel</span>
+                <Link href="/admin" className="flex items-center gap-2 font-bold text-lg text-primary leading-tight">
+                    <LayoutDashboard className="shrink-0 w-6 h-6" />
+                    <span>Relationship Manager Dashboard</span>
                 </Link>
             </div>
 
@@ -99,7 +99,7 @@ export default function AdminSidebar() {
                         }`}
                 >
                     <Users className="w-5 h-5" />
-                    Executives
+                    Field Executives
                 </Link>
                 <Link href="/admin/orders"
                     className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('orders') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
@@ -129,8 +129,8 @@ export default function AdminSidebar() {
 
             {/* Mobile/Tablet Header (Top, visible on small screens) */}
             <div className="lg:hidden p-4 bg-card border-b flex items-center justify-between sticky top-0 z-30 shadow-sm">
-                <Link href="/admin" className="font-bold flex items-center gap-2 text-primary text-lg">
-                    <LayoutDashboard className="w-5 h-5" /> Admin Panel
+                <Link href="/admin" className="font-bold flex items-center gap-2 text-primary text-sm">
+                    <LayoutDashboard className="w-5 h-5 shrink-0" /> <span className="truncate">RM Dashboard</span>
                 </Link>
                 <button
                     onClick={() => setIsOpen(true)}
