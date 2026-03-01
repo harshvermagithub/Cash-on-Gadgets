@@ -17,7 +17,8 @@ import {
     ExternalLink,
     Menu,
     X,
-    ShieldCheck
+    ShieldCheck,
+    Mail
 } from 'lucide-react';
 
 const CATEGORIES = [
@@ -89,6 +90,14 @@ export default function AdminSidebar() {
                 >
                     <ShieldCheck className="w-5 h-5" />
                     Admins
+                </Link>
+                <Link
+                    href="/admin/inbox"
+                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/inbox') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
+                        }`}
+                >
+                    <Mail className="w-5 h-5" />
+                    Mail Inbox
                 </Link>
 
                 <div className="pt-4 pb-2">

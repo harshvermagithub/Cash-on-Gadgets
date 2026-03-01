@@ -11,7 +11,6 @@ export default function ForgotPasswordPage() {
     const [verifyState, verifyAction, isVerifyPending] = useActionState(verifyAndResetPassword, null);
 
     const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
 
     const step = requestState?.step === 'verify' ? 'verify' : 'request';
 
@@ -29,8 +28,8 @@ export default function ForgotPasswordPage() {
                     <h1 className="text-2xl font-bold">Verify & Reset Password</h1>
                     <p className="text-muted-foreground text-center mt-2">
                         {step === 'request'
-                            ? "Enter your email and registered phone number to recover your account."
-                            : "Enter the 6-digit OTP sent to your phone and your new password."}
+                            ? "Enter your registered email address to recover your account."
+                            : "Enter the 6-digit OTP sent to your email and your new password."}
                     </p>
                 </div>
 
@@ -57,23 +56,7 @@ export default function ForgotPasswordPage() {
                                 placeholder="john@example.com"
                             />
                         </div>
-                        <div>
-                            <label className="block text-sm font-medium mb-1">Registered Phone Number</label>
-                            <div className="flex relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">+91</span>
-                                <input
-                                    name="phone"
-                                    type="tel"
-                                    required
-                                    pattern="[0-9]{10}"
-                                    maxLength={10}
-                                    value={phone}
-                                    onChange={e => setPhone(e.target.value)}
-                                    className="w-full h-12 pl-12 pr-4 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                                    placeholder="9876543210"
-                                />
-                            </div>
-                        </div>
+
 
                         {requestState?.error && (
                             <div className="text-destructive text-sm bg-destructive/10 p-3 rounded-lg text-center">

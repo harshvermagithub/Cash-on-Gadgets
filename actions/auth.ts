@@ -49,7 +49,6 @@ export async function signin(prevState: { error?: string } | null, formData: For
         return { error: 'Invalid email or password' };
     }
 
-    // @ts-ignore - role exists after schema update
     console.log('DEBUG SIGNIN USER:', user);
     await login({ id: user.id, email: user.email, name: user.name, role: user.role });
     redirect('/');
@@ -59,59 +58,40 @@ export async function createOrderAction(_device: string, _variant: string, _pric
     // This action will be called from client side
 }
 
-export async function requestPasswordReset(prevState: any, formData: FormData) {
+import { supabase } from '@/lib/supabase';
+
+export async function requestPasswordReset(prevState: { error?: string, success?: string, email?: string, step?: string } | null, formData: FormData) {
     const email = formData.get('email') as string;
-    let phone = formData.get('phone') as string;
 
-    if (!email || !phone) {
-        return { error: 'Please enter registered email and phone.' };
-    }
-
-    if (phone && !phone.startsWith('+91')) {
-        phone = `+91${phone}`;
+    if (!email) {
+        return { error: 'Please enter your registered email address.' };
     }
 
     const user = await db.findUserByEmail(email);
-    if (!user || user.phone !== phone) {
-        return { error: 'Invalid email or registered phone number. We could not verify ownership.' };
+    if (!user) {
+        return { error: 'Invalid email. We could not verify ownership.' };
     }
 
-    // Generate 6 digit OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-
-    await db.setResetToken(email, otp, expiry);
-
-    // Call Dofy SMS Gateway
     try {
-        const formData = new URLSearchParams();
-        formData.append('username', 'FonzKa');
-        formData.append('apikey', '0df550ae149021fa-589f');
-        formData.append('apirequest', 'Text');
-        formData.append('sender', 'DOFYIN');
-        formData.append('route', 'TRANS');
-        formData.append('format', 'JSON');
-        formData.append('message', `Use ${otp} to reset your Fonzkart password. DO NOT share this with anyone. Enjoy our hassle-free gadget selling experience.`);
-        formData.append('mobile', phone);
-        formData.append('TemplateID', '1207164993188267205');
-
-        await fetch('http://api.smsgatewayhub.com/api/mt/SendSMS', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            }
+        const { error } = await supabase.auth.signInWithOtp({
+            email: email,
         });
-        console.log(`[SMS INTEGRATION] OTP sent to ${phone}`);
-    } catch (e) {
-        console.error("SMS Sending Failed", e);
-        // We do not block the user if SMS API is down, but realistically this should be handled
+
+        if (error) {
+            console.error(`[SUPABASE OTP] Gateway Error: ${error.message}`);
+            return { error: `Email failed to send: ${error.message}` };
+        }
+
+        console.log(`[SUPABASE OTP] OTP successfully sent to ${email}`);
+    } catch (e: unknown) {
+        console.error("Email Sending Failed", e instanceof Error ? e.message : e);
+        return { error: 'Failed to connect to the email gateway. Please try again later.' };
     }
 
-    return { success: 'OTP successfully sent to your registered phone number.', email, phone, step: 'verify' };
+    return { success: 'OTP successfully sent to your registered email address.', email, step: 'verify' };
 }
 
-export async function verifyAndResetPassword(prevState: any, formData: FormData) {
+export async function verifyAndResetPassword(prevState: { error?: string, success?: string } | null, formData: FormData) {
     const email = formData.get('email') as string;
     const otp = formData.get('otp') as string;
     const password = formData.get('password') as string;
@@ -121,11 +101,18 @@ export async function verifyAndResetPassword(prevState: any, formData: FormData)
     }
 
     const user = await db.findUserByEmail(email);
-    if (!user || user.resetToken !== otp) {
-        return { error: 'Invalid OTP.' };
+    if (!user) {
+        return { error: 'Invalid user.' };
     }
-    if (!user.resetTokenExpiry || new Date() > user.resetTokenExpiry) {
-        return { error: 'OTP has expired. Please request a new one.' };
+
+    const { error } = await supabase.auth.verifyOtp({
+        email,
+        token: otp,
+        type: 'email'
+    });
+
+    if (error) {
+        return { error: `Invalid OTP: ${error.message}` };
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
