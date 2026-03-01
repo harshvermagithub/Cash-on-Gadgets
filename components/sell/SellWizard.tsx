@@ -54,6 +54,7 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
     const [selectedBrand, setSelectedBrand] = useState<Brand | null>(preSelectedBrand || null);
     const [selectedModel, setSelectedModel] = useState<Model | null>(null);
     const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
+    const [skippedVariant, setSkippedVariant] = useState(false);
     const [answers, setAnswers] = useState<Record<string, unknown>>({});
 
     // Track user state locally so we can update it after inline login
@@ -89,7 +90,18 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
 
     const handleModelSelect = (model: Model) => {
         setSelectedModel(model);
+        setSkippedVariant(false);
         setStep('variant');
+    };
+
+    const handleVariantAutoSkip = (variant: Variant) => {
+        setSelectedVariant(variant);
+        setSkippedVariant(true);
+        if (isRepair) {
+            setStep('checklist');
+        } else {
+            setStep('quote_preview');
+        }
     };
 
     const handleVariantSelect = (variant: Variant) => {
@@ -105,6 +117,11 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
         setUser(loggedInUser);
         setStep('final_quote');
     };
+
+    const isVariantHidden = selectedVariant && (selectedVariant.name.toLowerCase().includes('no variant') || skippedVariant);
+    const displayDeviceName = `${selectedBrand?.name} ${selectedModel?.name}`;
+    const displayVariant = isVariantHidden ? '' : selectedVariant?.name;
+    const quotePreviewDetails = isVariantHidden ? displayDeviceName : `${displayDeviceName} (${displayVariant})`;
 
     return (
         <div className="w-full max-w-6xl mx-auto">
@@ -149,6 +166,7 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
                             category={category}
                             brand={selectedBrand}
                             onSelect={handleVariantSelect}
+                            onAutoSkip={handleVariantAutoSkip}
                             onBack={() => setStep('model')}
                         />
                     </motion.div>
@@ -158,9 +176,15 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
                     <motion.div key="quote_preview" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                         <QuotePreview
                             basePrice={selectedVariant.basePrice}
-                            deviceDetails={`${selectedBrand?.name} ${selectedModel.name} (${selectedVariant.name})`}
+                            deviceDetails={quotePreviewDetails}
                             onGetExactValue={() => setStep('checklist')}
-                            onBack={() => setStep('variant')}
+                            onBack={() => {
+                                if (skippedVariant) {
+                                    setStep('model');
+                                } else {
+                                    setStep('variant');
+                                }
+                            }}
                             isRepair={isRepair}
                         />
                     </motion.div>
@@ -169,7 +193,7 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
                 {step === 'checklist' && selectedModel && selectedVariant && (
                     <motion.div key="checklist" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                         <ChecklistWizard
-                            deviceInfo={{ name: selectedModel.name, variant: selectedVariant.name, img: selectedModel.img }}
+                            deviceInfo={{ name: selectedModel.name, variant: displayVariant || '', img: selectedModel.img }}
                             category={category}
                             onComplete={(collectedAnswers) => {
                                 setAnswers(collectedAnswers);
@@ -180,7 +204,10 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
                                 }
                             }}
                             onBack={() => {
-                                if (isRepair) setStep('variant');
+                                if (isRepair) {
+                                    if (skippedVariant) setStep('model');
+                                    else setStep('variant');
+                                }
                                 else setStep('quote_preview');
                             }}
                         />
@@ -199,8 +226,8 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
                             basePrice={selectedVariant.basePrice}
                             answers={answers}
                             deviceInfo={{
-                                name: `${selectedBrand?.name} ${selectedModel.name}`,
-                                variant: selectedVariant.name
+                                name: displayDeviceName,
+                                variant: displayVariant || ''
                             }}
                             category={category}
                             isRepair={isRepair}

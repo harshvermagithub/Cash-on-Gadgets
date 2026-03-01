@@ -12,10 +12,11 @@ interface VariantSelectorProps {
     category?: string;
     brand?: { name: string } | null;
     onSelect: (variant: Variant) => void;
+    onAutoSkip?: (variant: Variant) => void;
     onBack: () => void;
 }
 
-export default function VariantSelector({ modelId, category, brand, onSelect, onBack }: VariantSelectorProps) {
+export default function VariantSelector({ modelId, category, brand, onSelect, onAutoSkip, onBack }: VariantSelectorProps) {
     const [variants, setVariants] = useState<Variant[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -26,8 +27,12 @@ export default function VariantSelector({ modelId, category, brand, onSelect, on
                 // Pass category to fetchVariants if provided
                 const v = await fetchVariants(modelId, category);
                 if (mounted) {
-                    setVariants(v);
-                    setIsLoading(false);
+                    if (v.length === 1 && onAutoSkip) {
+                        onAutoSkip(v[0]);
+                    } else {
+                        setVariants(v);
+                        setIsLoading(false);
+                    }
                 }
             } catch (error) {
                 console.error(error);

@@ -34,15 +34,15 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                 </div>
 
                 <div className="container mx-auto px-6 md:px-12 xl:px-20 max-w-[100vw] overflow-x-hidden">
-                    <div className="flex flex-col xl:flex-row items-center gap-12 xl:gap-24">
+                    <div className="flex flex-col items-center gap-12 xl:gap-16">
 
-                        {/* LEFT COLUMN: Content */}
-                        <div className="flex-1 w-full max-w-2xl animate-in slide-in-from-bottom-8 fade-in-20 duration-700 flex flex-col items-center text-center xl:items-start xl:text-left z-20">
+                        {/* Content */}
+                        <div className="flex-1 w-full max-w-3xl animate-in slide-in-from-bottom-8 fade-in-20 duration-700 flex flex-col items-center text-center z-20 mx-auto">
 
                             {/* REBUILT DESKTOP TOP SECTION: Logo + Badge */}
 
                             {/* Desktop Logo (Added per request) */}
-                            <div className="hidden xl:flex mb-6 scale-[1.3] origin-left">
+                            <div className="hidden xl:flex mb-6 scale-[1.3] origin-center">
                                 <DynamicLogo />
                             </div>
 
@@ -89,13 +89,13 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                     Smart way to <br />
                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 animate-gradient-x">sell your device.</span>
                                 </h1>
-                                <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed max-w-lg mt-6 font-medium mx-auto xl:mx-0">
+                                <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed max-w-lg mt-6 font-medium mx-auto">
                                     Get the <span className="text-green-600 dark:text-green-400 font-bold">Highest Value</span> for your old smartphone, laptop, or Smartwatch instantly. Doorstep pickup in 3 hours.
                                 </p>
                             </div>
 
                             {/* CTA Buttons */}
-                            <div className="flex flex-col sm:flex-row gap-4 pt-8 w-full sm:w-auto justify-center xl:justify-start">
+                            <div className="flex flex-col sm:flex-row gap-4 pt-8 w-full sm:w-auto justify-center mx-auto">
                                 <Link
                                     href="/sell"
                                     className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-slate-900 dark:bg-green-600 text-white font-bold text-lg shadow-xl shadow-green-500/20 hover:bg-slate-800 dark:hover:bg-green-500 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group w-full sm:w-auto"
@@ -112,7 +112,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                             </div>
 
                             {/* Trust Signals */}
-                            <div className="flex items-center gap-6 pt-8 text-sm font-semibold text-slate-500 dark:text-slate-400 flex-wrap">
+                            <div className="flex items-center justify-center gap-6 pt-8 text-sm font-semibold text-slate-500 dark:text-slate-400 flex-wrap mx-auto">
                                 <div className="flex items-center gap-2">
                                     <div className="p-1 rounded-full bg-green-100 dark:bg-green-900/30"><Zap className="w-3.5 h-3.5 text-green-600" /></div>
                                     Instant Cash
@@ -128,8 +128,8 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                             </div>
                         </div>
 
-                        {/* RIGHT COLUMN: Desktop Hero Animation */}
-                        <div className="hidden xl:flex flex-1 relative w-full h-[600px] max-w-[700px] animate-in zoom-in-50 fade-in duration-1000 delay-200 perspective-1000 items-center justify-center">
+                        {/* Hero Animation (Desktop) */}
+                        <div className="hidden xl:flex relative w-full h-[500px] max-w-[800px] animate-in zoom-in-50 fade-in duration-1000 delay-200 perspective-1000 items-center justify-center mx-auto">
                             {/* Decorative Blob under Animation */}
                             <div className="absolute inset-0 bg-gradient-to-tr from-green-500/5 to-emerald-500/5 rounded-full blur-3xl transform scale-90" />
                             <HeroAnimation />

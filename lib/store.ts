@@ -70,6 +70,12 @@ export const db = {
             data: { passwordHash }
         });
     },
+    updateProfile: async (email: string, data: { name?: string, phone?: string }) => {
+        return await prisma.user.update({
+            where: { email },
+            data
+        });
+    },
     setResetToken: async (email: string, token: string, expiry: Date) => {
         await prisma.user.update({
             where: { email },

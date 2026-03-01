@@ -31,7 +31,10 @@ export default async function Header() {
 
                     {session ? (
                         <div className="flex items-center gap-4">
-                            <span className="text-sm font-medium hidden md:inline-block">Hi, {session.user?.name}</span>
+                            <Link href="/profile" className="flex items-center gap-2 hover:text-primary transition-colors text-sm font-medium">
+                                <User className="h-4 w-4" />
+                                <span className="hidden md:inline-block">Hi, {session.user?.name}</span>
+                            </Link>
                             <form action={async () => {
                                 'use server';
                                 await logout();
