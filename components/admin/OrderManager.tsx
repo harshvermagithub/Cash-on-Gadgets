@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { assignRider } from '@/actions/admin';
 import { Rider, Order } from '@/lib/store'; // Need to export Order from store/lib
-import { Calendar, MapPin, Smartphone, User, CheckCircle2, Eye, X, Download, Phone } from 'lucide-react';
+import { Calendar, MapPin, Smartphone, User, CheckCircle2, Eye, X, Download, Phone, Mail } from 'lucide-react';
 import OrderDetails from '@/components/OrderDetails';
 import { useRouter } from 'next/navigation';
 
@@ -141,15 +141,35 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                     <div className="text-lg font-mono font-bold text-green-600">
                                         ₹{order.price.toLocaleString()}
                                     </div>
-                                    <div className="flex flex-col gap-2 mt-2">
-                                        {phone && (
-                                            <div className="flex items-start gap-2 text-sm text-foreground bg-muted/30 p-2 rounded-lg border">
-                                                <Phone className="w-4 h-4 mt-0.5 text-primary" />
-                                                <span className="font-bold">+91 {phone}</span>
-                                            </div>
-                                        )}
-                                        <div className="flex items-start gap-2 text-sm text-muted-foreground bg-muted/30 p-2 rounded-lg border">
-                                            <MapPin className="w-4 h-4 mt-0.5" />
+                                    <div className="flex flex-col gap-2 mt-4">
+                                        <div className="bg-muted/30 p-3 rounded-xl border border-border/50 space-y-2">
+                                            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Customer Details</div>
+                                            {order.user && (
+                                                <>
+                                                    <div className="flex items-center gap-2 text-sm text-foreground">
+                                                        <User className="w-4 h-4 text-primary" />
+                                                        <span className="font-semibold">{order.user.name || "N/A"}</span>
+                                                    </div>
+                                                    {order.user.email && (
+                                                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                                            <Mail className="w-4 h-4 text-primary" />
+                                                            <span>{order.user.email}</span>
+                                                        </div>
+                                                    )}
+                                                </>
+                                            )}
+                                            {phone && (
+                                                <div className="flex items-center gap-2 text-sm text-foreground">
+                                                    <Phone className="w-4 h-4 text-primary" />
+                                                    <span className="font-bold tracking-wide">+91 {phone}</span>
+                                                </div>
+                                            )}
+                                            {(!order.user && !phone) && (
+                                                <div className="text-sm text-muted-foreground italic">No details available</div>
+                                            )}
+                                        </div>
+                                        <div className="flex items-start gap-2 text-sm text-muted-foreground bg-muted/30 p-3 rounded-xl border border-border/50">
+                                            <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
                                             <span>{order.address || "Location captured via GPS"}</span>
                                         </div>
                                     </div>

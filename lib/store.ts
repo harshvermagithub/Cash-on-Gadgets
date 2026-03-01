@@ -9,6 +9,8 @@ export interface User {
     passwordHash: string;
     name: string;
     role: string;
+    resetToken?: string | null;
+    resetTokenExpiry?: Date | null;
 }
 
 export type Rider = PrismaRider;
@@ -17,6 +19,7 @@ export interface Order {
     id: string;
     orderNumber?: number;
     userId: string;
+    user?: Partial<User> | null;
     device: string;
     price: number;
     date: string;
@@ -61,18 +64,38 @@ export const db = {
             data: { role }
         });
     },
+    updateUserPassword: async (email: string, passwordHash: string) => {
+        await prisma.user.update({
+            where: { email },
+            data: { passwordHash }
+        });
+    },
+    setResetToken: async (email: string, token: string, expiry: Date) => {
+        await prisma.user.update({
+            where: { email },
+            data: { resetToken: token, resetTokenExpiry: expiry }
+        });
+    },
+    clearResetToken: async (email: string) => {
+        await prisma.user.update({
+            where: { email },
+            data: { resetToken: null, resetTokenExpiry: null }
+        });
+    },
     getAdmins: async () => {
         return await prisma.user.findMany({ where: { role: 'ADMIN' } });
     },
     getOrders: async (userId: string) => {
         const orders = await prisma.order.findMany({
             where: { userId },
+            include: { user: true },
             orderBy: { createdAt: 'desc' }
         });
         return orders.map(mapPrismaOrderToAppOrder);
     },
     getAllOrders: async () => {
         const orders = await prisma.order.findMany({
+            include: { user: true },
             orderBy: { createdAt: 'desc' }
         });
         return orders.map(mapPrismaOrderToAppOrder);
@@ -315,11 +338,17 @@ export const db = {
     }
 };
 
-function mapPrismaOrderToAppOrder(o: PrismaOrder & { orderNumber?: number }): Order {
+function mapPrismaOrderToAppOrder(o: PrismaOrder & { orderNumber?: number, user?: any }): Order {
     return {
         id: o.id,
         orderNumber: o.orderNumber,
         userId: o.userId,
+        user: o.user ? {
+            id: o.user.id,
+            name: o.user.name,
+            email: o.user.email,
+            phone: o.user.phone,
+        } : null,
         device: o.device,
         price: o.price,
         date: o.createdAt.toISOString(),
