@@ -427,14 +427,6 @@ const categories = [
         textColor: 'text-blue-900 dark:text-blue-100'
     },
     {
-        id: 'tablet',
-        name: 'Tablets',
-        subtext: 'Get up to ₹40,000',
-        component: <TabletGraphic />,
-        bgColors: 'bg-purple-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
-        textColor: 'text-purple-900 dark:text-purple-100'
-    },
-    {
         id: 'smartwatch',
         name: 'Smartwatches',
         subtext: 'Top market prices guaranteed',
@@ -443,20 +435,12 @@ const categories = [
         textColor: 'text-orange-900 dark:text-orange-100'
     },
     {
-        id: 'console',
-        name: 'Consoles',
-        subtext: 'Get up to ₹24,000',
-        component: <ConsoleGraphic />,
-        bgColors: 'bg-indigo-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
-        textColor: 'text-indigo-900 dark:text-indigo-100'
-    },
-    {
-        id: 'tv',
-        name: 'Smart TVs',
-        subtext: 'Best value for your television',
-        component: <TvGraphic />,
-        bgColors: 'bg-emerald-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
-        textColor: 'text-emerald-900 dark:text-emerald-100'
+        id: 'camera',
+        name: 'Cameras',
+        subtext: 'Premium value for your gear',
+        component: <CameraGraphic />,
+        bgColors: 'bg-rose-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
+        textColor: 'text-rose-900 dark:text-rose-100'
     },
     {
         id: 'laptop',
@@ -467,20 +451,36 @@ const categories = [
         textColor: 'text-cyan-900 dark:text-cyan-100'
     },
     {
+        id: 'tv',
+        name: 'Smart TVs',
+        subtext: 'Best value for your television',
+        component: <TvGraphic />,
+        bgColors: 'bg-emerald-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
+        textColor: 'text-emerald-900 dark:text-emerald-100'
+    },
+    {
+        id: 'tablet',
+        name: 'Tablets',
+        subtext: 'Get up to ₹40,000',
+        component: <TabletGraphic />,
+        bgColors: 'bg-purple-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
+        textColor: 'text-purple-900 dark:text-purple-100'
+    },
+    {
+        id: 'console',
+        name: 'Consoles',
+        subtext: 'Get up to ₹24,000',
+        component: <ConsoleGraphic />,
+        bgColors: 'bg-indigo-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
+        textColor: 'text-indigo-900 dark:text-indigo-100'
+    },
+    {
         id: 'desktop',
         name: 'Desktops',
         subtext: 'Turn your old PC into cash',
         component: <DesktopGraphic />,
         bgColors: 'bg-teal-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-teal-900 dark:text-teal-100'
-    },
-    {
-        id: 'camera',
-        name: 'Cameras',
-        subtext: 'Premium value for your gear',
-        component: <CameraGraphic />,
-        bgColors: 'bg-rose-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
-        textColor: 'text-rose-900 dark:text-rose-100'
     },
     {
         id: 'earbuds',
@@ -499,6 +499,7 @@ const categories = [
         textColor: 'text-red-900 dark:text-red-100'
     },
 ];
+
 
 export default function CategorySelector({ onSelect }: CategorySelectorProps) {
     return (
