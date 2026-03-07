@@ -2,8 +2,8 @@
 'use client';
 
 import { useState } from 'react';
-import { addRider, deleteRider } from '@/actions/admin';
-import { Trash2, Plus, Loader2, User, Phone, ChevronDown, ChevronUp, Package, AlertTriangle } from 'lucide-react';
+import { addRider, deleteRider, updateRiderPartner } from '@/actions/admin';
+import { Trash2, Plus, Loader2, User, Phone, ChevronDown, ChevronUp, Package, AlertTriangle, Building2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function RiderManager({ initialRiders, partners = [], currentUserRole, currentUserId }: { initialRiders: any[], partners?: any[], currentUserRole?: string, currentUserId?: string }) {
@@ -11,8 +11,15 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [partnerId, setPartnerId] = useState(currentUserRole === 'PARTNER' ? currentUserId : '');
+    const [filterPartner, setFilterPartner] = useState('all');
     const [isLoading, setIsLoading] = useState(false);
     const [expandedRider, setExpandedRider] = useState<string | null>(null);
+
+    const filteredRiders = initialRiders.filter(r => {
+        if (filterPartner === 'all') return true;
+        if (filterPartner === 'unassigned') return !r.partnerId;
+        return r.partnerId === filterPartner;
+    });
 
     const toggleExpand = (id: string) => {
         setExpandedRider(expandedRider === id ? null : id);
@@ -95,8 +102,28 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
                 </form>
             </div>
 
+            {currentUserRole !== 'PARTNER' && partners.length > 0 && (
+                <div className="flex flex-col md:flex-row justify-between md:items-center bg-card border rounded-xl p-6 gap-4">
+                    <div>
+                        <h3 className="text-sm font-bold">Filter By Partner</h3>
+                        <p className="text-xs text-muted-foreground">View field executives assigned to specific partners.</p>
+                    </div>
+                    <select
+                        value={filterPartner}
+                        onChange={(e) => setFilterPartner(e.target.value)}
+                        className="p-2 border rounded-lg bg-background w-full md:w-64 text-sm"
+                    >
+                        <option value="all">All Field Executives</option>
+                        <option value="unassigned">Unassigned List</option>
+                        {partners.map(p => (
+                            <option key={p.id} value={p.id}>{p.name}</option>
+                        ))}
+                    </select>
+                </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {initialRiders.map((rider) => (
+                {filteredRiders.map((rider) => (
                     <div key={rider.id} className="border rounded-xl bg-card overflow-hidden">
                         <div
                             className="p-4 flex items-center justify-between cursor-pointer hover:bg-muted/50 transition-colors"
@@ -141,13 +168,48 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
                                 >
                                     <Trash2 className="w-4 h-4" />
                                 </button>
-                                {expandedRider === rider.id ? <ChevronUp className="w-5 h-5 text-muted-foreground" /> : <ChevronDown className="w-5 h-5 text-muted-foreground" />}
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        toggleExpand(rider.id);
+                                    }}
+                                    className="px-3 py-1.5 bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-lg transition-colors text-xs font-bold flex items-center"
+                                >
+                                    {expandedRider === rider.id ? 'Collapse' : 'Expand'}
+                                    {expandedRider === rider.id ? <ChevronUp className="w-4 h-4 ml-1" /> : <ChevronDown className="w-4 h-4 ml-1" />}
+                                </button>
                             </div>
                         </div>
 
                         {/* Expandable Orders Section */}
                         {expandedRider === rider.id && (
                             <div className="bg-muted/30 border-t p-4 space-y-3">
+                                {currentUserRole !== 'PARTNER' && partners.length > 0 && (
+                                    <div className="mb-4 bg-background border p-3 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+                                        <div className="flex items-center gap-2">
+                                            <Building2 className="w-4 h-4 text-primary" />
+                                            <span className="text-sm font-semibold">Assigned Partner:</span>
+                                        </div>
+                                        <select
+                                            value={rider.partnerId || ''}
+                                            onChange={async (e) => {
+                                                const newPartnerId = e.target.value || null;
+                                                // Handle API call directly using imported server action
+                                                if (confirm(`Are you sure you want to reassign this executive?`)) {
+                                                    await updateRiderPartner(rider.id, newPartnerId);
+                                                    router.refresh();
+                                                }
+                                            }}
+                                            className="p-1.5 text-sm border rounded-md bg-background w-full sm:w-auto min-w-[150px]"
+                                        >
+                                            <option value="">None (Unassigned)</option>
+                                            {partners.map(p => (
+                                                <option key={p.id} value={p.id}>{p.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )}
+
                                 <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Assigned Orders</h4>
                                 {rider.orders && rider.orders.length > 0 ? (
                                     <div className="space-y-2 max-h-[500px] overflow-y-auto pr-2">

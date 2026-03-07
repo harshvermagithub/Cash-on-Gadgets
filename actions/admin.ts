@@ -238,6 +238,13 @@ export async function deleteRider(id: string) {
     return { success: true };
 }
 
+export async function updateRiderPartner(riderId: string, partnerId: string | null) {
+    await requireAdmin();
+    await db.updateRiderPartner(riderId, partnerId);
+    revalidatePath('/admin/riders');
+    return { success: true };
+}
+
 // --- Orders ---
 
 export async function assignRider(orderId: string, riderId: string) {

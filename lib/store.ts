@@ -162,6 +162,7 @@ export const db = {
                 phone: rider.phone,
                 status: rider.status || 'available',
                 password: rider.password,
+                // @ts-ignore
                 partnerId: rider.partnerId
             }
         });
@@ -174,6 +175,13 @@ export const db = {
     },
     deleteRider: async (id: string) => {
         await prisma.rider.delete({ where: { id } });
+    },
+    updateRiderPartner: async (id: string, partnerId: string | null) => {
+        await prisma.rider.update({
+            where: { id },
+            // @ts-ignore
+            data: { partnerId }
+        });
     },
 
     // Brand Methods
