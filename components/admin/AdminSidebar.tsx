@@ -38,6 +38,10 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
 
+    const dashboardTitle = role === 'ZONAL_HEAD' ? 'Zonal Head Dashboard' :
+        ['SUPER_ADMIN', 'ADMIN'].includes(role) ? 'Admin Dashboard' :
+            'Partner Dashboard';
+
     // Close mobile menu on navigation
     useEffect(() => {
         setIsOpen(false);
@@ -48,7 +52,7 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
             <div className="p-6 border-b shrink-0 flex items-center justify-between">
                 <Link href="/admin" className="flex items-center gap-2 font-bold text-lg text-primary leading-tight">
                     <LayoutDashboard className="shrink-0 w-6 h-6" />
-                    <span>Partner Dashboard</span>
+                    <span>{dashboardTitle}</span>
                 </Link>
             </div>
 
@@ -184,7 +188,7 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
             {/* Mobile/Tablet Header (Top, visible on small screens) */}
             <div className="lg:hidden p-4 bg-card border-b flex items-center justify-between sticky top-0 z-30 shadow-sm">
                 <Link href="/admin" className="font-bold flex items-center gap-2 text-primary text-sm">
-                    <LayoutDashboard className="w-5 h-5 shrink-0" /> <span className="truncate">Partner Dashboard</span>
+                    <LayoutDashboard className="w-5 h-5 shrink-0" /> <span className="truncate">{dashboardTitle}</span>
                 </Link>
                 <button
                     onClick={() => setIsOpen(true)}
