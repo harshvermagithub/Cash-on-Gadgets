@@ -59,6 +59,7 @@ export async function removeUserRole(email: string) {
     revalidatePath('/admin/admins');
     revalidatePath('/admin/zonal-heads');
     revalidatePath('/admin/partners');
+    revalidatePath('/admin/riders');
     return { success: true };
 }
 

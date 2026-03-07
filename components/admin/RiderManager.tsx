@@ -196,8 +196,12 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
                                                 const newPartnerId = e.target.value || null;
                                                 // Handle API call directly using imported server action
                                                 if (confirm(`Are you sure you want to reassign this executive?`)) {
-                                                    await updateRiderPartner(rider.id, newPartnerId);
-                                                    router.refresh();
+                                                    try {
+                                                        await updateRiderPartner(rider.id, newPartnerId);
+                                                        router.refresh();
+                                                    } catch (error) {
+                                                        alert("Failed to assign partner. They might have been removed from the system.");
+                                                    }
                                                 }
                                             }}
                                             className="p-1.5 text-sm border rounded-md bg-background w-full sm:w-auto min-w-[150px]"
