@@ -9,7 +9,7 @@ export default function PincodeInput({ initialPincodes }: { initialPincodes: str
     const handleAdd = (e?: React.MouseEvent | React.KeyboardEvent) => {
         if (e && 'key' in e && e.key !== 'Enter') return;
         if (e) e.preventDefault();
-        
+
         const code = input.trim();
         if (code && !pincodes.includes(code)) {
             setPincodes([...pincodes, code]);
@@ -25,7 +25,7 @@ export default function PincodeInput({ initialPincodes }: { initialPincodes: str
         <div className="flex flex-col gap-2 w-full flex-1">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Assigned Pincodes</label>
             <input type="hidden" name="pincodes" value={pincodes.join(',')} />
-            
+
             <div className="flex flex-wrap gap-2">
                 {pincodes.map(p => (
                     <div key={p} className="flex items-center gap-1 bg-primary/10 text-primary border border-primary/20 text-sm font-medium px-2 py-1 rounded-full">
@@ -36,7 +36,7 @@ export default function PincodeInput({ initialPincodes }: { initialPincodes: str
                     </div>
                 ))}
             </div>
-            
+
             <div className="flex gap-2 w-full mt-1">
                 <input
                     type="text"
@@ -46,10 +46,10 @@ export default function PincodeInput({ initialPincodes }: { initialPincodes: str
                     placeholder="Enter pincode (e.g. 560032)"
                     className="flex-1 h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background"
                 />
-                <button 
-                    type="button" 
+                <button
+                    type="button"
                     onClick={handleAdd}
-                    className="h-9 px-3 bg-secondary text-secondary-foreground rounded-md text-xs font-medium hover:bg-secondary/80 flex items-center gap-1"
+                    className="shrink-0 h-9 px-3 bg-secondary text-secondary-foreground rounded-md text-xs font-medium hover:bg-secondary/80 flex items-center gap-1"
                 >
                     <Plus className="w-3 h-3" /> Add
                 </button>

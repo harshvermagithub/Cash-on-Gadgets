@@ -145,7 +145,7 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                             }`}
                     >
                         <Building2 className="w-5 h-5" />
-                        City Partners
+                        Partners
                     </Link>
                 )}
 

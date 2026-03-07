@@ -93,7 +93,7 @@ export default async function CitiesAdminPage() {
                                 </div>
 
                                 <div>
-                                    <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">City Partners ({partners.length})</h4>
+                                    <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Partners ({partners.length})</h4>
                                     {partners.length > 0 ? (
                                         <div className="flex flex-col gap-1">
                                             {partners.map(p => (

@@ -119,12 +119,12 @@ export default function AdminManager({
                     <div className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {superAdmins.map((admin) => (
-                                <div key={admin.id} className="p-4 border border-primary/20 rounded-xl bg-primary/5 flex items-center justify-between group shadow-sm">
-                                    <div className="flex items-start gap-4">
-                                        <div className="p-3 bg-primary/20 text-primary rounded-xl">
+                                <div key={admin.id} className="p-4 border border-primary/20 rounded-xl bg-primary/5 flex flex-col sm:flex-row items-start sm:items-center justify-between group shadow-sm gap-4">
+                                    <div className="flex items-start gap-4 flex-1 min-w-0 w-full">
+                                        <div className="p-3 bg-primary/20 text-primary rounded-xl shrink-0">
                                             <Crown className="w-5 h-5" />
                                         </div>
-                                        <div className="min-w-0 mt-0.5">
+                                        <div className="min-w-0 mt-0.5 flex-1">
                                             <p className="font-bold truncate text-foreground">{admin.name}</p>
                                             <div className="flex items-center gap-1.5 text-sm text-muted-foreground mt-1 truncate">
                                                 <Mail className="w-3 h-3 shrink-0" />
@@ -132,10 +132,10 @@ export default function AdminManager({
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2 self-end sm:self-auto w-full sm:w-auto justify-end sm:justify-start">
                                         <button
                                             onClick={() => handleRemoveRole(admin.email, 'Super Admin')}
-                                            className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors focus:opacity-100 shrink-0 ml-1"
+                                            className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors focus:opacity-100 shrink-0"
                                             title="Revoke Super Admin Access"
                                         >
                                             <Trash2 className="w-4 h-4" />
@@ -143,7 +143,7 @@ export default function AdminManager({
                                     </div>
                                 </div>
                             ))}
-                            {superAdmins.length === 0 && <p className="text-muted-foreground text-sm col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Super Admins found.</p>}
+                            {superAdmins.length === 0 && <p className="text-muted-foreground text-sm col-span-1 md:col-span-2 lg:col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Super Admins found.</p>}
                         </div>
                     </div>
                 )}
@@ -177,12 +177,12 @@ export default function AdminManager({
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {admins.map((admin) => (
-                                <div key={admin.id} className="p-4 border rounded-xl bg-card shadow-sm flex items-center justify-between group">
-                                    <div className="flex items-start gap-4">
-                                        <div className="p-3 bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-500 rounded-xl">
+                                <div key={admin.id} className="p-4 border rounded-xl bg-card shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between group gap-4">
+                                    <div className="flex items-start gap-4 flex-1 min-w-0 w-full">
+                                        <div className="p-3 bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-500 rounded-xl shrink-0">
                                             <ShieldCheck className="w-5 h-5" />
                                         </div>
-                                        <div className="min-w-0 mt-0.5">
+                                        <div className="min-w-0 mt-0.5 flex-1">
                                             <p className="font-bold truncate text-foreground">{admin.name}</p>
                                             <div className="flex items-center gap-1.5 text-sm text-muted-foreground mt-1 truncate">
                                                 <Mail className="w-3 h-3 shrink-0" />
@@ -190,28 +190,30 @@ export default function AdminManager({
                                             </div>
                                         </div>
                                     </div>
-                                    <button
-                                        onClick={() => handleRemoveAdmin(admin.email)}
-                                        className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors focus:opacity-100 shrink-0"
-                                        title="Revoke Admin Access"
-                                    >
-                                        <Trash2 className="w-4 h-4" />
-                                    </button>
+                                    <div className="self-end sm:self-auto w-full sm:w-auto flex justify-end sm:justify-start">
+                                        <button
+                                            onClick={() => handleRemoveAdmin(admin.email)}
+                                            className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors focus:opacity-100 shrink-0"
+                                            title="Revoke Admin Access"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
-                            {admins.length === 0 && <p className="text-muted-foreground text-sm col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No standard Admins found.</p>}
+                            {admins.length === 0 && <p className="text-muted-foreground text-sm col-span-1 md:col-span-2 lg:col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No standard Admins found.</p>}
                         </div>
                     </div>
                 )}
                 {activeTab === 'zonalHeads' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {zonalHeads.map((zh) => (
-                            <div key={zh.id} className="p-4 border rounded-xl bg-card shadow-sm flex items-center justify-between group">
-                                <div className="flex items-start gap-4">
-                                    <div className="p-3 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-500 rounded-xl">
+                            <div key={zh.id} className="p-4 border rounded-xl bg-card shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between group gap-4">
+                                <div className="flex items-start gap-4 flex-1 min-w-0 w-full">
+                                    <div className="p-3 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-500 rounded-xl shrink-0">
                                         <Briefcase className="w-5 h-5" />
                                     </div>
-                                    <div className="min-w-0 mt-0.5">
+                                    <div className="min-w-0 mt-0.5 flex-1">
                                         <p className="font-bold truncate text-foreground">{zh.name}</p>
                                         <div className="flex items-center gap-1.5 text-sm text-muted-foreground mt-1 truncate">
                                             <Mail className="w-3 h-3 shrink-0" />
@@ -219,28 +221,30 @@ export default function AdminManager({
                                         </div>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={() => handleRemoveRole(zh.email, 'Zonal Head')}
-                                    className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors focus:opacity-100 shrink-0 ml-2"
-                                    title="Revoke Zonal Head Access"
-                                >
-                                    <Trash2 className="w-4 h-4" />
-                                </button>
+                                <div className="self-end sm:self-auto w-full sm:w-auto flex justify-end sm:justify-start">
+                                    <button
+                                        onClick={() => handleRemoveRole(zh.email, 'Zonal Head')}
+                                        className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors focus:opacity-100 shrink-0"
+                                        title="Revoke Zonal Head Access"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
                             </div>
                         ))}
-                        {zonalHeads.length === 0 && <p className="text-muted-foreground text-sm col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Zonal Heads found.</p>}
+                        {zonalHeads.length === 0 && <p className="text-muted-foreground text-sm col-span-1 md:col-span-2 lg:col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Zonal Heads found.</p>}
                     </div>
                 )}
 
                 {activeTab === 'partners' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {partners.map((partner) => (
-                            <div key={partner.id} className="p-4 border rounded-xl bg-card shadow-sm flex items-center justify-between group">
-                                <div className="flex items-start gap-4">
-                                    <div className="p-3 bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-500 rounded-xl">
+                            <div key={partner.id} className="p-4 border rounded-xl bg-card shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between group gap-4">
+                                <div className="flex items-start gap-4 flex-1 min-w-0 w-full">
+                                    <div className="p-3 bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-500 rounded-xl shrink-0">
                                         <Building2 className="w-5 h-5" />
                                     </div>
-                                    <div className="min-w-0 mt-0.5">
+                                    <div className="min-w-0 mt-0.5 flex-1">
                                         <p className="font-bold truncate text-foreground">{partner.name}</p>
                                         <div className="flex items-center gap-1.5 text-sm text-muted-foreground mt-1 truncate">
                                             <Mail className="w-3 h-3 shrink-0" />
@@ -248,28 +252,30 @@ export default function AdminManager({
                                         </div>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={() => handleRemoveRole(partner.email, 'Partner')}
-                                    className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors focus:opacity-100 shrink-0 ml-2"
-                                    title="Revoke Partner Access"
-                                >
-                                    <Trash2 className="w-4 h-4" />
-                                </button>
+                                <div className="self-end sm:self-auto w-full sm:w-auto flex justify-end sm:justify-start">
+                                    <button
+                                        onClick={() => handleRemoveRole(partner.email, 'Partner')}
+                                        className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors focus:opacity-100 shrink-0"
+                                        title="Revoke Partner Access"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
                             </div>
                         ))}
-                        {partners.length === 0 && <p className="text-muted-foreground text-sm col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Partners found.</p>}
+                        {partners.length === 0 && <p className="text-muted-foreground text-sm col-span-1 md:col-span-2 lg:col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Partners found.</p>}
                     </div>
                 )}
 
                 {activeTab === 'riders' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {riders.map((rider) => (
-                            <div key={rider.id} className="p-4 border rounded-xl bg-card shadow-sm flex items-center justify-between group">
-                                <div className="flex items-start gap-4">
-                                    <div className="p-3 bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-500 rounded-xl">
+                            <div key={rider.id} className="p-4 border rounded-xl bg-card shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between group gap-4">
+                                <div className="flex items-start gap-4 flex-1 min-w-0 w-full">
+                                    <div className="p-3 bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-500 rounded-xl shrink-0">
                                         <Users className="w-5 h-5" />
                                     </div>
-                                    <div className="min-w-0 mt-0.5">
+                                    <div className="min-w-0 mt-0.5 flex-1">
                                         <p className="font-bold truncate text-foreground">{rider.name}</p>
                                         <div className="flex items-center gap-1.5 text-sm text-muted-foreground mt-1 truncate">
                                             <Phone className="w-3 h-3 shrink-0" />
@@ -277,7 +283,7 @@ export default function AdminManager({
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center justify-between sm:justify-end gap-2 self-stretch sm:self-auto mt-2 sm:mt-0 pt-2 sm:pt-0 border-t sm:border-0 border-border/50">
                                     <span className={`text-[10px] tracking-wider font-bold px-2.5 py-1 rounded-full shrink-0 ${rider.status === 'available' ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-500' :
                                         rider.status === 'busy' ? 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-500' : 'bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-white'
                                         }`}>
@@ -293,7 +299,7 @@ export default function AdminManager({
                                 </div>
                             </div>
                         ))}
-                        {riders.length === 0 && <p className="text-muted-foreground text-sm col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Field Executives found.</p>}
+                        {riders.length === 0 && <p className="text-muted-foreground text-sm col-span-1 md:col-span-2 lg:col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Field Executives found.</p>}
                     </div>
                 )}
             </div>
