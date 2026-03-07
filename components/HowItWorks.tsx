@@ -46,7 +46,7 @@ export default function HowItWorks() {
     }, [])
 
     return (
-        <section className="py-24 bg-gradient-to-b from-white to-slate-50 dark:from-background dark:to-background dark:bg-background relative overflow-hidden">
+        <section className="py-24 bg-gradient-to-b from-white to-slate-50 dark:from-black dark:to-black dark:bg-black relative overflow-hidden">
             {/* Decorative Background Elements */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                 <div className="absolute top-1/4 -left-20 w-96 h-96 bg-green-500/5 rounded-full blur-3xl" />
@@ -63,7 +63,7 @@ export default function HowItWorks() {
                     >
                         Simple Process
                     </motion.div>
-                    <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-foreground tracking-tight">
+                    <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
                         How It Works
                     </h2>
                     <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-lg">
@@ -146,7 +146,7 @@ export default function HowItWorks() {
                         <div className="w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white font-bold text-lg shadow-lg ring-4 ring-white mt-8">1</div>
 
                         <div className="space-y-2">
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-foreground">Get Device Valuation</h3>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white">Get Device Valuation</h3>
                             <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
                                 Answer a few questions about your phone's condition and get the best price quote instantly.
                             </p>
@@ -174,7 +174,7 @@ export default function HowItWorks() {
                         <div className="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold text-lg shadow-lg ring-4 ring-white mt-8">2</div>
 
                         <div className="space-y-2">
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-foreground">Schedule Pickup</h3>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white">Schedule Pickup</h3>
                             <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
                                 Our verified Fonzkart agent will visit your location at your chosen time slot for pickup.
                             </p>
@@ -234,7 +234,7 @@ export default function HowItWorks() {
                         <div className="w-10 h-10 rounded-full bg-lime-600 flex items-center justify-center text-white font-bold text-lg shadow-lg ring-4 ring-white mt-8">3</div>
 
                         <div className="space-y-2">
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-foreground">Get Paid Instantly</h3>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white">Get Paid Instantly</h3>
                             <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
                                 Money is transferred to your account instantly before our agent leaves your place.
                             </p>

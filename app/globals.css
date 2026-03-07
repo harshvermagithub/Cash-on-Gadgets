@@ -99,15 +99,15 @@
 }
 
 .dark {
-  /* Futuristic deep navy-black space */
-  --background: 230 40% 4%;
+  /* Futuristic pure black space */
+  --background: 0 0% 0%;
   --foreground: 210 40% 98%;
 
   /* Subtle elevation for cards, almost black with slight blue hue */
   --card: 228 35% 7%;
   --card-foreground: 210 40% 98%;
 
-  --popover: 230 40% 4%;
+  --popover: 0 0% 0%;
   --popover-foreground: 210 40% 98%;
 
   /* Punchy, bright futuristic neon emerald green */
@@ -130,7 +130,7 @@
   /* Crisp borders */
   --border: 220 20% 16%;
   --input: 220 20% 16%;
-  
+
   /* Glowing ring focus */
   --ring: 142 85% 48%;
 }

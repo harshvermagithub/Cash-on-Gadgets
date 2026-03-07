@@ -350,7 +350,7 @@ const categories = [
         name: 'Smartphones',
         subtext: 'Apple / Samsung / Vivo / Oppo',
         component: <SmartphoneGraphic />,
-        bgColors: 'bg-blue-50 dark:bg-slate-900',
+        bgColors: 'bg-blue-50 dark:bg-black dark:border-white/10 dark:border',
         textColor: 'text-blue-900 dark:text-blue-100'
     },
     {
@@ -358,7 +358,7 @@ const categories = [
         name: 'Tablets',
         subtext: 'iPad / Samsung / Lenovo',
         component: <TabletGraphic />,
-        bgColors: 'bg-purple-50 dark:bg-slate-900',
+        bgColors: 'bg-purple-50 dark:bg-black dark:border-white/10 dark:border',
         textColor: 'text-purple-900 dark:text-purple-100'
     },
     {
@@ -366,7 +366,7 @@ const categories = [
         name: 'Smartwatches',
         subtext: 'Apple / Samsung / Fitbit',
         component: <WatchGraphic />,
-        bgColors: 'bg-orange-50 dark:bg-slate-900',
+        bgColors: 'bg-orange-50 dark:bg-black dark:border-white/10 dark:border',
         textColor: 'text-orange-900 dark:text-orange-100'
     },
     {
@@ -374,7 +374,7 @@ const categories = [
         name: 'Consoles',
         subtext: 'PS5 / Xbox / Nintendo',
         component: <ConsoleGraphic />,
-        bgColors: 'bg-indigo-50 dark:bg-slate-900',
+        bgColors: 'bg-indigo-50 dark:bg-black dark:border-white/10 dark:border',
         textColor: 'text-indigo-900 dark:text-indigo-100'
     },
     {
@@ -382,7 +382,7 @@ const categories = [
         name: 'Smart TVs',
         subtext: 'Sony / LG / Samsung / MI',
         component: <TvGraphic />,
-        bgColors: 'bg-emerald-50 dark:bg-slate-900',
+        bgColors: 'bg-emerald-50 dark:bg-black dark:border-white/10 dark:border',
         textColor: 'text-emerald-900 dark:text-emerald-100'
     },
     {
@@ -390,7 +390,7 @@ const categories = [
         name: 'Laptops',
         subtext: 'Macbook / HP / Dell / Lenovo',
         component: <LaptopGraphic />,
-        bgColors: 'bg-cyan-50 dark:bg-slate-900',
+        bgColors: 'bg-cyan-50 dark:bg-black dark:border-white/10 dark:border',
         textColor: 'text-cyan-900 dark:text-cyan-100'
     },
     {
@@ -398,7 +398,7 @@ const categories = [
         name: 'Desktops',
         subtext: 'iMac / HP / Generic',
         component: <DesktopGraphic />,
-        bgColors: 'bg-teal-50 dark:bg-slate-900',
+        bgColors: 'bg-teal-50 dark:bg-black dark:border-white/10 dark:border',
         textColor: 'text-teal-900 dark:text-teal-100'
     },
     {
@@ -406,7 +406,7 @@ const categories = [
         name: 'Cameras',
         subtext: 'Canon / Nikon / Sony',
         component: <CameraGraphic />,
-        bgColors: 'bg-rose-50 dark:bg-slate-900',
+        bgColors: 'bg-rose-50 dark:bg-black dark:border-white/10 dark:border',
         textColor: 'text-rose-900 dark:text-rose-100'
     },
     {
@@ -414,7 +414,7 @@ const categories = [
         name: 'Earbuds',
         subtext: 'Airpods / Galaxy Buds',
         component: <EarbudsGraphic />,
-        bgColors: 'bg-fuchsia-50 dark:bg-slate-900',
+        bgColors: 'bg-fuchsia-50 dark:bg-black dark:border-white/10 dark:border',
         textColor: 'text-fuchsia-900 dark:text-fuchsia-100'
     },
     {
@@ -422,7 +422,7 @@ const categories = [
         name: 'Repair',
         subtext: 'Screen / Battery / Others',
         component: <RepairGraphic />,
-        bgColors: 'bg-red-50 dark:bg-slate-900',
+        bgColors: 'bg-red-50 dark:bg-black dark:border-white/10 dark:border',
         textColor: 'text-red-900 dark:text-red-100'
     },
 ];
@@ -431,8 +431,8 @@ export default function CategorySelector({ onSelect }: CategorySelectorProps) {
     return (
         <div className="space-y-8">
             <div className="text-center space-y-2 mb-12">
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight">What would you like to sell?</h2>
-                <p className="text-muted-foreground text-lg">Select a category to proceed</p>
+                <h2 className="text-3xl md:text-5xl font-bold dark:text-white tracking-tight">What would you like to sell?</h2>
+                <p className="text-muted-foreground dark:text-slate-400 text-lg">Select a category to proceed</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 container px-4 mx-auto">

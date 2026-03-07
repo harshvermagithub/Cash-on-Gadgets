@@ -139,7 +139,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
             </section>
 
             {/* Category Selection Section (unchanged) */}
-            <section className="py-20 bg-slate-50/50 dark:bg-background border-y border-slate-100 dark:border-slate-800">
+            <section className="py-20 bg-slate-50/50 dark:bg-black border-y border-slate-100 dark:border-slate-800/50">
                 <div className="container mx-auto px-6">
                     <div className="max-w-4xl mx-auto">
                         <CategorySelector onSelect={handleCategorySelect} />
@@ -148,7 +148,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
             </section>
 
             {/* Brands Marquee & Stats Section */}
-            <section className="py-12 border-y bg-slate-900 dark:bg-background border-slate-800 dark:border-slate-800 w-full overflow-hidden">
+            <section className="py-12 border-y bg-slate-900 dark:bg-black border-slate-800 dark:border-slate-800/50 w-full overflow-hidden">
                 <div className="container mx-auto px-6 mb-12">
                     <p className="text-center text-sm font-semibold text-green-400/60 uppercase tracking-wider mb-8">We Accept All Major Brands</p>
                     <div className="flex flex-wrap justify-center gap-8 md:gap-16 items-center">
@@ -187,16 +187,16 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
             <HowItWorks />
 
             {/* Reviews Section */}
-            <section className="py-24 overflow-hidden w-full">
+            <section className="py-24 overflow-hidden w-full dark:bg-black">
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
                         <div className="space-y-4 max-w-2xl">
-                            <h2 className="text-3xl md:text-4xl font-bold">Loved by 1000+ Customers</h2>
-                            <p className="text-muted-foreground">Don&apos;t just take our word for it. Here&apos;s what people are saying about Fonzkart.</p>
+                            <h2 className="text-3xl md:text-4xl font-bold dark:text-white">Loved by 1000+ Customers</h2>
+                            <p className="text-muted-foreground dark:text-slate-400">Don&apos;t just take our word for it. Here&apos;s what people are saying about Fonzkart.</p>
                         </div>
                         <div className="flex items-center gap-1">
                             {[1, 2, 3, 4, 5].map(v => <Star key={v} className="w-6 h-6 fill-yellow-400 text-yellow-400" />)}
-                            <span className="ml-2 font-bold text-lg">4.9/5 Rating</span>
+                            <span className="ml-2 font-bold text-lg dark:text-white">4.9/5 Rating</span>
                         </div>
                     </div>
 
@@ -207,7 +207,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
             </section>
 
             {/* Why Choose Us Section */}
-            <section className="py-24 bg-slate-900 dark:bg-background overflow-hidden w-full">
+            <section className="py-24 bg-slate-900 dark:bg-black overflow-hidden w-full">
                 <div className="container mx-auto px-6">
                     <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
                         <motion.h2
