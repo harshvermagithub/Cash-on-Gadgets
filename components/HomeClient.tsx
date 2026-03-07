@@ -85,7 +85,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
 
                             {/* MAIN HEADLINE */}
                             <div className="max-w-full overflow-hidden relative">
-                                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15] md:leading-[1.1]">
+                                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground leading-[1.15] md:leading-[1.1]">
                                     Smart way to <br />
                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-emerald-500 to-teal-500 animate-gradient-x">sell your device.</span>
                                 </h1>
