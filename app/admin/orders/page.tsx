@@ -18,22 +18,31 @@ export default async function OrdersPage() {
     if (!currentUser) redirect('/login');
 
     let orders = await db.getAllOrders();
-    const riders = await db.getRiders();
+    let riders = await db.getRiders();
 
     if (currentUser.role === 'PARTNER') {
         const allowedPincodes = currentUser.pincodes || [];
         orders = orders.filter(o => o.pincode && allowedPincodes.includes(o.pincode));
+        riders = riders.filter(r => r.partnerId === currentUser.id);
     } else if (currentUser.role === 'ZONAL_HEAD') {
-        if (currentUser.cityId) {
+        if (currentUser.cityId && currentUser.city) {
+            const cityName = currentUser.city.name.toLowerCase();
             // Find all Pincodes managed by Partners in this Zonal Head's city
             const cityPartners = await prisma.user.findMany({
                 where: { role: 'PARTNER', cityId: currentUser.cityId }
             });
             const allowedPincodes = cityPartners.flatMap(p => p.pincodes);
-            orders = orders.filter(o => o.pincode && allowedPincodes.includes(o.pincode));
+            const partnerIds = cityPartners.map(p => p.id);
+
+            orders = orders.filter(o =>
+                (o.pincode && allowedPincodes.includes(o.pincode)) ||
+                (o.address && o.address.toLowerCase().includes(cityName))
+            );
+            riders = riders.filter(r => r.partnerId && partnerIds.includes(r.partnerId));
         } else {
             // If they are not assigned to a city, they see no orders
             orders = [];
+            riders = [];
         }
     }
     // SUPER_ADMIN and ADMIN see all orders

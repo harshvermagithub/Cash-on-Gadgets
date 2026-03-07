@@ -2,17 +2,34 @@ import { prisma } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import bcrypt from 'bcryptjs';
 
+import { getSession } from '@/lib/session';
+import { redirect } from 'next/navigation';
+
 export const dynamic = 'force-dynamic';
 
 export default async function PartnersPage() {
+    const session = await getSession();
+    if (!session || !session.user) redirect('/login');
+
+    const currentUser = await prisma.user.findUnique({ where: { id: session.user.id } });
+    if (!currentUser) redirect('/login');
+
+    const isZonalHead = currentUser.role === 'ZONAL_HEAD';
+
     const partners = await prisma.user.findMany({
-        where: { role: 'PARTNER' },
+        where: {
+            role: 'PARTNER',
+            ...(isZonalHead && currentUser.cityId ? { cityId: currentUser.cityId } : {})
+        },
         include: { city: true },
         orderBy: { createdAt: 'desc' }
     });
 
     const unassignedCities = await prisma.city.findMany({
-        where: { isActive: true },
+        where: {
+            isActive: true,
+            ...(isZonalHead && currentUser.cityId ? { id: currentUser.cityId } : {})
+        },
         orderBy: { name: 'asc' }
     });
 
@@ -40,6 +57,12 @@ export default async function PartnersPage() {
 
                             if (name && email && password) {
                                 const passwordHash = await bcrypt.hash(password, 10);
+
+                                // Security: Zonal heads can only assign to their own city
+                                const finalCityId = (currentUser.role === 'ZONAL_HEAD' && currentUser.cityId)
+                                    ? currentUser.cityId
+                                    : (cityId || null);
+
                                 await prisma.user.create({
                                     data: {
                                         name,
@@ -47,7 +70,7 @@ export default async function PartnersPage() {
                                         phone,
                                         passwordHash,
                                         role: 'PARTNER',
-                                        cityId: cityId || null
+                                        cityId: finalCityId
                                     }
                                 });
                                 revalidatePath('/admin/partners');
@@ -114,12 +137,17 @@ export default async function PartnersPage() {
                                     'use server';
                                     const newCityId = data.get('cityId') as string;
                                     const pincodesStr = data.get('pincodes') as string;
-                                    const pincodes = pincodesStr ? pincodesStr.split(',').map(p => p.trim()).filter(Boolean) : [];
+                                    const pincodes = pincodesStr ? pincodesStr.split(',').map((p: string) => p.trim()).filter(Boolean) : [];
+
+                                    // Security check
+                                    const finalCityId = (currentUser.role === 'ZONAL_HEAD' && currentUser.cityId)
+                                        ? currentUser.cityId
+                                        : (newCityId === 'none' ? null : newCityId);
 
                                     await prisma.user.update({
                                         where: { id: p.id },
                                         data: {
-                                            cityId: newCityId === 'none' ? null : newCityId,
+                                            cityId: finalCityId,
                                             pincodes
                                         }
                                     });
