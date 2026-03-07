@@ -104,13 +104,12 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                             <div className="flex justify-between items-start">
                                 <div>
                                     <div className="flex items-center gap-2 mb-2 flex-wrap">
-                                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold uppercase ${
-                                            order.status === 'assigned' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' :
-                                            order.status === 'pending_verification' ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' :
-                                            order.status === 'picked_up' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' :
-                                            order.status === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' :
-                                            'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-                                        }`}>
+                                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold uppercase ${order.status === 'assigned' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' :
+                                                order.status === 'pending_verification' ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' :
+                                                    order.status === 'picked_up' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' :
+                                                        order.status === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' :
+                                                            'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
+                                            }`}>
                                             {order.status === 'pending_verification' ? 'Awaiting Approval' : order.status}
                                         </span>
                                         {!!order.answers && (order.answers as OrderAnswers).isExpress && (
@@ -118,7 +117,7 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                                                 <Zap className="w-3 h-3 fill-current" /> Express
                                             </span>
                                         )}
-                                        <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                        <span suppressHydrationWarning className="text-xs text-muted-foreground flex items-center gap-1">
                                             <Calendar className="w-3 h-3" />
                                             {new Date(order.date).toLocaleDateString()}
                                         </span>
@@ -163,7 +162,7 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                                                     <Eye className="w-3 h-3" /> Full Details
                                                 </button>
                                             </h4>
-                                            
+
                                             <div className="bg-muted/50 p-4 rounded-lg text-xs space-y-2 border">
                                                 {order.answers ? (
                                                     <div className="grid grid-cols-2 gap-2">
@@ -178,8 +177,8 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                                                         <div className="col-span-2">
                                                             <span className="text-muted-foreground block mb-0.5">Reported Issues</span>
                                                             <span className="font-bold capitalize text-red-500">
-                                                                {((order.answers as any).functional_issues && (order.answers as any).functional_issues.length > 0) 
-                                                                    ? (order.answers as any).functional_issues.join(', ').replace(/_/g, ' ') 
+                                                                {((order.answers as any).functional_issues && (order.answers as any).functional_issues.length > 0)
+                                                                    ? (order.answers as any).functional_issues.join(', ').replace(/_/g, ' ')
                                                                     : 'None reported'}
                                                             </span>
                                                         </div>
@@ -193,7 +192,7 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                                         <div className="bg-background border p-4 rounded-xl space-y-4">
                                             <h4 className="font-semibold text-foreground">2. Physical Verification</h4>
                                             <p className="text-xs text-muted-foreground">Verify the actual condition matches the customer's report. Take photos and recalculate price if defects are found.</p>
-                                            
+
                                             <button
                                                 onClick={() => setVerifyingOrder(order)}
                                                 disabled={!!updatingId}
@@ -269,9 +268,9 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
             )}
 
             {verifyingOrder && (
-                <VerificationModal 
-                    order={verifyingOrder} 
-                    onClose={() => setVerifyingOrder(null)} 
+                <VerificationModal
+                    order={verifyingOrder}
+                    onClose={() => setVerifyingOrder(null)}
                     onSubmit={handleVerificationSubmit}
                 />
             )}
