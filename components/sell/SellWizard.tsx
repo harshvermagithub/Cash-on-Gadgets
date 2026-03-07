@@ -59,10 +59,18 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
     const [customDeviceName, setCustomDeviceName] = useState('');
 
     // Track user state locally so we can update it after inline login
+    // Track user state locally so we can update it after inline login
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [user, setUser] = useState<any>(initialUser);
 
-
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // Slight timeout ensures DOM is ready before scrolling
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 100);
+        }
+    }, [step]);
 
     const handleCategorySelect = async (cat: string) => {
         let targetCategory = cat;

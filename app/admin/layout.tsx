@@ -22,7 +22,7 @@ export default async function AdminLayout({
             <AdminSidebar role={session.user.role} />
 
             {/* Main Content */}
-            <main className="flex-1 p-8">
+            <main className="flex-1 p-4 md:p-8 w-full min-w-0">
                 {children}
             </main>
         </div>

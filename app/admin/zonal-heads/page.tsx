@@ -17,7 +17,7 @@ export default async function ZonalHeadsPage() {
     });
 
     return (
-        <div className="p-6 md:p-10 space-y-8 h-[calc(100vh-theme(spacing.16))] overflow-y-auto w-full">
+        <div className="space-y-8 w-full">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-foreground">Zonal Heads</h1>
@@ -122,9 +122,9 @@ export default async function ZonalHeadsPage() {
                                 }} className="flex flex-col gap-2">
                                     <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Assigned Territory</label>
                                     <div className="flex gap-2">
-                                        <select 
-                                            name="cityId" 
-                                            defaultValue={zh.cityId || 'none'} 
+                                        <select
+                                            name="cityId"
+                                            defaultValue={zh.cityId || 'none'}
                                             className="flex-1 h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background"
                                         >
                                             <option value="none" className="italic text-muted-foreground">Unassigned</option>

@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { questionnaireSteps } from '@/lib/data';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Check, XCircle, AlertTriangle, CheckCircle2, Smartphone } from 'lucide-react';
@@ -16,6 +16,14 @@ interface ChecklistWizardProps {
 export default function ChecklistWizard({ deviceInfo, category, onComplete, onBack }: ChecklistWizardProps) {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     const [answers, setAnswers] = useState<Record<string, unknown>>({});
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 100);
+        }
+    }, [currentStepIndex]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // Customize steps based on device type (iPhone Battery Logic)
