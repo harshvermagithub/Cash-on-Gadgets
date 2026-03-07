@@ -14,7 +14,7 @@ import StepLogin from './StepLogin';
 import { Brand, Model, Variant } from '@/lib/store';
 import { useRouter } from 'next/navigation';
 
-type Step = 'category' | 'brand' | 'model' | 'variant' | 'quote_preview' | 'checklist' | 'login_check' | 'final_quote';
+type Step = 'category' | 'brand' | 'model' | 'variant' | 'quote_preview' | 'checklist' | 'login_check' | 'final_quote' | 'screenguard_input';
 
 interface SellWizardProps {
     initialBrands: Brand[];
@@ -56,6 +56,7 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
     const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
     const [skippedVariant, setSkippedVariant] = useState(false);
     const [answers, setAnswers] = useState<Record<string, unknown>>({});
+    const [customDeviceName, setCustomDeviceName] = useState('');
 
     // Track user state locally so we can update it after inline login
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -71,6 +72,11 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
         if (cat === 'repair') {
             setIsRepair(true);
             targetCategory = 'smartphone'; // Default to smartphone repair for now
+        } else if (cat === 'unbreakable-screenguard') {
+            setIsRepair(true); // Re-use repair boolean to skip quote UI logic and go straight to booking
+            setCategory('unbreakable-screenguard');
+            setStep('screenguard_input');
+            return;
         } else {
             setIsRepair(false);
         }
@@ -220,19 +226,54 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
                     </motion.div>
                 )}
 
-                {step === 'final_quote' && selectedModel && selectedVariant && (
+                {step === 'screenguard_input' && (
+                    <motion.div key="screenguard_input" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="max-w-md mx-auto py-12 space-y-8">
+                        <div className="text-center space-y-2">
+                            <h2 className="text-3xl font-bold">Device Details</h2>
+                            <p className="text-muted-foreground">Enter your smartphone or tablet model for the screen guard</p>
+                        </div>
+                        <div className="bg-card border rounded-2xl p-6 shadow-sm space-y-6">
+                            <div className="space-y-3">
+                                <label className="text-sm font-medium">Brand & Model Name</label>
+                                <input
+                                    type="text"
+                                    value={customDeviceName}
+                                    onChange={(e) => setCustomDeviceName(e.target.value)}
+                                    className="w-full p-4 border rounded-xl bg-background focus:ring-2 focus:ring-primary/50 outline-none text-lg"
+                                    placeholder="e.g. Samsung Galaxy S24 Ultra"
+                                    autoFocus
+                                />
+                            </div>
+                            <button
+                                onClick={() => {
+                                    if (user) setStep('final_quote');
+                                    else setStep('login_check');
+                                }}
+                                disabled={customDeviceName.trim().length < 3}
+                                className="w-full py-4 bg-primary text-primary-foreground font-bold rounded-xl shadow-lg hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            >
+                                Continue to Scheduling
+                            </button>
+                        </div>
+                    </motion.div>
+                )}
+
+                {step === 'final_quote' && (category === 'unbreakable-screenguard' || (selectedModel && selectedVariant)) && (
                     <motion.div key="final_quote" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                         <FinalQuote
-                            basePrice={selectedVariant.basePrice}
+                            basePrice={category === 'unbreakable-screenguard' ? 1999 : (selectedVariant?.basePrice || 0)}
                             answers={answers}
                             deviceInfo={{
-                                name: displayDeviceName,
-                                variant: displayVariant || ''
+                                name: category === 'unbreakable-screenguard' ? customDeviceName : displayDeviceName,
+                                variant: category === 'unbreakable-screenguard' ? 'Unbreakable Screen Guard' : (displayVariant || '')
                             }}
                             category={category}
                             isRepair={isRepair}
                             user={user}
-                            onRecalculate={() => setStep('checklist')}
+                            onRecalculate={() => {
+                                if (category === 'unbreakable-screenguard') setStep('screenguard_input');
+                                else setStep('checklist');
+                            }}
                         />
                     </motion.div>
                 )}

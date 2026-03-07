@@ -306,12 +306,12 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                     <button onClick={() => setBookingStep('quote')} className="p-2 hover:bg-slate-100 rounded-full">
                         <ArrowLeft className="w-6 h-6" />
                     </button>
-                    <h2 className="text-2xl font-bold">Pickup Location</h2>
+                    <h2 className="text-2xl font-bold">{isRepair ? 'Service Location' : 'Pickup Location'}</h2>
                 </div>
 
                 <div className="bg-card border rounded-2xl p-6 space-y-6 shadow-sm">
                     <div className="space-y-3">
-                        <label className="block text-sm font-medium">Pickup Address</label>
+                        <label className="block text-sm font-medium">{isRepair ? 'Address' : 'Pickup Address'}</label>
                         <textarea
                             className="w-full p-4 border rounded-xl bg-background min-h-[120px] focus:ring-2 focus:ring-primary/50 outline-none resize-none"
                             placeholder="House No, Street Area, Landmark, City, Pincode..."
@@ -416,7 +416,7 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                 <button onClick={() => setBookingStep('address')} className="p-2 hover:bg-slate-100 rounded-full">
                     <ArrowLeft className="w-6 h-6" />
                 </button>
-                <h2 className="text-2xl font-bold">Schedule Pickup</h2>
+                <h2 className="text-2xl font-bold">{isRepair ? 'Schedule Visit' : 'Schedule Pickup'}</h2>
             </div>
 
             <div className="space-y-6">
@@ -505,7 +505,7 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                         </div>
                         <div className="flex-1">
                             <div className="flex items-center justify-between">
-                                <h4 className={`font-bold ${isExpress ? 'text-slate-900' : !showExpress ? 'text-muted-foreground' : 'text-foreground'}`}>Express Pickup</h4>
+                                <h4 className={`font-bold ${isExpress ? 'text-slate-900' : !showExpress ? 'text-muted-foreground' : 'text-foreground'}`}>{isRepair ? 'Express Service' : 'Express Pickup'}</h4>
                                 {!showExpress ? (
                                     <span className="text-xs font-bold text-slate-400">CLOSED</span>
                                 ) : (
@@ -516,7 +516,7 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                                 )}
                             </div>
                             <p className={`text-xs mt-0.5 ${isExpress ? 'text-slate-600' : 'text-muted-foreground'}`}>
-                                {!showExpress ? "Orders after 4 PM not valid for today." : "Pickup within 3 hours"}
+                                {!showExpress ? "Orders after 4 PM not valid for today." : (isRepair ? 'Service within 3 hours' : "Pickup within 3 hours")}
                             </p>
                             {!showExpress && <p className="text-[10px] font-medium text-amber-600 mt-1">Pickup shift ends at 7 PM.</p>}
                         </div>
@@ -532,7 +532,7 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                 disabled={isSubmitting || (!selectedSlot && !isExpress)}
                 className="w-full py-4 text-xl font-bold text-white bg-green-600 rounded-xl shadow-lg hover:bg-green-700 hover:scale-[1.01] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed mt-8"
             >
-                {isSubmitting ? <Loader2 className="animate-spin" /> : 'Confirm Pickup'}
+                {isSubmitting ? <Loader2 className="animate-spin" /> : (isRepair ? 'Confirm Booking' : 'Confirm Pickup')}
             </button>
             <p className="text-center text-xs text-muted-foreground pb-8">
                 By confirming, you agree to our Terms of Service
