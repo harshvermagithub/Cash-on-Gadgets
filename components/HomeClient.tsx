@@ -172,8 +172,8 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                             <p className="text-sm text-slate-400 font-medium">Cash Paid</p>
                         </div>
                         <div className="p-4">
-                            <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-teal-400 mb-2">Bengaluru</h3>
-                            <p className="text-sm text-slate-400 font-medium">& Outskirts Covered</p>
+                            <h3 className="text-3xl md:text-4xl font-bold text-teal-400 mb-2">4+</h3>
+                            <p className="text-sm text-slate-400 font-medium">Cities Covered</p>
                         </div>
                         <div className="p-4">
                             <h3 className="text-3xl md:text-4xl font-bold text-lime-400 mb-2">4.8★</h3>
