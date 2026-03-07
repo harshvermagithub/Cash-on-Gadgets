@@ -133,12 +133,9 @@ export default function AdminManager({
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <span className="text-[10px] tracking-wider font-bold px-2 py-1 bg-primary text-primary-foreground rounded-full shrink-0">
-                                            SUPER ADMIN
-                                        </span>
                                         <button
                                             onClick={() => handleRemoveRole(admin.email, 'Super Admin')}
-                                            className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 shrink-0 ml-1"
+                                            className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors focus:opacity-100 shrink-0 ml-1"
                                             title="Revoke Super Admin Access"
                                         >
                                             <Trash2 className="w-4 h-4" />
@@ -195,7 +192,7 @@ export default function AdminManager({
                                     </div>
                                     <button
                                         onClick={() => handleRemoveAdmin(admin.email)}
-                                        className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 shrink-0"
+                                        className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors focus:opacity-100 shrink-0"
                                         title="Revoke Admin Access"
                                     >
                                         <Trash2 className="w-4 h-4" />
@@ -224,7 +221,7 @@ export default function AdminManager({
                                 </div>
                                 <button
                                     onClick={() => handleRemoveRole(zh.email, 'Zonal Head')}
-                                    className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 shrink-0 ml-2"
+                                    className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors focus:opacity-100 shrink-0 ml-2"
                                     title="Revoke Zonal Head Access"
                                 >
                                     <Trash2 className="w-4 h-4" />
@@ -253,7 +250,7 @@ export default function AdminManager({
                                 </div>
                                 <button
                                     onClick={() => handleRemoveRole(partner.email, 'Partner')}
-                                    className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 shrink-0 ml-2"
+                                    className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors focus:opacity-100 shrink-0 ml-2"
                                     title="Revoke Partner Access"
                                 >
                                     <Trash2 className="w-4 h-4" />
@@ -288,7 +285,7 @@ export default function AdminManager({
                                     </span>
                                     <button
                                         onClick={() => handleDeleteRider(rider.id)}
-                                        className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 shrink-0"
+                                        className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors focus:opacity-100 shrink-0"
                                         title="Remove Field Executive"
                                     >
                                         <Trash2 className="w-4 h-4" />
