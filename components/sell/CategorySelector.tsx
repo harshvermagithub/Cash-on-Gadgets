@@ -427,12 +427,12 @@ const categories = [
         textColor: 'text-blue-900 dark:text-blue-100'
     },
     {
-        id: 'smartwatch',
-        name: 'Smartwatches',
-        subtext: 'Top market prices guaranteed',
-        component: <WatchGraphic />,
-        bgColors: 'bg-orange-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
-        textColor: 'text-orange-900 dark:text-orange-100'
+        id: 'tablet',
+        name: 'Tablets',
+        subtext: 'Get up to ₹40,000',
+        component: <TabletGraphic />,
+        bgColors: 'bg-purple-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
+        textColor: 'text-purple-900 dark:text-purple-100'
     },
     {
         id: 'camera',
@@ -451,20 +451,20 @@ const categories = [
         textColor: 'text-cyan-900 dark:text-cyan-100'
     },
     {
+        id: 'smartwatch',
+        name: 'Smartwatches',
+        subtext: 'Top market prices guaranteed',
+        component: <WatchGraphic />,
+        bgColors: 'bg-orange-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
+        textColor: 'text-orange-900 dark:text-orange-100'
+    },
+    {
         id: 'tv',
         name: 'Smart TVs',
         subtext: 'Best value for your television',
         component: <TvGraphic />,
         bgColors: 'bg-emerald-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-emerald-900 dark:text-emerald-100'
-    },
-    {
-        id: 'tablet',
-        name: 'Tablets',
-        subtext: 'Get up to ₹40,000',
-        component: <TabletGraphic />,
-        bgColors: 'bg-purple-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
-        textColor: 'text-purple-900 dark:text-purple-100'
     },
     {
         id: 'console',
