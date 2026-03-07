@@ -49,7 +49,6 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete, onBa
     const handleBack = () => {
         if (currentStepIndex > 0) {
             setCurrentStepIndex(prev => prev - 1);
-            window.scrollTo(0, 0);
         } else if (currentStepIndex === 0 && onBack) {
             onBack();
         }
@@ -58,7 +57,6 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete, onBa
     const handleNext = () => {
         if (currentStepIndex < steps.length - 1) {
             setCurrentStepIndex(prev => prev + 1);
-            window.scrollTo(0, 0);
         } else {
             onComplete(answers);
         }
@@ -116,7 +114,7 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete, onBa
                 <h2 className="text-2xl font-bold mb-2">{currentStep.title}</h2>
                 <p className="text-muted-foreground mb-8">{currentStep.subtitle}</p>
 
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                     <motion.div
                         key={currentStep.id}
                         initial={{ opacity: 0, x: 20 }}

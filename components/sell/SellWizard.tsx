@@ -62,10 +62,7 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [user, setUser] = useState<any>(initialUser);
 
-    // FIX: Scroll to top of the page smoothly when the step changes
-    useEffect(() => {
-        window.scrollTo({ top: 0, behavior: 'auto' });
-    }, [step]);
+
 
     const handleCategorySelect = async (cat: string) => {
         let targetCategory = cat;
@@ -131,7 +128,7 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
 
     return (
         <div className="w-full max-w-6xl mx-auto">
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                 {step === 'category' && (
                     <motion.div key="category" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                         <CategorySelector onSelect={handleCategorySelect} />
