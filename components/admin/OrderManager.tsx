@@ -14,6 +14,7 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
     const router = useRouter();
     const [assigningId, setAssigningId] = useState<string | null>(null);
     const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
+    const [activeTab, setActiveTab] = useState<'to_be_assigned' | 'pending_pickup' | 'completed'>('to_be_assigned');
 
     const handleAssign = async (orderId: string, riderId: string) => {
         if (!riderId) return;
@@ -31,9 +32,19 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
     // Sort by date desc
     const sortedOrders = [...initialOrders].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+    const toBeAssignedOrders = sortedOrders.filter(o => !o.riderId && o.status !== 'completed');
+    const pendingPickupOrders = sortedOrders.filter(o => o.riderId && o.status !== 'completed');
+    const completedOrders = sortedOrders.filter(o => o.status === 'completed');
+
+    const displayedOrders = activeTab === 'to_be_assigned'
+        ? toBeAssignedOrders
+        : activeTab === 'pending_pickup'
+            ? pendingPickupOrders
+            : completedOrders;
+
     const handleExport = () => {
         const headers = ["Order #", "Date", "Device", "Price", "Status", "Contact", "Address", "Rider Assigned"];
-        const rows = sortedOrders.map(o => {
+        const rows = displayedOrders.map(o => {
             const answers = (typeof o.answers === 'string') ? JSON.parse(o.answers) : (o.answers || {});
             const phone = answers.phone || "N/A";
             const isExpress = answers.isExpress ? "Express" : "Standard";
@@ -64,21 +75,42 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
 
     return (
         <div className="space-y-4">
-            <div className="flex justify-end mb-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                <div className="flex flex-wrap bg-muted/50 p-1 rounded-lg border border-border/50 gap-1">
+                    <button
+                        onClick={() => setActiveTab('to_be_assigned')}
+                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'to_be_assigned' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                    >
+                        To Be Assigned <span className="ml-1.5 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs">{toBeAssignedOrders.length}</span>
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('pending_pickup')}
+                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'pending_pickup' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                    >
+                        Pending Pickup <span className="ml-1.5 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs">{pendingPickupOrders.length}</span>
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('completed')}
+                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'completed' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                    >
+                        Completed <span className="ml-1.5 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs">{completedOrders.length}</span>
+                    </button>
+                </div>
+
                 <button
                     onClick={handleExport}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors shadow-sm"
+                    className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors shadow-sm shrink-0"
                 >
                     <Download className="w-4 h-4" /> Export CSV
                 </button>
             </div>
-            {sortedOrders.length === 0 ? (
+            {displayedOrders.length === 0 ? (
                 <div className="text-center py-10 border rounded-xl bg-card text-muted-foreground">
-                    No orders found.
+                    No orders found in this category.
                 </div>
             ) : (
                 <div className="grid gap-4">
-                    {sortedOrders.map((order) => {
+                    {displayedOrders.map((order) => {
                         const assignedRider = riders.find(r => r.id === order.riderId);
                         const answers = (typeof order.answers === 'string')
                             ? JSON.parse(order.answers)
