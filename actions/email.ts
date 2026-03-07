@@ -1,3 +1,5 @@
+'use server';
+
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/db';
 import nodemailer from 'nodemailer';

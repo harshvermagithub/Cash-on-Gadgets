@@ -18,7 +18,10 @@ import {
     Menu,
     X,
     ShieldCheck,
-    Mail
+    Mail,
+    MapPin,
+    Briefcase,
+    Building2
 } from 'lucide-react';
 
 const CATEGORIES = [
@@ -45,7 +48,7 @@ export default function AdminSidebar() {
             <div className="p-6 border-b shrink-0 flex items-center justify-between">
                 <Link href="/admin" className="flex items-center gap-2 font-bold text-lg text-primary leading-tight">
                     <LayoutDashboard className="shrink-0 w-6 h-6" />
-                    <span>Relationship Manager Dashboard</span>
+                    <span>Partner Dashboard</span>
                 </Link>
             </div>
 
@@ -101,6 +104,34 @@ export default function AdminSidebar() {
                 </Link>
 
                 <div className="pt-4 pb-2">
+                    <p className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Hierarchy & Roles</p>
+                </div>
+                <Link
+                    href="/admin/cities"
+                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/cities') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
+                        }`}
+                >
+                    <MapPin className="w-5 h-5" />
+                    Cities Workspace
+                </Link>
+                <Link
+                    href="/admin/zonal-heads"
+                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/zonal-heads') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
+                        }`}
+                >
+                    <Briefcase className="w-5 h-5" />
+                    Zonal Heads
+                </Link>
+                <Link
+                    href="/admin/partners"
+                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/partners') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
+                        }`}
+                >
+                    <Building2 className="w-5 h-5" />
+                    City Partners
+                </Link>
+
+                <div className="pt-4 pb-2">
                     <p className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Logistics</p>
                 </div>
                 <Link href="/admin/riders"
@@ -139,7 +170,7 @@ export default function AdminSidebar() {
             {/* Mobile/Tablet Header (Top, visible on small screens) */}
             <div className="lg:hidden p-4 bg-card border-b flex items-center justify-between sticky top-0 z-30 shadow-sm">
                 <Link href="/admin" className="font-bold flex items-center gap-2 text-primary text-sm">
-                    <LayoutDashboard className="w-5 h-5 shrink-0" /> <span className="truncate">RM Dashboard</span>
+                    <LayoutDashboard className="w-5 h-5 shrink-0" /> <span className="truncate">Partner Dashboard</span>
                 </Link>
                 <button
                     onClick={() => setIsOpen(true)}
