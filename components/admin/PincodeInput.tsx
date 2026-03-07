@@ -11,6 +11,12 @@ export default function PincodeInput({ initialPincodes }: { initialPincodes: str
         if (e) e.preventDefault();
 
         const code = input.trim();
+        // Validate exactly 6 digit Indian pincode
+        if (!/^\d{6}$/.test(code)) {
+            alert('Please enter a valid 6-digit pincode.');
+            return;
+        }
+
         if (code && !pincodes.includes(code)) {
             setPincodes([...pincodes, code]);
             setInput('');
@@ -44,7 +50,7 @@ export default function PincodeInput({ initialPincodes }: { initialPincodes: str
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleAdd}
                     placeholder="Enter pincode (e.g. 560032)"
-                    className="flex-1 h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background"
+                    className="flex-1 min-w-0 h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background"
                 />
                 <button
                     type="button"

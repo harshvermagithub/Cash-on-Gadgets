@@ -119,22 +119,22 @@ export default async function PartnersPage() {
                             <p className="text-sm">Use the form to register new partners.</p>
                         </div>
                     ) : partners.map(p => (
-                        <div key={p.id} className="bg-card border rounded-xl p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                            <div>
+                        <div key={p.id} className="bg-card border rounded-xl p-6 shadow-sm flex flex-col xl:flex-row xl:items-start justify-between gap-4 w-full overflow-hidden">
+                            <div className="shrink-0">
                                 <div className="flex items-center gap-3 mb-1">
-                                    <h3 className="text-lg font-bold">{p.name}</h3>
-                                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-primary/20 text-primary uppercase tracking-wider">
+                                    <h3 className="text-lg font-bold truncate max-w-[200px] sm:max-w-[300px]">{p.name}</h3>
+                                    <span className="shrink-0 px-2 py-0.5 rounded text-[10px] font-bold bg-primary/20 text-primary uppercase tracking-wider">
                                         Partner
                                     </span>
                                 </div>
-                                <div className="text-sm text-muted-foreground flex items-center gap-3">
-                                    <span>{p.email}</span>
-                                    <span>•</span>
-                                    <span>{p.phone}</span>
+                                <div className="text-sm text-muted-foreground flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                                    <span className="truncate max-w-[200px] sm:max-w-none">{p.email}</span>
+                                    <span className="hidden sm:inline">•</span>
+                                    <span className="truncate">{p.phone}</span>
                                 </div>
                             </div>
 
-                            <div className="w-full mt-4 sm:mt-0">
+                            <div className="w-full xl:w-auto flex-1 min-w-0 mt-2 xl:mt-0">
                                 <form action={async (data) => {
                                     'use server';
                                     const newCityId = data.get('cityId') as string;
@@ -155,13 +155,13 @@ export default async function PartnersPage() {
                                     });
                                     revalidatePath('/admin/partners');
                                     revalidatePath('/admin/cities');
-                                }} className="flex flex-col sm:flex-row gap-4 items-end sm:items-start bg-muted/20 p-3 rounded-lg">
-                                    <div className="flex flex-col gap-1 w-full sm:w-auto">
+                                }} className="flex flex-col sm:flex-row gap-4 items-start bg-muted/20 p-4 rounded-lg w-full">
+                                    <div className="flex flex-col gap-1 w-full sm:w-[180px] shrink-0">
                                         <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Assigned City</label>
                                         <select
                                             name="cityId"
                                             defaultValue={p.cityId || 'none'}
-                                            className="w-full sm:min-w-[160px] h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background"
+                                            className="w-full h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background shrink-0"
                                         >
                                             <option value="none" className="italic text-muted-foreground">Unassigned</option>
                                             {unassignedCities.map(city => (
@@ -169,8 +169,10 @@ export default async function PartnersPage() {
                                             ))}
                                         </select>
                                     </div>
-                                    <PincodeInput initialPincodes={p.pincodes || []} />
-                                    <button type="submit" className="h-9 px-4 shrink-0 bg-secondary text-secondary-foreground rounded-md text-sm font-medium hover:bg-secondary/80 w-full sm:w-auto mt-2 sm:mt-0 sm:self-end text-center">Save Settings</button>
+                                    <div className="w-full min-w-0">
+                                        <PincodeInput initialPincodes={p.pincodes || []} />
+                                    </div>
+                                    <button type="submit" className="h-9 px-4 shrink-0 bg-secondary text-secondary-foreground rounded-md text-sm font-medium hover:bg-secondary/80 w-full sm:w-auto mt-2 sm:mt-0 sm:self-end text-center flex-none">Save Settings</button>
                                 </form>
                             </div>
                         </div>
