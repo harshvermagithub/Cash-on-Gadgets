@@ -350,7 +350,7 @@ const categories = [
         name: 'Smartphones',
         subtext: 'Apple / Samsung / Vivo / Oppo',
         component: <SmartphoneGraphic />,
-        bgColors: 'bg-blue-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.12)]',
+        bgColors: 'bg-blue-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-blue-900 dark:text-blue-100'
     },
     {
@@ -358,7 +358,7 @@ const categories = [
         name: 'Tablets',
         subtext: 'iPad / Samsung / Lenovo',
         component: <TabletGraphic />,
-        bgColors: 'bg-purple-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.12)]',
+        bgColors: 'bg-purple-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-purple-900 dark:text-purple-100'
     },
     {
@@ -366,7 +366,7 @@ const categories = [
         name: 'Smartwatches',
         subtext: 'Apple / Samsung / Fitbit',
         component: <WatchGraphic />,
-        bgColors: 'bg-orange-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.12)]',
+        bgColors: 'bg-orange-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-orange-900 dark:text-orange-100'
     },
     {
@@ -374,7 +374,7 @@ const categories = [
         name: 'Consoles',
         subtext: 'PS5 / Xbox / Nintendo',
         component: <ConsoleGraphic />,
-        bgColors: 'bg-indigo-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.12)]',
+        bgColors: 'bg-indigo-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-indigo-900 dark:text-indigo-100'
     },
     {
@@ -382,7 +382,7 @@ const categories = [
         name: 'Smart TVs',
         subtext: 'Sony / LG / Samsung / MI',
         component: <TvGraphic />,
-        bgColors: 'bg-emerald-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.12)]',
+        bgColors: 'bg-emerald-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-emerald-900 dark:text-emerald-100'
     },
     {
@@ -390,7 +390,7 @@ const categories = [
         name: 'Laptops',
         subtext: 'Macbook / HP / Dell / Lenovo',
         component: <LaptopGraphic />,
-        bgColors: 'bg-cyan-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.12)]',
+        bgColors: 'bg-cyan-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-cyan-900 dark:text-cyan-100'
     },
     {
@@ -398,7 +398,7 @@ const categories = [
         name: 'Desktops',
         subtext: 'iMac / HP / Generic',
         component: <DesktopGraphic />,
-        bgColors: 'bg-teal-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.12)]',
+        bgColors: 'bg-teal-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-teal-900 dark:text-teal-100'
     },
     {
@@ -406,7 +406,7 @@ const categories = [
         name: 'Cameras',
         subtext: 'Canon / Nikon / Sony',
         component: <CameraGraphic />,
-        bgColors: 'bg-rose-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.12)]',
+        bgColors: 'bg-rose-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-rose-900 dark:text-rose-100'
     },
     {
@@ -414,7 +414,7 @@ const categories = [
         name: 'Earbuds',
         subtext: 'Airpods / Galaxy Buds',
         component: <EarbudsGraphic />,
-        bgColors: 'bg-fuchsia-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.12)]',
+        bgColors: 'bg-fuchsia-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-fuchsia-900 dark:text-fuchsia-100'
     },
     {
@@ -422,7 +422,7 @@ const categories = [
         name: 'Repair',
         subtext: 'Screen / Battery / Others',
         component: <RepairGraphic />,
-        bgColors: 'bg-red-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.12)]',
+        bgColors: 'bg-red-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-red-900 dark:text-red-100'
     },
 ];
