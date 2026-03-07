@@ -1,7 +1,7 @@
 
 'use server';
 
-import { writeFile } from 'fs/promises';
+import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 
 export async function uploadImage(formData: FormData) {
@@ -15,13 +15,19 @@ export async function uploadImage(formData: FormData) {
 
     // Create unique filename to prevent overwrites
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const filename = uniqueSuffix + '-' + file.name.replace(/[^a-zA-Z0-9.-]/g, ''); // Sanitize filename
+    const safeName = (file.name || 'image.jpg').replace(/[^a-zA-Z0-9.-]/g, '');
+    const filename = uniqueSuffix + '-' + safeName;
 
-    // Save to public/uploads
-    // Note: In production (Vercel), writing to the filesystem is ephemeral and won't persist.
-    // This is suitable for local development or VPS hosting.
-    const path = join(process.cwd(), 'public', 'uploads', filename);
+    const uploadDir = join(process.cwd(), 'public', 'uploads');
 
+    // Ensure directory exists
+    try {
+        await mkdir(uploadDir, { recursive: true });
+    } catch (e) {
+        console.error("Failed to make uploads dir:", e);
+    }
+
+    const path = join(uploadDir, filename);
     await writeFile(path, buffer);
 
     return `/uploads/${filename}`;
