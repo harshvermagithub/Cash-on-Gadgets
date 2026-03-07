@@ -13,6 +13,7 @@ import { HomeSearch } from '@/components/HomeSearch';
 import { BrandRail } from '@/components/BrandRail';
 import { DynamicLogo } from '@/components/DynamicLogo';
 import { useRouter } from 'next/navigation';
+import { PriceGraphic, SpeedGraphic, SecurityGraphic } from '@/components/icons/FeatureIcons';
 import { Brand } from '@/lib/store';
 
 export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
@@ -238,14 +239,8 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                             transition={{ duration: 0.5 }}
                             className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-white/[0.03] dark:backdrop-blur-xl p-6 rounded-3xl border border-slate-700 dark:border-white/10 hover:border-green-600 dark:hover:border-white/20 dark:hover:bg-white/[0.06] hover:shadow-2xl dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)] transition-all duration-300 group cursor-default"
                         >
-                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-green-900/20 rounded-2xl group-hover:bg-green-900/40 transition-colors">
-                                <motion.div
-                                    animate={{ rotateY: [0, 180, 0] }}
-                                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                                    className="w-12 h-12 rounded-full border-4 border-green-500 flex items-center justify-center bg-slate-900 shadow-sm"
-                                >
-                                    <span className="font-bold text-green-400 text-xl">₹</span>
-                                </motion.div>
+                            <div className="relative w-28 h-28 flex-shrink-0 flex items-center justify-center pointer-events-none">
+                                <PriceGraphic />
                             </div>
                             <div className="space-y-2">
                                 <h3 className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">Amazing Prices</h3>
@@ -264,13 +259,8 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                             transition={{ duration: 0.5, delay: 0.1 }}
                             className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-white/[0.03] dark:backdrop-blur-xl p-6 rounded-3xl border border-slate-700 dark:border-white/10 hover:border-teal-600 dark:hover:border-white/20 dark:hover:bg-white/[0.06] hover:shadow-2xl dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)] transition-all duration-300 group cursor-default"
                         >
-                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-teal-900/20 rounded-2xl group-hover:bg-teal-900/40 transition-colors">
-                                <motion.div
-                                    animate={{ scale: [1, 1.2, 1] }}
-                                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                                >
-                                    <Zap className="w-10 h-10 text-teal-400 fill-teal-400" />
-                                </motion.div>
+                            <div className="relative w-28 h-28 flex-shrink-0 flex items-center justify-center pointer-events-none">
+                                <SpeedGraphic />
                             </div>
                             <div className="space-y-2">
                                 <h3 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">Quick & Fast Service</h3>
@@ -289,13 +279,8 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                             transition={{ duration: 0.5, delay: 0.2 }}
                             className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-white/[0.03] dark:backdrop-blur-xl p-6 rounded-3xl border border-slate-700 dark:border-white/10 hover:border-lime-600 dark:hover:border-white/20 dark:hover:bg-white/[0.06] hover:shadow-2xl dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)] transition-all duration-300 group cursor-default"
                         >
-                            <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-lime-900/20 rounded-2xl group-hover:bg-lime-900/40 transition-colors">
-                                <motion.div
-                                    animate={{ rotate: [0, 10, -10, 0] }}
-                                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                                >
-                                    <ShieldCheck className="w-10 h-10 text-green-400" />
-                                </motion.div>
+                            <div className="relative w-28 h-28 flex-shrink-0 flex items-center justify-center pointer-events-none">
+                                <SecurityGraphic />
                             </div>
                             <div className="space-y-2">
                                 <h3 className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">Safety Guaranteed</h3>
