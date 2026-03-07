@@ -35,14 +35,25 @@ const SmartphoneGraphic = () => (
                 <rect x="3" y="3" width="49" height="104" className="fill-slate-50 dark:fill-slate-950" />
 
                 <g transform="translate(8, 15)">
-                    <rect x="0" y="0" width="10" height="10" rx="2" className="fill-blue-400/70" />
-                    <rect x="15" y="0" width="10" height="10" rx="2" className="fill-green-400/70" />
-                    <rect x="29" y="0" width="10" height="10" rx="2" className="fill-red-400/70" />
-                    <rect x="0" y="15" width="10" height="10" rx="2" className="fill-yellow-400/70" />
-                    <rect x="15" y="15" width="10" height="10" rx="2" className="fill-purple-400/70" />
-                    <rect x="29" y="15" width="10" height="10" rx="2" className="fill-pink-400/70" />
+                    {/* Animated App Icons */}
+                    <motion.rect x="0" y="0" width="10" height="10" rx="2" className="fill-blue-400/70" animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Infinity, delay: 0.1 }} />
+                    <motion.rect x="15" y="0" width="10" height="10" rx="2" className="fill-green-400/70" animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Infinity, delay: 0.3 }} />
+                    <motion.rect x="29" y="0" width="10" height="10" rx="2" className="fill-red-400/70" animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} />
+                    <motion.rect x="0" y="15" width="10" height="10" rx="2" className="fill-yellow-400/70" animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Infinity, delay: 0.2 }} />
+                    <motion.rect x="15" y="15" width="10" height="10" rx="2" className="fill-purple-400/70" animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Infinity, delay: 0.4 }} />
+                    <motion.rect x="29" y="15" width="10" height="10" rx="2" className="fill-pink-400/70" animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Infinity, delay: 0.6 }} />
+
+                    {/* Animated Data Widget */}
                     <rect x="0" y="30" width="39" height="30" rx="2" className="fill-slate-700/20" />
-                    <path d="M5 40 H34 M5 48 H25" className="stroke-slate-500/50" strokeWidth="1.5" />
+                    <motion.path
+                        d="M2 45 Q 10 35, 18 45 T 37 45"
+                        className="stroke-blue-500/80 fill-none" strokeWidth="1.5" strokeLinecap="round"
+                        animate={{ pathLength: [0, 1, 0], opacity: [0.2, 1, 0.2] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    <motion.circle cx="10" cy="52" r="2.5" className="fill-green-400" animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity }} />
+                    <motion.circle cx="20" cy="52" r="2.5" className="fill-purple-400" animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }} />
+                    <motion.circle cx="30" cy="52" r="2.5" className="fill-blue-400" animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity, delay: 1 }} />
                 </g>
 
                 <motion.path
@@ -75,12 +86,19 @@ const TabletGraphic = () => (
                     <rect x="5" y="20" width="20" height="4" rx="1" className="fill-slate-400" />
                     <rect x="5" y="30" width="20" height="4" rx="1" className="fill-slate-400" />
 
-                    <rect x="35" y="0" width="70" height="40" rx="2" className="fill-blue-200 dark:fill-blue-900" />
-                    <circle cx="70" cy="20" r="10" className="fill-blue-400/50" />
+                    {/* Top Hero Section Animated */}
+                    <g clipPath="url(#tablet-hero-clip)">
+                        <clipPath id="tablet-hero-clip"><rect x="35" y="0" width="70" height="40" rx="2" /></clipPath>
+                        <rect x="35" y="0" width="70" height="40" rx="2" className="fill-blue-200 dark:fill-blue-900" />
+                        <motion.circle cx="70" cy="20" r="15" className="fill-blue-400/30" animate={{ scale: [1, 1.8, 1], opacity: [0.5, 0, 0.5] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} />
+                        <motion.circle cx="70" cy="20" r="8" className="fill-blue-500/50" animate={{ scale: [1, 1.3, 1] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} />
+                        <motion.path d="M30 30 L45 15 L55 25 L80 5 L110 20" fill="none" className="stroke-teal-400/80" strokeWidth="2" strokeDasharray="100 100" animate={{ strokeDashoffset: [100, -100] }} transition={{ duration: 4, repeat: Infinity, ease: "linear" }} />
+                    </g>
 
-                    <rect x="35" y="45" width="20" height="15" rx="2" className="fill-purple-200 dark:fill-purple-900" />
-                    <rect x="60" y="45" width="20" height="15" rx="2" className="fill-green-200 dark:fill-green-900" />
-                    <rect x="85" y="45" width="20" height="15" rx="2" className="fill-red-200 dark:fill-red-900" />
+                    {/* Animated Bottom Grid items */}
+                    <motion.rect x="35" y="45" width="20" height="15" rx="2" className="fill-purple-300 dark:fill-purple-800" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0.1 }} />
+                    <motion.rect x="60" y="45" width="20" height="15" rx="2" className="fill-green-300 dark:fill-green-800" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0.3 }} />
+                    <motion.rect x="85" y="45" width="20" height="15" rx="2" className="fill-red-300 dark:fill-red-800" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} />
                 </g>
 
                 <rect x="30" y="155" width="120" height="8" rx="4" className="fill-white stroke-slate-300" />
@@ -118,20 +136,27 @@ const WatchGraphic = () => (
                 <circle cx="35" cy="45" r="35" className="fill-white dark:fill-slate-800 stroke-slate-300" strokeWidth="2" />
                 <circle cx="35" cy="45" r="30" className="fill-black" />
 
-                <g transform="translate(15, 25)">
-                    <path d="M20 5 C20 5 15 0 12 5 C9 0 4 0 4 5 C4 10 20 20 20 20 C20 20 36 10 36 5 C36 0 31 0 28 5 C25 0 20 5 20 5"
-                        className="fill-red-500" transform="scale(0.5) translate(20, 0)" />
+                <g clipPath="url(#watch-screen-clip)">
+                    <clipPath id="watch-screen-clip"><circle cx="35" cy="45" r="30" /></clipPath>
 
-                    <path d="M0 25 H10 L15 15 L20 35 L25 10 L30 25 H40"
-                        fill="none" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <g transform="translate(15, 25)">
+                        <motion.g animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }} style={{ originX: 20, originY: 10 }}>
+                            <path d="M20 5 C20 5 15 0 12 5 C9 0 4 0 4 5 C4 10 20 20 20 20 C20 20 36 10 36 5 C36 0 31 0 28 5 C25 0 20 5 20 5"
+                                className="fill-red-500" transform="scale(0.5) translate(20, 0)" />
+                        </motion.g>
 
-                    <motion.circle
-                        r="2" fill="#ef4444"
-                        animate={{ offsetDistance: ["0%", "100%"] }}
-                        style={{ offsetPath: "path('M0 25 H10 L15 15 L20 35 L25 10 L30 25 H40')" }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    />
-                    <text x="20" y="45" textAnchor="middle" fill="white" fontSize="7" fontWeight="bold">78 BPM</text>
+                        {/* Scrolling Heartbeat Chart */}
+                        <motion.path
+                            d="M -20 25 H -10 L -5 15 L 0 35 L 5 10 L 10 25 H 20 L 25 15 L 30 35 L 35 10 L 40 25 H 50 L 55 15 L 60 35 L 65 10 L 70 25 H 80"
+                            fill="none" stroke="#22c55e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+                            animate={{ x: [-40, 0] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                        />
+
+                        <motion.text x="20" y="45" textAnchor="middle" fill="white" fontSize="7" fontWeight="bold" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 1, repeat: Infinity }}>
+                            78 BPM
+                        </motion.text>
+                    </g>
                 </g>
             </g>
         </motion.g>
@@ -207,11 +232,24 @@ const TvGraphic = () => (
                     <rect x="5" y="5" width="35" height="20" rx="1" className="fill-red-500/20" />
                     <rect x="45" y="5" width="35" height="20" rx="1" className="fill-blue-500/20" />
                     <rect x="85" y="5" width="35" height="20" rx="1" className="fill-green-500/20" />
-                    <rect x="0" y="40" width="130" height="30" rx="2" className="fill-slate-800" />
-                    <rect x="5" y="45" width="20" height="20" rx="1" className="fill-purple-500/20" />
-                    <rect x="30" y="45" width="20" height="20" rx="1" className="fill-yellow-500/20" />
-                    <rect x="60" y="50" width="60" height="10" rx="2" className="fill-slate-700" />
-                    <rect x="62" y="52" width="20" height="6" rx="1" className="fill-white" />
+                    {/* Animated Cover Flow / Video Feed */}
+                    <g clipPath="url(#tv-feed-clip)">
+                        <clipPath id="tv-feed-clip"><rect x="0" y="40" width="130" height="30" rx="2" /></clipPath>
+                        <rect x="0" y="40" width="130" height="30" rx="2" className="fill-slate-800" />
+
+                        <motion.g animate={{ x: [-80, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "linear" }}>
+                            <rect x="-70" y="45" width="20" height="20" rx="1" className="fill-pink-500/40" />
+                            <rect x="-45" y="45" width="20" height="20" rx="1" className="fill-cyan-500/40" />
+                            <rect x="-20" y="45" width="20" height="20" rx="1" className="fill-green-500/40" />
+                            <rect x="5" y="45" width="20" height="20" rx="1" className="fill-purple-500/40" />
+                            <rect x="30" y="45" width="20" height="20" rx="1" className="fill-yellow-500/40" />
+                            <rect x="55" y="45" width="20" height="20" rx="1" className="fill-red-500/40" />
+                            <rect x="80" y="45" width="20" height="20" rx="1" className="fill-blue-500/40" />
+                            <rect x="105" y="45" width="20" height="20" rx="1" className="fill-emerald-500/40" />
+                            <rect x="130" y="45" width="20" height="20" rx="1" className="fill-orange-500/40" />
+                            <rect x="155" y="45" width="20" height="20" rx="1" className="fill-pink-500/40" />
+                        </motion.g>
+                    </g>
                 </g>
 
                 <motion.path
@@ -279,7 +317,19 @@ const LaptopGraphic = () => (
             <g transform="translate(30, 30)">
                 <path d="M10 70 L130 70 L140 85 H0 Z" className="fill-slate-200 dark:fill-slate-800 stroke-slate-400" strokeWidth="2" />
                 <rect x="25" y="10" width="90" height="60" rx="4" className="fill-slate-900 stroke-slate-500" strokeWidth="2" />
-                <rect x="28" y="13" width="84" height="54" rx="2" className="fill-blue-900/40" />
+                <g clipPath="url(#laptop-clip)">
+                    <clipPath id="laptop-clip"><rect x="28" y="13" width="84" height="54" rx="2" /></clipPath>
+                    <rect x="28" y="13" width="84" height="54" rx="2" className="fill-blue-900/40" />
+
+                    {/* Animated code / lines inside screen */}
+                    <motion.rect x="32" y="18" width="40" height="4" rx="1" className="fill-emerald-400/50" animate={{ width: [10, 40, 10] }} transition={{ duration: 3, repeat: Infinity }} />
+                    <motion.rect x="32" y="26" width="60" height="4" rx="1" className="fill-teal-400/50" animate={{ width: [20, 60, 20] }} transition={{ duration: 4, repeat: Infinity, delay: 0.5 }} />
+                    <motion.rect x="32" y="34" width="50" height="4" rx="1" className="fill-blue-400/50" animate={{ width: [15, 50, 15] }} transition={{ duration: 3.5, repeat: Infinity, delay: 1 }} />
+                    <motion.rect x="32" y="42" width="70" height="4" rx="1" className="fill-indigo-400/50" animate={{ width: [30, 70, 30] }} transition={{ duration: 5, repeat: Infinity, delay: 1.5 }} />
+
+                    {/* Scanning Line overlay */}
+                    <motion.line x1="28" y1="13" x2="112" y2="13" className="stroke-white/10" strokeWidth="20" animate={{ y: [0, 54, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} />
+                </g>
                 <rect x="50" y="75" width="40" height="5" rx="2" className="fill-slate-400 dark:fill-slate-600" />
             </g>
         </motion.g>
@@ -291,7 +341,19 @@ const DesktopGraphic = () => (
         <motion.g animate={{ y: [0, -3, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}>
             <g transform="translate(30, 20)">
                 <rect x="10" y="10" width="100" height="70" rx="4" className="fill-slate-900 stroke-slate-600" strokeWidth="2" />
-                <rect x="14" y="14" width="92" height="62" rx="2" className="fill-black" />
+                <g clipPath="url(#desktop-clip)">
+                    <clipPath id="desktop-clip"><rect x="14" y="14" width="92" height="62" rx="2" /></clipPath>
+                    <rect x="14" y="14" width="92" height="62" rx="2" className="fill-black" />
+
+                    {/* Futuristic Data Nodes */}
+                    <motion.circle cx="30" cy="45" r="15" className="stroke-blue-500/30" strokeWidth="2" fill="none" animate={{ scale: [0.8, 1.2, 0.8], rotate: [0, 180, 360] }} transition={{ duration: 4, repeat: Infinity, ease: "linear" }} />
+                    <motion.circle cx="30" cy="45" r="8" className="fill-blue-500/40" animate={{ scale: [1, 1.5, 1] }} transition={{ duration: 2, repeat: Infinity }} />
+
+                    <motion.circle cx="75" cy="35" r="20" className="stroke-teal-500/30" strokeWidth="2" strokeDasharray="5 5" fill="none" animate={{ rotate: [-360, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "linear" }} />
+                    <motion.circle cx="75" cy="35" r="10" className="fill-teal-500/40" animate={{ scale: [1, 1.3, 1] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }} />
+
+                    <motion.line x1="30" y1="45" x2="75" y2="35" className="stroke-green-400/50" strokeWidth="1.5" strokeDasharray="4 4" animate={{ strokeDashoffset: [0, 20] }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} />
+                </g>
                 <path d="M50 80 V100" className="stroke-slate-500" strokeWidth="8" />
                 <path d="M30 100 H90" className="stroke-slate-500" strokeWidth="6" strokeLinecap="round" />
                 <rect x="120" y="20" width="30" height="80" rx="3" className="fill-slate-800 stroke-slate-600" strokeWidth="2" />
