@@ -17,13 +17,13 @@ export default function Footer() {
                             The smartest way to sell your old gadgets. Get instant quotes, free doorstep pickup, and instant payment.
                         </p>
                         <div className="flex gap-4 pt-2">
-                            <Link href="#" className="text-muted-foreground hover:text-green-600 transition-colors">
+                            <Link href="https://www.facebook.com/share/17i7TEiHMJ/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-green-600 transition-colors">
                                 <Facebook className="h-5 w-5" />
                             </Link>
                             <Link href="#" className="text-muted-foreground hover:text-green-600 transition-colors">
                                 <Twitter className="h-5 w-5" />
                             </Link>
-                            <Link href="#" className="text-muted-foreground hover:text-green-600 transition-colors">
+                            <Link href="https://www.instagram.com/fonzkart?igsh=ZWJuZnJlbHkwMnVi" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-green-600 transition-colors">
                                 <Instagram className="h-5 w-5" />
                             </Link>
                             <Link href="#" className="text-muted-foreground hover:text-green-600 transition-colors">
