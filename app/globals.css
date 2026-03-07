@@ -157,6 +157,22 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+
+  .dark .bg-card,
+  .dark .bg-muted {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.3s ease;
+  }
+
+  .dark .bg-card:hover {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+    /* Subtler than landing page so it doesn't get chaotic */
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
 }
 
 /* Custom Utilities for Logo Filtering */

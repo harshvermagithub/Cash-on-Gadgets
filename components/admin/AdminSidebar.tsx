@@ -49,7 +49,7 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
 
     const SidebarNav = () => (
         <div className="flex flex-col h-full">
-            <div className="p-6 border-b shrink-0 flex items-center justify-between">
+            <div className="p-6 border-b border-border dark:border-white/10 shrink-0 flex items-center justify-between">
                 <Link href="/admin" className="flex items-center gap-2 font-bold text-lg text-primary leading-tight">
                     <LayoutDashboard className="shrink-0 w-6 h-6" />
                     <span>{dashboardTitle}</span>
@@ -169,7 +169,7 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
 
             </nav>
 
-            <div className="p-4 border-t mt-auto">
+            <div className="p-4 border-t border-border dark:border-white/10 mt-auto">
                 <Link href="/" className="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg text-muted-foreground hover:bg-muted transition-colors">
                     <ExternalLink className="w-5 h-5" />
                     View Website
@@ -181,12 +181,12 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
     return (
         <>
             {/* Desktop Sidebar (Left side, fixed on desktop) */}
-            <aside className="w-64 bg-card border-r hidden lg:flex flex-col h-screen sticky top-0 shrink-0">
+            <aside className="w-64 bg-card dark:bg-black border-r border-border dark:border-white/10 hidden lg:flex flex-col h-screen sticky top-0 shrink-0">
                 <SidebarNav />
             </aside>
 
             {/* Mobile/Tablet Header (Top, visible on small screens) */}
-            <div className="lg:hidden p-4 bg-card border-b flex items-center justify-between sticky top-0 z-30 shadow-sm">
+            <div className="lg:hidden p-4 bg-card dark:bg-black border-b border-border dark:border-white/10 flex items-center justify-between sticky top-0 z-30 shadow-sm">
                 <Link href="/admin" className="font-bold flex items-center gap-2 text-primary text-sm">
                     <LayoutDashboard className="w-5 h-5 shrink-0" /> <span className="truncate">{dashboardTitle}</span>
                 </Link>
@@ -205,7 +205,7 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                         className="fixed inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200"
                         onClick={() => setIsOpen(false)}
                     />
-                    <aside className="relative w-64 h-full bg-card shadow-2xl flex flex-col animate-in slide-in-from-left duration-200">
+                    <aside className="relative w-64 h-full bg-card dark:bg-black shadow-2xl flex flex-col animate-in slide-in-from-left duration-200">
                         <button
                             onClick={() => setIsOpen(false)}
                             className="absolute right-4 top-6 z-10 p-1 hover:bg-muted rounded-full"
