@@ -217,14 +217,15 @@ export async function deleteVariant(id: string) {
 
 // --- Riders ---
 
-export async function addRider(name: string, phone: string) {
+export async function addRider(name: string, phone: string, partnerId?: string | null) {
     await requireAdmin();
     await db.addRider({
         id: randomUUID(),
         name,
         phone,
         status: 'available',
-        password: null
+        password: null,
+        partnerId: partnerId || null
     });
     revalidatePath('/admin/riders');
     return { success: true };

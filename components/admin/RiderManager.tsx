@@ -6,10 +6,11 @@ import { addRider, deleteRider } from '@/actions/admin';
 import { Trash2, Plus, Loader2, User, Phone, ChevronDown, ChevronUp, Package, AlertTriangle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-export default function RiderManager({ initialRiders }: { initialRiders: any[] }) {
+export default function RiderManager({ initialRiders, partners = [], currentUserRole, currentUserId }: { initialRiders: any[], partners?: any[], currentUserRole?: string, currentUserId?: string }) {
     const router = useRouter();
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
+    const [partnerId, setPartnerId] = useState(currentUserRole === 'PARTNER' ? currentUserId : '');
     const [isLoading, setIsLoading] = useState(false);
     const [expandedRider, setExpandedRider] = useState<string | null>(null);
 
@@ -23,9 +24,12 @@ export default function RiderManager({ initialRiders }: { initialRiders: any[] }
 
         setIsLoading(true);
         try {
-            await addRider(name, phone);
+            await addRider(name, phone, partnerId || undefined);
             setName('');
             setPhone('');
+            if (currentUserRole !== 'PARTNER') {
+                setPartnerId('');
+            }
             router.refresh();
         } catch {
             alert('Failed to add rider');
@@ -67,6 +71,21 @@ export default function RiderManager({ initialRiders }: { initialRiders: any[] }
                             placeholder="+91 9876543210"
                         />
                     </div>
+                    {currentUserRole !== 'PARTNER' && partners.length > 0 && (
+                        <div className="flex-1 space-y-2 w-full">
+                            <label className="text-sm font-medium">Assign to Partner</label>
+                            <select
+                                value={partnerId || ''}
+                                onChange={(e) => setPartnerId(e.target.value)}
+                                className="w-full p-2 border rounded-lg bg-background"
+                            >
+                                <option value="">None (Unassigned)</option>
+                                {partners.map((p) => (
+                                    <option key={p.id} value={p.id}>{p.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
                     <button
                         disabled={isLoading || !name || !phone}
                         className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 h-[42px] min-w-[100px] flex justify-center items-center"
@@ -100,6 +119,11 @@ export default function RiderManager({ initialRiders }: { initialRiders: any[] }
                                         <Phone className="w-3 h-3" />
                                         {rider.phone}
                                     </div>
+                                    {rider.partner && (
+                                        <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">
+                                            Partner: <span className="font-semibold">{rider.partner.name}</span>
+                                        </div>
+                                    )}
                                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full mt-2 inline-block ${rider.status === 'available' ? 'bg-green-100 text-green-700' :
                                         rider.status === 'busy' ? 'bg-orange-100 text-orange-700' : 'bg-gray-100 text-gray-700'
                                         }`}>
