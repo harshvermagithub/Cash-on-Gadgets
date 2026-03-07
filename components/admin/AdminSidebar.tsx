@@ -34,7 +34,7 @@ const CATEGORIES = [
     { id: 'repair-device', label: 'Repair', icon: Wrench },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }) {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -66,7 +66,7 @@ export default function AdminSidebar() {
                     <p className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Inventory</p>
                 </div>
 
-                {CATEGORIES.map((cat) => {
+                {['SUPER_ADMIN', 'ADMIN'].includes(role) && CATEGORIES.map((cat) => {
                     const Icon = cat.icon;
                     const isActive = pathname === `/admin/category/${cat.id}`;
 
@@ -83,53 +83,67 @@ export default function AdminSidebar() {
                     );
                 })}
 
-                <div className="pt-4 pb-2">
-                    <p className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">System</p>
-                </div>
-                <Link
-                    href="/admin/admins"
-                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/admins') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
-                        }`}
-                >
-                    <ShieldCheck className="w-5 h-5" />
-                    Admins
-                </Link>
-                <Link
-                    href="/admin/inbox"
-                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/inbox') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
-                        }`}
-                >
-                    <Mail className="w-5 h-5" />
-                    Mail Inbox
-                </Link>
+                {['SUPER_ADMIN', 'ADMIN'].includes(role) && (
+                    <>
+                        <div className="pt-4 pb-2">
+                            <p className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">System</p>
+                        </div>
+                        <Link
+                            href="/admin/admins"
+                            className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/admins') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
+                                }`}
+                        >
+                            <ShieldCheck className="w-5 h-5" />
+                            Super Admins
+                        </Link>
+                        <Link
+                            href="/admin/inbox"
+                            className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/inbox') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
+                                }`}
+                        >
+                            <Mail className="w-5 h-5" />
+                            Mail Inbox
+                        </Link>
+                    </>
+                )}
 
-                <div className="pt-4 pb-2">
-                    <p className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Hierarchy & Roles</p>
-                </div>
-                <Link
-                    href="/admin/cities"
-                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/cities') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
-                        }`}
-                >
-                    <MapPin className="w-5 h-5" />
-                    Cities Workspace
-                </Link>
-                <Link
-                    href="/admin/zonal-heads"
-                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/zonal-heads') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
-                        }`}
-                >
-                    <Briefcase className="w-5 h-5" />
-                    Zonal Heads
-                </Link>
-                <Link
-                    href="/admin/partners"
-                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/partners') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
-                        }`}
-                >
-                    <Building2 className="w-5 h-5" />
-                    City Partners
-                </Link>
+                {['SUPER_ADMIN', 'ADMIN', 'ZONAL_HEAD'].includes(role) && (
+                    <>
+                        <div className="pt-4 pb-2">
+                            <p className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Hierarchy & Roles</p>
+                        </div>
+                        <Link
+                            href="/admin/cities"
+                            className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/cities') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
+                                }`}
+                        >
+                            <MapPin className="w-5 h-5" />
+                            Cities Workspace
+                        </Link>
+                    </>
+                )}
+
+                {['SUPER_ADMIN', 'ADMIN'].includes(role) && (
+                    <Link
+                        href="/admin/zonal-heads"
+                        className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/zonal-heads') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
+                            }`}
+                    >
+                        <Briefcase className="w-5 h-5" />
+                        Zonal Heads
+                    </Link>
+                )}
+
+                {['SUPER_ADMIN', 'ADMIN', 'ZONAL_HEAD'].includes(role) && (
+                    <Link
+                        href="/admin/partners"
+                        className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/partners') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
+                            }`}
+                    >
+                        <Building2 className="w-5 h-5" />
+                        City Partners
+                    </Link>
+                )}
 
                 <div className="pt-4 pb-2">
                     <p className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Logistics</p>

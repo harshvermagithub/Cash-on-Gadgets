@@ -16,7 +16,7 @@ export const ADMIN_EMAILS = ['admin@fonzkart.com', 'mobilesouls.in@gmail.com'];
 
 export function isAdmin(user: SessionUser) {
     if (!user) return false;
-    return ADMIN_EMAILS.includes(user.email) || user.role === 'ADMIN';
+    return ADMIN_EMAILS.includes(user.email) || ['ADMIN', 'SUPER_ADMIN', 'ZONAL_HEAD', 'PARTNER'].includes(user.role);
 }
 
 export interface SessionPayload extends JWTPayload {

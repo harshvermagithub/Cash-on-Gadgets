@@ -10,6 +10,7 @@ export async function placeOrder(
     variant: string,
     price: number,
     address: string,
+    pincode: string,
     location: { lat: number; lng: number } | null,
     answers: unknown
 ) {
@@ -26,6 +27,7 @@ export async function placeOrder(
         date: new Date().toISOString(),
         status: 'Pending Pickup',
         address,
+        pincode,
         location,
         answers
     };

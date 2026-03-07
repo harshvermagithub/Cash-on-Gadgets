@@ -32,6 +32,7 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
     // Form Data
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
+    const [pincode, setPincode] = useState('');
     const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
     const [selectedDate, setSelectedDate] = useState<number>(0); // 0 to 3 index
     const [selectedSlot, setSelectedSlot] = useState<string>('');
@@ -125,6 +126,11 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                 setDetectedAddress(data.display_name);
                 // Optionally autofill main address if empty? User asked for separate preview box.
                 if (!address) setAddress(data.display_name);
+
+                // Auto-fill pincode if available and not manually set
+                if (data.address && data.address.postcode && !pincode) {
+                    setPincode(data.address.postcode);
+                }
             }
         } catch (error) {
             console.error("Reverse geocoding failed", error);
@@ -182,7 +188,7 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                 detectedAddress
             };
 
-            await placeOrder(deviceInfo.name, deviceInfo.variant, finalPrice, address, location, finalAnswers);
+            await placeOrder(deviceInfo.name, deviceInfo.variant, finalPrice, address, pincode, location, finalAnswers);
             router.push('/orders');
         } catch {
             // Backup redirect flow if placeOrder fails (e.g. auth)
@@ -315,6 +321,18 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                         />
                     </div>
 
+                    <div className="space-y-3">
+                        <label className="block text-sm font-medium">Pincode (Required)</label>
+                        <input
+                            type="text"
+                            maxLength={6}
+                            className="w-full p-4 border rounded-xl bg-background focus:ring-2 focus:ring-primary/50 outline-none"
+                            placeholder="e.g. 560032"
+                            value={pincode}
+                            onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
+                        />
+                    </div>
+
                     {/* OR Divider */}
                     <div className="relative">
                         <div className="absolute inset-0 flex items-center">
@@ -377,7 +395,7 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
 
                 <button
                     onClick={() => setBookingStep('schedule')}
-                    disabled={!address && !location} // Either Address OR Location is required
+                    disabled={(!address && !location) || pincode.length !== 6} // Either Address OR Location is required, AND Pincode is required
                     className="w-full py-4 bg-primary text-primary-foreground font-bold rounded-xl shadow-lg hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                     Continue to Schedule <ArrowRight className="w-5 h-5" />

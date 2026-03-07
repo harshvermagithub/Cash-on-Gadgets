@@ -109,31 +109,46 @@ export default async function PartnersPage() {
                                 </div>
                             </div>
 
-                            <div className="min-w-[200px] shrink-0">
+                            <div className="w-full mt-4 sm:mt-0">
                                 <form action={async (data) => {
                                     'use server';
                                     const newCityId = data.get('cityId') as string;
+                                    const pincodesStr = data.get('pincodes') as string;
+                                    const pincodes = pincodesStr ? pincodesStr.split(',').map(p => p.trim()).filter(Boolean) : [];
+
                                     await prisma.user.update({
                                         where: { id: p.id },
-                                        data: { cityId: newCityId === 'none' ? null : newCityId }
+                                        data: {
+                                            cityId: newCityId === 'none' ? null : newCityId,
+                                            pincodes
+                                        }
                                     });
                                     revalidatePath('/admin/partners');
                                     revalidatePath('/admin/cities');
-                                }} className="flex flex-col gap-2">
-                                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Assigned City</label>
-                                    <div className="flex gap-2">
+                                }} className="flex flex-col sm:flex-row gap-4 items-end sm:items-start bg-muted/20 p-3 rounded-lg">
+                                    <div className="flex flex-col gap-1 w-full sm:w-auto">
+                                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Assigned City</label>
                                         <select
                                             name="cityId"
                                             defaultValue={p.cityId || 'none'}
-                                            className="flex-1 h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background"
+                                            className="w-full sm:min-w-[160px] h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background"
                                         >
                                             <option value="none" className="italic text-muted-foreground">Unassigned</option>
                                             {unassignedCities.map(city => (
                                                 <option key={city.id} value={city.id}>{city.name}</option>
                                             ))}
                                         </select>
-                                        <button type="submit" className="h-9 px-3 bg-secondary text-secondary-foreground rounded-md text-xs font-medium hover:bg-secondary/80">Save</button>
                                     </div>
+                                    <div className="flex flex-col gap-1 w-full flex-1">
+                                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Assigned Pincodes</label>
+                                        <input
+                                            name="pincodes"
+                                            defaultValue={p.pincodes?.join(', ') || ''}
+                                            placeholder="560032, 560033"
+                                            className="w-full h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background"
+                                        />
+                                    </div>
+                                    <button type="submit" className="h-9 px-4 shrink-0 bg-secondary text-secondary-foreground rounded-md text-sm font-medium hover:bg-secondary/80 w-full sm:w-auto mt-2 sm:mt-0 sm:self-end text-center">Save Settings</button>
                                 </form>
                             </div>
                         </div>

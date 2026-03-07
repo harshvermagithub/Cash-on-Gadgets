@@ -25,6 +25,7 @@ export interface Order {
     date: string;
     status: string;
     address: string;
+    pincode?: string | null;
     location: {
         lat: number;
         lng: number;
@@ -115,6 +116,7 @@ export const db = {
                 price: order.price,
                 status: order.status,
                 address: order.address,
+                pincode: order.pincode,
                 locationLat: order.location?.lat,
                 locationLng: order.location?.lng,
                 answers: order.answers ? JSON.stringify(order.answers) : null,
@@ -360,6 +362,7 @@ function mapPrismaOrderToAppOrder(o: PrismaOrder & { orderNumber?: number, user?
         date: o.createdAt.toISOString(),
         status: o.status,
         address: o.address,
+        pincode: o.pincode,
         location: (o.locationLat && o.locationLng) ? { lat: o.locationLat, lng: o.locationLng } : null,
         riderId: o.riderId,
         answers: o.answers ? JSON.parse(o.answers) : null

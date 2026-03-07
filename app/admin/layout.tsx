@@ -19,7 +19,7 @@ export default async function AdminLayout({
     return (
         <div className="flex min-h-screen bg-muted/20 flex-col lg:flex-row">
             {/* Sidebar */}
-            <AdminSidebar />
+            <AdminSidebar role={session.user.role} />
 
             {/* Main Content */}
             <main className="flex-1 p-8">

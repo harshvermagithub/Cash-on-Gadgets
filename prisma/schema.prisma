@@ -23,6 +23,8 @@ model User {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 
+  pincodes String[] @default([]) // For Partners
+
   cityId String?
   city   City?   @relation(fields: [cityId], references: [id])
 
@@ -69,6 +71,7 @@ model Order {
   status      String @default("Pending Pickup")
 
   address     String
+  pincode     String?
   locationLat Float?
   locationLng Float?
 

@@ -66,7 +66,7 @@ function SortableModel({ model, brands, variants, onEdit, onDelete }: { model: M
                 {/* Image */}
                 <div className="relative w-16 h-16 shrink-0 rounded-lg border bg-white flex items-center justify-center overflow-hidden">
                     {model.img && (model.img.startsWith('/') || model.img.startsWith('http')) ? (
-                        <Image src={model.img} alt={model.name} fill className="object-contain p-1" />
+                        <Image src={model.img.split('?')[0]} alt={model.name} fill className="object-contain p-1" />
                     ) : (
                         <ImageIcon className="w-6 h-6 text-muted-foreground/30" />
                     )}
@@ -400,7 +400,7 @@ export default function ModelManager({ initialModels, initialVariants = [], bran
                                             <div className="border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center gap-4 bg-muted/10 hover:bg-muted/20 transition-colors group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
                                                 {img ? (
                                                     <div className="relative w-32 h-32 rounded-xl overflow-hidden border shadow-sm bg-white p-2">
-                                                        <Image src={img} alt="Preview" fill className="object-contain" />
+                                                        <Image src={img.split('?')[0]} alt="Preview" fill className="object-contain" />
                                                         <button type="button" onClick={(e) => { e.stopPropagation(); setImg(''); }} className="absolute top-1 right-1 bg-black/50 hover:bg-destructive text-white p-1 rounded-full backdrop-blur-sm transition-colors"><X className="w-3 h-3" /></button>
                                                     </div>
                                                 ) : (
