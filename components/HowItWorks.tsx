@@ -211,14 +211,13 @@ export default function HowItWorks() {
                                     className="relative z-10 flex flex-col items-center"
                                 >
                                     <div className="relative">
-                                        <Banknote className="w-24 h-24 text-lime-600 drop-shadow-xl" strokeWidth={1.5} />
-                                        <motion.div
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            className="absolute -top-2 -right-2 w-8 h-8 bg-black text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg border-2 border-white"
-                                        >
-                                            ₹
-                                        </motion.div>
+                                        <Image
+                                            src="/imgs/get_paid.svg"
+                                            alt="Get Paid Instantly"
+                                            width={140}
+                                            height={140}
+                                            className="drop-shadow-xl"
+                                        />
                                     </div>
 
                                     <motion.div
