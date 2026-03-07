@@ -172,6 +172,12 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                             <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
                                             <span>{order.address || "Location captured via GPS"}</span>
                                         </div>
+                                        {order.pincode && (
+                                            <div className="flex items-start gap-2 text-sm text-muted-foreground bg-muted/30 p-3 rounded-xl border border-border/50 mt-2">
+                                                <span className="font-bold">Pincode:</span>
+                                                <span>{order.pincode}</span>
+                                            </div>
+                                        )}
                                     </div>
 
                                     <button
