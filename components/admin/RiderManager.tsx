@@ -129,9 +129,9 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
                 </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
                 {filteredRiders.map((rider) => (
-                    <div key={rider.id} className="border rounded-xl bg-card overflow-hidden">
+                    <div key={rider.id} className={`border rounded-xl bg-card overflow-hidden transition-all ${expandedRider === rider.id ? 'col-span-full shadow-md border-primary/30' : ''}`}>
                         <div
                             className="p-4 flex items-center justify-between cursor-pointer hover:bg-muted/50 transition-colors"
                             onClick={() => toggleExpand(rider.id)}
