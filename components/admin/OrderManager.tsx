@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { assignRider } from '@/actions/admin';
 import { Rider, Order } from '@/lib/store'; // Need to export Order from store/lib
-import { Calendar, MapPin, Smartphone, User, CheckCircle2, Eye, X, Download, Phone, Mail } from 'lucide-react';
+import { Calendar, MapPin, Smartphone, User, CheckCircle2, Eye, X, Download, Phone, Mail, AlertTriangle } from 'lucide-react';
 import OrderDetails from '@/components/OrderDetails';
 import { useRouter } from 'next/navigation';
 
@@ -14,7 +14,7 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
     const router = useRouter();
     const [assigningId, setAssigningId] = useState<string | null>(null);
     const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
-    const [activeTab, setActiveTab] = useState<'to_be_assigned' | 'pending_pickup' | 'completed'>('to_be_assigned');
+    const [activeTab, setActiveTab] = useState<'to_be_assigned' | 'pending_approval' | 'pending_pickup' | 'completed'>('to_be_assigned');
 
     const handleAssign = async (orderId: string, riderId: string) => {
         if (!riderId) return;
@@ -33,14 +33,17 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
     const sortedOrders = [...initialOrders].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     const toBeAssignedOrders = sortedOrders.filter(o => !o.riderId && o.status !== 'completed');
-    const pendingPickupOrders = sortedOrders.filter(o => o.riderId && o.status !== 'completed');
+    const pendingApprovalOrders = sortedOrders.filter(o => o.status === 'pending_verification');
+    const pendingPickupOrders = sortedOrders.filter(o => o.riderId && o.status !== 'completed' && o.status !== 'pending_verification');
     const completedOrders = sortedOrders.filter(o => o.status === 'completed');
 
     const displayedOrders = activeTab === 'to_be_assigned'
         ? toBeAssignedOrders
-        : activeTab === 'pending_pickup'
-            ? pendingPickupOrders
-            : completedOrders;
+        : activeTab === 'pending_approval'
+            ? pendingApprovalOrders
+            : activeTab === 'pending_pickup'
+                ? pendingPickupOrders
+                : completedOrders;
 
     const handleExport = () => {
         const headers = ["Order #", "Date", "Device", "Price", "Status", "Contact", "Address", "Rider Assigned"];
@@ -84,10 +87,16 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                         To Be Assigned <span className="ml-1.5 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs">{toBeAssignedOrders.length}</span>
                     </button>
                     <button
+                        onClick={() => setActiveTab('pending_approval')}
+                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'pending_approval' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                    >
+                        Pending Approval <span className="ml-1.5 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-xs">{pendingApprovalOrders.length}</span>
+                    </button>
+                    <button
                         onClick={() => setActiveTab('pending_pickup')}
                         className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'pending_pickup' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                     >
-                        Pending Pickup <span className="ml-1.5 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs">{pendingPickupOrders.length}</span>
+                        In Transit <span className="ml-1.5 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs">{pendingPickupOrders.length}</span>
                     </button>
                     <button
                         onClick={() => setActiveTab('completed')}
@@ -255,6 +264,70 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                                 <p className="text-xs">{assignedRider.phone}</p>
                                             </div>
                                             <CheckCircle2 className="w-5 h-5 ml-auto opacity-50" />
+                                        </div>
+                                    )}
+
+                                    {order.status === 'pending_verification' && (
+                                        <div className="bg-amber-50 border border-amber-200 p-4 rounded-xl mt-4 w-full text-sm">
+                                            <h4 className="font-bold text-amber-800 flex items-center gap-2 mb-2">
+                                                <AlertTriangle className="w-4 h-4" /> Zonal Head Approval Required
+                                            </h4>
+
+                                            <div className="space-y-3 mt-4">
+                                                <div>
+                                                    <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Rider Notes</p>
+                                                    <p className="font-medium text-amber-900 mt-1">
+                                                        {order.riderAnswers ? JSON.parse(order.riderAnswers as string).notes || "No notes provided" : "None"}
+                                                    </p>
+                                                </div>
+
+                                                <div>
+                                                    <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold mb-2">Device Photos</p>
+                                                    <div className="flex gap-2 flex-wrap">
+                                                        {(order.verificationImages || []).map((img, i) => (
+                                                            // eslint-disable-next-line @next/next/no-img-element
+                                                            <a href={img} target="_blank" rel="noopener noreferrer" key={i}>
+                                                                <img src={img} alt="Device Photo" className="w-16 h-16 object-cover rounded-lg border shadow-sm hover:scale-105 transition-transform" />
+                                                            </a>
+                                                        ))}
+                                                        {(!order.verificationImages || order.verificationImages.length === 0) && (
+                                                            <p className="text-xs italic text-muted-foreground">No photos uploaded.</p>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex items-center justify-between bg-white/60 p-2 rounded-lg border border-amber-200 text-sm">
+                                                    <span className="font-medium text-muted-foreground">Original Offer: <span className="line-through">₹{order.price.toLocaleString()}</span></span>
+                                                    <span className="font-bold text-amber-900">New Offer: ₹{order.offeredPrice?.toLocaleString() ?? "N/A"}</span>
+                                                </div>
+
+                                                <div className="flex gap-2 pt-2">
+                                                    <button
+                                                        onClick={async () => {
+                                                            if (confirm("Reject verification and ask rider to inspect again?")) {
+                                                                // Actually just send back to 'assigned'
+                                                                await fetch('/api/admin/orders/' + order.id, { method: 'POST', body: JSON.stringify({ action: 'reject_verification' }) });
+                                                                window.location.reload();
+                                                            }
+                                                        }}
+                                                        className="px-4 py-2 border border-amber-300 text-amber-800 hover:bg-amber-100 rounded-lg font-semibold w-1/3"
+                                                    >
+                                                        Reject
+                                                    </button>
+                                                    <button
+                                                        onClick={async () => {
+                                                            if (confirm(`Approve the revised offer of ₹${order.offeredPrice}?`)) {
+                                                                // Endpoint to approve revision (sets status to picked_up and price to offeredPrice)
+                                                                await fetch('/api/admin/orders/' + order.id, { method: 'POST', body: JSON.stringify({ action: 'approve_verification' }) });
+                                                                window.location.reload();
+                                                            }
+                                                        }}
+                                                        className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white shadow-sm rounded-lg font-bold w-2/3"
+                                                    >
+                                                        Approve ₹{order.offeredPrice?.toLocaleString()}
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     )}
                                 </div>

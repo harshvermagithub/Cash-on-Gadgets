@@ -80,3 +80,23 @@ export async function updateOrderStatus(orderId: string, status: string) {
     revalidatePath('/pickup/dashboard');
     return { success: true };
 }
+
+export async function submitVerification(orderId: string, payload: { riderAnswers: any, verificationImages: string[], offeredPrice: number }) {
+    const executive = await getExecutiveSession();
+    if (!executive) throw new Error('Unauthorized');
+
+    // Make Prisma raw update for new fields
+    const { prisma } = await import('@/lib/db');
+    await prisma.order.update({
+        where: { id: orderId },
+        data: {
+            status: 'pending_verification',
+            riderAnswers: JSON.stringify(payload.riderAnswers),
+            verificationImages: payload.verificationImages,
+            offeredPrice: payload.offeredPrice
+        }
+    });
+
+    revalidatePath('/pickup/dashboard');
+    return { success: true };
+}

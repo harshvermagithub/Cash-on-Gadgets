@@ -76,6 +76,9 @@ model Order {
   locationLng Float?
 
   answers String? // Stored as JSON string
+  riderAnswers String? // Rider's verification of the answers
+  verificationImages String[] @default([]) // Device pictures uploaded by Rider
+  offeredPrice Int? // Re-calculated / Partner-offered price
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

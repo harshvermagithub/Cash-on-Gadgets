@@ -32,6 +32,9 @@ export interface Order {
     } | null;
     riderId?: string | null;
     answers?: unknown;
+    riderAnswers?: unknown;
+    verificationImages?: string[];
+    offeredPrice?: number | null;
 }
 
 export type Brand = PrismaBrand;
