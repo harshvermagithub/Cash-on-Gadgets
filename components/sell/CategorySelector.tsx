@@ -416,6 +416,30 @@ const EarbudsGraphic = () => (
     </svg>
 );
 
+const ScreenGuardGraphic = () => (
+    <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <motion.g animate={{ y: [0, -5, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
+            {/* Base Phone */}
+            <g transform="translate(70, 30)">
+                <rect x="0" y="0" width="60" height="110" rx="10" className="fill-slate-800 stroke-slate-600" strokeWidth="2" />
+                <rect x="4" y="4" width="52" height="102" rx="6" className="fill-black" />
+            </g>
+            {/* Screen Guard Hovering Above */}
+            <motion.g
+                transform="translate(75, 15)"
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            >
+                <rect x="0" y="0" width="50" height="100" rx="4" className="fill-cyan-500/30 stroke-cyan-400" strokeWidth="2" />
+                <path d="M0 0 L50 100" className="stroke-white/40" strokeWidth="20" />
+            </motion.g>
+            {/* Sparkles indicating Unbreakable / Toughness */}
+            <motion.circle cx="140" cy="40" r="3" className="fill-cyan-300" animate={{ opacity: [0, 1, 0] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} />
+            <motion.circle cx="60" cy="110" r="2" className="fill-cyan-300" animate={{ opacity: [0, 1, 0] }} transition={{ duration: 1.5, repeat: Infinity, delay: 1 }} />
+        </motion.g>
+    </svg>
+);
+
 // --- Data ---
 const categories = [
     {
@@ -497,6 +521,14 @@ const categories = [
         component: <RepairGraphic />,
         bgColors: 'bg-red-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-red-900 dark:text-red-100'
+    },
+    {
+        id: 'unbreakable-screenguard',
+        name: 'Screen Guard',
+        subtext: 'Unbreakable • ₹1,999 • 3-Hr Doorstep',
+        component: <ScreenGuardGraphic />,
+        bgColors: 'bg-cyan-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
+        textColor: 'text-cyan-900 dark:text-cyan-100'
     },
 ];
 
