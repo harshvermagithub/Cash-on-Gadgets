@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { addRider, deleteRider } from '@/actions/admin';
-import { Trash2, Plus, Loader2, User, Phone, ChevronDown, ChevronUp, Package } from 'lucide-react';
+import { Trash2, Plus, Loader2, User, Phone, ChevronDown, ChevronUp, Package, AlertTriangle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function RiderManager({ initialRiders }: { initialRiders: any[] }) {
@@ -126,7 +126,7 @@ export default function RiderManager({ initialRiders }: { initialRiders: any[] }
                             <div className="bg-muted/30 border-t p-4 space-y-3">
                                 <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Assigned Orders</h4>
                                 {rider.orders && rider.orders.length > 0 ? (
-                                    <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
+                                    <div className="space-y-2 max-h-[500px] overflow-y-auto pr-2">
                                         {rider.orders.map((order: any) => (
                                             <div key={order.id} className="bg-background border rounded-lg p-3 text-sm flex gap-3">
                                                 <div className="mt-0.5 mt-1 shrink-0 text-primary">
@@ -137,10 +137,81 @@ export default function RiderManager({ initialRiders }: { initialRiders: any[] }
                                                     <p className="text-xs text-muted-foreground mt-1 line-clamp-1 truncate">{order.address}</p>
                                                     <div className="flex justify-between items-center mt-2">
                                                         <span className="font-semibold text-primary">₹{order.price.toLocaleString('en-IN')}</span>
-                                                        <span className="text-[10px] font-bold px-2 py-0.5 bg-secondary text-secondary-foreground rounded-full">
-                                                            {order.status}
+                                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${order.status === 'pending_verification' ? 'bg-amber-100 text-amber-700' : 'bg-secondary text-secondary-foreground'}`}>
+                                                            {order.status === 'pending_verification' ? 'Awaiting Approval' : order.status}
                                                         </span>
                                                     </div>
+
+                                                    {order.status === 'pending_verification' && (
+                                                        <div className="bg-amber-50 border border-amber-200 p-3 rounded-lg mt-3 w-full text-sm">
+                                                            <h4 className="font-bold text-amber-800 flex items-center gap-2 mb-2">
+                                                                <AlertTriangle className="w-4 h-4" /> Action Required
+                                                            </h4>
+
+                                                            <div className="space-y-3 mt-2">
+                                                                <div>
+                                                                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Rider Notes</p>
+                                                                    <p className="font-medium text-amber-900 mt-0.5 text-xs">
+                                                                        {order.riderAnswers ? JSON.parse(order.riderAnswers as string).notes || "No notes provided" : "None"}
+                                                                    </p>
+                                                                </div>
+
+                                                                <div>
+                                                                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold mb-1">Device Photos</p>
+                                                                    <div className="flex gap-2 flex-wrap">
+                                                                        {(order.verificationImages || []).map((img: string, i: number) => (
+                                                                            // eslint-disable-next-line @next/next/no-img-element
+                                                                            <a href={img} target="_blank" rel="noopener noreferrer" key={i}>
+                                                                                <img src={img} alt="Device Photo" className="w-12 h-12 object-cover rounded-md border shadow-sm hover:scale-105 transition-transform" />
+                                                                            </a>
+                                                                        ))}
+                                                                        {(!order.verificationImages || order.verificationImages.length === 0) && (
+                                                                            <p className="text-xs italic text-muted-foreground">No photos uploaded.</p>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+
+                                                                <div className="flex items-center justify-between bg-white/60 p-2 rounded-lg border border-amber-200 text-xs">
+                                                                    <span className="font-medium text-muted-foreground">Old: <span className="line-through">₹{order.price.toLocaleString()}</span></span>
+                                                                    <span className="font-bold text-amber-900 text-sm">New: ₹{order.offeredPrice?.toLocaleString() ?? "N/A"}</span>
+                                                                </div>
+
+                                                                <div className="flex gap-2 pt-1">
+                                                                    <button
+                                                                        onClick={async (e) => {
+                                                                            e.stopPropagation();
+                                                                            if (confirm("Reject verification and ask rider to inspect again?")) {
+                                                                                await fetch('/api/admin/orders/' + order.id, { method: 'POST', body: JSON.stringify({ action: 'reject_verification' }) });
+                                                                                window.location.reload();
+                                                                            }
+                                                                        }}
+                                                                        className="px-3 py-1.5 border border-amber-300 text-amber-800 hover:bg-amber-100 rounded-md font-semibold w-1/3 text-xs"
+                                                                    >
+                                                                        Reject
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={async (e) => {
+                                                                            e.stopPropagation();
+                                                                            const priceInput = window.prompt("Adjust the final approved price if needed:", order.offeredPrice?.toString() || order.price.toString());
+                                                                            if (priceInput === null) return; // cancelled
+                                                                            const overridePrice = parseInt(priceInput, 10);
+                                                                            if (isNaN(overridePrice) || overridePrice < 0) {
+                                                                                alert("Invalid price entered.");
+                                                                                return;
+                                                                            }
+                                                                            if (confirm(`Approve with final price of ₹${overridePrice}?`)) {
+                                                                                await fetch('/api/admin/orders/' + order.id, { method: 'POST', body: JSON.stringify({ action: 'approve_verification', overridePrice }) });
+                                                                                window.location.reload();
+                                                                            }
+                                                                        }}
+                                                                        className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white shadow-sm rounded-md font-bold w-2/3 text-xs"
+                                                                    >
+                                                                        Approve
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}

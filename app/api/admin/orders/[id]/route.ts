@@ -13,7 +13,8 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
         const resolvedParams = await context.params;
         const id = resolvedParams.id;
 
-        const { action } = await request.json();
+        const body = await request.json();
+        const { action, overridePrice } = body;
 
         if (action === 'approve_verification') {
             const order = await prisma.order.findUnique({ where: { id } });
@@ -23,7 +24,8 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
                 where: { id },
                 data: {
                     status: 'picked_up',
-                    price: order.offeredPrice || order.price // Commit the offered price
+                    // @ts-ignore
+                    price: overridePrice ? Number(overridePrice) : (order.offeredPrice || order.price) // Commit the offered or overridden price
                 }
             });
             return NextResponse.json({ success: true });

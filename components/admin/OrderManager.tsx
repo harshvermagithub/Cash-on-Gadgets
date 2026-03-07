@@ -316,9 +316,15 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                                     </button>
                                                     <button
                                                         onClick={async () => {
-                                                            if (confirm(`Approve the revised offer of ₹${order.offeredPrice}?`)) {
-                                                                // Endpoint to approve revision (sets status to picked_up and price to offeredPrice)
-                                                                await fetch('/api/admin/orders/' + order.id, { method: 'POST', body: JSON.stringify({ action: 'approve_verification' }) });
+                                                            const priceInput = window.prompt("Adjust the final approved price if needed:", order.offeredPrice?.toString() || order.price.toString());
+                                                            if (priceInput === null) return; // cancelled
+                                                            const overridePrice = parseInt(priceInput, 10);
+                                                            if (isNaN(overridePrice) || overridePrice < 0) {
+                                                                alert("Invalid price entered.");
+                                                                return;
+                                                            }
+                                                            if (confirm(`Approve with final price of ₹${overridePrice}?`)) {
+                                                                await fetch('/api/admin/orders/' + order.id, { method: 'POST', body: JSON.stringify({ action: 'approve_verification', overridePrice }) });
                                                                 window.location.reload();
                                                             }
                                                         }}
