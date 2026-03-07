@@ -98,7 +98,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                             <div className="flex flex-col sm:flex-row gap-4 pt-8 w-full sm:w-auto justify-center mx-auto">
                                 <Link
                                     href="/sell"
-                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-slate-900 dark:bg-green-600 text-white font-bold text-lg shadow-xl shadow-green-500/20 hover:bg-slate-800 dark:hover:bg-green-500 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group w-full sm:w-auto"
+                                    className="inline-flex items-center justify-center h-14 px-8 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-black font-bold text-lg shadow-xl shadow-green-500/20 hover:bg-slate-800 dark:hover:bg-gray-100 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group w-full sm:w-auto"
                                 >
                                     Check Price
                                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
