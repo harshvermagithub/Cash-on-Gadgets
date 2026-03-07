@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation';
 import { PriceGraphic, SpeedGraphic, SecurityGraphic } from '@/components/icons/FeatureIcons';
 import { Brand } from '@/lib/store';
 
-export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
+export function HomeClient({ initialBrands, activeCities = [] }: { initialBrands: Brand[], activeCities?: string[] }) {
     const router = useRouter();
 
     const handleCategorySelect = (category: string) => {
@@ -43,7 +43,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                             {/* REBUILT DESKTOP TOP SECTION: Logo + Badge */}
 
                             {/* Desktop Logo (Added per request) */}
-                            <div className="hidden xl:flex mb-6 scale-[1.3] origin-center">
+                            <div className="hidden xl:flex mb-6 scale-[1.3] origin-center pt-2 overflow-visible">
                                 <DynamicLogo />
                             </div>
 
@@ -63,10 +63,17 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                                         <Sparkles className="w-3 h-3 text-green-500" />
                                         Trusted by 1k+
                                     </div>
-                                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm transition-all cursor-default whitespace-nowrap">
-                                        <MapPin className="w-3 h-3 text-green-500" />
-                                        Bengaluru Pickup
-                                    </div>
+                                    {activeCities.length > 0 ? activeCities.map(city => (
+                                        <div key={city} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm transition-all cursor-default whitespace-nowrap">
+                                            <MapPin className="w-3 h-3 text-green-500" />
+                                            {city} Pickup
+                                        </div>
+                                    )) : (
+                                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm transition-all cursor-default whitespace-nowrap">
+                                            <MapPin className="w-3 h-3 text-green-500" />
+                                            Bengaluru Pickup
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="flex justify-center items-center py-2 w-full">
                                     <div className="scale-[1.5] origin-center transform flex justify-center items-center py-4">
