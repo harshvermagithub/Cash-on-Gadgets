@@ -6,7 +6,10 @@ import OrderManager from "@/components/admin/OrderManager";
 
 export const dynamic = 'force-dynamic';
 
-export default async function OrdersPage() {
+export default async function OrdersPage(props: { searchParams?: Promise<{ riderId?: string }> }) {
+    const searchParams = await props.searchParams;
+    const filterRiderId = searchParams?.riderId;
+
     const session = await getSession();
     if (!session || !session.user) redirect('/login');
 
@@ -53,9 +56,15 @@ export default async function OrdersPage() {
     }
     // SUPER_ADMIN and ADMIN see all orders
 
+    if (filterRiderId) {
+        orders = orders.filter(o => o.riderId === filterRiderId);
+    }
+
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold">Manage Orders</h1>
+            <h1 className="text-3xl font-bold">
+                {filterRiderId ? `Orders for Field Executive` : `Manage Orders`}
+            </h1>
             {currentUser.role === 'ZONAL_HEAD' && <p className="text-muted-foreground text-sm font-medium text-primary">Territory Overview: {currentUser.city?.name || 'Unassigned'}</p>}
             {currentUser.role === 'PARTNER' && <p className="text-muted-foreground text-sm font-medium text-emerald-600">Assigned Pincodes: {currentUser.pincodes?.join(', ') || 'None'}</p>}
             <p className="text-muted-foreground">View incoming sell requests and assign field executives for pickup.</p>

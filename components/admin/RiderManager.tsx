@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { addRider, deleteRider, updateRiderPartner } from '@/actions/admin';
-import { Trash2, Plus, Loader2, User, Phone, ChevronDown, ChevronUp, Package, AlertTriangle, Building2 } from 'lucide-react';
+import { Trash2, Plus, Loader2, User, Phone, ChevronDown, ChevronUp, Package, AlertTriangle, Building2, ExternalLink } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function RiderManager({ initialRiders, partners = [], currentUserRole, currentUserId }: { initialRiders: any[], partners?: any[], currentUserRole?: string, currentUserId?: string }) {
@@ -175,6 +175,16 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
                                 >
                                     <Trash2 className="w-4 h-4" />
                                 </button>
+                                <a
+                                    href={`/admin/orders?riderId=${rider.id}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    title="Open assignments in new tab"
+                                    className="px-2.5 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg transition-colors flex items-center justify-center font-bold"
+                                >
+                                    <ExternalLink className="w-4 h-4" />
+                                </a>
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -226,15 +236,15 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
                                     <div className="space-y-2 max-h-[500px] overflow-y-auto pr-2">
                                         {rider.orders.map((order: any) => (
                                             <div key={order.id} className="bg-background border rounded-lg p-3 text-sm flex gap-3">
-                                                <div className="mt-0.5 mt-1 shrink-0 text-primary">
+                                                <div className="mt-1 shrink-0 text-primary">
                                                     <Package className="w-4 h-4" />
                                                 </div>
-                                                <div className="flex-1">
+                                                <div className="flex-1 min-w-0">
                                                     <p className="font-medium line-clamp-1">{order.device}</p>
                                                     <p className="text-xs text-muted-foreground mt-1 line-clamp-1 truncate">{order.address}</p>
-                                                    <div className="flex justify-between items-center mt-2">
+                                                    <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center mt-3 gap-2">
                                                         <span className="font-semibold text-primary">₹{order.price.toLocaleString('en-IN')}</span>
-                                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${order.status === 'pending_verification' ? 'bg-amber-100 text-amber-700' : 'bg-secondary text-secondary-foreground'}`}>
+                                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap ${order.status === 'pending_verification' ? 'bg-amber-100 text-amber-700' : 'bg-secondary text-secondary-foreground'}`}>
                                                             {order.status === 'pending_verification' ? 'Awaiting Approval' : order.status}
                                                         </span>
                                                     </div>
