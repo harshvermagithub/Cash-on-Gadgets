@@ -114,7 +114,7 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
                         className="p-2 border rounded-lg bg-background w-full md:w-64 text-sm"
                     >
                         <option value="all">All Field Executives</option>
-                        <option value="unassigned">Unassigned List</option>
+                        <option value="unassigned">Available Executives</option>
                         {partners.map(p => (
                             <option key={p.id} value={p.id}>{p.name}</option>
                         ))}

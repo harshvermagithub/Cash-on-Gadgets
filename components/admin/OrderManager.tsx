@@ -225,19 +225,33 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                     <div>
                                         <label className="text-sm font-medium mb-1 block">Assign Field Executive</label>
                                         <div className="flex gap-2">
-                                            <select
-                                                className="flex-1 p-2 border rounded-lg bg-background text-sm"
-                                                value={order.riderId || ""}
-                                                onChange={(e) => handleAssign(order.id, e.target.value)}
-                                                disabled={assigningId === order.id}
-                                            >
-                                                <option value="">Select Field Executive...</option>
-                                                {riders.map(r => (
-                                                    <option key={r.id} value={r.id}>
-                                                        {r.name} ({r.status})
-                                                    </option>
-                                                ))}
-                                            </select>
+                                            {(() => {
+                                                const availableRiders = riders.filter(r => {
+                                                    if (!order.pincode) return true;
+                                                    // @ts-ignore
+                                                    if (r.partner && r.partner.pincodes && r.partner.pincodes.length > 0) {
+                                                        // @ts-ignore
+                                                        return r.partner.pincodes.includes(order.pincode);
+                                                    }
+                                                    return true;
+                                                }).sort((a, b) => a.status === 'available' ? -1 : 1);
+
+                                                return (
+                                                    <select
+                                                        className="flex-1 p-2 border rounded-lg bg-background text-sm"
+                                                        value={order.riderId || ""}
+                                                        onChange={(e) => handleAssign(order.id, e.target.value)}
+                                                        disabled={assigningId === order.id}
+                                                    >
+                                                        <option value="">Select Field Executive...</option>
+                                                        {availableRiders.map(r => (
+                                                            <option key={r.id} value={r.id}>
+                                                                {r.name} ({r.status.toUpperCase()})
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                );
+                                            })()}
                                             {assigningId === order.id && (
                                                 <div className="flex items-center justify-center p-2">
                                                     <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>

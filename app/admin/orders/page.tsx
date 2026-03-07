@@ -18,7 +18,13 @@ export default async function OrdersPage() {
     if (!currentUser) redirect('/login');
 
     let orders = await db.getAllOrders();
-    let riders = await db.getRiders();
+    let riders = await prisma.rider.findMany({
+        include: {
+            partner: {
+                select: { pincodes: true }
+            }
+        }
+    });
 
     if (currentUser.role === 'PARTNER') {
         const allowedPincodes = currentUser.pincodes || [];
