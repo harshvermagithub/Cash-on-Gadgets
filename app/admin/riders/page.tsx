@@ -1,11 +1,18 @@
 
-import { db } from "@/lib/store";
+import { prisma } from '@/lib/db';
 import RiderManager from "@/components/admin/RiderManager";
 
 export const dynamic = 'force-dynamic';
 
 export default async function RidersPage() {
-    const riders = await db.getRiders();
+    const riders = await prisma.rider.findMany({
+        include: {
+            orders: {
+                orderBy: { createdAt: 'desc' }
+            }
+        },
+        orderBy: { createdAt: 'desc' }
+    });
 
     return (
         <div className="space-y-6">

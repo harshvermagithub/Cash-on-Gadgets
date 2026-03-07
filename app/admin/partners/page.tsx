@@ -5,6 +5,8 @@ import bcrypt from 'bcryptjs';
 import { getSession } from '@/lib/session';
 import { redirect } from 'next/navigation';
 
+import PincodeInput from '@/components/admin/PincodeInput';
+
 export const dynamic = 'force-dynamic';
 
 export default async function PartnersPage() {
@@ -167,15 +169,7 @@ export default async function PartnersPage() {
                                             ))}
                                         </select>
                                     </div>
-                                    <div className="flex flex-col gap-1 w-full flex-1">
-                                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Assigned Pincodes</label>
-                                        <input
-                                            name="pincodes"
-                                            defaultValue={p.pincodes?.join(', ') || ''}
-                                            placeholder="560032, 560033"
-                                            className="w-full h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background"
-                                        />
-                                    </div>
+                                    <PincodeInput initialPincodes={p.pincodes || []} />
                                     <button type="submit" className="h-9 px-4 shrink-0 bg-secondary text-secondary-foreground rounded-md text-sm font-medium hover:bg-secondary/80 w-full sm:w-auto mt-2 sm:mt-0 sm:self-end text-center">Save Settings</button>
                                 </form>
                             </div>
