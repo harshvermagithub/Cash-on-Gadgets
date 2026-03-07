@@ -97,8 +97,8 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                             className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors ${pathname.includes('/admin/admins') ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
                                 }`}
                         >
-                            <ShieldCheck className="w-5 h-5" />
-                            Super Admins
+                            <Users className="w-5 h-5" />
+                            Users
                         </Link>
                         <Link
                             href="/admin/inbox"

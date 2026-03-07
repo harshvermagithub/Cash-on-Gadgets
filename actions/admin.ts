@@ -48,6 +48,20 @@ export async function removeAdmin(email: string) {
     return { success: true };
 }
 
+export async function removeUserRole(email: string) {
+    await requireAdmin();
+    const session = await getSession();
+    if (session?.user?.email === email) {
+        return { success: false, error: 'Cannot remove your own role' };
+    }
+
+    await db.updateUserRole(email, 'USER');
+    revalidatePath('/admin/admins');
+    revalidatePath('/admin/zonal-heads');
+    revalidatePath('/admin/partners');
+    return { success: true };
+}
+
 export async function getBrands() {
     return await db.getBrands();
 }

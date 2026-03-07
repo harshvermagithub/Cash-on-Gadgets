@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { addAdmin, removeAdmin } from '@/actions/admin';
+import { addAdmin, removeAdmin, removeUserRole, deleteRider } from '@/actions/admin';
 import { Trash2, Plus, Loader2, ShieldCheck, Mail, Briefcase, Building2, Users, Crown, Phone } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -57,6 +57,34 @@ export default function AdminManager({
         }
     };
 
+    const handleRemoveRole = async (email: string, roleName: string) => {
+        if (!confirm(`Remove ${roleName} privileges from ${email}?`)) return;
+        try {
+            const result = await removeUserRole(email);
+            if (result.success) {
+                router.refresh();
+            } else {
+                alert(result.error || `Failed to remove ${roleName}`);
+            }
+        } catch {
+            alert(`Failed to remove ${roleName}`);
+        }
+    };
+
+    const handleDeleteRider = async (id: string) => {
+        if (!confirm(`Remove field executive?`)) return;
+        try {
+            const result = await deleteRider(id);
+            if (result.success) {
+                router.refresh();
+            } else {
+                alert('Failed to remove field executive');
+            }
+        } catch {
+            alert('Failed to remove field executive');
+        }
+    };
+
     const tabs = [
         { id: 'superAdmins', label: 'Super Admins', icon: Crown, count: superAdmins.length },
         { id: 'admins', label: 'Admins', icon: ShieldCheck, count: admins.length },
@@ -73,8 +101,8 @@ export default function AdminManager({
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id as any)}
                         className={`pb-3 flex items-center gap-2 text-sm font-medium transition-colors border-b-2 whitespace-nowrap ${activeTab === tab.id
-                                ? 'border-primary text-primary'
-                                : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted'
+                            ? 'border-primary text-primary'
+                            : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted'
                             }`}
                     >
                         <tab.icon className="w-4 h-4" />
@@ -104,9 +132,18 @@ export default function AdminManager({
                                             </div>
                                         </div>
                                     </div>
-                                    <span className="text-[10px] tracking-wider font-bold px-2 py-1 bg-primary text-primary-foreground rounded-full shrink-0">
-                                        SUPER ADMIN
-                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-[10px] tracking-wider font-bold px-2 py-1 bg-primary text-primary-foreground rounded-full shrink-0">
+                                            SUPER ADMIN
+                                        </span>
+                                        <button
+                                            onClick={() => handleRemoveRole(admin.email, 'Super Admin')}
+                                            className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 shrink-0 ml-1"
+                                            title="Revoke Super Admin Access"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                             {superAdmins.length === 0 && <p className="text-muted-foreground text-sm col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Super Admins found.</p>}
@@ -169,11 +206,10 @@ export default function AdminManager({
                         </div>
                     </div>
                 )}
-
                 {activeTab === 'zonalHeads' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {zonalHeads.map((zh) => (
-                            <div key={zh.id} className="p-4 border rounded-xl bg-card shadow-sm flex items-center justify-between">
+                            <div key={zh.id} className="p-4 border rounded-xl bg-card shadow-sm flex items-center justify-between group">
                                 <div className="flex items-start gap-4">
                                     <div className="p-3 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-500 rounded-xl">
                                         <Briefcase className="w-5 h-5" />
@@ -186,6 +222,13 @@ export default function AdminManager({
                                         </div>
                                     </div>
                                 </div>
+                                <button
+                                    onClick={() => handleRemoveRole(zh.email, 'Zonal Head')}
+                                    className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 shrink-0 ml-2"
+                                    title="Revoke Zonal Head Access"
+                                >
+                                    <Trash2 className="w-4 h-4" />
+                                </button>
                             </div>
                         ))}
                         {zonalHeads.length === 0 && <p className="text-muted-foreground text-sm col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Zonal Heads found.</p>}
@@ -195,7 +238,7 @@ export default function AdminManager({
                 {activeTab === 'partners' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {partners.map((partner) => (
-                            <div key={partner.id} className="p-4 border rounded-xl bg-card shadow-sm flex items-center justify-between">
+                            <div key={partner.id} className="p-4 border rounded-xl bg-card shadow-sm flex items-center justify-between group">
                                 <div className="flex items-start gap-4">
                                     <div className="p-3 bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-500 rounded-xl">
                                         <Building2 className="w-5 h-5" />
@@ -208,6 +251,13 @@ export default function AdminManager({
                                         </div>
                                     </div>
                                 </div>
+                                <button
+                                    onClick={() => handleRemoveRole(partner.email, 'Partner')}
+                                    className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 shrink-0 ml-2"
+                                    title="Revoke Partner Access"
+                                >
+                                    <Trash2 className="w-4 h-4" />
+                                </button>
                             </div>
                         ))}
                         {partners.length === 0 && <p className="text-muted-foreground text-sm col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Partners found.</p>}
@@ -217,7 +267,7 @@ export default function AdminManager({
                 {activeTab === 'riders' && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {riders.map((rider) => (
-                            <div key={rider.id} className="p-4 border rounded-xl bg-card shadow-sm flex items-center justify-between">
+                            <div key={rider.id} className="p-4 border rounded-xl bg-card shadow-sm flex items-center justify-between group">
                                 <div className="flex items-start gap-4">
                                     <div className="p-3 bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-500 rounded-xl">
                                         <Users className="w-5 h-5" />
@@ -230,11 +280,20 @@ export default function AdminManager({
                                         </div>
                                     </div>
                                 </div>
-                                <span className={`text-[10px] tracking-wider font-bold px-2.5 py-1 rounded-full shrink-0 ${rider.status === 'available' ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-500' :
-                                    rider.status === 'busy' ? 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-500' : 'bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-white'
-                                    }`}>
-                                    {rider.status.toUpperCase()}
-                                </span>
+                                <div className="flex items-center gap-2">
+                                    <span className={`text-[10px] tracking-wider font-bold px-2.5 py-1 rounded-full shrink-0 ${rider.status === 'available' ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-500' :
+                                        rider.status === 'busy' ? 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-500' : 'bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-white'
+                                        }`}>
+                                        {rider.status.toUpperCase()}
+                                    </span>
+                                    <button
+                                        onClick={() => handleDeleteRider(rider.id)}
+                                        className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 shrink-0"
+                                        title="Remove Field Executive"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
                             </div>
                         ))}
                         {riders.length === 0 && <p className="text-muted-foreground text-sm col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Field Executives found.</p>}
