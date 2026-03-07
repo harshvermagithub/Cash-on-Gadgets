@@ -280,7 +280,7 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                         onClick={() => setBookingStep('address')}
                         className="w-full py-4 bg-primary text-primary-foreground font-bold text-xl rounded-2xl shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
                     >
-                        Book Free Pickup <Truck className="w-6 h-6" />
+                        Get Exact Value <Truck className="w-6 h-6" />
                     </button>
                     <button
                         onClick={onRecalculate || (() => router.back())}
