@@ -80,14 +80,20 @@ export default function PickupLoginPage() {
                     <form onSubmit={handleCheckPhone} className="space-y-4">
                         <div className="space-y-2">
                             <label className="text-sm font-medium">Mobile Number</label>
-                            <input
-                                type="tel"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                className="w-full p-3 border rounded-xl bg-background text-lg"
-                                placeholder="+91 9876543210"
-                                required
-                            />
+                            <div className="flex items-center w-full border rounded-xl bg-background overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all">
+                                <span className="pl-4 pr-3 py-3 border-r border-border/50 text-muted-foreground font-medium text-lg bg-muted/20">+91</span>
+                                <input
+                                    type="tel"
+                                    value={phone}
+                                    onChange={(e) => {
+                                        const val = e.target.value.replace(/\D/g, '');
+                                        if (val.length <= 10) setPhone(val);
+                                    }}
+                                    className="w-full p-3 text-lg outline-none bg-transparent"
+                                    placeholder="9876543210"
+                                    required
+                                />
+                            </div>
                         </div>
                         {error && <p className="text-sm text-destructive font-center text-center">{error}</p>}
                         <button disabled={isLoading} className="w-full py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary/90 transition-all flex items-center justify-center gap-2">

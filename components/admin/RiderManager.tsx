@@ -71,12 +71,19 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
                     </div>
                     <div className="flex-1 space-y-2 w-full">
                         <label className="text-sm font-medium">Phone Number</label>
-                        <input
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            className="w-full p-2 border rounded-lg bg-background"
-                            placeholder="+91 9876543210"
-                        />
+                        <div className="flex items-center w-full border rounded-lg bg-background overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all">
+                            <span className="pl-3 pr-2 py-2 border-r border-border/50 text-muted-foreground font-medium text-sm bg-muted/20">+91</span>
+                            <input
+                                type="tel"
+                                value={phone}
+                                onChange={(e) => {
+                                    const val = e.target.value.replace(/\D/g, '');
+                                    if (val.length <= 10) setPhone(val);
+                                }}
+                                className="w-full p-2 text-sm outline-none bg-transparent"
+                                placeholder="9876543210"
+                            />
+                        </div>
                     </div>
                     {currentUserRole !== 'PARTNER' && partners.length > 0 && (
                         <div className="flex-1 space-y-2 w-full">
@@ -144,7 +151,7 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
                                     </p>
                                     <div className="flex items-center gap-1 text-sm text-muted-foreground">
                                         <Phone className="w-3 h-3" />
-                                        {rider.phone}
+                                        +91 {rider.phone}
                                     </div>
                                     {rider.partner && (
                                         <div className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1">

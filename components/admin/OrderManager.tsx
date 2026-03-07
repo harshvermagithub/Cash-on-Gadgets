@@ -267,7 +267,7 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                             </div>
                                             <div>
                                                 <p className="font-bold">{assignedRider.name}</p>
-                                                <p className="text-xs">{assignedRider.phone}</p>
+                                                <p className="text-xs">+91 {assignedRider.phone}</p>
                                             </div>
                                             <CheckCircle2 className="w-5 h-5 ml-auto opacity-50" />
                                         </div>

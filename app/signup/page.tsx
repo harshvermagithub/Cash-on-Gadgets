@@ -48,15 +48,18 @@ export default function SignupPage() {
                     </div>
                     <div>
                         <label className="block text-sm font-medium mb-1">Phone Number</label>
-                        <div className="flex relative">
-                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-medium">+91</span>
+                        <div className="flex w-full border rounded-lg bg-background overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all">
+                            <span className="flex items-center pl-4 pr-3 border-r border-border bg-muted/20 text-muted-foreground font-medium text-sm">+91</span>
                             <input
                                 name="phone"
                                 type="tel"
                                 required
                                 pattern="[0-9]{10}"
                                 maxLength={10}
-                                className="w-full h-12 pl-12 pr-4 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                onChange={(e) => {
+                                    e.target.value = e.target.value.replace(/\D/g, '');
+                                }}
+                                className="w-full h-12 px-4 outline-none bg-transparent"
                                 placeholder="9876543210"
                             />
                         </div>

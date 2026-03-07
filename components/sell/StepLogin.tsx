@@ -59,13 +59,20 @@ export default function StepLogin({ onSuccess }: StepLoginProps) {
                         </div>
                         <div className="space-y-2">
                             <label className="text-sm font-medium">Phone Number</label>
-                            <input
-                                name="phone"
-                                required
-                                type="tel"
-                                className="w-full p-2 border rounded-lg bg-background"
-                                placeholder="9876543210"
-                            />
+                            <div className="flex items-center w-full border rounded-lg bg-background overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all">
+                                <span className="pl-3 pr-2 py-2 border-r border-border/50 text-muted-foreground font-medium text-sm bg-muted/20">+91</span>
+                                <input
+                                    name="phone"
+                                    required
+                                    type="tel"
+                                    maxLength={10}
+                                    onChange={(e) => {
+                                        e.target.value = e.target.value.replace(/\D/g, '');
+                                    }}
+                                    className="w-full p-2 text-sm outline-none bg-transparent"
+                                    placeholder="9876543210"
+                                />
+                            </div>
                         </div>
                     </>
                 )}
