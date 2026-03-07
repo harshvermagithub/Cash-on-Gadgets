@@ -99,33 +99,40 @@
 }
 
 .dark {
-  --background: 140 50% 5%;
-  --foreground: 140 30% 98%;
+  /* Futuristic deep navy-black space */
+  --background: 230 40% 4%;
+  --foreground: 210 40% 98%;
 
-  --card: 140 50% 8%;
-  --card-foreground: 140 30% 98%;
+  /* Subtle elevation for cards, almost black with slight blue hue */
+  --card: 228 35% 7%;
+  --card-foreground: 210 40% 98%;
 
-  --popover: 140 50% 5%;
-  --popover-foreground: 140 30% 98%;
+  --popover: 230 40% 4%;
+  --popover-foreground: 210 40% 98%;
 
-  --primary: 142 70% 45%;
-  --primary-foreground: 140 50% 5%;
+  /* Punchy, bright futuristic neon emerald green */
+  --primary: 142 85% 48%;
+  --primary-foreground: 0 0% 0%;
 
-  --secondary: 140 30% 15%;
-  --secondary-foreground: 140 30% 98%;
+  /* Sleek modern slate for secondary elements */
+  --secondary: 225 25% 12%;
+  --secondary-foreground: 210 40% 98%;
 
-  --muted: 140 30% 15%;
-  --muted-foreground: 140 20% 65%;
+  --muted: 225 25% 12%;
+  --muted-foreground: 215 20% 65%;
 
-  --accent: 140 30% 15%;
-  --accent-foreground: 140 30% 98%;
+  --accent: 225 25% 14%;
+  --accent-foreground: 210 40% 98%;
 
-  --destructive: 0 62.8% 30.6%;
+  --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 210 40% 98%;
 
-  --border: 140 30% 15%;
-  --input: 140 30% 15%;
-  --ring: 142 70% 45%;
+  /* Crisp borders */
+  --border: 220 20% 16%;
+  --input: 220 20% 16%;
+  
+  /* Glowing ring focus */
+  --ring: 142 85% 48%;
 }
 
 @layer base {
