@@ -139,7 +139,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
             </section>
 
             {/* Category Selection Section (unchanged) */}
-            <section className="py-20 bg-slate-50/50 dark:bg-slate-900/20 border-y border-slate-100 dark:border-slate-800">
+            <section className="py-20 bg-slate-50/50 dark:bg-background border-y border-slate-100 dark:border-slate-800">
                 <div className="container mx-auto px-6">
                     <div className="max-w-4xl mx-auto">
                         <CategorySelector onSelect={handleCategorySelect} />
@@ -148,7 +148,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
             </section>
 
             {/* Brands Marquee & Stats Section */}
-            <section className="py-12 border-y bg-slate-900 border-slate-800 w-full overflow-hidden">
+            <section className="py-12 border-y bg-slate-900 dark:bg-background border-slate-800 dark:border-slate-800 w-full overflow-hidden">
                 <div className="container mx-auto px-6 mb-12">
                     <p className="text-center text-sm font-semibold text-green-400/60 uppercase tracking-wider mb-8">We Accept All Major Brands</p>
                     <div className="flex flex-wrap justify-center gap-8 md:gap-16 items-center">
@@ -207,7 +207,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
             </section>
 
             {/* Why Choose Us Section */}
-            <section className="py-24 bg-slate-900 overflow-hidden w-full">
+            <section className="py-24 bg-slate-900 dark:bg-background overflow-hidden w-full">
                 <div className="container mx-auto px-6">
                     <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
                         <motion.h2
@@ -236,7 +236,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
-                            className="flex flex-col items-center text-center gap-6 bg-slate-800 p-6 rounded-3xl border border-slate-700 hover:border-green-600 transition-all duration-300 group cursor-default"
+                            className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-slate-950/50 p-6 rounded-3xl border border-slate-700 hover:border-green-600 transition-all duration-300 group cursor-default"
                         >
                             <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-green-900/20 rounded-2xl group-hover:bg-green-900/40 transition-colors">
                                 <motion.div
@@ -262,7 +262,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.1 }}
-                            className="flex flex-col items-center text-center gap-6 bg-slate-800 p-6 rounded-3xl border border-slate-700 hover:border-teal-600 transition-all duration-300 group cursor-default"
+                            className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-slate-950/50 p-6 rounded-3xl border border-slate-700 hover:border-teal-600 transition-all duration-300 group cursor-default"
                         >
                             <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-teal-900/20 rounded-2xl group-hover:bg-teal-900/40 transition-colors">
                                 <motion.div
@@ -287,7 +287,7 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.2 }}
-                            className="flex flex-col items-center text-center gap-6 bg-slate-800 p-6 rounded-3xl border border-slate-700 hover:border-lime-600 transition-all duration-300 group cursor-default"
+                            className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-slate-950/50 p-6 rounded-3xl border border-slate-700 hover:border-lime-600 transition-all duration-300 group cursor-default"
                         >
                             <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-lime-900/20 rounded-2xl group-hover:bg-lime-900/40 transition-colors">
                                 <motion.div
