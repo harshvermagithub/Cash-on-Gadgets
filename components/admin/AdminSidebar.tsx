@@ -83,7 +83,7 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                 />
             )}
 
-            <aside className={`bg-card dark:bg-black border-r border-border dark:border-white/10 flex flex-col h-screen sticky top-0 shrink-0 transition-all duration-300 z-30 ${isMobileOpen ? 'w-64 absolute shadow-2xl lg:shadow-none' : isDesktopCollapsed ? 'w-[72px] lg:w-[72px]' : 'w-[72px] lg:w-64'}`}>
+            <aside className={`bg-card dark:bg-black border-r border-border dark:border-white/10 flex flex-col h-[100dvh] sticky top-0 shrink-0 transition-all duration-300 z-30 ${isMobileOpen ? 'w-64 absolute shadow-2xl lg:shadow-none' : isDesktopCollapsed ? 'w-[72px] lg:w-[72px]' : 'w-[72px] lg:w-64'}`}>
                 <div className={`h-16 border-b border-border dark:border-white/10 shrink-0 flex items-center relative ${isMobileOpen ? 'justify-start px-6' : isDesktopCollapsed ? 'justify-center lg:px-0' : 'justify-center lg:justify-start lg:px-6'}`}>
                     <Link href="/admin" className={`flex items-center gap-2 font-bold text-lg text-primary leading-tight overflow-hidden`} title={dashboardTitle}>
                         <LayoutDashboard className="shrink-0 w-6 h-6" />
@@ -142,12 +142,12 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                                 setIsMobileOpen(!isMobileOpen);
                             }
                         }}
-                        className={`flex items-center gap-3 text-sm font-medium rounded-lg text-muted-foreground bg-muted hover:bg-muted/80 transition-colors w-full mt-2 ${isMobileOpen
-                                ? 'justify-start px-4 py-3'
+                        className={`flex ${isMobileOpen
+                                ? 'flex-row items-center justify-start px-4 py-3 gap-3'
                                 : isDesktopCollapsed
-                                    ? 'justify-center p-3'
-                                    : 'justify-center p-3 lg:justify-start lg:px-4 lg:py-3'
-                            }`}
+                                    ? 'flex-col items-center justify-center p-2 gap-1'
+                                    : 'flex-col items-center justify-center p-2 lg:flex-row lg:justify-start lg:px-4 lg:py-3 lg:gap-3'
+                            } font-medium rounded-lg text-muted-foreground bg-muted hover:bg-muted/80 transition-colors w-full mt-2`}
                         title={isMobileOpen || !isDesktopCollapsed ? "Collapse Sidebar" : "Expand Sidebar"}
                     >
                         <div className="lg:hidden flex items-center justify-center">
@@ -156,8 +156,13 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                         <div className="hidden lg:flex items-center justify-center">
                             {isDesktopCollapsed ? <ChevronRight className="w-5 h-5 shrink-0" /> : <ChevronLeft className="w-5 h-5 shrink-0" />}
                         </div>
-                        <span className={`${isMobileOpen ? 'inline' : isDesktopCollapsed ? 'hidden' : 'hidden lg:inline'} whitespace-nowrap`}>
-                            Collapse
+                        <span className={`${isMobileOpen
+                                ? 'text-sm inline'
+                                : isDesktopCollapsed
+                                    ? 'text-[10px] uppercase font-bold tracking-wider'
+                                    : 'text-[10px] uppercase font-bold tracking-wider lg:text-sm lg:normal-case lg:font-medium lg:tracking-normal'
+                            } whitespace-nowrap`}>
+                            {isMobileOpen ? 'Collapse' : isDesktopCollapsed ? 'Expand' : <><span className="lg:hidden">Expand</span><span className="hidden lg:inline">Collapse</span></>}
                         </span>
                     </button>
                 </div>
