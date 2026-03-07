@@ -231,12 +231,12 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
                     <div className="grid md:grid-cols-3 gap-8">
                         {/* Benefit 1: Prices */}
                         <motion.div
-                            whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3)" }}
+                            whileHover={{ y: -10 }}
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5 }}
-                            className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-slate-950/50 p-6 rounded-3xl border border-slate-700 hover:border-green-600 transition-all duration-300 group cursor-default"
+                            className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-white/[0.03] dark:backdrop-blur-xl p-6 rounded-3xl border border-slate-700 dark:border-white/10 hover:border-green-600 dark:hover:border-white/20 dark:hover:bg-white/[0.06] hover:shadow-2xl dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.12)] transition-all duration-300 group cursor-default"
                         >
                             <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-green-900/20 rounded-2xl group-hover:bg-green-900/40 transition-colors">
                                 <motion.div
@@ -257,12 +257,12 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
 
                         {/* Benefit 2: Speed */}
                         <motion.div
-                            whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3)" }}
+                            whileHover={{ y: -10 }}
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.1 }}
-                            className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-slate-950/50 p-6 rounded-3xl border border-slate-700 hover:border-teal-600 transition-all duration-300 group cursor-default"
+                            className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-white/[0.03] dark:backdrop-blur-xl p-6 rounded-3xl border border-slate-700 dark:border-white/10 hover:border-teal-600 dark:hover:border-white/20 dark:hover:bg-white/[0.06] hover:shadow-2xl dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.12)] transition-all duration-300 group cursor-default"
                         >
                             <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-teal-900/20 rounded-2xl group-hover:bg-teal-900/40 transition-colors">
                                 <motion.div
@@ -282,12 +282,12 @@ export function HomeClient({ initialBrands }: { initialBrands: Brand[] }) {
 
                         {/* Benefit 3: Safety */}
                         <motion.div
-                            whileHover={{ y: -10, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3)" }}
+                            whileHover={{ y: -10 }}
                             initial={{ opacity: 0, scale: 0.9 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.2 }}
-                            className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-slate-950/50 p-6 rounded-3xl border border-slate-700 hover:border-lime-600 transition-all duration-300 group cursor-default"
+                            className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-white/[0.03] dark:backdrop-blur-xl p-6 rounded-3xl border border-slate-700 dark:border-white/10 hover:border-lime-600 dark:hover:border-white/20 dark:hover:bg-white/[0.06] hover:shadow-2xl dark:hover:shadow-[0_0_30px_rgba(255,255,255,0.12)] transition-all duration-300 group cursor-default"
                         >
                             <div className="relative w-20 h-20 flex-shrink-0 flex items-center justify-center bg-lime-900/20 rounded-2xl group-hover:bg-lime-900/40 transition-colors">
                                 <motion.div
