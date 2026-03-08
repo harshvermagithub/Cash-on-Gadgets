@@ -296,7 +296,9 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                                 <div>
                                                     <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Rider Notes</p>
                                                     <p className="font-medium text-amber-900 mt-0.5 text-xs">
-                                                        {order.riderAnswers ? JSON.parse(order.riderAnswers as string).notes || "No notes provided" : "None"}
+                                                        {order.riderAnswers
+                                                            ? ((typeof order.riderAnswers === 'string' ? JSON.parse(order.riderAnswers) : order.riderAnswers).notes || "No notes provided")
+                                                            : "None"}
                                                     </p>
                                                 </div>
 

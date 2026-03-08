@@ -101,7 +101,7 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
             ) : (
                 <div className="space-y-4">
                     {displayedOrders.map((order) => {
-                        const answersObj: OrderAnswers = order.answers ? JSON.parse(order.answers as string) : {};
+                        const answersObj: OrderAnswers = (typeof order.answers === 'string') ? JSON.parse(order.answers) : (order.answers || {});
                         const hasRejection = answersObj.adminRejectionLog && answersObj.adminRejectionLog.length > 0;
                         const lastRejection = hasRejection ? answersObj.adminRejectionLog![answersObj.adminRejectionLog!.length - 1] : null;
 
@@ -186,26 +186,29 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                                             </h4>
 
                                             <div className="bg-muted/50 p-4 rounded-lg text-xs space-y-2 border">
-                                                {order.answers ? (
-                                                    <div className="grid grid-cols-2 gap-2">
-                                                        <div className="col-span-2 sm:col-span-1">
-                                                            <span className="text-muted-foreground block mb-0.5">Physical Condition</span>
-                                                            <span className="font-bold capitalize">{((order.answers as any).physical_condition || 'N/A').replace(/_/g, ' ')}</span>
+                                                {order.answers ? (() => {
+                                                    const ans = (typeof order.answers === 'string') ? JSON.parse(order.answers) : order.answers;
+                                                    return (
+                                                        <div className="grid grid-cols-2 gap-2">
+                                                            <div className="col-span-2 sm:col-span-1">
+                                                                <span className="text-muted-foreground block mb-0.5">Physical Condition</span>
+                                                                <span className="font-bold capitalize">{(ans.physical_condition || 'N/A').replace(/_/g, ' ')}</span>
+                                                            </div>
+                                                            <div className="col-span-2 sm:col-span-1">
+                                                                <span className="text-muted-foreground block mb-0.5">Body Condition</span>
+                                                                <span className="font-bold capitalize">{(ans.body_condition || 'N/A').replace(/_/g, ' ')}</span>
+                                                            </div>
+                                                            <div className="col-span-2">
+                                                                <span className="text-muted-foreground block mb-0.5">Reported Issues</span>
+                                                                <span className="font-bold capitalize text-red-500">
+                                                                    {(ans.functional_issues && ans.functional_issues.length > 0)
+                                                                        ? ans.functional_issues.join(', ').replace(/_/g, ' ')
+                                                                        : 'None reported'}
+                                                                </span>
+                                                            </div>
                                                         </div>
-                                                        <div className="col-span-2 sm:col-span-1">
-                                                            <span className="text-muted-foreground block mb-0.5">Body Condition</span>
-                                                            <span className="font-bold capitalize">{((order.answers as any).body_condition || 'N/A').replace(/_/g, ' ')}</span>
-                                                        </div>
-                                                        <div className="col-span-2">
-                                                            <span className="text-muted-foreground block mb-0.5">Reported Issues</span>
-                                                            <span className="font-bold capitalize text-red-500">
-                                                                {((order.answers as any).functional_issues && (order.answers as any).functional_issues.length > 0)
-                                                                    ? (order.answers as any).functional_issues.join(', ').replace(/_/g, ' ')
-                                                                    : 'None reported'}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                ) : (
+                                                    );
+                                                })() : (
                                                     <p className="text-muted-foreground italic">No details available.</p>
                                                 )}
                                             </div>

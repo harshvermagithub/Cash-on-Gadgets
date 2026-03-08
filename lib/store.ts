@@ -378,6 +378,9 @@ function mapPrismaOrderToAppOrder(o: PrismaOrder & { orderNumber?: number, user?
         pincode: o.pincode,
         location: (o.locationLat && o.locationLng) ? { lat: o.locationLat, lng: o.locationLng } : null,
         riderId: o.riderId,
-        answers: o.answers ? JSON.parse(o.answers) : null
+        answers: o.answers ? JSON.parse(o.answers) : null,
+        riderAnswers: o.riderAnswers ? JSON.parse(o.riderAnswers) : null,
+        verificationImages: o.verificationImages || [],
+        offeredPrice: o.offeredPrice
     };
 }
