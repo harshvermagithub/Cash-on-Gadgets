@@ -134,7 +134,8 @@ export const db = {
                 data: { riderId, status: 'assigned' }
             });
             return true;
-        } catch {
+        } catch (error) {
+            console.error("DEBUG Order Rider Update Failed:", error);
             return false;
         }
     },
