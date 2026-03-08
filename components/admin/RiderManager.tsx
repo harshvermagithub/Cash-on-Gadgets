@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { addRider, deleteRider, updateRiderPartner } from '@/actions/admin';
 import { Trash2, Plus, Loader2, User, Phone, ChevronDown, ChevronUp, Package, AlertTriangle, Building2, ExternalLink } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -15,7 +15,12 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
     const [isLoading, setIsLoading] = useState(false);
     const [expandedRider, setExpandedRider] = useState<string | null>(null);
 
-    const filteredRiders = initialRiders.filter(r => {
+    const [riders, setRiders] = useState(initialRiders);
+    useEffect(() => {
+        setRiders(initialRiders);
+    }, [initialRiders]);
+
+    const filteredRiders = riders.filter((r: any) => {
         if (filterPartner === 'all') return true;
         if (filterPartner === 'unassigned') return !r.partnerId;
         return r.partnerId === filterPartner;
@@ -45,13 +50,16 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
         }
     };
 
-    const handleDelete = async (id: string) => {
-        if (!confirm('Are you sure?')) return;
+    const handleDelete = async (e: React.MouseEvent, id: string) => {
+        e.stopPropagation();
+        if (!confirm('Are you sure you want to remove this executive?')) return;
         try {
+            setRiders(prev => prev.filter((r: any) => r.id !== id));
             await deleteRider(id);
             router.refresh();
         } catch {
-            alert('Failed to delete rider');
+            alert('Failed to delete executive');
+            setRiders(initialRiders); // Revert on failure
         }
     };
 
@@ -168,8 +176,7 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
                             <div className="flex items-center gap-2">
                                 <button
                                     onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleDelete(rider.id);
+                                        handleDelete(e, rider.id);
                                     }}
                                     className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
                                 >
@@ -211,13 +218,17 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
                                             value={rider.partnerId || ''}
                                             onChange={async (e) => {
                                                 const newPartnerId = e.target.value || null;
+                                                const previousPartnerId = rider.partnerId;
                                                 // Handle API call directly using imported server action
                                                 if (confirm(`Are you sure you want to reassign this executive?`)) {
                                                     try {
+                                                        // Optimistic Update
+                                                        setRiders(prev => prev.map((r: any) => r.id === rider.id ? { ...r, partnerId: newPartnerId } : r));
                                                         await updateRiderPartner(rider.id, newPartnerId);
                                                         router.refresh();
                                                     } catch (error) {
                                                         alert("Failed to assign partner. They might have been removed from the system.");
+                                                        setRiders(prev => prev.map((r: any) => r.id === rider.id ? { ...r, partnerId: previousPartnerId } : r));
                                                     }
                                                 }
                                             }}
@@ -287,10 +298,14 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
                                                                     <button
                                                                         onClick={async (e) => {
                                                                             e.stopPropagation();
-                                                                            if (confirm("Reject verification and ask rider to inspect again?")) {
-                                                                                await fetch('/api/admin/orders/' + order.id, { method: 'POST', body: JSON.stringify({ action: 'reject_verification' }) });
-                                                                                window.location.reload();
-                                                                            }
+                                                                            const reason = window.prompt("Reject verification. Please provide a reason or suggested price range for the rider:", "Recheck physical condition or offer max 12000");
+                                                                            if (reason === null) return; // Cancelled
+                                                                            await fetch('/api/admin/orders/' + order.id, {
+                                                                                method: 'POST',
+                                                                                headers: { 'Content-Type': 'application/json' },
+                                                                                body: JSON.stringify({ action: 'reject_verification', reason })
+                                                                            });
+                                                                            window.location.reload();
                                                                         }}
                                                                         className="px-3 py-1.5 border border-amber-300 text-amber-800 hover:bg-amber-100 rounded-md font-semibold w-1/3 text-xs"
                                                                     >

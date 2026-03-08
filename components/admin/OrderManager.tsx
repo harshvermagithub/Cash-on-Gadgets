@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { assignRider } from '@/actions/admin';
 import { Rider, Order } from '@/lib/store'; // Need to export Order from store/lib
 import { Calendar, MapPin, Smartphone, User, CheckCircle2, Eye, X, Download, Phone, Mail, AlertTriangle } from 'lucide-react';
@@ -12,6 +12,13 @@ import OrderStepper from '@/components/orders/OrderStepper';
 
 export default function OrderManager({ initialOrders, riders }: { initialOrders: Order[], riders: Rider[] }) {
     const router = useRouter();
+    const [orders, setOrders] = useState<Order[]>(initialOrders);
+
+    // Sync if server sends new orders (e.g. from polling or navigations)
+    useEffect(() => {
+        setOrders(initialOrders);
+    }, [initialOrders]);
+
     const [assigningId, setAssigningId] = useState<string | null>(null);
     const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
     const [activeTab, setActiveTab] = useState<'to_be_assigned' | 'pending_pickup' | 'completed'>('to_be_assigned');
@@ -21,6 +28,8 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
         setAssigningId(orderId);
         try {
             await assignRider(orderId, riderId);
+            // Optimistically update the UI to instantly move to the new tab!
+            setOrders(prev => prev.map(o => o.id === orderId ? { ...o, riderId, status: 'assigned' } : o));
             router.refresh();
         } catch {
             alert('Failed to assign rider');
@@ -30,7 +39,7 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
     };
 
     // Sort by date desc
-    const sortedOrders = [...initialOrders].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    const sortedOrders = [...orders].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     const toBeAssignedOrders = sortedOrders.filter(o => !o.riderId && o.status !== 'completed');
     const pendingPickupOrders = sortedOrders.filter(o => o.riderId && o.status !== 'completed');
@@ -262,14 +271,93 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
 
                                     {assignedRider && (
                                         <div className="bg-blue-50 text-blue-700 p-3 rounded-lg text-sm flex items-center gap-3">
-                                            <div className="bg-white p-1 rounded-full">
+                                            <div className="bg-white p-1 rounded-full shrink-0">
                                                 <User className="w-4 h-4" />
                                             </div>
-                                            <div>
+                                            <div className="flex-1">
                                                 <p className="font-bold">{assignedRider.name}</p>
                                                 <p className="text-xs">+91 {assignedRider.phone}</p>
+                                                <span className={`text-[10px] font-bold px-1.5 py-0.5 mt-1 rounded-full inline-block uppercase ${assignedRider.status === 'available' ? 'bg-green-100 text-green-700' :
+                                                    assignedRider.status === 'busy' ? 'bg-orange-100 text-orange-700' : 'bg-gray-200 text-gray-700'}`}>
+                                                    {assignedRider.status}
+                                                </span>
                                             </div>
-                                            <CheckCircle2 className="w-5 h-5 ml-auto opacity-50" />
+                                            <CheckCircle2 className="w-5 h-5 ml-auto opacity-50 shrink-0" />
+                                        </div>
+                                    )}
+
+                                    {order.status === 'pending_verification' && (
+                                        <div className="bg-amber-50 border border-amber-200 p-3 rounded-lg mt-3 w-full text-sm">
+                                            <h4 className="font-bold text-amber-800 flex items-center gap-2 mb-2">
+                                                <AlertTriangle className="w-4 h-4" /> Action Required
+                                            </h4>
+
+                                            <div className="space-y-3 mt-2">
+                                                <div>
+                                                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Rider Notes</p>
+                                                    <p className="font-medium text-amber-900 mt-0.5 text-xs">
+                                                        {order.riderAnswers ? JSON.parse(order.riderAnswers as string).notes || "No notes provided" : "None"}
+                                                    </p>
+                                                </div>
+
+                                                <div>
+                                                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold mb-1">Device Photos</p>
+                                                    <div className="flex gap-2 flex-wrap">
+                                                        {(order.verificationImages || []).map((img: string, i: number) => (
+                                                            // eslint-disable-next-line @next/next/no-img-element
+                                                            <a href={img} target="_blank" rel="noopener noreferrer" key={i}>
+                                                                <img src={img} alt="Device Photo" className="w-12 h-12 object-cover rounded-md border shadow-sm hover:scale-105 transition-transform" />
+                                                            </a>
+                                                        ))}
+                                                        {(!order.verificationImages || order.verificationImages.length === 0) && (
+                                                            <p className="text-xs italic text-muted-foreground">No photos uploaded.</p>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex items-center justify-between bg-white/60 p-2 rounded-lg border border-amber-200 text-xs">
+                                                    <span className="font-medium text-muted-foreground">Old: <span className="line-through">₹{order.price.toLocaleString()}</span></span>
+                                                    <span className="font-bold text-amber-900 text-sm">New: ₹{order.offeredPrice?.toLocaleString() ?? "N/A"}</span>
+                                                </div>
+
+                                                <div className="flex gap-2 pt-1">
+                                                    <button
+                                                        onClick={async (e) => {
+                                                            e.stopPropagation();
+                                                            const reason = window.prompt("Reject verification. Please provide a reason or suggested price range for the rider:", "Recheck physical condition or offer max 12000");
+                                                            if (reason === null) return; // Cancelled
+                                                            await fetch('/api/admin/orders/' + order.id, {
+                                                                method: 'POST',
+                                                                headers: { 'Content-Type': 'application/json' },
+                                                                body: JSON.stringify({ action: 'reject_verification', reason })
+                                                            });
+                                                            window.location.reload();
+                                                        }}
+                                                        className="px-3 py-1.5 border border-amber-300 text-amber-800 hover:bg-amber-100 rounded-md font-semibold w-1/3 text-xs"
+                                                    >
+                                                        Reject
+                                                    </button>
+                                                    <button
+                                                        onClick={async (e) => {
+                                                            e.stopPropagation();
+                                                            const priceInput = window.prompt("Adjust the final approved price if needed:", order.offeredPrice?.toString() || order.price.toString());
+                                                            if (priceInput === null) return; // cancelled
+                                                            const overridePrice = parseInt(priceInput, 10);
+                                                            if (isNaN(overridePrice) || overridePrice < 0) {
+                                                                alert("Invalid price entered.");
+                                                                return;
+                                                            }
+                                                            if (confirm(`Approve with final price of ₹${overridePrice}?`)) {
+                                                                await fetch('/api/admin/orders/' + order.id, { method: 'POST', body: JSON.stringify({ action: 'approve_verification', overridePrice }) });
+                                                                window.location.reload();
+                                                            }
+                                                        }}
+                                                        className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white shadow-sm rounded-md font-bold w-2/3 text-xs"
+                                                    >
+                                                        Approve
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     )}
 

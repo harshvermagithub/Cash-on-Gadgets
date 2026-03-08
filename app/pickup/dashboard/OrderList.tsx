@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { updateOrderStatus, submitVerification, logoutExecutive } from '@/actions/executive';
-import { MapPin, Phone, Calendar, CheckCircle2, Navigation, LogOut, Zap, Eye, X, Camera, AlertTriangle } from 'lucide-react';
+import { MapPin, Phone, Calendar, CheckCircle2, Navigation, LogOut, Zap, Eye, X, Camera, AlertTriangle, Package } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Order } from '@/lib/store';
 import OrderDetails from '@/components/OrderDetails';
@@ -17,6 +17,7 @@ interface OrderAnswers {
     isExpress?: boolean;
     scheduledDate?: string;
     scheduledSlot?: string;
+    adminRejectionLog?: Array<{ date: string; reason: string }>;
 }
 
 export default function OrderList({ orders, executiveName }: { orders: Order[], executiveName: string }) {
@@ -99,54 +100,63 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                 </div>
             ) : (
                 <div className="space-y-4">
-                    {displayedOrders.map((order) => (
-                        <div key={order.id} className="bg-card border rounded-2xl p-6 shadow-sm space-y-4">
-                            <div className="flex justify-between items-start">
-                                <div>
-                                    <div className="flex items-center gap-2 mb-2 flex-wrap">
-                                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold uppercase ${order.status === 'assigned' ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' :
-                                                order.status === 'pending_verification' ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' :
-                                                    order.status === 'picked_up' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' :
-                                                        order.status === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' :
-                                                            'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'
-                                            }`}>
-                                            {order.status === 'pending_verification' ? 'Awaiting Approval' : order.status}
-                                        </span>
-                                        {!!order.answers && (order.answers as OrderAnswers).isExpress && (
-                                            <span className="px-2 py-0.5 rounded-full text-xs font-bold uppercase bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 flex items-center gap-1 border border-amber-200 dark:border-amber-800">
-                                                <Zap className="w-3 h-3 fill-current" /> Express
-                                            </span>
-                                        )}
-                                        <span suppressHydrationWarning className="text-xs text-muted-foreground flex items-center gap-1">
-                                            <Calendar className="w-3 h-3" />
-                                            {new Date(order.date).toLocaleDateString()}
-                                        </span>
-                                    </div>
-                                    <h3 className="text-lg font-bold">{order.device}</h3>
-                                    <p className="text-green-600 dark:text-green-400 font-bold font-mono text-xl">
-                                        ₹{order.status === 'pending_verification' && order.offeredPrice ? order.offeredPrice.toLocaleString() : order.price.toLocaleString()}
-                                    </p>
-                                </div>
-                                {order.location && (
-                                    <a
-                                        href={`https://www.google.com/maps/search/?api=1&query=${order.location.lat},${order.location.lng}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
-                                    >
-                                        <Navigation className="w-6 h-6" />
-                                    </a>
-                                )}
-                            </div>
+                    {displayedOrders.map((order) => {
+                        const answersObj: OrderAnswers = order.answers ? JSON.parse(order.answers as string) : {};
+                        const hasRejection = answersObj.adminRejectionLog && answersObj.adminRejectionLog.length > 0;
+                        const lastRejection = hasRejection ? answersObj.adminRejectionLog![answersObj.adminRejectionLog!.length - 1] : null;
 
-                            <div className="p-4 bg-muted/30 rounded-xl space-y-4 text-sm border">
-                                <div className="space-y-2">
-                                    <h4 className="font-semibold text-foreground uppercase tracking-wide text-xs text-muted-foreground">Pickup Location</h4>
-                                    <div className="flex items-start gap-2 bg-background p-3 rounded-lg border">
-                                        <MapPin className="w-4 h-4 mt-0.5 text-muted-foreground shrink-0" />
-                                        <p>{order.address}</p>
+                        return (
+                            <div key={order.id} className="border bg-card rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                <div className="p-4 sm:p-6 bg-gradient-to-r from-accent/50 to-transparent flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 border-b">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 sm:p-3 bg-primary/10 text-primary rounded-xl shrink-0">
+                                            <Package className="w-5 h-5 sm:w-6 sm:h-6" />
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-base sm:text-lg text-foreground line-clamp-1">{order.device}</p>
+                                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-1 sm:mt-1.5 font-mono text-xs text-muted-foreground">
+                                                <span>FZK-{order.orderNumber || ''}</span>
+                                                <span className="hidden sm:inline">•</span>
+                                                <span>{new Date(order.date).toLocaleDateString()}</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="flex items-center gap-2 mt-2">
+                                    <div className="flex items-center sm:block mt-2 sm:mt-0 pt-3 sm:pt-0 border-t sm:border-0 border-border/50">
+                                        <span className="text-muted-foreground text-sm sm:hidden w-1/2">Estimate:</span>
+                                        <p className="font-bold text-lg text-primary sm:text-right">
+                                            ₹{order.status === 'pending_verification' && order.offeredPrice ? order.offeredPrice.toLocaleString() : order.price.toLocaleString()}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="p-4 sm:p-6 space-y-4">
+                                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 text-sm bg-muted/30 p-4 rounded-xl border border-border/50">
+                                        <div className="flex items-start gap-2 flex-1">
+                                            <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                                            <span className="text-muted-foreground line-clamp-2">
+                                                {order.address || "Location captured via GPS"}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center gap-2 shrink-0 border-t sm:border-l sm:border-t-0 pt-3 sm:pt-0 sm:pl-4 border-border/50">
+                                            <Navigation className="w-4 h-4 text-primary" />
+                                            <a
+                                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(order.address)}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="font-bold text-primary hover:underline"
+                                            >
+                                                View on Map
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                                        <div className="bg-muted/10 border p-3 rounded-lg flex items-center gap-2 overflow-hidden text-sm">
+                                            <CheckCircle2 className={`w-4 h-4 shrink-0 ${order.status === 'completed' ? 'text-green-500' : 'text-muted-foreground'}`} />
+                                            <span className="truncate text-muted-foreground font-medium capitalize">
+                                                {order.status === 'pending_verification' ? 'Awaiting Approval' : order.status}
+                                            </span>
+                                        </div>
                                         <a href="#" className="w-full flex items-center justify-center gap-2 py-2.5 bg-background border rounded-lg hover:bg-accent font-medium transition-colors">
                                             <Phone className="w-4 h-4" /> Contact Customer
                                         </a>
@@ -154,7 +164,19 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                                 </div>
 
                                 {order.status === 'assigned' && (
-                                    <div className="pt-4 space-y-4">
+                                    <div className="pt-4 space-y-4 mx-4 sm:mx-6 mb-4 sm:mb-6">
+                                        {hasRejection && (
+                                            <div className="bg-destructive/10 border border-destructive/20 p-4 rounded-xl mb-4">
+                                                <h4 className="font-bold text-destructive flex items-center gap-2 mb-2">
+                                                    <AlertTriangle className="w-5 h-5" /> Admin Feedback / Price Range
+                                                </h4>
+                                                <p className="text-sm text-destructive-foreground">
+                                                    {lastRejection!.reason}
+                                                </p>
+                                                <p className="text-xs text-muted-foreground mt-2 italic">Please negotiate with the customer based on this range/feedback and verify condition again.</p>
+                                            </div>
+                                        )}
+
                                         <div className="bg-background border p-4 rounded-xl">
                                             <h4 className="font-semibold text-foreground flex items-center justify-between mb-4">
                                                 <span>1. Review Customer Order</span>
@@ -246,8 +268,8 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                                     </div>
                                 )}
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             )}
 

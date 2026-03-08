@@ -30,14 +30,29 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
             });
             return NextResponse.json({ success: true });
         } else if (action === 'reject_verification') {
+            const { reason } = body;
+            const order = await prisma.order.findUnique({ where: { id } });
+            if (!order) return new NextResponse('Not found', { status: 404 });
+
+            let answersObj: any = {};
+            if (order.answers && typeof order.answers === 'string') {
+                try { answersObj = JSON.parse(order.answers); } catch (e) { }
+            }
+
+            if (reason) {
+                if (!answersObj.adminRejectionLog) answersObj.adminRejectionLog = [];
+                answersObj.adminRejectionLog.push({ date: new Date().toISOString(), reason });
+            }
+
             // Send back to the rider
             await prisma.order.update({
                 where: { id },
                 data: {
                     status: 'assigned',
-                    verificationImages: [],
+                    verificationImages: { set: [] },
                     offeredPrice: null,
-                    riderAnswers: null
+                    riderAnswers: null,
+                    answers: JSON.stringify(answersObj)
                 }
             });
             return NextResponse.json({ success: true });
