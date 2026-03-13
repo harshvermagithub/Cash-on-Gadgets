@@ -31,8 +31,8 @@ const getBrandCategories = (brandName: string) => {
         cats.push('laptop');
     }
 
-    // Watches - Skipping Apple as requested
-    if (['samsung', 'xiaomi', 'oneplus', 'google', 'huawei', 'honor', 'motorola', 'noise', 'boat', 'fire-boltt'].includes(b)) {
+    // Watches
+    if (['apple', 'samsung', 'xiaomi', 'oneplus', 'google', 'huawei', 'honor', 'motorola', 'noise', 'boat', 'fire-boltt'].includes(b)) {
         cats.push('smartwatch');
     }
 
