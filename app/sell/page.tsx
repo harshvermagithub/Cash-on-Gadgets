@@ -13,7 +13,18 @@ export default async function SellPage(props: { searchParams: Promise<{ category
     const searchParams = await props.searchParams;
     const category = searchParams.category;
     const brandId = searchParams.brandId;
-    const brands = await fetchBrands(category);
+    let fetchCategory = category;
+    if (category === 'unbreakable-screenguard' || category === 'repair') {
+        fetchCategory = 'smartphone';
+    }
+    
+    const allBrands = await fetchBrands(fetchCategory);
+    let brands = allBrands;
+    
+    if (category === 'unbreakable-screenguard') {
+        const requiredBrands = ['Apple', 'Samsung', 'OnePlus', 'Google'];
+        brands = allBrands.filter(b => requiredBrands.includes(b.name));
+    }
 
     // Fetch user session for auth-dependent flows (e.g., skip phone number step)
     const session = await getSession();

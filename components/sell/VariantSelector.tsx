@@ -45,9 +45,13 @@ export default function VariantSelector({ modelId, category, brand, onSelect, on
     }, [modelId, category]);
 
     const formatVariantName = (name: string) => {
-        // If Apple, assume variants are like "4GB / 64GB" or "4GB/64GB" and strip the RAM
-        if (brand?.name === 'Apple') {
-            return name.replace(/^\d+\s*GB\s*[\/\-]\s*/i, '');
+        // If Apple, assume variants are like "4GB / 64GB" or "4 GB / 64 GB" and keep only the storage part
+        if (brand?.name?.toLowerCase() === 'apple') {
+            // Match any digits + space + GB/TB followed by a slash or dash, and capture everything after
+            const match = name.match(/[\/\-]\s*(.*)$/);
+            if (match && match[1]) {
+                return match[1].trim();
+            }
         }
         return name;
     }

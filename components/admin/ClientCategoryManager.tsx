@@ -26,7 +26,7 @@ export default function ClientCategoryManager({ category, brands, models, varian
     const titleMap: Record<string, string> = {
         'smartphone': 'Smartphones',
         'tablet': 'Tablets',
-        'smartwatch': 'Smartwatches',
+        'watch': 'Smartwatches',
         'laptop': 'Laptops',
         'console': 'Gaming Consoles',
         'tv': 'Smart TVs',

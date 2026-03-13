@@ -165,6 +165,8 @@ export const questionnaireSteps = {
                 { id: 'proximity', label: 'Proximity Sensor', icon: 'Move' },
                 { id: 'vibrator', label: 'Vibrator', icon: 'Vibrate' },
                 { id: 'battery', label: 'Battery', icon: 'Battery' },
+                { id: 'front_camera_blur', label: 'Front Camera Image Blur', icon: 'Image' },
+                { id: 'back_camera_blur', label: 'Back Camera Image Blur', icon: 'Image' },
             ]
         },
         {
@@ -180,7 +182,7 @@ export const questionnaireSteps = {
                     options: [
                         { id: 'charger', label: 'Original Charger', icon: 'Plug' },
                         { id: 'box', label: 'Original Box', icon: 'Box' },
-                        { id: 'bill', label: 'Original Bill', icon: 'FileText' },
+                        { id: 'bill', label: 'Original Bill with GST', icon: 'FileText' },
                     ]
                 },
                 {
@@ -188,9 +190,9 @@ export const questionnaireSteps = {
                     title: 'Warranty Period',
                     type: 'single-select',
                     options: [
+                        { id: '0_3_months', label: '0 - 3 Months', description: 'Valid for 0 to 3 months', icon: 'Clock' },
                         { id: '3_6_months', label: '3 - 6 Months', description: 'Valid for 3 to 6 months', icon: 'Clock' },
-                        { id: '6_9_months', label: '6 - 9 Months', description: 'Valid for 6 to 9 months', icon: 'Clock' },
-                        { id: '9_11_months', label: 'Above 11 Months', description: 'Valid for more than 11 months', icon: 'Clock' },
+                        { id: '6_11_months', label: '6 - 11 Months', description: 'Valid for 6 to 11 months', icon: 'Clock' },
                         { id: 'no', label: 'No Warranty', description: 'Above 11 months or expired', icon: 'XCircle' },
                     ]
                 }

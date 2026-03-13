@@ -525,7 +525,7 @@ const categories = [
     {
         id: 'unbreakable-screenguard',
         name: 'Screen Guard',
-        subtext: 'Unbreakable • ₹1,999 • 3-Hr Doorstep',
+        subtext: 'Unbreakable • 3-Hr Doorstep',
         component: <ScreenGuardGraphic />,
         bgColors: 'bg-cyan-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-cyan-900 dark:text-cyan-100'

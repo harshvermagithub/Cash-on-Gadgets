@@ -11,6 +11,7 @@ import SVGLoader from "@/components/ui/SVGLoader";
 interface ModelSelectorProps {
     brandId: string;
     category?: string;
+    originalCategory?: string;
     onSelect: (model: Model) => void;
     onBack: () => void;
 }
@@ -62,7 +63,7 @@ const ModelImage = ({ src, alt, priority = false, scale = 1 }: { src: string, al
     );
 };
 
-export default function ModelSelector({ brandId, category, onSelect, onBack }: ModelSelectorProps) {
+export default function ModelSelector({ brandId, category, originalCategory, onSelect, onBack }: ModelSelectorProps) {
     const [models, setModels] = useState<Model[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -75,7 +76,29 @@ export default function ModelSelector({ brandId, category, onSelect, onBack }: M
         fetchModels(brandId, category)
             .then(data => {
                 if (mounted) {
-                    setModels(data);
+                    let processedData = data;
+                    if (originalCategory === 'unbreakable-screenguard') {
+                        processedData = data.filter(model => {
+                            const name = model.name.toLowerCase();
+                            if (name.includes('iphone')) {
+                                return name.includes('iphone 15') || 
+                                       name.includes('iphone 16') || 
+                                       name.includes('iphone 17') ||
+                                       name.includes('iphone 18');
+                            }
+                            if (name.includes('sams') || name.includes('galaxy')) {
+                                return name.includes('s24') || name.includes('s25');
+                            }
+                            if (name.includes('oneplus')) {
+                                return name.includes('oneplus 13') || name.includes('oneplus 15');
+                            }
+                            if (name.includes('pixel') || name.includes('google')) {
+                                return name.includes('pixel 9') || name.includes('pixel 10');
+                            }
+                            return true;
+                        });
+                    }
+                    setModels(processedData);
                     setIsLoading(false);
                 }
             })

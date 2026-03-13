@@ -132,6 +132,24 @@ export default function PricingRulesManager({ category, initialRules }: Props) {
                                         onSave={handleSave}
                                     />
                                 ))}
+                                {/* Combined-Step Sections (e.g. Laptops / Device Details) */}
+                                {step.type === 'combined-step' && step.sections?.map((section: any) => (
+                                    <React.Fragment key={section.id}>
+                                        {section.options?.map((opt: any) => (
+                                            <RuleRow
+                                                key={opt.id}
+                                                category={category}
+                                                qId={section.id}
+                                                aId={opt.id}
+                                                qLabel={`${step.title} - ${section.title}`}
+                                                aLabel={opt.label}
+                                                initialRule={getRule(section.id, opt.id)}
+                                                defaults={PREFILL_DEFAULTS[opt.id]}
+                                                onSave={handleSave}
+                                            />
+                                        ))}
+                                    </React.Fragment>
+                                ))}
                             </React.Fragment>
                         ))}
                     </tbody>
@@ -193,7 +211,8 @@ function RuleRow({ category, qId, aId, qLabel, aLabel, initialRule, defaults, on
                         type="number"
                         value={amount}
                         onChange={e => { setAmount(e.target.value); setIsDirty(true); }}
-                        className="w-full p-2 border-0 outline-none bg-transparent text-sm w-24"
+                        disabled={Number(percent) > 0}
+                        className="w-full p-2 border-0 outline-none bg-transparent text-sm w-24 disabled:opacity-50 disabled:cursor-not-allowed"
                         placeholder="0"
                     />
                 </div>
@@ -204,7 +223,8 @@ function RuleRow({ category, qId, aId, qLabel, aLabel, initialRule, defaults, on
                         type="number"
                         value={percent}
                         onChange={e => { setPercent(e.target.value); setIsDirty(true); }}
-                        className="w-full p-2 border-0 outline-none bg-transparent text-sm w-16"
+                        disabled={Number(amount) > 0}
+                        className="w-full p-2 border-0 outline-none bg-transparent text-sm w-16 disabled:opacity-50 disabled:cursor-not-allowed"
                         step="1"
                         placeholder="0"
                     />

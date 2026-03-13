@@ -17,7 +17,7 @@ export default async function Header() {
 
                 <nav className="flex items-center gap-4">
                     <Link href="/sell" className="text-sm font-medium hover:text-primary transition-colors">
-                        Sell Phone
+                        Check Price
                     </Link>
                     <Link href="/orders" className="text-sm font-medium hover:text-primary transition-colors">
                         My Orders

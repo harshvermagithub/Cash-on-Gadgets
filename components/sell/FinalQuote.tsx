@@ -18,11 +18,12 @@ interface FinalQuoteProps {
     user?: any;
     category?: string;
     onRecalculate?: () => void;
+    initialPincode?: string;
 }
 
 type BookingStep = 'contact' | 'quote' | 'address' | 'schedule';
 
-export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, user, category, onRecalculate }: FinalQuoteProps) {
+export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, user, category, onRecalculate, initialPincode }: FinalQuoteProps) {
     // If repair, start at address. Else if user logged in, skip contact and go to quote. Else contact.
     const [bookingStep, setBookingStep] = useState<BookingStep>(
         isRepair ? 'address' : (user ? 'quote' : 'contact')
@@ -32,7 +33,7 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
     // Form Data
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
-    const [pincode, setPincode] = useState('');
+    const [pincode, setPincode] = useState(initialPincode || '');
     const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
     const [selectedDate, setSelectedDate] = useState<number>(0); // 0 to 3 index
     const [selectedSlot, setSelectedSlot] = useState<string>('');
@@ -199,6 +200,62 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
     };
 
     // -------------------------------------------------------------------------
+    // RENDER: STEP 0 - PINCODE POPUP (Only for Screen Guard if missing)
+    // -------------------------------------------------------------------------
+    if (bookingStep === 'address' && !pincode && !isSubmitting) {
+        return (
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+                className="max-w-md mx-auto py-12 space-y-8"
+            >
+                <div className="flex items-center gap-4 mb-4">
+                    <button 
+                        onClick={() => {
+                            if (isRepair || category === 'unbreakable-screenguard') {
+                                if (onRecalculate) onRecalculate();
+                            } else {
+                                setBookingStep('quote');
+                            }
+                        }} 
+                        className="p-2 hover:bg-slate-100 rounded-full dark:hover:bg-slate-800"
+                    >
+                        <ArrowLeft className="w-6 h-6" />
+                    </button>
+                    <h2 className="text-2xl font-bold">Check Serviceability</h2>
+                </div>
+                <div className="text-center space-y-2">
+                    <p className="text-muted-foreground">Enter your pincode to check if we serve your area.</p>
+                </div>
+                <div className="bg-card border rounded-2xl p-6 shadow-sm space-y-6">
+                    <div className="space-y-3">
+                        <label className="text-sm font-medium">Your Pincode</label>
+                        <input
+                            type="text"
+                            maxLength={6}
+                            className="w-full p-4 border rounded-xl bg-background focus:ring-2 focus:ring-primary/50 outline-none tracking-widest text-lg"
+                            placeholder="e.g. 560032"
+                            onChange={(e) => {
+                                const val = e.target.value.replace(/\D/g, '');
+                                if (val.length === 6) {
+                                    setPincode(val);
+                                }
+                            }}
+                            autoFocus
+                        />
+                    </div>
+                    <button
+                        disabled
+                        className="w-full py-4 bg-primary text-primary-foreground font-bold rounded-xl shadow-lg opacity-50 cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                        Please enter 6-digit pincode
+                    </button>
+                </div>
+            </motion.div>
+        );
+    }
+
+
+    // -------------------------------------------------------------------------
     // RENDER: STEP 1 - CONTACT
     // -------------------------------------------------------------------------
     if (bookingStep === 'contact') {
@@ -283,7 +340,7 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                         Book Free Pickup <Truck className="w-6 h-6" />
                     </button>
                     <button
-                        onClick={onRecalculate || (() => router.back())}
+                        onClick={() => onRecalculate ? onRecalculate() : router.back()}
                         className="w-full py-3 text-muted-foreground hover:text-foreground font-medium transition-colors"
                     >
                         Recalculate Value
@@ -303,7 +360,16 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                 className="max-w-xl mx-auto py-8 space-y-6"
             >
                 <div className="flex items-center gap-4 mb-4">
-                    <button onClick={() => setBookingStep('quote')} className="p-2 hover:bg-slate-100 rounded-full">
+                    <button 
+                        onClick={() => {
+                            if (isRepair || category === 'unbreakable-screenguard') {
+                                if (onRecalculate) onRecalculate();
+                            } else {
+                                setBookingStep('quote');
+                            }
+                        }} 
+                        className="p-2 hover:bg-slate-100 rounded-full dark:hover:bg-slate-800"
+                    >
                         <ArrowLeft className="w-6 h-6" />
                     </button>
                     <h2 className="text-2xl font-bold">{isRepair ? 'Service Location' : 'Pickup Location'}</h2>
@@ -321,26 +387,12 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                         />
                     </div>
 
-                    <div className="space-y-3">
-                        <label className="block text-sm font-medium">Pincode (Required)</label>
-                        <input
-                            type="text"
-                            maxLength={6}
-                            className="w-full p-4 border rounded-xl bg-background focus:ring-2 focus:ring-primary/50 outline-none"
-                            placeholder="e.g. 560032"
-                            value={pincode}
-                            onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
-                        />
-                    </div>
 
-                    {/* OR Divider */}
-                    <div className="relative">
-                        <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-dashed border-gray-300"></div>
-                        </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                            <span className="bg-card px-2 text-muted-foreground font-medium">OR</span>
-                        </div>
+
+                    <div className="flex items-center gap-4 py-2">
+                        <div className="flex-1 border-t border-dashed border-gray-300"></div>
+                        <span className="text-muted-foreground font-medium text-xs uppercase">OR</span>
+                        <div className="flex-1 border-t border-dashed border-gray-300"></div>
                     </div>
 
                     <div className="space-y-3">
@@ -390,6 +442,18 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                                 </motion.div>
                             )}
                         </AnimatePresence>
+                    </div>
+
+                    <div className="space-y-3 pt-4 border-t border-border/50">
+                        <label className="block text-sm font-medium">Pincode (Required)</label>
+                        <input
+                            type="text"
+                            maxLength={6}
+                            className="w-full p-4 border rounded-xl bg-background focus:ring-2 focus:ring-primary/50 outline-none"
+                            placeholder="e.g. 560032"
+                            value={pincode}
+                            onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
+                        />
                     </div>
                 </div>
 
@@ -474,13 +538,10 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                     </div>
                 </div>
 
-                <div className="relative">
-                    <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-dashed border-gray-300"></div>
-                    </div>
-                    <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-background px-2 text-muted-foreground font-medium">OR</span>
-                    </div>
+                <div className="flex items-center gap-4 py-2">
+                    <div className="flex-1 border-t border-dashed border-gray-300"></div>
+                    <span className="text-muted-foreground font-medium text-xs uppercase">OR</span>
+                    <div className="flex-1 border-t border-dashed border-gray-300"></div>
                 </div>
 
                 {/* Express Pickup Option */}

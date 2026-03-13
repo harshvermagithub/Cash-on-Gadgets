@@ -12,43 +12,78 @@ export async function calculatePrice(basePrice: number, answers: Record<string, 
     if (rules.length === 0) {
         // Fallback to legacy hardcoded logic if no rules are set in DB
         // This ensures the app still works reasonably until Admin configures it.
+        if (category === 'smartphone') {
+            if (answers.calls === false) finalPrice *= 0.8;
+            if (answers.touch === false) finalPrice *= 0.7;
+            if (answers.screen_original === false) finalPrice *= 0.9;
 
-        if (answers.calls === false) finalPrice *= 0.8;
-        if (answers.touch === false) finalPrice *= 0.7;
-        if (answers.screen_original === false) finalPrice *= 0.9;
+            // Screen Condition Deductions
+            const screen = answers.physical_condition as string;
+            if (screen === 'good') finalPrice -= basePrice * 0.10;
+            else if (screen === 'average') finalPrice -= basePrice * 0.20;
+            else if (screen === 'below_average') finalPrice -= basePrice * 0.40;
 
-        // Screen Condition Deductions
-        const screen = answers.physical_condition as string;
-        if (screen === 'good') finalPrice -= basePrice * 0.10;
-        else if (screen === 'average') finalPrice -= basePrice * 0.20;
-        else if (screen === 'below_average') finalPrice -= basePrice * 0.40;
+            // Body Condition Deductions
+            const body = answers.body_condition as string;
+            if (body === 'good') finalPrice -= basePrice * 0.07;
+            else if (body === 'average') finalPrice -= basePrice * 0.14;
+            else if (body === 'below_average') finalPrice -= basePrice * 0.35;
 
-        // Body Condition Deductions
-        const body = answers.body_condition as string;
-        if (body === 'good') finalPrice -= basePrice * 0.07;
-        else if (body === 'average') finalPrice -= basePrice * 0.14;
-        else if (body === 'below_average') finalPrice -= basePrice * 0.35;
+            // Functional Problems (4% per issue)
+            const problems = answers.functional_problems as string[] | undefined;
+            if (problems && problems.length > 0) {
+                finalPrice -= (basePrice * 0.04 * problems.length);
+            }
 
-        // Functional Problems (4% per issue)
-        const problems = answers.functional_problems as string[] | undefined;
-        if (problems && problems.length > 0) {
-            finalPrice -= (basePrice * 0.04 * problems.length);
+            // Warranty (Bonus)
+            const warranty = answers.warranty as string;
+            if (warranty === '0_3_months') finalPrice += basePrice * 0.05;
+            else if (warranty === '3_6_months') finalPrice += basePrice * 0.07;
+            else if (warranty === '6_11_months') finalPrice += basePrice * 0.10;
+
+            // Original Bill (Deduction if missing)
+            const bill = answers.bill as string;
+            if (bill === 'no') finalPrice -= basePrice * 0.15;
+
+            const accessories = answers.accessories as string[] | undefined;
+            if (accessories?.includes('charger')) finalPrice += 200;
+            if (accessories?.includes('box')) finalPrice += 100;
+        } else if (category === 'laptop') {
+            // Laptop legacy hardcoded logic
+            if (answers.power === false) finalPrice -= basePrice * 0.50;
+            if (answers.ports === false) finalPrice -= basePrice * 0.10;
+            if (answers.screen_working === false) finalPrice -= basePrice * 0.40;
+            if (answers.keyboard === false) finalPrice -= basePrice * 0.15;
+
+            const phys = answers.physical_condition as string[] || [];
+            if (phys.includes('screen_damage')) finalPrice -= basePrice * 0.30;
+            if (phys.includes('body_damage')) finalPrice -= basePrice * 0.20;
+            if (phys.includes('battery_dead')) finalPrice -= basePrice * 0.15;
+            if (phys.includes('keys_missing')) finalPrice -= basePrice * 0.10;
+
+            const specs = answers.specs as string[] || [];
+            if (specs.includes('charger_missing')) finalPrice -= 1500;
+            if (specs.includes('box_missing')) finalPrice -= 500;
+        } else if (category === 'tablet') {
+            // Tablet legacy hardcoded logic
+            if (answers.power === false) finalPrice -= basePrice * 0.50;
+            if (answers.touch === false) finalPrice -= basePrice * 0.30;
+            if (answers.wifi === false) finalPrice -= basePrice * 0.15;
+
+            const phys = (answers.physical_condition as string[]) || [];
+            if (phys.includes('screen_crack')) finalPrice -= basePrice * 0.30;
+            if (phys.includes('body_dent')) finalPrice -= basePrice * 0.15;
+            if (phys.includes('bent')) finalPrice -= basePrice * 0.25;
+        } else if (category === 'watch') {
+            // Watch legacy hardcoded logic
+            if (answers.power === false) finalPrice -= basePrice * 0.50;
+            if (answers.screen === false) finalPrice -= basePrice * 0.30;
+            if (answers.buttons === false) finalPrice -= basePrice * 0.10;
+
+            const strap = (answers.strap_condition as string[]) || [];
+            if (strap.includes('strap_broken')) finalPrice -= 800;
+            if (strap.includes('scratch_glass')) finalPrice -= basePrice * 0.15;
         }
-
-        // Warranty (Bonus)
-        const warranty = answers.warranty as string;
-        if (warranty === '3_months') finalPrice += basePrice * 0.05;
-        else if (warranty === '6_months') finalPrice += basePrice * 0.07;
-        else if (warranty === '9_months') finalPrice += basePrice * 0.08;
-        else if (warranty === '12_months') finalPrice += basePrice * 0.10;
-
-        // Original Bill (Deduction if missing)
-        const bill = answers.bill as string;
-        if (bill === 'no') finalPrice -= basePrice * 0.15;
-
-        const accessories = answers.accessories as string[] | undefined;
-        if (accessories?.includes('charger')) finalPrice += 200;
-        if (accessories?.includes('box')) finalPrice += 100;
     } else {
         // Apply DB Rules
         for (const rule of rules) {

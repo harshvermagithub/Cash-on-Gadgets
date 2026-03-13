@@ -26,7 +26,7 @@ import {
 const CATEGORIES = [
     { id: 'smartphone', label: 'Smartphones', icon: Smartphone },
     { id: 'tablet', label: 'Tablets', icon: Tablet },
-    { id: 'smartwatch', label: 'Smartwatches', icon: Watch },
+    { id: 'watch', label: 'Smartwatches', icon: Watch },
     { id: 'laptop', label: 'Laptops', icon: Laptop },
     { id: 'console', label: 'Consoles', icon: Gamepad2 },
     { id: 'tv', label: 'Smart TV', icon: Tv },

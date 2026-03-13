@@ -14,7 +14,7 @@ import StepLogin from './StepLogin';
 import { Brand, Model, Variant } from '@/lib/store';
 import { useRouter } from 'next/navigation';
 
-type Step = 'category' | 'brand' | 'model' | 'variant' | 'quote_preview' | 'checklist' | 'login_check' | 'final_quote' | 'screenguard_input';
+type Step = 'category' | 'brand' | 'model' | 'variant' | 'quote_preview' | 'checklist' | 'login_check' | 'final_quote';
 
 interface SellWizardProps {
     initialBrands: Brand[];
@@ -46,7 +46,7 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
         preSelectedBrand ? 'model' : (initialCategory ? 'brand' : 'category')
     );
     const [category, setCategory] = useState<string>(resolvedCategory);
-    const [isRepair, setIsRepair] = useState(initialCategory === 'repair');
+    const [isRepair, setIsRepair] = useState(initialCategory === 'repair' || initialCategory === 'unbreakable-screenguard');
 
     // We need to maintain local brands state in case category changes
     const [brands, setBrands] = useState<Brand[]>(initialBrands);
@@ -56,7 +56,7 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
     const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
     const [skippedVariant, setSkippedVariant] = useState(false);
     const [answers, setAnswers] = useState<Record<string, unknown>>({});
-    const [customDeviceName, setCustomDeviceName] = useState('');
+
 
     // Track user state locally so we can update it after inline login
     // Track user state locally so we can update it after inline login
@@ -80,7 +80,14 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
         } else if (cat === 'unbreakable-screenguard') {
             setIsRepair(true); // Re-use repair boolean to skip quote UI logic and go straight to booking
             setCategory('unbreakable-screenguard');
-            setStep('screenguard_input');
+            
+            // Only fetch specific brands to mimic actual screen guard support
+            const allBrands = await fetchBrands('smartphone');
+            const requiredBrands = ['Apple', 'Samsung', 'OnePlus', 'Google'];
+            const newBrands = allBrands.filter(b => requiredBrands.includes(b.name));
+            
+            setBrands(newBrands);
+            setStep('brand');
             return;
         } else {
             setIsRepair(false);
@@ -102,6 +109,16 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
     const handleModelSelect = (model: Model) => {
         setSelectedModel(model);
         setSkippedVariant(false);
+
+        if (category === 'unbreakable-screenguard') {
+            if (user) {
+                setStep('final_quote');
+            } else {
+                setStep('login_check');
+            }
+            return;
+        }
+
         setStep('variant');
     };
 
@@ -157,7 +174,8 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
                     <motion.div key="model" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                         <ModelSelector
                             brandId={selectedBrand.id}
-                            category={category}
+                            category={category === 'unbreakable-screenguard' ? 'smartphone' : category}
+                            originalCategory={category}
                             onSelect={handleModelSelect}
                             onBack={() => {
                                 if (initialBrandId) {
@@ -231,52 +249,21 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
                     </motion.div>
                 )}
 
-                {step === 'screenguard_input' && (
-                    <motion.div key="screenguard_input" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="max-w-md mx-auto py-12 space-y-8">
-                        <div className="text-center space-y-2">
-                            <h2 className="text-3xl font-bold">Device Details</h2>
-                            <p className="text-muted-foreground">Enter your smartphone or tablet model for the screen guard</p>
-                        </div>
-                        <div className="bg-card border rounded-2xl p-6 shadow-sm space-y-6">
-                            <div className="space-y-3">
-                                <label className="text-sm font-medium">Brand & Model Name</label>
-                                <input
-                                    type="text"
-                                    value={customDeviceName}
-                                    onChange={(e) => setCustomDeviceName(e.target.value)}
-                                    className="w-full p-4 border rounded-xl bg-background focus:ring-2 focus:ring-primary/50 outline-none text-lg"
-                                    placeholder="e.g. Samsung Galaxy S24 Ultra"
-                                    autoFocus
-                                />
-                            </div>
-                            <button
-                                onClick={() => {
-                                    if (user) setStep('final_quote');
-                                    else setStep('login_check');
-                                }}
-                                disabled={customDeviceName.trim().length < 3}
-                                className="w-full py-4 bg-primary text-primary-foreground font-bold rounded-xl shadow-lg hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                            >
-                                Continue to Scheduling
-                            </button>
-                        </div>
-                    </motion.div>
-                )}
 
-                {step === 'final_quote' && (category === 'unbreakable-screenguard' || (selectedModel && selectedVariant)) && (
+                {step === 'final_quote' && (category === 'unbreakable-screenguard' ? selectedModel : (selectedModel && selectedVariant)) && (
                     <motion.div key="final_quote" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                         <FinalQuote
                             basePrice={category === 'unbreakable-screenguard' ? 1999 : (selectedVariant?.basePrice || 0)}
                             answers={answers}
                             deviceInfo={{
-                                name: category === 'unbreakable-screenguard' ? customDeviceName : displayDeviceName,
+                                name: displayDeviceName,
                                 variant: category === 'unbreakable-screenguard' ? 'Unbreakable Screen Guard' : (displayVariant || '')
                             }}
                             category={category}
                             isRepair={isRepair}
                             user={user}
                             onRecalculate={() => {
-                                if (category === 'unbreakable-screenguard') setStep('screenguard_input');
+                                if (category === 'unbreakable-screenguard') setStep('model');
                                 else setStep('checklist');
                             }}
                         />
