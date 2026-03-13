@@ -28,11 +28,11 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
     const [verifyingOrder, setVerifyingOrder] = useState<Order | null>(null);
     const [activeTab, setActiveTab] = useState<'pending' | 'completed'>('pending');
 
-    const handleStatusUpdate = async (id: string, newStatus: string) => {
+    const handleStatusUpdate = async (id: string, newStatus: string, reason?: string) => {
         if (!confirm(`Mark order as ${newStatus}?`)) return;
         setUpdatingId(id);
         try {
-            await updateOrderStatus(id, newStatus);
+            await updateOrderStatus(id, newStatus, reason);
             router.refresh();
         } catch {
             alert('Failed to update');
@@ -60,8 +60,8 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
         }
     };
 
-    const pendingOrders = orders.filter(o => o.status !== 'completed');
-    const completedOrders = orders.filter(o => o.status === 'completed');
+    const pendingOrders = orders.filter(o => o.status !== 'completed' && o.status !== 'failed');
+    const completedOrders = orders.filter(o => o.status === 'completed' || o.status === 'failed');
     const displayedOrders = activeTab === 'pending' ? pendingOrders : completedOrders;
 
     return (
@@ -91,7 +91,7 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                     onClick={() => setActiveTab('completed')}
                     className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'completed' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
                 >
-                    Completed <span className="ml-1 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs">{completedOrders.length}</span>
+                    Finished <span className="ml-1 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs">{completedOrders.length}</span>
                 </button>
             </div>
 
@@ -181,17 +181,30 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
 
                                         <div className="flex flex-col gap-3">
                                             <div className="bg-muted/10 border p-3 rounded-lg flex items-center gap-2 overflow-hidden text-sm h-fit">
-                                                <CheckCircle2 className={`w-4 h-4 shrink-0 ${order.status === 'completed' ? 'text-green-500' : 'text-muted-foreground'}`} />
+                                                <CheckCircle2 className={`w-4 h-4 shrink-0 ${order.status === 'completed' ? 'text-green-500' : order.status === 'failed' ? 'text-red-500' : 'text-muted-foreground'}`} />
                                                 <span className="truncate text-muted-foreground font-medium capitalize">
                                                     {order.status === 'pending_verification' ? 'Awaiting Approval' : order.status}
                                                 </span>
                                             </div>
-                                            <a 
-                                                href={`tel:+91${answersObj.phone || order.user?.phone}`}
-                                                className="w-full flex items-center justify-center gap-2 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 font-bold transition-all shadow-sm"
-                                            >
-                                                <Phone className="w-4 h-4" /> Call Customer
-                                            </a>
+                                            <div className="flex gap-2">
+                                                <a 
+                                                    href={`tel:+91${answersObj.phone || order.user?.phone}`}
+                                                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 font-bold transition-all shadow-sm"
+                                                >
+                                                    <Phone className="w-4 h-4" /> Call
+                                                </a>
+                                                <button
+                                                    onClick={() => {
+                                                        const reason = window.prompt("Mark order as FAILED. Reason:", "Customer not reachable");
+                                                        if (reason === null) return;
+                                                        handleStatusUpdate(order.id, 'failed', reason);
+                                                    }}
+                                                    className="px-4 py-3 border border-red-200 text-red-600 hover:bg-red-50 rounded-xl font-bold transition-all"
+                                                    title="Fail Order"
+                                                >
+                                                    Fail
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -56,6 +56,29 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
                 }
             });
             return NextResponse.json({ success: true });
+        } else if (action === 'fail_order') {
+            const { reason } = body;
+            const order = await prisma.order.findUnique({ where: { id } });
+            if (!order) return new NextResponse('Not found', { status: 404 });
+
+            let answersObj: any = {};
+            if (order.answers && typeof order.answers === 'string') {
+                try { answersObj = JSON.parse(order.answers); } catch (e) { }
+            }
+
+            if (reason) {
+                if (!answersObj.failLog) answersObj.failLog = [];
+                answersObj.failLog.push({ date: new Date().toISOString(), reason });
+            }
+
+            await prisma.order.update({
+                where: { id },
+                data: {
+                    status: 'failed',
+                    answers: JSON.stringify(answersObj)
+                }
+            });
+            return NextResponse.json({ success: true });
         }
 
         return new NextResponse('Invalid action', { status: 400 });

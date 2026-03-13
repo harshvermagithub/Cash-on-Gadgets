@@ -118,6 +118,32 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
                     </div>
                 </div>
             )}
+
+            {/* Failure Log */}
+            {answers.failLog && answers.failLog.length > 0 && (
+                <div className="p-4 border rounded-xl bg-orange-50/50 dark:bg-orange-900/10 border-orange-100 dark:border-orange-900/30">
+                    <div className="text-sm text-orange-600 dark:text-orange-400 font-bold mb-3 flex items-center gap-2">
+                        <AlertTriangle className="w-4 h-4" /> Failure Log
+                    </div>
+                    <div className="space-y-3">
+                        {answers.failLog.map((log: any, i: number) => (
+                            <div key={i} className="text-xs border-b last:border-0 pb-2">
+                                <div className="flex justify-between items-center mb-1">
+                                    <span className="text-muted-foreground">
+                                        {new Date(log.date).toLocaleString()}
+                                    </span>
+                                    <span className="px-1.5 py-0.5 bg-orange-100 dark:bg-orange-900/40 text-[10px] font-bold uppercase rounded">
+                                        By {log.by || 'Admin'}
+                                    </span>
+                                </div>
+                                <p className="font-semibold text-orange-900 dark:text-orange-200">
+                                    {log.reason}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

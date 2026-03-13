@@ -21,7 +21,7 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
 
     const [assigningId, setAssigningId] = useState<string | null>(null);
     const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
-    const [activeTab, setActiveTab] = useState<'to_be_assigned' | 'pending_pickup' | 'completed'>('to_be_assigned');
+    const [activeTab, setActiveTab] = useState<'to_be_assigned' | 'pending_pickup' | 'completed' | 'failed'>('to_be_assigned');
 
     const handleAssign = async (orderId: string, riderId: string) => {
         if (!riderId) return;
@@ -41,15 +41,18 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
     // Sort by date desc
     const sortedOrders = [...orders].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-    const toBeAssignedOrders = sortedOrders.filter(o => !o.riderId && o.status !== 'completed');
-    const pendingPickupOrders = sortedOrders.filter(o => o.riderId && o.status !== 'completed');
+    const toBeAssignedOrders = sortedOrders.filter(o => !o.riderId && o.status !== 'completed' && o.status !== 'failed');
+    const pendingPickupOrders = sortedOrders.filter(o => o.riderId && o.status !== 'completed' && o.status !== 'failed');
     const completedOrders = sortedOrders.filter(o => o.status === 'completed');
+    const failedOrders = sortedOrders.filter(o => o.status === 'failed');
 
     const displayedOrders = activeTab === 'to_be_assigned'
         ? toBeAssignedOrders
         : activeTab === 'pending_pickup'
             ? pendingPickupOrders
-            : completedOrders;
+            : activeTab === 'completed'
+                ? completedOrders
+                : failedOrders;
 
     const handleExport = () => {
         const headers = ["Order #", "Date", "Device", "Price", "Status", "Contact", "Address", "Rider Assigned"];
@@ -105,6 +108,12 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                     >
                         Completed <span className="ml-1.5 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs">{completedOrders.length}</span>
                     </button>
+                    <button
+                        onClick={() => setActiveTab('failed')}
+                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'failed' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                    >
+                        Failed <span className="ml-1.5 px-2 py-0.5 rounded-full bg-red-100 text-red-700 text-xs">{failedOrders.length}</span>
+                    </button>
                 </div>
 
                 <button
@@ -132,8 +141,9 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-2 mb-1">
                                         <span className={`px-2 py-0.5 rounded-full text-xs font-bold uppercase ${order.status === 'completed' ? 'bg-green-100 text-green-700' :
-                                            order.status === 'assigned' ? 'bg-blue-100 text-blue-700' :
-                                                'bg-amber-100 text-amber-700'
+                                            order.status === 'failed' ? 'bg-red-100 text-red-700' :
+                                                order.status === 'assigned' ? 'bg-blue-100 text-blue-700' :
+                                                    'bg-amber-100 text-amber-700'
                                             }`}>
                                             {order.status}
                                         </span>
@@ -270,6 +280,23 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                                     <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                                                 </div>
                                             )}
+                                            <button
+                                                onClick={async () => {
+                                                    const reason = window.prompt("Mark order as FAILED. Reason:", "Customer unavailable");
+                                                    if (reason === null) return;
+                                                    if (confirm("Are you sure you want to fail this order?")) {
+                                                        await fetch('/api/admin/orders/' + order.id, {
+                                                            method: 'POST',
+                                                            headers: { 'Content-Type': 'application/json' },
+                                                            body: JSON.stringify({ action: 'fail_order', reason })
+                                                        });
+                                                        window.location.reload();
+                                                    }
+                                                }}
+                                                className="w-full mt-2 py-2 border border-red-200 text-red-600 hover:bg-red-50 rounded-lg text-xs font-bold transition-colors"
+                                            >
+                                                Fail Order
+                                            </button>
                                         </div>
                                     </div>
 

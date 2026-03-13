@@ -72,9 +72,36 @@ export async function getExecutiveOrders() {
     return allOrders.filter(o => o.riderId === executive.id);
 }
 
-export async function updateOrderStatus(orderId: string, status: string) {
+export async function updateOrderStatus(orderId: string, status: string, reason?: string) {
     const executive = await getExecutiveSession();
     if (!executive) throw new Error('Unauthorized');
+
+    if (status === 'failed') {
+        const { prisma } = await import('@/lib/db');
+        const order = await prisma.order.findUnique({ where: { id: orderId } });
+        if (order) {
+            let answersObj: any = {};
+            if (order.answers && typeof order.answers === 'string') {
+                try { answersObj = JSON.parse(order.answers); } catch (e) { }
+            }
+            if (!answersObj.failLog) answersObj.failLog = [];
+            answersObj.failLog.push({ 
+                date: new Date().toISOString(), 
+                reason: reason || 'Handled by executive', 
+                by: 'executive' 
+            });
+
+            await prisma.order.update({
+                where: { id: orderId },
+                data: {
+                    status: 'failed',
+                    answers: JSON.stringify(answersObj)
+                }
+            });
+            revalidatePath('/pickup/dashboard');
+            return { success: true };
+        }
+    }
 
     await db.updateOrderStatus(orderId, status);
     revalidatePath('/pickup/dashboard');
