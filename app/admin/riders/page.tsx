@@ -12,37 +12,41 @@ export default async function RidersPage() {
         redirect('/admin');
     }
 
-    const currentUser = await prisma.user.findUnique({ where: { id: session.user.id } });
+    const currentUser: any = await prisma.user.findUnique({ 
+        where: { id: session.user.id },
+        include: { managedCities: true }
+    });
     if (!currentUser) redirect('/admin');
 
-    let riders = await prisma.rider.findMany({
-        include: {
-            orders: {
-                orderBy: { createdAt: 'desc' }
-            },
-            // @ts-ignore
-            partner: true // Fetch the assigned partner details
-        },
-        orderBy: { createdAt: 'desc' }
-    });
-
     let partners: any[] = [];
+    let riders: any[] = [];
 
-    if (currentUser.role === 'PARTNER') {
-        // @ts-ignore
-        riders = riders.filter(r => r.partnerId === currentUser.id);
-        partners = [currentUser];
+    if (currentUser.role === 'SUPER_ADMIN' || currentUser.role === 'ADMIN') {
+        partners = await prisma.user.findMany({ where: { role: 'PARTNER' } });
+        riders = await prisma.rider.findMany({
+            include: { partner: true },
+            orderBy: { createdAt: 'desc' }
+        });
     } else if (currentUser.role === 'ZONAL_HEAD') {
+        const managedCityIds = (currentUser.managedCities || []).map((c: any) => c.id);
         partners = await prisma.user.findMany({
-            // @ts-ignore
-            where: { role: 'PARTNER', cityId: currentUser.cityId }
+            where: { 
+                role: 'PARTNER', 
+                cityId: { in: managedCityIds } 
+            }
         });
         const partnerIds = partners.map(p => p.id);
-        // @ts-ignore
-        riders = riders.filter(r => r.partnerId && partnerIds.includes(r.partnerId));
-    } else {
-        partners = await prisma.user.findMany({
-            where: { role: 'PARTNER' }
+        riders = await prisma.rider.findMany({
+            where: { partnerId: { in: partnerIds } },
+            include: { partner: true },
+            orderBy: { createdAt: 'desc' }
+        });
+    } else if (currentUser.role === 'PARTNER') {
+        partners = [currentUser];
+        riders = await prisma.rider.findMany({
+            where: { partnerId: currentUser.id },
+            include: { partner: true },
+            orderBy: { createdAt: 'desc' }
         });
     }
 

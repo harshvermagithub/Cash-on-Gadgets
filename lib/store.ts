@@ -11,6 +11,9 @@ export interface User {
     role: string;
     resetToken?: string | null;
     resetTokenExpiry?: Date | null;
+    pincodes?: string[];
+    cityId?: string | null;
+    managedCities?: any[];
 }
 
 export type Rider = PrismaRider;

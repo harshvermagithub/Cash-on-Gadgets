@@ -13,24 +13,32 @@ export default async function PartnersPage() {
     const session = await getSession();
     if (!session || !session.user) redirect('/login');
 
-    const currentUser = await prisma.user.findUnique({ where: { id: session.user.id } });
+    const currentUser: any = await prisma.user.findUnique({ 
+        where: { id: session.user.id },
+        include: { managedCities: true }
+    });
     if (!currentUser) redirect('/login');
 
     const isZonalHead = currentUser.role === 'ZONAL_HEAD';
+    const managedCityIds = isZonalHead ? (currentUser.managedCities || []).map((c: any) => c.id) : [];
 
     const partners = await prisma.user.findMany({
         where: {
             role: 'PARTNER',
-            ...(isZonalHead && currentUser.cityId ? { cityId: currentUser.cityId } : {})
+            ...(isZonalHead ? { cityId: { in: managedCityIds } } : {})
         },
         include: { city: true },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { name: 'asc' }
     });
 
-    const unassignedCities = await prisma.city.findMany({
+    const cities = await prisma.city.findMany({
+        include: { users: true }
+    });
+
+    const availableCities = await prisma.city.findMany({
         where: {
             isActive: true,
-            ...(isZonalHead && currentUser.cityId ? { id: currentUser.cityId } : {})
+            ...(isZonalHead ? { id: { in: managedCityIds } } : {})
         },
         orderBy: { name: 'asc' }
     });
@@ -60,10 +68,15 @@ export default async function PartnersPage() {
                             if (name && email && password) {
                                 const passwordHash = await bcrypt.hash(password, 10);
 
-                                // Security: Zonal heads can only assign to their own city
-                                const finalCityId = (currentUser.role === 'ZONAL_HEAD' && currentUser.cityId)
-                                    ? currentUser.cityId
+                                // Security: Zonal heads can only assign to cities they manage
+                                const finalCityId = isZonalHead
+                                    ? (managedCityIds.includes(cityId) ? cityId : null)
                                     : (cityId || null);
+
+                                if (isZonalHead && !finalCityId) {
+                                    // Could add error handling here
+                                    return;
+                                }
 
                                 await prisma.user.create({
                                     data: {
@@ -81,25 +94,25 @@ export default async function PartnersPage() {
                         }} className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium mb-1">Full Name</label>
-                                <input name="name" required className="w-full h-10 px-3 rounded-md border text-sm outline-none focus:border-primary" />
+                                <input name="name" required className="w-full h-10 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background" />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium mb-1">Email Address</label>
-                                <input name="email" type="email" required className="w-full h-10 px-3 rounded-md border text-sm outline-none focus:border-primary" />
+                                <input name="email" type="email" required className="w-full h-10 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background" />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium mb-1">Phone Number</label>
-                                <input name="phone" required className="w-full h-10 px-3 rounded-md border text-sm outline-none focus:border-primary" />
+                                <input name="phone" required className="w-full h-10 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background" />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium mb-1">Temporary Password</label>
-                                <input name="password" type="password" required className="w-full h-10 px-3 rounded-md border text-sm outline-none focus:border-primary" />
+                                <input name="password" type="password" required className="w-full h-10 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background" />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium mb-1">Assign City</label>
                                 <select name="cityId" required className="w-full h-10 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background">
-                                    <option value="">Select an active city...</option>
-                                    {unassignedCities.map(city => (
+                                    <option value="">Select a city...</option>
+                                    {availableCities.map(city => (
                                         <option key={city.id} value={city.id}>{city.name}</option>
                                     ))}
                                 </select>
@@ -141,9 +154,9 @@ export default async function PartnersPage() {
                                     const pincodesStr = data.get('pincodes') as string;
                                     const pincodes = pincodesStr ? pincodesStr.split(',').map((p: string) => p.trim()).filter(Boolean) : [];
 
-                                    // Security check
-                                    const finalCityId = (currentUser.role === 'ZONAL_HEAD' && currentUser.cityId)
-                                        ? currentUser.cityId
+                                    // Security check: Zonal heads can only assign to cities they manage
+                                    const finalCityId = isZonalHead
+                                        ? (managedCityIds.includes(newCityId) ? newCityId : p.cityId)
                                         : (newCityId === 'none' ? null : newCityId);
 
                                     await prisma.user.update({
@@ -164,7 +177,7 @@ export default async function PartnersPage() {
                                             className="w-full h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background shrink-0"
                                         >
                                             <option value="none" className="italic text-muted-foreground">Unassigned</option>
-                                            {unassignedCities.map(city => (
+                                            {availableCities.map(city => (
                                                 <option key={city.id} value={city.id}>{city.name}</option>
                                             ))}
                                         </select>

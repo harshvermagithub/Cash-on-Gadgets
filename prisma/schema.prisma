@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,118 +12,105 @@ model User {
   id               String    @id @default(cuid())
   name             String
   email            String    @unique
-  phone            String?   @unique
   passwordHash     String
-  role             String    @default("USER") // 'USER', 'ADMIN', 'SUPER_ADMIN', 'ZONAL_HEAD', 'PARTNER'
-  resetToken       String?
-  resetTokenExpiry DateTime?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
-
-  pincodes String[] @default([]) // For Partners
-
-  cityId String?
-  city   City?   @relation(fields: [cityId], references: [id])
-
-  orders Order[]
-  riders Rider[] // Field Executives working under a Partner
+  role             String    @default("USER")
+  phone            String?   @unique
+  resetToken       String?
+  resetTokenExpiry DateTime?
+  cityId           String?
+  pincodes         String[]  @default([])
+  managedCities    City[]    @relation("ZonalManager")
+  orders           Order[]
+  riders           Rider[]
+  city             City?     @relation("UserCity", fields: [cityId], references: [id])
 }
 
 model City {
   id        String   @id @default(cuid())
   name      String   @unique
   isActive  Boolean  @default(true)
-  users     User[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  managerId String?
+  manager   User?    @relation("ZonalManager", fields: [managerId], references: [id])
+  users     User[]   @relation("UserCity")
 }
 
 model Rider {
-  id       String  @id @default(cuid())
-  name     String
-  phone    String
-  status   String  @default("available") // available, busy, offline
-  password String? // Optional for now as per interface
-
-  partnerId String?
-  partner   User?   @relation(fields: [partnerId], references: [id])
-
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  status    String   @default("available")
+  password  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  orders Order[]
+  partnerId String?
+  orders    Order[]
+  partner   User?    @relation(fields: [partnerId], references: [id])
 }
 
 model Order {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  riderId String?
-  rider   Rider?  @relation(fields: [riderId], references: [id])
-
-  device      String // Combined "Name (Variant)" string stored currently
-  orderNumber Int    @unique @default(autoincrement())
-  price       Int
-  status      String @default("Pending Pickup")
-
-  address     String
-  pincode     String?
-  locationLat Float?
-  locationLng Float?
-
-  answers String? // Stored as JSON string
-  riderAnswers String? // Rider's verification of the answers
-  verificationImages String[] @default([]) // Device pictures uploaded by Rider
-  offeredPrice Int? // Re-calculated / Partner-offered price
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                 String   @id @default(cuid())
+  userId             String
+  riderId            String?
+  device             String
+  price              Int
+  status             String   @default("Pending Pickup")
+  address            String
+  locationLat        Float?
+  locationLng        Float?
+  answers            String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  orderNumber        Int      @unique @default(autoincrement())
+  pincode            String?
+  offeredPrice       Int?
+  riderAnswers       String?
+  verificationImages String[] @default([])
+  rider              Rider?   @relation(fields: [riderId], references: [id])
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Brand {
-  id         String   @id // specific ID (e.g. 'apple')
+  id         String   @id
   name       String
   logo       String
   categories String[] @default([])
   priority   Int      @default(100)
-
-  models Model[]
+  models     Model[]
 }
 
 model Model {
-  id       String @id @default(cuid())
+  id       String    @id @default(cuid())
   brandId  String
-  brand    Brand  @relation(fields: [brandId], references: [id], onDelete: Cascade)
   name     String
   img      String
-  category String @default("smartphone") // smartphone, tablet, smartwatch, laptop, console, tv
-  priority Int    @default(100)
-
+  category String    @default("smartphone")
+  priority Int       @default(100)
+  brand    Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
   variants Variant[]
 }
 
 model Variant {
   id        String @id @default(cuid())
   modelId   String
-  model     Model  @relation(fields: [modelId], references: [id], onDelete: Cascade)
   name      String
   basePrice Int
+  model     Model  @relation(fields: [modelId], references: [id], onDelete: Cascade)
 }
 
 model EvaluationRule {
-  id       String @id @default(cuid())
-  category String // e.g. "smartphone"
-
-  questionKey String // e.g. "screen_defects" or "calls"
-  answerKey   String // e.g. "loose_screen" or "false"
-  label       String // e.g. "Loose Screen"
-
-  deductionAmount  Int   @default(0) // Flat amount
-  deductionPercent Float @default(0) // Percentage (0-100)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String   @id @default(cuid())
+  category         String
+  questionKey      String
+  answerKey        String
+  label            String
+  deductionAmount  Int      @default(0)
+  deductionPercent Float    @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@unique([category, questionKey, answerKey])
 }
@@ -140,9 +124,8 @@ model EmailMessage {
   bodyHtml   String?
   receivedAt DateTime @default(now())
   isOutbound Boolean  @default(false)
-  status     String   @default("delivered") // e.g. "delivered", "sent", "failed"
-  threadId   String? // Can be used to group email replies
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  status     String   @default("delivered")
+  threadId   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

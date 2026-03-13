@@ -10,6 +10,7 @@ export interface SessionUser {
     email: string;
     name: string;
     role: string;
+    cityId?: string | null;
 }
 
 export const ADMIN_EMAILS = ['admin@fonzkart.com', 'mobilesouls.in@gmail.com'];

@@ -13,9 +13,9 @@ export default async function OrdersPage(props: { searchParams?: Promise<{ rider
     const session = await getSession();
     if (!session || !session.user) redirect('/login');
 
-    const currentUser = await prisma.user.findUnique({
+    const currentUser: any = await prisma.user.findUnique({
         where: { id: session.user.id },
-        include: { city: true }
+        include: { managedCities: true }
     });
 
     if (!currentUser) redirect('/login');
@@ -34,22 +34,27 @@ export default async function OrdersPage(props: { searchParams?: Promise<{ rider
         orders = orders.filter(o => o.pincode && allowedPincodes.includes(o.pincode));
         riders = riders.filter(r => r.partnerId === currentUser.id);
     } else if (currentUser.role === 'ZONAL_HEAD') {
-        if (currentUser.cityId && currentUser.city) {
-            const cityName = currentUser.city.name.toLowerCase();
-            // Find all Pincodes managed by Partners in this Zonal Head's city
+        if (currentUser.managedCities.length > 0) {
+            const managedCityIds = currentUser.managedCities.map((c: any) => c.id);
+            const managedCityNames = currentUser.managedCities.map((c: any) => c.name.toLowerCase());
+
+            // Find all Pincodes managed by Partners in this Zonal Head's cities
             const cityPartners = await prisma.user.findMany({
-                where: { role: 'PARTNER', cityId: currentUser.cityId }
+                where: { 
+                    role: 'PARTNER', 
+                    cityId: { in: managedCityIds } 
+                }
             });
             const allowedPincodes = cityPartners.flatMap(p => p.pincodes);
             const partnerIds = cityPartners.map(p => p.id);
 
             orders = orders.filter(o =>
                 (o.pincode && allowedPincodes.includes(o.pincode)) ||
-                (o.address && o.address.toLowerCase().includes(cityName))
+                (o.address && managedCityNames.some((name: any) => o.address?.toLowerCase().includes(name)))
             );
             riders = riders.filter(r => r.partnerId && partnerIds.includes(r.partnerId));
         } else {
-            // If they are not assigned to a city, they see no orders
+            // If they are not assigned to any city, they see no orders
             orders = [];
             riders = [];
         }
@@ -65,7 +70,11 @@ export default async function OrdersPage(props: { searchParams?: Promise<{ rider
             <h1 className="text-3xl font-bold">
                 {filterRiderId ? `Orders for Field Executive` : `Manage Orders`}
             </h1>
-            {currentUser.role === 'ZONAL_HEAD' && <p className="text-muted-foreground text-sm font-medium text-primary">Territory Overview: {currentUser.city?.name || 'Unassigned'}</p>}
+            {currentUser.role === 'ZONAL_HEAD' && (
+                <p className="text-muted-foreground text-sm font-medium text-primary">
+                    Territory Overview: {currentUser.managedCities.map((c: any) => c.name).join(', ') || 'Unassigned'}
+                </p>
+            )}
             {currentUser.role === 'PARTNER' && <p className="text-muted-foreground text-sm font-medium text-emerald-600">Assigned Pincodes: {currentUser.pincodes?.join(', ') || 'None'}</p>}
             <p className="text-muted-foreground">View incoming sell requests and assign field executives for pickup.</p>
             <OrderManager initialOrders={orders} riders={riders} />

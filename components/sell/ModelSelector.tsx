@@ -386,6 +386,46 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                     if (m) score += parseInt(m[1]);
                     return score;
                 }
+
+                // Samsung Galaxy S series score
+                const sMatch = lower.match(/(?:\s|^)s(\d+)/i) || lower.match(/galaxy\s+s(\d+)/i);
+                if (sMatch && !lower.includes('tab')) {
+                    score = 1600 + (parseInt(sMatch[1]) * 10);
+                    if (lower.includes('ultra')) score += 5;
+                    else if (lower.includes('plus')) score += 4;
+                    else if (lower.includes('fe')) score -= 2;
+                    return score;
+                }
+
+                // Samsung Galaxy A series score
+                const aMatch = lower.match(/(?:\s|^)a(\d+)/i) || lower.match(/galaxy\s+a(\d+)/i);
+                if (aMatch && !lower.includes('tab')) {
+                    score = 1300 + (parseInt(aMatch[1]) * 10);
+                    return score;
+                }
+
+                // Pixel score
+                const pixelMatch = lower.match(/pixel\s+(\d+)/);
+                if (pixelMatch) {
+                    score = 1500 + (parseInt(pixelMatch[1]) * 10);
+                    if (lower.includes('pro')) score += 5;
+                    return score;
+                }
+
+                // OnePlus score
+                const oneplusMatch = lower.match(/oneplus\s+(\d+)/);
+                if (oneplusMatch) {
+                    score = 1400 + (parseInt(oneplusMatch[1]) * 10);
+                    if (lower.includes('pro')) score += 5;
+                    return score;
+                }
+
+                // General Year-based score (e.g. "Model 2026")
+                const yearMatch = lower.match(/(202[456])/);
+                if (yearMatch) {
+                    score = 1000 + (parseInt(yearMatch[1]) - 2020) * 100;
+                    return score;
+                }
                 
                 return score;
             };
