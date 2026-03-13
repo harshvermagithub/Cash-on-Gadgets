@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { assignRider } from '@/actions/admin';
 import { Rider, Order } from '@/lib/store'; // Need to export Order from store/lib
-import { Calendar, MapPin, Smartphone, User, CheckCircle2, Eye, X, Download, Phone, Mail, AlertTriangle } from 'lucide-react';
+import { Calendar, MapPin, Smartphone, User, CheckCircle2, Eye, X, Download, Phone, Mail, AlertTriangle, Trash2, CheckSquare, Square } from 'lucide-react';
 import OrderDetails from '@/components/OrderDetails';
 import { useRouter } from 'next/navigation';
 
@@ -22,6 +22,8 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
     const [assigningId, setAssigningId] = useState<string | null>(null);
     const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
     const [activeTab, setActiveTab] = useState<'to_be_assigned' | 'pending_pickup' | 'completed' | 'failed'>('to_be_assigned');
+    const [selectedOrderIds, setSelectedOrderIds] = useState<string[]>([]);
+    const [isBulkProcessing, setIsBulkProcessing] = useState(false);
 
     const handleAssign = async (orderId: string, riderId: string) => {
         if (!riderId) return;
@@ -53,6 +55,62 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
             : activeTab === 'completed'
                 ? completedOrders
                 : failedOrders;
+
+    const handleBulkFail = async () => {
+        if (selectedOrderIds.length === 0) return;
+        const reason = window.prompt(`Mark ${selectedOrderIds.length} orders as FAILED. Reason:`, "Bulk failure");
+        if (reason === null) return;
+        if (!confirm(`Are you sure you want to fail ${selectedOrderIds.length} orders?`)) return;
+
+        setIsBulkProcessing(true);
+        try {
+            await fetch('/api/admin/orders/bulk', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'bulk_fail', ids: selectedOrderIds, reason })
+            });
+            setSelectedOrderIds([]);
+            window.location.reload();
+        } catch {
+            alert('Failed to process bulk fail');
+        } finally {
+            setIsBulkProcessing(false);
+        }
+    };
+
+    const handleBulkDelete = async () => {
+        if (selectedOrderIds.length === 0) return;
+        if (!confirm(`CAUTION: This will PERMANENTLY delete ${selectedOrderIds.length} orders. Proceed?`)) return;
+
+        setIsBulkProcessing(true);
+        try {
+            await fetch('/api/admin/orders/bulk', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'bulk_delete', ids: selectedOrderIds })
+            });
+            setSelectedOrderIds([]);
+            window.location.reload();
+        } catch {
+            alert('Failed to process bulk delete');
+        } finally {
+            setIsBulkProcessing(false);
+        }
+    };
+
+    const toggleSelectAll = () => {
+        if (selectedOrderIds.length === displayedOrders.length) {
+            setSelectedOrderIds([]);
+        } else {
+            setSelectedOrderIds(displayedOrders.map(o => o.id));
+        }
+    };
+
+    const toggleSelectOrder = (id: string) => {
+        setSelectedOrderIds(prev =>
+            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+        );
+    };
 
     const handleExport = () => {
         const headers = ["Order #", "Date", "Device", "Price", "Status", "Contact", "Address", "Rider Assigned"];
@@ -116,13 +174,58 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                     </button>
                 </div>
 
-                <button
-                    onClick={handleExport}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors shadow-sm shrink-0"
-                >
-                    <Download className="w-4 h-4" /> Export CSV
-                </button>
+                <div className="flex items-center gap-2">
+                    {selectedOrderIds.length > 0 && (
+                        <div className="flex items-center gap-2 bg-muted p-1 rounded-lg border mr-2 animate-in fade-in slide-in-from-right-4">
+                            <span className="text-xs font-bold px-2 text-muted-foreground">{selectedOrderIds.length} selected</span>
+                            <button
+                                onClick={handleBulkFail}
+                                disabled={isBulkProcessing}
+                                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-100 text-red-700 rounded-md text-xs font-bold hover:bg-red-200 transition-colors disabled:opacity-50"
+                            >
+                                <AlertTriangle className="w-3.5 h-3.5" /> Fail Selected
+                            </button>
+                            {activeTab === 'failed' && (
+                                <button
+                                    onClick={handleBulkDelete}
+                                    disabled={isBulkProcessing}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 text-white rounded-md text-xs font-bold hover:bg-zinc-800 transition-colors disabled:opacity-50"
+                                >
+                                    <Trash2 className="w-3.5 h-3.5" /> Delete Permanently
+                                </button>
+                            )}
+                            <button
+                                onClick={() => setSelectedOrderIds([])}
+                                className="p-1.5 hover:bg-background rounded-md text-muted-foreground transition-colors"
+                            >
+                                <X className="w-4 h-4" />
+                            </button>
+                        </div>
+                    )}
+                    <button
+                        onClick={handleExport}
+                        className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors shadow-sm shrink-0"
+                    >
+                        <Download className="w-4 h-4" /> Export CSV
+                    </button>
+                </div>
             </div>
+
+            {displayedOrders.length > 0 && (
+                <div className="flex items-center gap-2 px-2 pb-2">
+                    <button
+                        onClick={toggleSelectAll}
+                        className="flex items-center gap-2 text-xs font-bold text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                        {selectedOrderIds.length === displayedOrders.length ? (
+                            <CheckSquare className="w-4 h-4 text-primary" />
+                        ) : (
+                            <Square className="w-4 h-4" />
+                        )}
+                        {selectedOrderIds.length === displayedOrders.length ? "Deselect All" : "Select All Current"}
+                    </button>
+                </div>
+            )}
             {displayedOrders.length === 0 ? (
                 <div className="text-center py-10 border rounded-xl bg-card text-muted-foreground">
                     No orders found in this category.
@@ -130,6 +233,7 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
             ) : (
                 <div className="grid gap-4">
                     {displayedOrders.map((order) => {
+                        const isSelected = selectedOrderIds.includes(order.id);
                         const assignedRider = riders.find(r => r.id === order.riderId);
                         const answers = (typeof order.answers === 'string')
                             ? JSON.parse(order.answers)
@@ -140,6 +244,15 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                             <div key={order.id} className="bg-card border rounded-xl p-6 flex flex-col lg:flex-row gap-6 justify-between items-start lg:items-center">
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-2 mb-1">
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                toggleSelectOrder(order.id);
+                                            }}
+                                            className={`transition-all ${isSelected ? 'text-primary scale-110' : 'text-muted-foreground opacity-50 hover:opacity-100'}`}
+                                        >
+                                            {isSelected ? <CheckSquare className="w-5 h-5 shadow-sm" /> : <Square className="w-5 h-5" />}
+                                        </button>
                                         <span className={`px-2 py-0.5 rounded-full text-xs font-bold uppercase ${order.status === 'completed' ? 'bg-green-100 text-green-700' :
                                             order.status === 'failed' ? 'bg-red-100 text-red-700' :
                                                 order.status === 'assigned' ? 'bg-blue-100 text-blue-700' :
@@ -392,6 +505,24 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                                 </div>
                                             </div>
                                         </div>
+                                    )}
+
+                                    {activeTab === 'failed' && (
+                                        <button
+                                            onClick={async () => {
+                                                if (confirm("Permanently delete this failed order?")) {
+                                                    await fetch('/api/admin/orders/bulk', {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify({ action: 'bulk_delete', ids: [order.id] })
+                                                    });
+                                                    window.location.reload();
+                                                }
+                                            }}
+                                            className="w-full mt-2 py-2 border border-zinc-200 text-zinc-600 hover:bg-zinc-50 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
+                                        >
+                                            <Trash2 className="w-3.5 h-3.5" /> Delete Permanently
+                                        </button>
                                     )}
 
                                 </div>
