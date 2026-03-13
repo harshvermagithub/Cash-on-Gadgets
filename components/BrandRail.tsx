@@ -76,7 +76,7 @@ export function BrandRail({ initialBrands }: { initialBrands?: Brand[] }) {
                             <div className="w-full aspect-square max-w-[90px] rounded-2xl bg-white border-2 border-slate-100 flex items-center justify-center shadow-sm group-hover:border-green-500 transition-colors p-3">
                                 <div className="relative w-full h-full">
                                     {brand.logo ? (
-                                        <Image src={brand.logo} alt={brand.name} fill className="object-contain" />
+                                        <Image src={brand.logo} alt={brand.name} fill className="object-contain" unoptimized />
                                     ) : (
                                         <Smartphone className="w-8 h-8 text-slate-400" />
                                     )}
@@ -114,7 +114,7 @@ export function BrandRail({ initialBrands }: { initialBrands?: Brand[] }) {
                                     <div className="flex items-center gap-4">
                                         <div className="w-16 h-16 relative p-1 bg-white border border-slate-100 rounded-xl flex items-center justify-center">
                                             {selectedBrand.logo ? (
-                                                <Image src={selectedBrand.logo} alt={selectedBrand.name} fill className="object-contain p-1" />
+                                                <Image src={selectedBrand.logo} alt={selectedBrand.name} fill className="object-contain p-1" unoptimized />
                                             ) : (
                                                 <Smartphone className="w-8 h-8 text-slate-400" />
                                             )}

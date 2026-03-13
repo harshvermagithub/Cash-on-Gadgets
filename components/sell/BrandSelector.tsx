@@ -34,7 +34,7 @@ export default function BrandSelector({ brands, onSelect, onBack }: BrandSelecto
                     >
                         <div className={`relative mb-4 transition-all flex items-center justify-center ${brand.name === 'Apple' ? 'w-20 h-20 sm:w-28 sm:h-28' : 'w-24 h-24 sm:w-32 sm:h-32'}`}>
                             {brand.logo && (brand.logo.startsWith('/') || brand.logo.startsWith('http')) ? (
-                                <Image src={brand.logo} alt={brand.name} fill className="object-contain" />
+                                <Image src={brand.logo} alt={brand.name} fill className="object-contain" unoptimized />
                             ) : (
                                 <span className="text-3xl font-bold text-gray-400">{brand.name[0]}</span>
                             )}

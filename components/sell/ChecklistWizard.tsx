@@ -331,13 +331,25 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete, onBa
                             </div>
                         )}
 
+                        {/* Purchase Location Summary */}
+                        {(answers.purchase_location as string) && (
+                            <div className="space-y-2">
+                                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Purchase Location</p>
+                                <div className="text-sm font-medium text-primary flex items-center gap-2">
+                                    <Icons.MapPin className="w-4 h-4" />
+                                    {steps.find((s: any) => s.id === 'device_details')?.sections?.find((sec: any) => sec.id === 'purchase_location')?.options?.find((o: any) => o.id === answers.purchase_location)?.label as string}
+                                </div>
+                            </div>
+                        )}
+
                         {/* Warranty Summary */}
                         {(answers.warranty as string) && (
                             <div className="space-y-2">
                                 <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Warranty</p>
                                 <div className="text-sm font-medium text-primary flex items-center gap-2">
                                     <Icons.Clock className="w-4 h-4" />
-                                    {steps.find((s: any) => s.id === 'warranty')?.options?.find((o: any) => o.id === answers.warranty)?.label as string}
+                                    {steps.find((s: any) => s.id === 'device_details')?.sections?.find((sec: any) => sec.id === 'warranty')?.options?.find((o: any) => o.id === answers.warranty)?.label as string || 
+                                     steps.find((s: any) => s.id === 'warranty')?.options?.find((o: any) => o.id === answers.warranty)?.label as string}
                                 </div>
                             </div>
                         )}

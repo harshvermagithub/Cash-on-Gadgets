@@ -59,6 +59,7 @@ const ModelImage = ({ src, alt, priority = false, scale = 1 }: { src: string, al
             style={{ transform: `scale(${scale})` }}
             sizes="(max-width: 768px) 50vw, 25vw"
             onError={() => setError(true)}
+            unoptimized
         />
     );
 };

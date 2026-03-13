@@ -1,4 +1,4 @@
-import { AlertTriangle, Smartphone, FileText, Clock, Box } from 'lucide-react';
+import { AlertTriangle, Smartphone, FileText, Clock, Box, MapPin } from 'lucide-react';
 
 interface OrderDetailsProps {
     order: {
@@ -18,6 +18,7 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
     const sections = [
         { label: 'Physical Condition', value: answers.physical_condition, icon: <Smartphone className="w-4 h-4" /> },
         { label: 'Body Condition', value: answers.body_condition, icon: <Smartphone className="w-4 h-4" /> },
+        { label: 'Purchase Location', value: answers.purchase_location, icon: <MapPin className="w-4 h-4" /> },
         { label: 'Warranty Period', value: answers.warranty, icon: <Clock className="w-4 h-4" /> },
         { label: 'Original Bill', value: answers.bill, icon: <FileText className="w-4 h-4" /> },
         { label: 'Screen Type', value: answers.screen_type, icon: <Smartphone className="w-4 h-4" /> },

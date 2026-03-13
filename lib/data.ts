@@ -187,6 +187,15 @@ export const questionnaireSteps = {
             type: 'combined-step',
             sections: [
                 {
+                    id: 'purchase_location',
+                    title: 'Where was the device purchased?',
+                    type: 'single-select',
+                    options: [
+                        { id: 'india', label: 'Purchased in India', icon: 'MapPin' },
+                        { id: 'global', label: 'Purchased Globally', icon: 'Globe' }
+                    ]
+                },
+                {
                     id: 'accessories',
                     title: 'Do you have the following?',
                     type: 'multi-select',
@@ -270,6 +279,15 @@ export const questionnaireSteps = {
             type: 'combined-step',
             sections: [
                 {
+                    id: 'purchase_location',
+                    title: 'Where was the device purchased?',
+                    type: 'single-select',
+                    options: [
+                        { id: 'india', label: 'Purchased in India', icon: 'MapPin' },
+                        { id: 'global', label: 'Purchased Globally', icon: 'Globe' }
+                    ]
+                },
+                {
                     id: 'accessories',
                     title: 'Do you have the following?',
                     type: 'multi-select',
@@ -349,6 +367,15 @@ export const questionnaireSteps = {
             subtitle: 'Please confirm accessories and warranty',
             type: 'combined-step',
             sections: [
+                {
+                    id: 'purchase_location',
+                    title: 'Where was the device purchased?',
+                    type: 'single-select',
+                    options: [
+                        { id: 'india', label: 'Purchased in India', icon: 'MapPin' },
+                        { id: 'global', label: 'Purchased Globally', icon: 'Globe' }
+                    ]
+                },
                 {
                     id: 'accessories',
                     title: 'Do you have the following?',
@@ -498,6 +525,15 @@ export const questionnaireSteps = {
             subtitle: 'Please confirm what\'s included',
             type: 'combined-step',
             sections: [
+                {
+                    id: 'purchase_location',
+                    title: 'Where was the device purchased?',
+                    type: 'single-select',
+                    options: [
+                        { id: 'india', label: 'Purchased in India', icon: 'MapPin' },
+                        { id: 'global', label: 'Purchased Globally', icon: 'Globe' }
+                    ]
+                },
                 {
                     id: 'accessories',
                     title: 'Do you have the following?',

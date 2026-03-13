@@ -2,8 +2,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
-export async function GET() {
+export async function GET(req: Request) {
     try {
+        const { searchParams } = new URL(req.url);
+        const key = searchParams.get('key');
+        if (key !== process.env.INTERNAL_API_KEY && process.env.NODE_ENV === 'production') {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
         const brands = await prisma.brand.findMany();
         const deleted = [];
         const failed = [];

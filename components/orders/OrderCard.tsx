@@ -211,6 +211,16 @@ export default function OrderCard({ order }: OrderCardProps) {
                                         </div>
                                     )}
 
+                                    {/* Purchase Location */}
+                                    {answers.purchase_location && (
+                                        <div className="flex justify-between items-start gap-4 pb-3 border-b border-border">
+                                            <span className="text-muted-foreground">Purchase Location</span>
+                                            <span className="font-medium text-right text-foreground max-w-[50%] capitalize">
+                                                {String(answers.purchase_location).replace(/_/g, ' ')}
+                                            </span>
+                                        </div>
+                                    )}
+
                                     {/* Warranty Period */}
                                     {answers.warranty && (
                                         <div className="flex justify-between items-start gap-4">

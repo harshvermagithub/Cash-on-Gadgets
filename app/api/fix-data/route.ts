@@ -41,8 +41,15 @@ const IPHONE_DATA = [
     { name: 'iPhone 17 Pro Max', variants: [{ name: '256GB', price: 98000 }, { name: '512GB', price: 106000 }, { name: '1TB', price: 114000 }, { name: '2TB', price: 125000 }] },
 ];
 
-export async function GET() {
+export async function GET(req: Request) {
     try {
+        // Protect this heavy route from unauthorized calls
+        const { searchParams } = new URL(req.url);
+        const key = searchParams.get('key');
+        if (key !== process.env.INTERNAL_API_KEY && process.env.NODE_ENV === 'production') {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
         let log = '';
         const apple = await prisma.brand.findUnique({ where: { id: 'apple' } });
         if (!apple) {
