@@ -1,5 +1,5 @@
 import { db } from "@/lib/store";
-import { Layers, Smartphone, Tag, ShoppingCart, PlusCircle } from "lucide-react";
+import { Layers, Smartphone, Tag, ShoppingCart, PlusCircle, Monitor, Headphones, Gamepad2, Tv, Camera } from "lucide-react";
 import Link from 'next/link';
 
 export default async function AdminDashboard() {
@@ -62,12 +62,47 @@ export default async function AdminDashboard() {
                         </div>
                         <p className="text-sm text-muted-foreground">Manage brands, models, and pricing for tablets.</p>
                     </Link>
+                    <Link href="/admin/category/console" className="p-6 bg-card dark:bg-white/[0.03] dark:backdrop-blur-xl border border-border dark:border-white/10 rounded-xl hover:bg-muted/50 dark:hover:bg-white/[0.06] hover:shadow-lg dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)] transition-all duration-300 flex flex-col gap-2">
+                        <div className="flex items-center gap-2 font-semibold">
+                            <Gamepad2 className="w-5 h-5 text-red-600" />
+                            Manage Consoles
+                        </div>
+                        <p className="text-sm text-muted-foreground">Manage brands, models, and pricing for gaming consoles.</p>
+                    </Link>
+                    <Link href="/admin/category/tv" className="p-6 bg-card dark:bg-white/[0.03] dark:backdrop-blur-xl border border-border dark:border-white/10 rounded-xl hover:bg-muted/50 dark:hover:bg-white/[0.06] hover:shadow-lg dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)] transition-all duration-300 flex flex-col gap-2">
+                        <div className="flex items-center gap-2 font-semibold">
+                            <Tv className="w-5 h-5 text-emerald-600" />
+                            Manage Smart TVs
+                        </div>
+                        <p className="text-sm text-muted-foreground">Manage brands, models, and pricing for televisions.</p>
+                    </Link>
+                    <Link href="/admin/category/camera" className="p-6 bg-card dark:bg-white/[0.03] dark:backdrop-blur-xl border border-border dark:border-white/10 rounded-xl hover:bg-muted/50 dark:hover:bg-white/[0.06] hover:shadow-lg dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)] transition-all duration-300 flex flex-col gap-2">
+                        <div className="flex items-center gap-2 font-semibold">
+                            <Camera className="w-5 h-5 text-yellow-600" />
+                            Manage Cameras
+                        </div>
+                        <p className="text-sm text-muted-foreground">Manage brands, models, and pricing for DSLR cameras.</p>
+                    </Link>
                     <Link href="/admin/category/laptop" className="p-6 bg-card dark:bg-white/[0.03] dark:backdrop-blur-xl border border-border dark:border-white/10 rounded-xl hover:bg-muted/50 dark:hover:bg-white/[0.06] hover:shadow-lg dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)] transition-all duration-300 flex flex-col gap-2">
                         <div className="flex items-center gap-2 font-semibold">
                             <PlusCircle className="w-5 h-5 text-purple-600" />
                             Manage Laptops
                         </div>
                         <p className="text-sm text-muted-foreground">Manage brands, models, and pricing for laptops.</p>
+                    </Link>
+                    <Link href="/admin/category/desktop" className="p-6 bg-card dark:bg-white/[0.03] dark:backdrop-blur-xl border border-border dark:border-white/10 rounded-xl hover:bg-muted/50 dark:hover:bg-white/[0.06] hover:shadow-lg dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)] transition-all duration-300 flex flex-col gap-2">
+                        <div className="flex items-center gap-2 font-semibold">
+                            <Monitor className="w-5 h-5 text-cyan-600" />
+                            Manage Desktops
+                        </div>
+                        <p className="text-sm text-muted-foreground">Manage brands, models, and pricing for desktop PCs.</p>
+                    </Link>
+                    <Link href="/admin/category/earbuds" className="p-6 bg-card dark:bg-white/[0.03] dark:backdrop-blur-xl border border-border dark:border-white/10 rounded-xl hover:bg-muted/50 dark:hover:bg-white/[0.06] hover:shadow-lg dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)] transition-all duration-300 flex flex-col gap-2">
+                        <div className="flex items-center gap-2 font-semibold">
+                            <Headphones className="w-5 h-5 text-fuchsia-600" />
+                            Manage Earbuds
+                        </div>
+                        <p className="text-sm text-muted-foreground">Manage brands, models, and pricing for wireless earbuds.</p>
                     </Link>
                     <Link href="/admin/riders" className="p-6 bg-card dark:bg-white/[0.03] dark:backdrop-blur-xl border border-border dark:border-white/10 rounded-xl hover:bg-muted/50 dark:hover:bg-white/[0.06] hover:shadow-lg dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)] transition-all duration-300 flex flex-col gap-2">
                         <div className="flex items-center gap-2 font-semibold">
@@ -87,5 +122,4 @@ export default async function AdminDashboard() {
             </div>
         </div>
     );
-
 }

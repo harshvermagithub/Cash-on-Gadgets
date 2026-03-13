@@ -22,7 +22,9 @@ import {
     Building2,
     ChevronRight,
     ChevronLeft,
-    Camera
+    Camera,
+    Monitor,
+    Headphones
 } from 'lucide-react';
 
 const CATEGORIES = [
@@ -30,6 +32,8 @@ const CATEGORIES = [
     { id: 'tablet', label: 'Tablets', icon: Tablet },
     { id: 'watch', label: 'Smartwatches', icon: Watch },
     { id: 'laptop', label: 'Laptops', icon: Laptop },
+    { id: 'desktop', label: 'Desktops', icon: Monitor },
+    { id: 'earbuds', label: 'Earbuds', icon: Headphones },
     { id: 'console', label: 'Consoles', icon: Gamepad2 },
     { id: 'tv', label: 'Smart TV', icon: Tv },
     { id: 'camera', label: 'Camera', icon: Camera },

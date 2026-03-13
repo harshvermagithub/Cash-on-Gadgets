@@ -107,6 +107,17 @@ export const variantSets = {
         { id: '50', name: '50 inch', basePrice: 15000 },
         { id: '55', name: '55 inch', basePrice: 20000 },
         { id: '65', name: '65 inch', basePrice: 30000 },
+    ],
+    'desktop': [
+        { id: 'i3-8-500', name: 'Core i3 / 8GB / 500GB', basePrice: 8000 },
+        { id: 'i5-16-1tb', name: 'Core i5 / 16GB / 1TB', basePrice: 15000 },
+        { id: 'i7-32-2tb', name: 'Core i7 / 32GB / 2TB', basePrice: 25000 },
+        { id: 'mac-mini', name: 'Mac Mini (Base)', basePrice: 20000 },
+        { id: 'imac', name: 'iMac 24"', basePrice: 40000 },
+    ],
+    'earbuds': [
+        { id: 'base', name: 'Standard Version', basePrice: 2000 },
+        { id: 'pro', name: 'Pro / Noise Cancelling', basePrice: 5000 },
     ]
 };
 
@@ -511,6 +522,83 @@ export const questionnaireSteps = {
                         { id: 'no', label: 'No Warranty', description: 'Above 11 months or expired', icon: 'XCircle' },
                     ]
                 }
+            ]
+        }
+    ],
+    'desktop': [
+        {
+            id: 'core_functionality',
+            title: 'Desktop Check',
+            subtitle: 'Functionality & Performance',
+            questions: [
+                { id: 'power', text: 'Does it power on & boot?', subtext: '', type: 'boolean' },
+                { id: 'display_output', text: 'Video output working?', subtext: 'HDMI/DP ports functioning.', type: 'boolean' },
+                { id: 'ports', text: 'All USB ports working?', subtext: '', type: 'boolean' }
+            ]
+        },
+        {
+            id: 'physical_condition',
+            title: 'Physical Condition',
+            subtitle: 'Cabin / Body health',
+            type: 'single-select',
+            options: [
+                { id: 'flawless', label: 'Flawless', description: 'Like new cabinet', icon: 'Sparkles' },
+                { id: 'good', label: 'Good', description: 'Minor scratches', icon: 'Smile' },
+                { id: 'average', label: 'Average', description: 'Dents or major wear', icon: 'MinusCircle' },
+                { id: 'below_average', label: 'Damaged', description: 'Cabinet broken or missing panels', icon: 'AlertTriangle' },
+            ]
+        },
+        {
+            id: 'device_details',
+            title: 'Accessories',
+            subtitle: 'Cables & Peripherals',
+            type: 'combined-step',
+            sections: [
+                {
+                    id: 'accessories',
+                    title: 'Included Items',
+                    type: 'multi-select',
+                    options: [
+                        { id: 'power_cable', label: 'Power Cable', icon: 'Plug' },
+                        { id: 'keyboard_mouse', label: 'Keyboard & Mouse', icon: 'Keyboard' },
+                        { id: 'bill', label: 'Original Bill', icon: 'FileText' },
+                    ]
+                }
+            ]
+        }
+    ],
+    'earbuds': [
+        {
+            id: 'core_functionality',
+            title: 'Earbuds Check',
+            subtitle: 'Sound & Battery',
+            questions: [
+                { id: 'power', text: 'Do both sides work?', subtext: 'Left and Right audio clear.', type: 'boolean' },
+                { id: 'charging', text: 'Does case charge correctly?', subtext: '', type: 'boolean' },
+                { id: 'anc', text: 'Is ANC/Transparency working?', subtext: 'If applicable.', type: 'boolean' }
+            ]
+        },
+        {
+            id: 'physical_condition',
+            title: 'Physical Condition',
+            subtitle: 'Case & Buds health',
+            type: 'single-select',
+            options: [
+                { id: 'flawless', label: 'Flawless', description: 'No scratches', icon: 'Sparkles' },
+                { id: 'good', label: 'Good', description: 'Minor scratches', icon: 'Smile' },
+                { id: 'average', label: 'Average', description: 'Visible dents/yellowing', icon: 'MinusCircle' },
+                { id: 'damaged', label: 'Damaged', description: 'Buds or Case cracked', icon: 'AlertTriangle' },
+            ]
+        },
+        {
+            id: 'accessories',
+            title: 'What\'s included?',
+            subtitle: 'Original items',
+            type: 'multi-select',
+            options: [
+                { id: 'box', label: 'Original Box', icon: 'Box' },
+                { id: 'bill', label: 'Original Bill', icon: 'FileText' },
+                { id: 'charging_cable', label: 'Original Cable', icon: 'Plug' },
             ]
         }
     ]

@@ -31,6 +31,8 @@ export default function ClientCategoryManager({ category, brands, models, varian
         'console': 'Gaming Consoles',
         'tv': 'Smart TVs',
         'camera': 'DSLR Cameras',
+        'desktop': 'Desktops',
+        'earbuds': 'Earbuds',
         'repair-device': 'Repair Devices'
     };
 
