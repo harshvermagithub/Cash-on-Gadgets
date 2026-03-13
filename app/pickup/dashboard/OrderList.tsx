@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { updateOrderStatus, submitVerification, logoutExecutive } from '@/actions/executive';
-import { MapPin, Phone, Calendar, CheckCircle2, Navigation, LogOut, Zap, Eye, X, Camera, AlertTriangle, Package } from 'lucide-react';
+import { MapPin, Phone, Calendar, CheckCircle2, Navigation, LogOut, Zap, Eye, X, Camera, AlertTriangle, Package, User, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Order } from '@/lib/store';
 import OrderDetails from '@/components/OrderDetails';
@@ -18,6 +18,7 @@ interface OrderAnswers {
     scheduledDate?: string;
     scheduledSlot?: string;
     adminRejectionLog?: Array<{ date: string; reason: string }>;
+    phone?: string;
 }
 
 export default function OrderList({ orders, executiveName }: { orders: Order[], executiveName: string }) {
@@ -150,16 +151,48 @@ export default function OrderList({ orders, executiveName }: { orders: Order[], 
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                                        <div className="bg-muted/10 border p-3 rounded-lg flex items-center gap-2 overflow-hidden text-sm">
-                                            <CheckCircle2 className={`w-4 h-4 shrink-0 ${order.status === 'completed' ? 'text-green-500' : 'text-muted-foreground'}`} />
-                                            <span className="truncate text-muted-foreground font-medium capitalize">
-                                                {order.status === 'pending_verification' ? 'Awaiting Approval' : order.status}
-                                            </span>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div className="bg-muted/30 p-4 rounded-xl border border-border/50">
+                                            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2 flex items-center gap-1">
+                                                <User className="w-3 h-3" /> Customer Information
+                                            </div>
+                                            <div className="space-y-2">
+                                                <p className="text-sm font-bold text-foreground">
+                                                    {order.user?.name || "No name provided"}
+                                                </p>
+                                                
+                                                {/* Phone FIRST */}
+                                                {(answersObj.phone || order.user?.phone) && (
+                                                    <div className="flex items-center gap-2 text-sm text-foreground">
+                                                        <Phone className="w-4 h-4 text-green-600" />
+                                                        <span className="font-bold">+91 {answersObj.phone || order.user?.phone}</span>
+                                                    </div>
+                                                )}
+
+                                                {/* Gmail SECOND */}
+                                                {order.user?.email && (
+                                                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                                        <Zap className="w-3 h-3 text-blue-500" />
+                                                        <span className="truncate">{order.user.email}</span>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
-                                        <a href="#" className="w-full flex items-center justify-center gap-2 py-2.5 bg-background border rounded-lg hover:bg-accent font-medium transition-colors">
-                                            <Phone className="w-4 h-4" /> Contact Customer
-                                        </a>
+
+                                        <div className="flex flex-col gap-3">
+                                            <div className="bg-muted/10 border p-3 rounded-lg flex items-center gap-2 overflow-hidden text-sm h-fit">
+                                                <CheckCircle2 className={`w-4 h-4 shrink-0 ${order.status === 'completed' ? 'text-green-500' : 'text-muted-foreground'}`} />
+                                                <span className="truncate text-muted-foreground font-medium capitalize">
+                                                    {order.status === 'pending_verification' ? 'Awaiting Approval' : order.status}
+                                                </span>
+                                            </div>
+                                            <a 
+                                                href={`tel:+91${answersObj.phone || order.user?.phone}`}
+                                                className="w-full flex items-center justify-center gap-2 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 font-bold transition-all shadow-sm"
+                                            >
+                                                <Phone className="w-4 h-4" /> Call Customer
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
 

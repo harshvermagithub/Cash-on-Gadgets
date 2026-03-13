@@ -192,6 +192,16 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                                         <User className="w-4 h-4 text-primary" />
                                                         <span className="font-semibold">{order.user.name || "N/A"}</span>
                                                     </div>
+                                                    
+                                                    {/* Contact Number FIRST */}
+                                                    {(phone || order.user.phone) && (
+                                                        <div className="flex items-center gap-2 text-sm text-foreground">
+                                                            <Phone className="w-4 h-4 text-primary" />
+                                                            <span className="font-bold tracking-wide">+91 {phone || order.user.phone}</span>
+                                                        </div>
+                                                    )}
+
+                                                    {/* Email SECOND */}
                                                     {order.user.email && (
                                                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                                             <Mail className="w-4 h-4 text-primary" />
@@ -199,12 +209,6 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                                         </div>
                                                     )}
                                                 </>
-                                            )}
-                                            {phone && (
-                                                <div className="flex items-center gap-2 text-sm text-foreground">
-                                                    <Phone className="w-4 h-4 text-primary" />
-                                                    <span className="font-bold tracking-wide">+91 {phone}</span>
-                                                </div>
                                             )}
                                             {(!order.user && !phone) && (
                                                 <div className="text-sm text-muted-foreground italic">No details available</div>

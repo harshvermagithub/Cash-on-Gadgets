@@ -116,6 +116,12 @@ export default function OrderCard({ order }: OrderCardProps) {
                                             <span>Contact Number:</span>
                                             <span className="font-medium text-foreground">+91 {phone}</span>
                                         </div>
+                                        {order.user?.email && (
+                                            <div className="flex justify-between">
+                                                <span>Email ID:</span>
+                                                <span className="font-medium text-foreground">{order.user.email}</span>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 

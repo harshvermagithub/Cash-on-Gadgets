@@ -1,10 +1,15 @@
-import { AlertTriangle, Smartphone, FileText, Clock, Box, MapPin } from 'lucide-react';
+import { AlertTriangle, Smartphone, FileText, Clock, Box, MapPin, User, Phone, Mail } from 'lucide-react';
 
 interface OrderDetailsProps {
     order: {
         device: string;
         price: number;
         answers?: any;
+        user?: {
+            name?: string | null;
+            email?: string | null;
+            phone?: string | null;
+        } | null;
     };
 }
 
@@ -26,9 +31,39 @@ export default function OrderDetails({ order }: OrderDetailsProps) {
 
     return (
         <div className="space-y-6">
-            <div className="bg-muted/30 p-4 rounded-xl border">
-                <h3 className="font-bold text-lg mb-1">{order.device}</h3>
-                <div className="text-2xl font-mono font-bold text-green-600">₹{order.price.toLocaleString()}</div>
+            <div className="bg-muted/30 p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h3 className="font-bold text-lg mb-1">{order.device}</h3>
+                    <div className="text-2xl font-mono font-bold text-green-600">₹{order.price.toLocaleString()}</div>
+                </div>
+
+                {order.user && (
+                    <div className="bg-background/50 p-3 rounded-lg border border-border/50 min-w-[200px]">
+                        <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">Customer Details</div>
+                        <div className="space-y-1.5">
+                            <div className="flex items-center gap-2 text-sm font-bold">
+                                <User className="w-3.5 h-3.5 text-primary" />
+                                <span>{order.user.name || "N/A"}</span>
+                            </div>
+                            
+                            {/* Phone FIRST */}
+                            {(answers.phone || order.user.phone) && (
+                                <div className="flex items-center gap-2 text-sm text-foreground">
+                                    <Phone className="w-3.5 h-3.5 text-green-600" />
+                                    <span className="font-bold">+91 {answers.phone || order.user.phone}</span>
+                                </div>
+                            )}
+
+                            {/* Email SECOND */}
+                            {order.user.email && (
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                    <Mail className="w-3.5 h-3.5 text-blue-500" />
+                                    <span className="truncate">{order.user.email}</span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
