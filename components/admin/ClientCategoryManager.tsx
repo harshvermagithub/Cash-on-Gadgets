@@ -30,6 +30,7 @@ export default function ClientCategoryManager({ category, brands, models, varian
         'laptop': 'Laptops',
         'console': 'Gaming Consoles',
         'tv': 'Smart TVs',
+        'camera': 'DSLR Cameras',
         'repair-device': 'Repair Devices'
     };
 

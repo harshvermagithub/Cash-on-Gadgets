@@ -191,6 +191,20 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
             else if (name.includes('Pixel')) uniqueSeries.add('Pixel Series');
             else if (name.includes('Nord')) uniqueSeries.add('Nord Series');
             else if (name.includes('Reno')) uniqueSeries.add('Reno Series');
+
+            // Smartwatch - Apple Watch
+            else if (lowerName.includes('apple watch')) {
+                if (lowerName.includes('ultra')) uniqueSeries.add('Watch Ultra');
+                else if (lowerName.includes('se')) uniqueSeries.add('Watch SE');
+                else {
+                    const match = name.match(/Series\s+(\d+)/i);
+                    if (match) {
+                        uniqueSeries.add(`Series ${match[1]}`);
+                    } else {
+                        uniqueSeries.add('Watch Series');
+                    }
+                }
+            }
         });
 
         const list = Array.from(uniqueSeries).sort((a: string, b: string) => {
@@ -221,6 +235,18 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
 
             if (a === 'SE Series') return -1; // SE after X ? Or X after SE? usually X is better?
             if (b === 'SE Series') return 1;
+
+            // Apple Watch sorting
+            if (a.includes('Watch') || a.includes('Series')) {
+                if (a.includes('Ultra')) return -1;
+                if (b.includes('Ultra')) return 1;
+                if (a.includes('SE')) return 1; // SE at bottom of watch
+                if (b.includes('SE')) return -1;
+                
+                const numA = parseInt(a.replace(/[^0-9]/g, ''));
+                const numB = parseInt(b.replace(/[^0-9]/g, ''));
+                if (!isNaN(numA) && !isNaN(numB)) return numB - numA;
+            }
 
             return a.localeCompare(b);
         });
@@ -292,6 +318,15 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 if (activeSeries === 'Pixel Series') return m.name.includes('Pixel');
                 if (activeSeries === 'Nord Series') return m.name.includes('Nord');
                 if (activeSeries === 'Reno Series') return m.name.includes('Reno');
+
+                // Apple Watch filters
+                if (activeSeries === 'Watch Ultra') return name.includes('ultra');
+                if (activeSeries === 'Watch SE') return name.includes('se');
+                if (activeSeries.startsWith('Series ')) {
+                    const num = activeSeries.replace('Series ', '');
+                    return name.includes(`series ${num}`) && !name.includes('se');
+                }
+                if (activeSeries === 'Watch Series') return name.includes('apple watch') && !name.includes('series') && !name.includes('ultra') && !name.includes('se');
             }
 
             return true;
@@ -387,11 +422,18 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                                     scale={
                                         model.name.includes('iPhone')
                                             ? (EXCLUDED_MODELS.has(model.name) ? 1 : 1.35)
-                                            : 1.05 // Slight scale for others, but not 1.35
+                                            : (model.name.toLowerCase().includes('watch') ? 1.5 : 1.05)
                                     }
                                 />
                             </div>
-                            <span className="font-semibold text-sm line-clamp-2">{model.name}</span>
+                            <div className="flex flex-col gap-1">
+                                <span className="font-semibold text-sm line-clamp-2">{model.name.split('(')[0].trim()}</span>
+                                {model.name.includes('(') && (
+                                    <span className="text-[10px] text-muted-foreground bg-accent px-1.5 py-0.5 rounded-md self-center">
+                                        {model.name.match(/\((.*?)\)/)?.[1] || ''}
+                                    </span>
+                                )}
+                            </div>
                         </motion.button>
                     ))}
                 </div>

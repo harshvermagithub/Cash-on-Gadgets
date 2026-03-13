@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
 import {
     LayoutDashboard,
     Smartphone,
@@ -20,7 +21,8 @@ import {
     Briefcase,
     Building2,
     ChevronRight,
-    ChevronLeft
+    ChevronLeft,
+    Camera
 } from 'lucide-react';
 
 const CATEGORIES = [
@@ -30,6 +32,7 @@ const CATEGORIES = [
     { id: 'laptop', label: 'Laptops', icon: Laptop },
     { id: 'console', label: 'Consoles', icon: Gamepad2 },
     { id: 'tv', label: 'Smart TV', icon: Tv },
+    { id: 'camera', label: 'Camera', icon: Camera },
     { id: 'repair-device', label: 'Repair', icon: Wrench },
 ];
 
@@ -60,6 +63,15 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                 <span className={`${isMobileOpen ? 'inline' : isDesktopCollapsed ? 'hidden' : 'hidden lg:inline'} whitespace-nowrap`}>
                     {title}
                 </span>
+                {isActive && (
+                    <motion.div
+                        layoutId="activeTab"
+                        className="absolute left-0 w-1 h-6 bg-primary rounded-r-full"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.2 }}
+                    />
+                )}
             </Link>
         );
     };

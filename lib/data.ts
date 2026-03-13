@@ -213,34 +213,153 @@ export const questionnaireSteps = {
         {
             id: 'physical_condition',
             title: 'Physical Condition',
-            subtitle: 'Any physical damage?',
-            type: 'multi-select',
+            subtitle: 'Select the screen\'s physical condition',
+            type: 'single-select',
             options: [
-                { id: 'screen_crack', label: 'Cracked Screen', icon: 'Tablet' },
-                { id: 'body_dent', label: 'Dents on Body', icon: 'ShieldAlert' },
-                { id: 'bent', label: 'Body Bent', icon: 'Minimize2' },
+                { id: 'flawless', label: 'Flawless', description: 'No signs of usage', icon: 'Sparkles' },
+                { id: 'good', label: 'Good', description: 'Minor scratches', icon: 'Smile' },
+                { id: 'average', label: 'Average', description: 'Major scratches', icon: 'MinusCircle' },
+                { id: 'below_average', label: 'Below Average', description: 'Screen crack, Dead pixel, Lines on screen', icon: 'AlertTriangle' },
+            ]
+        },
+        {
+            id: 'body_condition',
+            title: 'Body Condition',
+            subtitle: 'Select the condition of the device body (back panel/frame)',
+            type: 'single-select',
+            options: [
+                { id: 'flawless', label: 'Flawless', description: 'No scratches or dents', icon: 'Sparkles' },
+                { id: 'good', label: 'Good', description: 'Minor scratches, no dents', icon: 'Smile' },
+                { id: 'average', label: 'Average', description: 'Visible scratches and minor dents', icon: 'MinusCircle' },
+                { id: 'below_average', label: 'Below Average', description: 'Heavy dents, cracks, or bent frame', icon: 'AlertTriangle' },
+            ]
+        },
+        {
+            id: 'functional_issues',
+            title: 'Functional Problems',
+            subtitle: 'Select any issues your device has (Check if applicable)',
+            type: 'multi-select-grid',
+            options: [
+                { id: 'bluetooth', label: 'Bluetooth', icon: 'Bluetooth' },
+                { id: 'front_camera', label: 'Front Camera', icon: 'Camera' },
+                { id: 'back_camera', label: 'Back Camera', icon: 'Camera' },
+                { id: 'camera_glass', label: 'Camera Glass Broken', icon: 'CameraOff' },
+                { id: 'power_button', label: 'Power Button', icon: 'Power' },
+                { id: 'volume_button', label: 'Volume Button', icon: 'Volume2' },
+                { id: 'speaker', label: 'Speaker', icon: 'Speaker' },
+                { id: 'microphone', label: 'Microphone', icon: 'Mic' },
+                { id: 'charging_port', label: 'Charging Port', icon: 'Plug' },
+                { id: 'battery', label: 'Battery', icon: 'Battery' },
+            ]
+        },
+        {
+            id: 'device_details',
+            title: 'Device Details',
+            subtitle: 'Please confirm accessories and warranty details',
+            type: 'combined-step',
+            sections: [
+                {
+                    id: 'accessories',
+                    title: 'Do you have the following?',
+                    type: 'multi-select',
+                    options: [
+                        { id: 'charger', label: 'Original Charger', icon: 'Plug' },
+                        { id: 'box', label: 'Original Box', icon: 'Box' },
+                        { id: 'bill', label: 'Original Bill with GST', icon: 'FileText' },
+                    ]
+                },
+                {
+                    id: 'warranty',
+                    title: 'Warranty Period',
+                    type: 'single-select',
+                    options: [
+                        { id: '0_3_months', label: '0 - 3 Months', description: 'Valid for 0 to 3 months', icon: 'Clock' },
+                        { id: '3_6_months', label: '3 - 6 Months', description: 'Valid for 3 to 6 months', icon: 'Clock' },
+                        { id: '6_11_months', label: '6 - 11 Months', description: 'Valid for 6 to 11 months', icon: 'Clock' },
+                        { id: 'no', label: 'No Warranty', description: 'Above 11 months or expired', icon: 'XCircle' },
+                    ]
+                }
             ]
         }
     ],
     'watch': [
         {
             id: 'core_functionality',
-            title: 'Smartwatch Check',
-            subtitle: 'How is your watch doing?',
+            title: 'Smartwatch Condition Check',
+            subtitle: 'Answer these to get the best price.',
             questions: [
-                { id: 'power', text: 'Does it turn on and charge?', subtext: '', type: 'boolean' },
-                { id: 'screen', text: 'Is the display clear?', subtext: 'No cracks or heavy scratches.', type: 'boolean' },
-                { id: 'buttons', text: 'Do buttons/crown work?', subtext: '', type: 'boolean' }
+                { id: 'power', text: 'Does the watch Switch On?', subtext: 'Cashify currently only accepts devices that switch on.', type: 'boolean' },
+                { id: 'touch', text: 'Is the touch working seamlessly?', subtext: 'No dead zones or ghost touches.', type: 'boolean' },
+                { id: 'charging', text: 'Does it charge correctly?', subtext: 'Charging sensor/magnetic port working.', type: 'boolean' }
             ]
         },
         {
-            id: 'strap_condition',
-            title: 'Strap & Body',
-            subtitle: 'Select if applicable',
-            type: 'multi-select',
+            id: 'physical_condition',
+            title: 'Screen Condition',
+            subtitle: 'Select the screen\'s physical condition',
+            type: 'single-select',
             options: [
-                { id: 'strap_broken', label: 'Strap Broken/Missing', icon: 'Watch' },
-                { id: 'scratch_glass', label: 'Scratches on Glass', icon: 'ScanEye' },
+                { id: 'flawless', label: 'Flawless', description: 'No signs of usage, no scratches', icon: 'Sparkles' },
+                { id: 'good', label: 'Good', description: 'Minor scratches (1-2 light)', icon: 'Smile' },
+                { id: 'average', label: 'Average', description: 'Major scratches or slight wear', icon: 'MinusCircle' },
+                { id: 'damaged', label: 'Damaged/Cracked', description: 'Cracks, spots, or lines on screen', icon: 'AlertTriangle' },
+            ]
+        },
+        {
+            id: 'body_condition',
+            title: 'Body Condition',
+            subtitle: 'Select the condition of the watch body',
+            type: 'single-select',
+            options: [
+                { id: 'flawless', label: 'Flawless', description: 'Brand new look, no imperfections', icon: 'Sparkles' },
+                { id: 'good', label: 'Good', description: 'Minor scratches, no dents', icon: 'Smile' },
+                { id: 'average', label: 'Average', description: 'Moderate scratches or minor dents', icon: 'MinusCircle' },
+                { id: 'below_average', label: 'Below Average', description: 'Deep scratches, major dents, or glass broken', icon: 'AlertTriangle' },
+            ]
+        },
+        {
+            id: 'functional_issues',
+            title: 'Functional Problems',
+            subtitle: 'Select if applicable (Check if applicable)',
+            type: 'multi-select-grid',
+            options: [
+                { id: 'battery_low', label: 'Battery Health < 85%', icon: 'Battery' },
+                { id: 'wifi', label: 'WiFi/GPS Faulty', icon: 'Wifi' },
+                { id: 'speaker', label: 'Speakers Faulty', icon: 'Speaker' },
+                { id: 'crown', label: 'Digital Crown Issues', icon: 'Settings' },
+                { id: 'buttons', label: 'Side Buttons Faulty', icon: 'Power' },
+                { id: 'heart_sensor', label: 'Heart Sensor Faulty', icon: 'Activity' },
+                { id: 'bluetooth', label: 'Bluetooth Faulty', icon: 'Bluetooth' },
+            ]
+        },
+        {
+            id: 'device_details',
+            title: 'Device Details',
+            subtitle: 'Please confirm accessories and warranty',
+            type: 'combined-step',
+            sections: [
+                {
+                    id: 'accessories',
+                    title: 'Do you have the following?',
+                    type: 'multi-select',
+                    options: [
+                        { id: 'charger', label: 'Original Charger', icon: 'Plug' },
+                        { id: 'strap', label: 'Original Strap', icon: 'Watch' },
+                        { id: 'box', label: 'Original Box', icon: 'Box' },
+                        { id: 'bill', label: 'Original Bill with GST', icon: 'FileText' },
+                    ]
+                },
+                {
+                    id: 'warranty',
+                    title: 'Warranty Period',
+                    type: 'single-select',
+                    options: [
+                        { id: '0_3_months', label: '0 - 3 Months', description: 'Valid for 0 to 3 months', icon: 'Clock' },
+                        { id: '3_6_months', label: '3 - 6 Months', description: 'Valid for 3 to 6 months', icon: 'Clock' },
+                        { id: '6_11_months', label: '6 - 11 Months', description: 'Valid for 6 to 11 months', icon: 'Clock' },
+                        { id: 'no', label: 'No Warranty', description: 'Above 11 months or expired', icon: 'XCircle' },
+                    ]
+                }
             ]
         }
     ],
@@ -310,6 +429,88 @@ export const questionnaireSteps = {
             options: [
                 { id: 'charger_missing', label: 'Original Charger Missing', icon: 'Plug' },
                 { id: 'box_missing', label: 'Original Box Missing', icon: 'Box' }
+            ]
+        }
+    ],
+    'camera': [
+        {
+            id: 'core_functionality',
+            title: 'Camera Condition Check',
+            subtitle: 'Let\'s check the basic functionality of your camera.',
+            questions: [
+                { id: 'power', text: 'Does the camera turn on?', subtext: 'Ensure the camera powers up and display is active.', type: 'boolean' },
+                { id: 'lens_focus', text: 'Does the lens autofocus work?', subtext: 'Ensure the lens can focus on subjects correctly.', type: 'boolean' },
+                { id: 'sensor_spots', text: 'Are there any spots on the sensor?', subtext: 'Spots visible in images at high aperture.', type: 'boolean' },
+                { id: 'flash', text: 'Is the built-in flash working?', subtext: 'If applicable to your model.', type: 'boolean' }
+            ]
+        },
+        {
+            id: 'physical_condition',
+            title: 'Physical Condition',
+            subtitle: 'Select the body\'s physical condition',
+            type: 'single-select',
+            options: [
+                { id: 'flawless', label: 'Flawless', description: 'No signs of usage, like new', icon: 'Sparkles' },
+                { id: 'good', label: 'Good', description: 'Minor scratches, well maintained', icon: 'Smile' },
+                { id: 'average', label: 'Average', description: 'Visible scratches and minor dents', icon: 'MinusCircle' },
+                { id: 'below_average', label: 'Below Average', description: 'Heavy dents, cracks, or missing rubber grips', icon: 'AlertTriangle' },
+            ]
+        },
+        {
+            id: 'screen_condition',
+            title: 'Screen/Viewfinder',
+            subtitle: 'Select the condition of the display/viewfinder',
+            type: 'single-select',
+            options: [
+                { id: 'flawless', label: 'Flawless', description: 'Clear display, no issues', icon: 'Sparkles' },
+                { id: 'cracked', label: 'Cracked/Damaged', description: 'Screen or viewfinder glass broken', icon: 'AlertTriangle' },
+                { id: 'dead_pixels', label: 'Dead Pixels/Lines', icon: 'Grid' },
+            ]
+        },
+        {
+            id: 'functional_issues',
+            title: 'Functional Problems',
+            subtitle: 'Select any issues your camera has (Check if applicable)',
+            type: 'multi-select-grid',
+            options: [
+                { id: 'buttons', label: 'Buttons/Dial Not Working', icon: 'MousePointer2' },
+                { id: 'card_slot', label: 'Memory Card Slot Issue', icon: 'CreditCard' },
+                { id: 'hdmi_usb', label: 'HDMI/USB Port Damaged', icon: 'Plug' },
+                { id: 'battery_door', label: 'Battery Door Broken/Loose', icon: 'Battery' },
+                { id: 'mode_dial', label: 'Mode Dial Faulty', icon: 'Settings' },
+                { id: 'mic_jack', label: 'Mic/Audio Jack Not Working', icon: 'Mic' },
+            ]
+        },
+        {
+            id: 'device_details',
+            title: 'Accessories & Warranty',
+            subtitle: 'Please confirm what\'s included',
+            type: 'combined-step',
+            sections: [
+                {
+                    id: 'accessories',
+                    title: 'Do you have the following?',
+                    type: 'multi-select',
+                    options: [
+                        { id: 'battery', label: 'Original Battery', icon: 'Battery' },
+                        { id: 'charger', label: 'Original Charger', icon: 'Plug' },
+                        { id: 'lens_cap', label: 'Lens Cap / Body Cap', icon: 'Circle' },
+                        { id: 'strap', label: 'Neck/Shoulder Strap', icon: 'Smartphone' }, // Using Smartphone as proxy or better icon?
+                        { id: 'box', label: 'Original Box', icon: 'Box' },
+                        { id: 'bill', label: 'Original Bill with GST', icon: 'FileText' },
+                    ]
+                },
+                {
+                    id: 'warranty',
+                    title: 'Warranty Period',
+                    type: 'single-select',
+                    options: [
+                        { id: '0_3_months', label: '0 - 3 Months', description: 'Valid for 0 to 3 months', icon: 'Clock' },
+                        { id: '3_6_months', label: '3 - 6 Months', description: 'Valid for 3 to 6 months', icon: 'Clock' },
+                        { id: '6_11_months', label: '6 - 11 Months', description: 'Valid for 6 to 11 months', icon: 'Clock' },
+                        { id: 'no', label: 'No Warranty', description: 'Above 11 months or expired', icon: 'XCircle' },
+                    ]
+                }
             ]
         }
     ]

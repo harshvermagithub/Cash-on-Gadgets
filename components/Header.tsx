@@ -4,6 +4,7 @@ import { User, LogOut } from 'lucide-react';
 import { getSession, logout, isAdmin } from '@/lib/session';
 import { ThemeToggle } from './theme-toggle';
 import { Logo } from './Logo';
+import { NavLinks } from './NavLinks';
 
 export default async function Header() {
     const session = await getSession();
@@ -15,18 +16,9 @@ export default async function Header() {
                     <Logo className="w-auto h-full max-h-16 py-1 text-primary" />
                 </Link>
 
-                <nav className="flex items-center gap-4">
-                    <Link href="/sell" className="text-sm font-medium hover:text-primary transition-colors">
-                        Check Price
-                    </Link>
-                    <Link href="/orders" className="text-sm font-medium hover:text-primary transition-colors">
-                        My Orders
-                    </Link>
-                    {session && isAdmin(session.user) && (
-                        <Link href="/admin" className="text-sm font-medium hover:text-primary transition-colors">
-                            Admin Panel
-                        </Link>
-                    )}
+                <nav className="flex items-center gap-6">
+                    <NavLinks session={session} isAdminUser={session ? isAdmin(session.user) : false} />
+                    <div className="h-6 w-px bg-white/10 mx-2" />
                     <ThemeToggle />
 
                     {session ? (
