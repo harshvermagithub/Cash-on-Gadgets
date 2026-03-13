@@ -475,7 +475,7 @@ const categories = [
         textColor: 'text-cyan-900 dark:text-cyan-100'
     },
     {
-        id: 'smartwatch',
+        id: 'watch',
         name: 'Smartwatches',
         subtext: 'Top market prices guaranteed',
         component: <WatchGraphic />,

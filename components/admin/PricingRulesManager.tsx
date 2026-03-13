@@ -119,35 +119,47 @@ export default function PricingRulesManager({ category, initialRules }: Props) {
                                 ))}
 
                                 {/* Multi-Select Options */}
-                                {step.options?.map((opt: any) => (
-                                    <RuleRow
-                                        key={opt.id}
-                                        category={category}
-                                        qId={step.id}
-                                        aId={opt.id}
-                                        qLabel={step.title}
-                                        aLabel={opt.label}
-                                        initialRule={getRule(step.id, opt.id)}
-                                        defaults={PREFILL_DEFAULTS[opt.id]}
-                                        onSave={handleSave}
-                                    />
-                                ))}
+                                {step.options?.map((opt: any) => {
+                                    const isAccessory = step.id === 'accessories' || opt.id === 'charger' || opt.id === 'box' || opt.id === 'bill';
+                                    const aId = isAccessory ? `!${opt.id}` : opt.id;
+                                    const aLabel = isAccessory ? `Missing ${opt.label}` : opt.label;
+
+                                    return (
+                                        <RuleRow
+                                            key={opt.id}
+                                            category={category}
+                                            qId={step.id}
+                                            aId={aId}
+                                            qLabel={step.title}
+                                            aLabel={aLabel}
+                                            initialRule={getRule(step.id, aId)}
+                                            defaults={PREFILL_DEFAULTS[opt.id]}
+                                            onSave={handleSave}
+                                        />
+                                    );
+                                })}
                                 {/* Combined-Step Sections (e.g. Laptops / Device Details) */}
                                 {step.type === 'combined-step' && step.sections?.map((section: any) => (
                                     <React.Fragment key={section.id}>
-                                        {section.options?.map((opt: any) => (
-                                            <RuleRow
-                                                key={opt.id}
-                                                category={category}
-                                                qId={section.id}
-                                                aId={opt.id}
-                                                qLabel={`${step.title} - ${section.title}`}
-                                                aLabel={opt.label}
-                                                initialRule={getRule(section.id, opt.id)}
-                                                defaults={PREFILL_DEFAULTS[opt.id]}
-                                                onSave={handleSave}
-                                            />
-                                        ))}
+                                        {section.options?.map((opt: any) => {
+                                            const isAccessory = section.id === 'accessories' || opt.id === 'charger' || opt.id === 'box' || opt.id === 'bill';
+                                            const aId = isAccessory ? `!${opt.id}` : opt.id;
+                                            const aLabel = isAccessory ? `Missing ${opt.label}` : opt.label;
+                                            
+                                            return (
+                                                <RuleRow
+                                                    key={opt.id}
+                                                    category={category}
+                                                    qId={section.id}
+                                                    aId={aId}
+                                                    qLabel={`${step.title} - ${section.title}`}
+                                                    aLabel={aLabel}
+                                                    initialRule={getRule(section.id, aId)}
+                                                    defaults={PREFILL_DEFAULTS[opt.id]}
+                                                    onSave={handleSave}
+                                                />
+                                            );
+                                        })}
                                     </React.Fragment>
                                 ))}
                             </React.Fragment>

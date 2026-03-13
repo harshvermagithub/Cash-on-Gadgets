@@ -27,7 +27,8 @@ export default function ChecklistWizard({ deviceInfo, category, onComplete, onBa
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // Customize steps based on device type (iPhone Battery Logic)
-    let steps = (questionnaireSteps as any)[category || 'smartphone'] || (questionnaireSteps as any)['smartphone'];
+    const activeCategory = category === 'smartwatch' ? 'watch' : (category || 'smartphone');
+    let steps = (questionnaireSteps as any)[activeCategory] || (questionnaireSteps as any)['smartphone'];
 
     if (deviceInfo?.name?.toLowerCase().includes('iphone')) {
         steps = steps.map((step: any) => {

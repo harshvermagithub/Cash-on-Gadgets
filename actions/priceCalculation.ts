@@ -179,14 +179,25 @@ export async function calculatePrice(basePrice: number, answers: Record<string, 
 
             // Boolean check
             if (typeof answer === 'boolean') {
-                // If rule.answerKey is "false" and answer is false, applied.
-                if (String(answer) === rule.answerKey) {
+                const ruleVal = rule.answerKey === 'true';
+                if (answer === ruleVal) {
                     applyRule(rule);
                 }
             }
             // Array check (multi-select)
             else if (Array.isArray(answer)) {
-                if (answer.includes(rule.answerKey)) {
+                if (rule.answerKey.startsWith('!')) {
+                    const target = rule.answerKey.substring(1);
+                    if (!answer.includes(target)) {
+                        applyRule(rule);
+                    }
+                } else if (answer.includes(rule.answerKey)) {
+                    applyRule(rule);
+                }
+            }
+            // String check (single-select)
+            else if (typeof answer === 'string') {
+                if (answer === rule.answerKey) {
                     applyRule(rule);
                 }
             }
@@ -198,8 +209,6 @@ export async function calculatePrice(basePrice: number, answers: Record<string, 
             finalPrice -= rule.deductionAmount;
         }
         if (rule.deductionPercent !== 0) {
-            // Percent of Base or Final?
-            // Usually Base Price is standard reference.
             finalPrice -= (basePrice * (rule.deductionPercent / 100));
         }
     }

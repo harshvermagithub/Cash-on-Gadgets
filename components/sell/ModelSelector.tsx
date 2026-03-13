@@ -193,16 +193,15 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
             else if (name.includes('Reno')) uniqueSeries.add('Reno Series');
 
             // Smartwatch - Apple Watch
-            else if (lowerName.includes('apple watch')) {
+            else if (lowerName.includes('apple') && (lowerName.includes('watch') || lowerName.includes('ultra') || lowerName.includes('series'))) {
                 if (lowerName.includes('ultra')) uniqueSeries.add('Watch Ultra');
                 else if (lowerName.includes('se')) uniqueSeries.add('Watch SE');
-                else {
-                    const match = name.match(/Series\s+(\d+)/i);
-                    if (match) {
-                        uniqueSeries.add(`Series ${match[1]}`);
-                    } else {
-                        uniqueSeries.add('Watch Series');
-                    }
+                
+                const seriesMatch = name.match(/Series\s+(\d+)/i);
+                if (seriesMatch) {
+                    uniqueSeries.add(`Series ${seriesMatch[1]}`);
+                } else if (!lowerName.includes('ultra') && !lowerName.includes('se')) {
+                    uniqueSeries.add('Watch Series');
                 }
             }
         });
@@ -237,15 +236,24 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
             if (b === 'SE Series') return 1;
 
             // Apple Watch sorting
-            if (a.includes('Watch') || a.includes('Series')) {
-                if (a.includes('Ultra')) return -1;
-                if (b.includes('Ultra')) return 1;
-                if (a.includes('SE')) return 1; // SE at bottom of watch
-                if (b.includes('SE')) return -1;
+            if ((a.includes('Watch') || a.includes('Series')) && (b.includes('Watch') || b.includes('Series'))) {
+                if (a.includes('Ultra') && !b.includes('Ultra')) return -1;
+                if (!a.includes('Ultra') && b.includes('Ultra')) return 1;
                 
-                const numA = parseInt(a.replace(/[^0-9]/g, ''));
-                const numB = parseInt(b.replace(/[^0-9]/g, ''));
-                if (!isNaN(numA) && !isNaN(numB)) return numB - numA;
+                if (a.includes('Ultra') && b.includes('Ultra')) {
+                    const numA = parseInt(a.replace(/[^0-9]/g, '')) || 1;
+                    const numB = parseInt(b.replace(/[^0-9]/g, '')) || 1;
+                    return numB - numA;
+                }
+
+                if (a.includes('Series') && b.includes('Series')) {
+                    const numA = parseInt(a.replace(/[^0-9]/g, ''));
+                    const numB = parseInt(b.replace(/[^0-9]/g, ''));
+                    if (!isNaN(numA) && !isNaN(numB)) return numB - numA;
+                }
+
+                if (a.includes('SE') && !b.includes('SE')) return 1; // SE lower than Series
+                if (!a.includes('SE') && b.includes('SE')) return -1;
             }
 
             return a.localeCompare(b);
@@ -257,6 +265,7 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
     // Filter Models
     const filteredModels = useMemo(() => {
         return models.filter(m => {
+            if (!m.name) return false;
             const matchesSearch = m.name.toLowerCase().includes(searchTerm.toLowerCase());
 
             if (!matchesSearch) return false;
@@ -327,9 +336,65 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                     return name.includes(`series ${num}`) && !name.includes('se');
                 }
                 if (activeSeries === 'Watch Series') return name.includes('apple watch') && !name.includes('series') && !name.includes('ultra') && !name.includes('se');
+                
+                // If it's a known series but doesn't match any branch, default to false if activeSeries is set
+                // to avoid showing all models when a specific series is selected.
+                // However, if it's a completely unknown series string, default to true.
+                return false; 
             }
 
             return true;
+        }).sort((a, b) => {
+            // Priority-based sorting for catalog (latest models first)
+            const getScore = (name: string) => {
+                let score = 0;
+                const lower = name.toLowerCase();
+                
+                // iPhone score
+                const iphoneMatch = lower.match(/iphone\s+(\d+)/);
+                if (iphoneMatch) {
+                    score = 2000 + (parseInt(iphoneMatch[1]) * 10);
+                    if (lower.includes('pro max')) score += 5;
+                    else if (lower.includes('pro')) score += 4;
+                    else if (lower.includes('plus')) score += 3;
+                    return score;
+                }
+
+                // Apple Watch score
+                if (lower.includes('watch')) {
+                    if (lower.includes('ultra 2')) score = 1000;
+                    else if (lower.includes('ultra')) score = 950;
+                    else if (lower.includes('series')) {
+                        const m = lower.match(/series\s+(\d+)/);
+                        if (m) score = 800 + parseInt(m[1]);
+                    } else if (lower.includes('se 2nd') || lower.includes('se 2')) {
+                        score = 750;
+                    } else if (lower.includes('se')) {
+                        score = 700;
+                    }
+                    return score;
+                }
+
+                // iPad score
+                if (lower.includes('ipad')) {
+                    if (lower.includes('pro')) score = 1500;
+                    else if (lower.includes('air')) score = 1400;
+                    else if (lower.includes('mini')) score = 1300;
+                    else score = 1200;
+                    
+                    const m = lower.match(/(\d+)(st|nd|rd|th)\s+gen/);
+                    if (m) score += parseInt(m[1]);
+                    return score;
+                }
+                
+                return score;
+            };
+
+            const scoreA = getScore(a.name);
+            const scoreB = getScore(b.name);
+
+            if (scoreA !== scoreB) return scoreB - scoreA;
+            return a.name.localeCompare(b.name);
         });
     }, [models, searchTerm, activeSeries]);
 
@@ -427,12 +492,9 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                                 />
                             </div>
                             <div className="flex flex-col gap-1">
-                                <span className="font-semibold text-sm line-clamp-2">{model.name.split('(')[0].trim()}</span>
-                                {model.name.includes('(') && (
-                                    <span className="text-[10px] text-muted-foreground bg-accent px-1.5 py-0.5 rounded-md self-center">
-                                        {model.name.match(/\((.*?)\)/)?.[1] || ''}
-                                    </span>
-                                )}
+                                <span className="font-semibold text-sm line-clamp-2">
+                                    {model.name.split('(')[0].trim()}
+                                </span>
                             </div>
                         </motion.button>
                     ))}

@@ -188,9 +188,20 @@ export const db = {
     // Brand Methods
     getBrands: async (category?: string) => {
         if (category) {
+            const categories = [category];
+            if (category === 'watch' || category === 'smartwatch') {
+                categories.push('watch', 'smartwatch');
+            }
+            if (category === 'smartphone' || category === 'mobile') {
+                categories.push('smartphone', 'mobile');
+            }
+            if (category === 'tablet' || category === 'ipad') {
+                categories.push('tablet', 'ipad');
+            }
+
             const where: any = {
                 OR: [
-                    { categories: { has: category } }
+                    { categories: { hasSome: categories } }
                 ]
             };
 
@@ -257,11 +268,15 @@ export const db = {
         if (brandId) where.brandId = brandId;
 
         if (category) {
-            if (category === 'smartphone') {
-                // Use 'in' filter for better compatibility and performance
-                where.category = { in: ['smartphone', ''] };
+            const cat = category.toLowerCase();
+            if (cat === 'smartphone' || cat === 'mobile') {
+                where.category = { in: ['smartphone', 'mobile', ''] };
+            } else if (cat === 'watch' || cat === 'smartwatch') {
+                where.category = { in: ['watch', 'smartwatch'] };
+            } else if (cat === 'tablet' || cat === 'ipad') {
+                where.category = { in: ['tablet', 'ipad'] };
             } else {
-                where.category = category;
+                where.category = cat;
             }
         }
 

@@ -20,6 +20,9 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'i01.appmifile.com' },
       { protocol: 'https', hostname: 'images.samsung.com' },
       { protocol: 'https', hostname: 'placehold.co' },
+      { protocol: 'https', hostname: 's3n.cashify.in' },
+      { protocol: 'https', hostname: 's3ng.cashify.in' },
+      { protocol: 'https', hostname: 's3.cashify.in' },
     ],
   },
   experimental: {
