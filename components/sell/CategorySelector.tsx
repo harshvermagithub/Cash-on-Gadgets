@@ -483,7 +483,7 @@ const categories = [
         textColor: 'text-orange-900 dark:text-orange-100'
     },
     {
-        id: 'tv',
+        id: 'smarttv',
         name: 'Smart TVs',
         subtext: 'Best value for your television',
         component: <TvGraphic />,

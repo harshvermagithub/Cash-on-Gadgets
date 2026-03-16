@@ -35,7 +35,7 @@ const CATEGORIES = [
     { id: 'desktop', label: 'Desktops', icon: Monitor },
     { id: 'earbuds', label: 'Earbuds', icon: Headphones },
     { id: 'console', label: 'Consoles', icon: Gamepad2 },
-    { id: 'tv', label: 'Smart TV', icon: Tv },
+    { id: 'smarttv', label: 'Smart TV', icon: Tv },
     { id: 'camera', label: 'Camera', icon: Camera },
     { id: 'repair-device', label: 'Repair', icon: Wrench },
 ];

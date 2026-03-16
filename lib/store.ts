@@ -201,6 +201,9 @@ export const db = {
             if (category === 'tablet' || category === 'ipad') {
                 categories.push('tablet', 'ipad');
             }
+            if (category === 'smarttv' || category === 'tv') {
+                categories.push('smarttv', 'tv');
+            }
 
             const where: any = {
                 OR: [
@@ -278,6 +281,8 @@ export const db = {
                 where.category = { in: ['watch', 'smartwatch'] };
             } else if (cat === 'tablet' || cat === 'ipad') {
                 where.category = { in: ['tablet', 'ipad'] };
+            } else if (cat === 'smarttv' || cat === 'tv') {
+                where.category = { in: ['smarttv', 'tv'] };
             } else {
                 where.category = cat;
             }

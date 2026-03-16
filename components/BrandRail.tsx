@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fetchBrands } from '@/actions/catalog';
-import { ArrowRight, Smartphone, Tablet, Laptop, Watch, Gamepad2, Wrench, X } from 'lucide-react';
+import { ArrowRight, Smartphone, Tablet, Laptop, Watch, Gamepad2, Wrench, X, Tv } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Brand } from '@/lib/store';
@@ -15,6 +15,7 @@ const CATEGORY_OPTIONS = [
     { id: 'tablet', label: 'Tablet', icon: Tablet, color: 'text-pink-500' },
     { id: 'smartwatch', label: 'Watch', icon: Watch, color: 'text-orange-500' },
     { id: 'console', label: 'Console', icon: Gamepad2, color: 'text-indigo-500' },
+    { id: 'smarttv', label: 'TV', icon: Tv, color: 'text-red-500' },
 ];
 
 const getBrandCategories = (brandName: string) => {
@@ -39,6 +40,11 @@ const getBrandCategories = (brandName: string) => {
     // Consoles
     if (['sony', 'microsoft', 'nintendo'].includes(b)) {
         cats.push('console');
+    }
+
+    // Smart TVs
+    if (['samsung', 'sony', 'lg', 'xiaomi', 'oneplus', 'motorola', 'nokia', 'acer', 'tcl'].includes(b)) {
+        cats.push('smarttv');
     }
 
     return cats;
