@@ -1,7 +1,5 @@
 import React from 'react';
-
-
-import { HeroLogo } from '@/components/HeroLogo';
+import { FCartLogo } from '@/components/FCartLogo';
 
 export default function AboutPage() {
     return (
@@ -9,7 +7,7 @@ export default function AboutPage() {
             <section className="space-y-6 text-center">
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-green-700 dark:text-green-500 flex items-center justify-center gap-4 flex-wrap">
                     <span>About</span>
-                    <HeroLogo className="scale-[0.8] md:scale-[1]" />
+                    <FCartLogo size={70} />
                 </h1>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                     Reinventing the way you sell your old gadgets. Simple, Fast, and Secure.
@@ -41,7 +39,7 @@ export default function AboutPage() {
                         <p className="text-sm text-muted-foreground">Receive payment immediately via UPI or Cash before we leave with your device.</p>
                     </div>
                     <div className="p-6 bg-card rounded-xl border shadow-sm">
-                        <h3 className="font-semibold text-lg mb-2">Safe & Secure</h3>
+                        <h3 className="font-semibold text-lg mb-2">Safe &amp; Secure</h3>
                         <p className="text-sm text-muted-foreground">We ensure your data is wiped and your device is handled responsibly.</p>
                     </div>
                 </div>
