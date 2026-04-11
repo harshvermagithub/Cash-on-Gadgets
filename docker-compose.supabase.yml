@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # --- Database ---
+  db:
+    image: supabase/postgres:15.1.0.117
+    container_name: supabase-db
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      timeout: 5s
+      interval: 5s
+      retries: 10
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: postgres
+    volumes:
+      - ./supabase/db/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # --- API Gateway (Kong) ---
+  kong:
+    image: kong:2.8.1
+    container_name: supabase-kong
+    depends_on:
+      - db
+    environment:
+      KONG_DATABASE: off
+      KONG_DECLARATIVE_CONFIG: /etc/kong/kong.yml
+      KONG_PROXY_LISTEN: 0.0.0.0:8000
+    volumes:
+      - ./supabase/kong:/etc/kong
+    ports:
+      - "8081:8000"
+
+  # --- Auth (GoTrue) ---
+  auth:
+    image: supabase/gotrue:v2.132.3
+    container_name: supabase-auth
+    depends_on:
+      - db
+    environment:
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/postgres?sslmode=disable
+      GOTRUE_SITE_URL: ${APP_URL}
+      GOTRUE_JWT_SECRET: ${JWT_SECRET}
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
+      GOTRUE_SMTP_HOST: ${SMTP_HOST}
+      GOTRUE_SMTP_PORT: ${SMTP_PORT}
+      GOTRUE_SMTP_USER: ${SMTP_USER}
+      GOTRUE_SMTP_PASS: ${SMTP_PASS}
+      GOTRUE_SMTP_SENDER_NAME: "Fonzkart Auth"
+    ports:
+      - "9999:9999"
+
+  # --- PostgREST ---
+  rest:
+    image: postgrest/postgrest:v10.1.1
+    container_name: supabase-rest
+    depends_on:
+      - db
+    environment:
+      PGRST_DB_URI: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/postgres
+      PGRST_DB_SCHEMA: public
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: ${JWT_SECRET}
+
+  # --- Studio (Dashboard) ---
+  studio:
+    image: supabase/studio:20240101-01
+    container_name: supabase-studio
+    ports:
+      - "3000:3000"
+    environment:
+      SUPABASE_URL: http://kong:8000
+      STUDIO_PG_META_URL: http://db:8080
