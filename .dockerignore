@@ -1,0 +1,9 @@
+node_modules
+.next
+.git
+.vercel
+*.log
+coolify/
+tmp/
+coolify_patched_env.txt
+coolify_patched_docker_compose.yml
