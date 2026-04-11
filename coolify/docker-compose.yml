@@ -1,0 +1,26 @@
+version: "3"
+services:
+  coolify:
+    image: coollabsio/coolify:latest
+    container_name: coolify
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/data/database.sqlite
+      - APP_URL=http://localhost:3000
+      - APP_KEY=base64:nUClK4cO5X7K7LaX0CVJqp0ptju3FSckbrWTrzf/3JQ=
+      - APP_ENV=production
+    volumes:
+      - ./data:/data
+    depends_on:
+      - coolify-redis
+  coolify-redis:
+    image: redis:7-alpine
+    container_name: coolify-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-data:/data
