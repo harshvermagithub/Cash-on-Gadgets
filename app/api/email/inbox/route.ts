@@ -30,11 +30,12 @@ export async function GET(req: NextRequest) {
     await client.connect();
     
     let lock = await client.getMailboxLock('INBOX');
-    const emails = [];
+    const emails: any[] = [];
     try {
-      if (client.mailbox.exists > 0) {
+      const mailbox = client.mailbox as any;
+      if (mailbox && mailbox.exists > 0) {
         // Fetch last 50 emails
-        const seq = client.mailbox.exists > 50 ? `${client.mailbox.exists - 49}:*` : '1:*';
+        const seq = mailbox.exists > 50 ? `${mailbox.exists - 49}:*` : '1:*';
         for await (let msg of client.fetch(seq, { source: true, envelope: true })) {
           if (msg.source) {
             const parsed = await simpleParser(msg.source);
@@ -43,7 +44,7 @@ export async function GET(req: NextRequest) {
               subject: parsed.subject,
               from: parsed.from?.text,
               date: parsed.date,
-              text: parsed.text || parsed.html?.replace(/<[^>]+>/g, ''),
+              text: parsed.text || (typeof parsed.html === 'string' ? parsed.html.replace(/<[^>]+>/g, '') : ''),
             });
           }
         }
