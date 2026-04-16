@@ -2,7 +2,9 @@ import { fetchBrands } from '@/actions/catalog';
 import { HomeClient } from '@/components/HomeClient';
 import { prisma } from '@/lib/db';
 
-export const revalidate = 3600; // Cache for 1 hour to reduce Vercel function invocations
+export const dynamic = 'force-dynamic';
+export const revalidate = 0; // Disable caching to ensure fresh data since it's now dynamic
+
 
 export default async function Home() {
     // Fetch critical data on the server with caching
