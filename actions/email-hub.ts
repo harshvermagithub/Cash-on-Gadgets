@@ -46,8 +46,8 @@ export async function fetchRoleBasedEmails() {
                     for await (let msg of client.fetch(seq, { source: true, envelope: true })) {
                         if (msg.source) {
                             const parsed = await simpleParser(msg.source);
-                            const fromEmail = parsed.from?.value?.[0]?.address || parsed.from?.text || '';
-                            const toEmail = parsed.to?.value?.[0]?.address || parsed.to?.text || acc.email;
+                            const fromEmail = (parsed.from as any)?.value?.[0]?.address || (parsed.from as any)?.text || '';
+                            const toEmail = (parsed.to as any)?.value?.[0]?.address || (parsed.to as any)?.text || acc.email;
                             imapReceived.push({
                                 id: msg.uid.toString(),
                                 subject: parsed.subject || 'No Subject',
