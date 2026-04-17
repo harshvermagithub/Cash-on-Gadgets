@@ -65,6 +65,9 @@ export const db = {
     findUserByEmail: async (email: string) => {
         return await prisma.user.findUnique({ where: { email } });
     },
+    findUserById: async (id: string) => {
+        return await prisma.user.findUnique({ where: { id } });
+    },
     updateUserRole: async (email: string, role: string) => {
         await prisma.user.update({
             where: { email },
