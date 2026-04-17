@@ -58,7 +58,7 @@ export async function createOrderAction(_device: string, _variant: string, _pric
     // This action will be called from client side
 }
 
-import { supabase } from '@/lib/supabase';
+import nodemailer from 'nodemailer';
 
 export async function requestPasswordReset(prevState: { error?: string, success?: string, email?: string, step?: string } | null, formData: FormData) {
     const email = formData.get('email') as string;
@@ -73,16 +73,41 @@ export async function requestPasswordReset(prevState: { error?: string, success?
     }
 
     try {
-        const { error } = await supabase.auth.signInWithOtp({
-            email: email,
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const expiry = new Date(Date.now() + 15 * 60 * 1000); // 15 mins expiry
+        
+        await db.setResetToken(email, otp, expiry);
+
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST || '82.208.22.226',
+            port: parseInt(process.env.SMTP_PORT || '587'),
+            secure: process.env.SMTP_SECURE === 'true',
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
         });
 
-        if (error) {
-            console.error(`[SUPABASE OTP] Gateway Error: ${error.message}`);
-            return { error: `Email failed to send: ${error.message}` };
-        }
+        await transporter.sendMail({
+            from: process.env.SMTP_FROM || 'noreply@fonzkart.in',
+            to: email,
+            subject: 'Your Password Reset OTP - Fonzkart',
+            html: `
+              <div style="font-family: sans-serif; max-w-md; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+                <h2 style="color: #333;">Password Reset Verification</h2>
+                <p>You requested to reset your password on Fonzkart. Please use the following 6-digit OTP to verify your identity:</p>
+                <div style="background-color: #f4f4f4; padding: 15px; text-align: center; font-size: 24px; font-weight: bold; letter-spacing: 5px; border-radius: 5px; margin: 20px 0;">
+                  ${otp}
+                </div>
+                <p style="color: #888; font-size: 12px;">This code will expire in 15 minutes. If you did not request this, please ignore this email.</p>
+              </div>
+            `,
+        });
 
-        console.log(`[SUPABASE OTP] OTP successfully sent to ${email}`);
+        console.log(`[MAIL SERVER] OTP successfully sent to ${email}`);
     } catch (e: unknown) {
         console.error("Email Sending Failed", e instanceof Error ? e.message : e);
         return { error: 'Failed to connect to the email gateway. Please try again later.' };
@@ -105,14 +130,12 @@ export async function verifyAndResetPassword(prevState: { error?: string, succes
         return { error: 'Invalid user.' };
     }
 
-    const { error } = await supabase.auth.verifyOtp({
-        email,
-        token: otp,
-        type: 'email'
-    });
-
-    if (error) {
-        return { error: `Invalid OTP: ${error.message}` };
+    if (user.resetToken !== otp) {
+        return { error: 'Invalid OTP provided.' };
+    }
+    
+    if (!user.resetTokenExpiry || new Date() > user.resetTokenExpiry) {
+        return { error: 'Your OTP has expired. Please request a new one.' };
     }
 
     const passwordHash = await bcrypt.hash(password, 10);

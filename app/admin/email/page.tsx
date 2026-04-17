@@ -19,6 +19,7 @@ export default function EmailDashboard() {
   const [composeTo, setComposeTo] = useState('');
   const [composeSubject, setComposeSubject] = useState('');
   const [composeBody, setComposeBody] = useState('');
+  const [composeAttachments, setComposeAttachments] = useState<File[]>([]);
   const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
@@ -90,21 +91,27 @@ export default function EmailDashboard() {
     e.preventDefault();
     setIsSending(true);
     try {
+      const formData = new FormData();
+      formData.append('fromAccount', selectedAccount);
+      formData.append('to', composeTo);
+      formData.append('subject', composeSubject);
+      formData.append('text', composeBody);
+      
+      composeAttachments.forEach(file => {
+        formData.append('attachments', file);
+      });
+
       const res = await fetch('/api/email/send', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          fromAccount: selectedAccount, 
-          to: composeTo, 
-          subject: composeSubject, 
-          text: composeBody 
-        }),
+        body: formData,
       });
+
       if (res.ok) {
         alert('Email sent successfully');
         setComposeTo('');
         setComposeSubject('');
         setComposeBody('');
+        setComposeAttachments([]);
       } else {
         const error = await res.json();
         alert('Error: ' + error.message);
@@ -238,6 +245,19 @@ export default function EmailDashboard() {
                   className="w-full p-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
                   placeholder="Write your email here..."
                 ></textarea>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Attachments</label>
+                <input 
+                  type="file" 
+                  multiple
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      setComposeAttachments(Array.from(e.target.files));
+                    }
+                  }}
+                  className="w-full p-2 border border-gray-300 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
+                />
               </div>
               <button 
                 type="submit" 

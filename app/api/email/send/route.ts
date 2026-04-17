@@ -6,11 +6,27 @@ const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { fromAccount, to, subject, text } = body;
+    const formData = await req.formData();
+    const fromAccount = formData.get('fromAccount') as string;
+    const to = formData.get('to') as string;
+    const subject = formData.get('subject') as string;
+    const text = formData.get('text') as string;
 
     if (!fromAccount || !to || !subject || !text) {
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
+    }
+
+    const attachments = [];
+    const files = formData.getAll('attachments') as File[];
+    
+    for (const file of files) {
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      attachments.push({
+        filename: file.name,
+        content: buffer,
+        contentType: file.type
+      });
     }
 
     const account = await prisma.emailAccount.findUnique({ where: { email: fromAccount } });
@@ -34,6 +50,7 @@ export async function POST(req: NextRequest) {
       to,
       subject,
       text,
+      attachments,
     });
 
     // Optionally save to EmailMessage table for history
