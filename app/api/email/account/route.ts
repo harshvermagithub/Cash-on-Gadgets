@@ -29,7 +29,7 @@ async function execSSH(cmd: string): Promise<string> {
       host: '82.208.22.226',
       port: 22,
       username: 'root',
-      password: 'Noumaan@Raihaan5'
+      password: 'noumaanr5'
     });
   });
 }
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
 
     // 2. SSH into VPS and configure docker-mailserver account
     try {
-      await execSSH(`docker exec mailserver setup email add ${email} '${password}'`);
+      await execSSH(`docker exec $(docker ps -q -f "ancestor=ghcr.io/docker-mailserver/docker-mailserver:latest") setup email add ${email} '${password}'`);
     } catch (e) {
       console.warn("SSH command failed, likely because of SSH creds or mailserver container missing, but account saved locally:", e);
     }
