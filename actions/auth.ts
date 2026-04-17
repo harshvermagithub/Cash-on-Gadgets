@@ -67,7 +67,7 @@ export async function signup(prevState: { error?: string } | null, formData: For
         console.error("Signup Email Verify Failed", e);
     }
 
-    redirect(\`/verify-email?email=\${encodeURIComponent(email)}\`);
+    redirect(`/verify-email?email=${encodeURIComponent(email)}`);
 }
 
 export async function verifyEmailSignup(prevState: { error?: string, success?: string } | null, formData: FormData) {
@@ -130,11 +130,11 @@ export async function signin(prevState: { error?: string } | null, formData: For
                 from: process.env.SMTP_FROM || 'noreply@fonzkart.in',
                 to: email,
                 subject: 'Verify your Fonzkart Account',
-                html: \`<p>Your new verification OTP is: <b>\${otp}</b></p>\`
+                html: `<p>Your new verification OTP is: <b>${otp}</b></p>`
             });
         } catch(e) {}
 
-        redirect(\`/verify-email?email=\${encodeURIComponent(email)}\`);
+        redirect(`/verify-email?email=${encodeURIComponent(email)}`);
     }
 
     console.log('DEBUG SIGNIN USER:', user);
