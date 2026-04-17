@@ -142,7 +142,7 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                         <>
                             {renderSectionTitle('System')}
                             {renderLink('/admin/admins', 'Users', Users, pathname.includes('/admin/admins'))}
-                            {renderLink('/admin/inbox', 'Mail Inbox', Mail, pathname.includes('/admin/inbox'))}
+                            {renderLink('/admin/email', 'Email', Mail, pathname.includes('/admin/email'))}
                         </>
                     )}
 

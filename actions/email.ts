@@ -62,7 +62,7 @@ export async function sendEmail(prevState: { error?: string, success?: string } 
             }
         });
 
-        revalidatePath('/admin/inbox');
+        revalidatePath('/admin/email');
         return { success: 'Email successfully routed through custom Mail Server!' };
     } catch (e: unknown) {
         return { error: e instanceof Error ? e.message : 'Failed to connect to SMTP server.' };

@@ -3,10 +3,9 @@ const { Client } = require('ssh2');
 const conn = new Client();
 conn.on('ready', () => {
   console.log('Client :: ready');
-  conn.exec('docker ps', (err, stream) => {
+  conn.exec('cat /data/coolify/services/msh60luyag5s0dmbde7rnp3u/docker-compose.yml', (err, stream) => {
     if (err) throw err;
     stream.on('close', (code, signal) => {
-      console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
       conn.end();
     }).on('data', (data) => {
       console.log('STDOUT: ' + data);
@@ -14,8 +13,6 @@ conn.on('ready', () => {
       console.log('STDERR: ' + data);
     });
   });
-}).on('error', (err) => {
-  console.log('Error: ' + err);
 }).connect({
   host: '82.208.22.226',
   port: 22,
