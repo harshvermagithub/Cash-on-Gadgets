@@ -50,9 +50,9 @@ export async function signup(prevState: { error?: string } | null, formData: For
         }
 
         const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST || '82.208.22.226',
-            port: parseInt(process.env.SMTP_PORT || '587'),
-            secure: process.env.SMTP_SECURE === 'true',
+            host: '82.208.22.226',
+            port: 587,
+            secure: false,
             auth: {
                 user: smtpUser,
                 pass: smtpPass,
@@ -131,11 +131,15 @@ export async function signin(prevState: { error?: string } | null, formData: For
         await db.setResetToken(email, otp, expiry);
 
         try {
+            const systemAccount = await prisma.emailAccount.findFirst();
+            const smtpUser = process.env.SMTP_USER || systemAccount?.email;
+            const smtpPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || systemAccount?.password;
+
             const transporter = nodemailer.createTransport({
-                host: process.env.SMTP_HOST || '82.208.22.226',
-                port: parseInt(process.env.SMTP_PORT || '587'),
-                secure: process.env.SMTP_SECURE === 'true',
-                auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+                host: '82.208.22.226',
+                port: 587,
+                secure: false,
+                auth: { user: smtpUser, pass: smtpPass },
                 tls: { rejectUnauthorized: false }
             });
             await transporter.sendMail({
@@ -185,9 +189,9 @@ export async function requestPasswordReset(prevState: { error?: string, success?
         }
 
         const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST || '82.208.22.226',
-            port: parseInt(process.env.SMTP_PORT || '587'),
-            secure: process.env.SMTP_SECURE === 'true',
+            host: '82.208.22.226',
+            port: 587,
+            secure: false,
             auth: {
                 user: smtpUser,
                 pass: smtpPass,
