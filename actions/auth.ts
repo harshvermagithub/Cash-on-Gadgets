@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation';
 
 import nodemailer from 'nodemailer';
 import { PrismaClient } from '@prisma/client';
+import { sendSystemEmail } from '@/lib/email';
 const prisma = new PrismaClient();
 
 export async function signup(prevState: { error?: string } | null, formData: FormData) {
@@ -106,6 +107,24 @@ export async function verifyEmailSignup(prevState: { error?: string, success?: s
     // Verify user
     await db.updateUserRole(email, 'USER');
     await db.clearResetToken(email);
+
+    // Send Welcome Email
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.fonzkart.in';
+    const welcomeHtml = `
+      <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+        <h2 style="color: #333;">Welcome to Fonzkart, ${user.name}!</h2>
+        <p>We are absolutely thrilled to welcome you to the Fonzkart family.</p>
+        <p>At Fonzkart, we believe in giving you the fastest, most reliable, and highest-paying platform to sell your used gadgets right from the comfort of your home.</p>
+        <p>Now that your account is officially verified, you are ready to sell your very first device in less than 60 seconds.</p>
+        
+        <div style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
+          <a href="${appUrl}/" style="background-color: #10b981; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">Get Exact Value</a>
+        </div>
+        
+        <p style="color: #888; font-size: 13px;">If you have any questions, our support team is always available to help.</p>
+      </div>
+    `;
+    sendSystemEmail(email, 'Welcome to Fonzkart! 🚀', welcomeHtml);
 
     // Auto login
     await login({ id: user.id, email: user.email, name: user.name, role: 'USER' });

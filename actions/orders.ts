@@ -3,6 +3,7 @@
 
 import { db } from '@/lib/store';
 import { getSession } from '@/lib/session';
+import { sendSystemEmail } from '@/lib/email';
 // import { redirect } from 'next/navigation';
 
 export async function placeOrder(
@@ -33,6 +34,24 @@ export async function placeOrder(
     };
 
     await db.addOrder(order);
+
+    const user = await db.findUserById(session.user.id);
+    if (user?.email) {
+        const orderHtml = `
+          <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #10b981; border-radius: 10px;">
+            <h2 style="color: #10b981;">Order Confirmed!</h2>
+            <p>Dear ${session.user.name}, your request to sell your <b>${device} (${variant})</b> has been successfully recorded.</p>
+            <div style="background-color: #f4f4f4; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                <p><b>Estimated Value:</b> ₹${price}</p>
+                <p><b>Status:</b> Pending Pickup</p>
+            </div>
+            <p>Our team will review your order and allocate a dedicated executive to your address for pickup shortly.</p>
+            <p style="color: #888; font-size: 12px; margin-top: 20px;">Fonzkart Logistics</p>
+          </div>
+        `;
+        sendSystemEmail(user.email, 'Fonzkart: Order Confirmed', orderHtml);
+    }
+
     return { success: true };
 }
 

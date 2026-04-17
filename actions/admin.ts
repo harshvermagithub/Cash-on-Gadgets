@@ -4,6 +4,10 @@ import { db } from '@/lib/store';
 import { getSession, isAdmin } from '@/lib/session';
 import { revalidatePath } from 'next/cache';
 import { randomUUID } from 'crypto';
+import { sendSystemEmail } from '@/lib/email';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 // Auth check helper
 async function requireAdmin() {
@@ -252,6 +256,28 @@ export async function assignRider(orderId: string, riderId: string) {
     await requireAdmin();
     const success = await db.updateOrderRider(orderId, riderId);
     if (!success) throw new Error('Order not found');
+
+    const order = await prisma.order.findUnique({
+        where: { id: orderId },
+        include: { user: true, rider: true }
+    });
+
+    if (order?.user?.email && order?.rider) {
+        const mailHtml = `
+          <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #3b82f6; border-radius: 10px;">
+            <h2 style="color: #3b82f6;">Executive Assigned! 🚚</h2>
+            <p>Dear ${order.user.name}, we have assigned an executive for your <b>${order.device}</b> pickup!</p>
+            <div style="background-color: #f0fdf4; padding: 15px; border-radius: 8px; margin: 20px 0; border: 1px solid #10b981;">
+                <p style="margin: 5px 0;"><b>Executive Name:</b> ${order.rider.name}</p>
+                <p style="margin: 5px 0;"><b>Executive Contact:</b> ${order.rider.phone}</p>
+                <p style="margin: 5px 0;"><b>Estimated Offer:</b> ₹${order.price}</p>
+            </div>
+            <p>They will contact you shortly to coordinate the pickup time at your provided address.</p>
+            <p style="color: #888; font-size: 12px; margin-top: 20px;">Fonzkart Logistics Tracking</p>
+          </div>
+        `;
+        sendSystemEmail(order.user.email, 'Fonzkart: Executive Assigned for Pickup', mailHtml);
+    }
 
     revalidatePath('/admin');
     revalidatePath('/admin/orders');
