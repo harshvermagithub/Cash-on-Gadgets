@@ -131,9 +131,16 @@ export async function fetchRoleBasedEmails() {
     }
 
     if (role === 'PARTNER') {
-        // Partner sees themselves + their assigned riders (but riders don't have emails, they have phone numbers. Wait, do riders have emails?)
-        // Riders only have 'phone' in DB! So partners basically just see their own emails.
-        return allEmails.filter(e => e.fromEmail.includes(currentUser.email) || e.toEmail.includes(currentUser.email));
+        const myRiders = riders.filter(r => r.partnerId === currentUser.id);
+        const allowedEmails = [
+            currentUser.email,
+            ...myRiders.map(r => r.phone) // Riders primarily use phone, but some may use phone@fonzkart.in
+        ];
+        // In case riders have emails assigned later, we broaden the match slightly
+        return allEmails.filter(e => {
+            return allowedEmails.some(a => e.fromEmail.includes(a) || e.toEmail.includes(a)) ||
+                   myRiders.some(r => e.fromEmail.includes(r.name.replace(/\s+/g, '').toLowerCase()));
+        });
     }
 
     // Fallback normal users
