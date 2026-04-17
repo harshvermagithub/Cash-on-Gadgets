@@ -7,6 +7,10 @@ import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';
 // import { v4 as uuidv4 } from 'uuid';
 
+import nodemailer from 'nodemailer';
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
 export async function signup(prevState: { error?: string } | null, formData: FormData) {
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
@@ -37,19 +41,27 @@ export async function signup(prevState: { error?: string } | null, formData: For
     await db.setResetToken(email, otp, expiry);
 
     try {
+        const systemAccount = await prisma.emailAccount.findFirst();
+        const smtpUser = process.env.SMTP_USER || systemAccount?.email;
+        const smtpPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || systemAccount?.password;
+
+        if (!smtpUser || !smtpPass) {
+             return { error: 'No system email accounts exist. Please create one in /admin/email first.' };
+        }
+
         const transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST || '82.208.22.226',
             port: parseInt(process.env.SMTP_PORT || '587'),
             secure: process.env.SMTP_SECURE === 'true',
             auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASS,
+                user: smtpUser,
+                pass: smtpPass,
             },
             tls: { rejectUnauthorized: false }
         });
 
         await transporter.sendMail({
-            from: process.env.SMTP_FROM || 'noreply@fonzkart.in',
+            from: process.env.SMTP_FROM || smtpUser,
             to: email,
             subject: 'Verify your Fonzkart Account',
             html: `
@@ -146,8 +158,6 @@ export async function createOrderAction(_device: string, _variant: string, _pric
     // This action will be called from client side
 }
 
-import nodemailer from 'nodemailer';
-
 export async function requestPasswordReset(prevState: { error?: string, success?: string, email?: string, step?: string } | null, formData: FormData) {
     const email = formData.get('email') as string;
 
@@ -166,13 +176,21 @@ export async function requestPasswordReset(prevState: { error?: string, success?
         
         await db.setResetToken(email, otp, expiry);
 
+        const systemAccount = await prisma.emailAccount.findFirst();
+        const smtpUser = process.env.SMTP_USER || systemAccount?.email;
+        const smtpPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || systemAccount?.password;
+
+        if (!smtpUser || !smtpPass) {
+             return { error: 'No system email accounts exist. Please create one in /admin/email first.' };
+        }
+
         const transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST || '82.208.22.226',
             port: parseInt(process.env.SMTP_PORT || '587'),
             secure: process.env.SMTP_SECURE === 'true',
             auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASS,
+                user: smtpUser,
+                pass: smtpPass,
             },
             tls: {
                 rejectUnauthorized: false
@@ -180,7 +198,7 @@ export async function requestPasswordReset(prevState: { error?: string, success?
         });
 
         await transporter.sendMail({
-            from: process.env.SMTP_FROM || 'noreply@fonzkart.in',
+            from: process.env.SMTP_FROM || smtpUser,
             to: email,
             subject: 'Your Password Reset OTP - Fonzkart',
             html: `
@@ -197,8 +215,8 @@ export async function requestPasswordReset(prevState: { error?: string, success?
 
         console.log(`[MAIL SERVER] OTP successfully sent to ${email}`);
     } catch (e: unknown) {
-        console.error("Email Sending Failed", e instanceof Error ? e.message : e);
-        return { error: 'Failed to connect to the email gateway. Please try again later.' };
+        console.error("Email Sending Failed", e);
+        return { error: `Email gateway failed: ${e instanceof Error ? e.message : 'Unknown error'}` };
     }
 
     return { success: 'OTP successfully sent to your registered email address.', email, step: 'verify' };
