@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { addRider, deleteRider, updateRiderPartner } from '@/actions/admin';
+import { addRider, deleteRider, updateRiderPartner, addFieldExecutive } from '@/actions/admin';
 import { Trash2, Plus, Loader2, User, Phone, ChevronDown, ChevronUp, Package, AlertTriangle, Building2, ExternalLink } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -13,6 +13,8 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
     const [partnerId, setPartnerId] = useState(currentUserRole === 'PARTNER' ? currentUserId : '');
     const [filterPartner, setFilterPartner] = useState('all');
     const [isLoading, setIsLoading] = useState(false);
+    const [grantEmail, setGrantEmail] = useState('');
+    const [isGranting, setIsGranting] = useState(false);
     const [expandedRider, setExpandedRider] = useState<string | null>(null);
 
     const [riders, setRiders] = useState(initialRiders);
@@ -30,23 +32,22 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
         setExpandedRider(expandedRider === id ? null : id);
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleGrantExecutive = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!name || !phone) return;
-
-        setIsLoading(true);
+        if (!grantEmail) return;
+        setIsGranting(true);
         try {
-            await addRider(name, phone, partnerId || undefined);
-            setName('');
-            setPhone('');
-            if (currentUserRole !== 'PARTNER') {
-                setPartnerId('');
+            const res = await addFieldExecutive(grantEmail);
+            if (res.success) {
+                setGrantEmail('');
+                router.refresh();
+            } else {
+                alert(res.error || "Failed to grant role");
             }
-            router.refresh();
         } catch {
-            alert('Failed to add rider');
+            alert("Failed to grant role");
         } finally {
-            setIsLoading(false);
+            setIsGranting(false);
         }
     };
 
@@ -65,56 +66,83 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
 
     return (
         <div className="space-y-8">
-            <div className="bg-card border rounded-xl p-6">
-                <h3 className="text-lg font-bold mb-4">Add New Field Executive</h3>
-                <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 items-end">
-                    <div className="flex-1 space-y-2 w-full">
-                        <label className="text-sm font-medium">Field Executive Name</label>
-                        <input
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="w-full p-2 border rounded-lg bg-background"
-                            placeholder="e.g. John Doe"
-                        />
-                    </div>
-                    <div className="flex-1 space-y-2 w-full">
-                        <label className="text-sm font-medium">Phone Number</label>
-                        <div className="flex items-center w-full border rounded-lg bg-background overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all">
-                            <span className="pl-3 pr-2 py-2 border-r border-border/50 text-muted-foreground font-medium text-sm bg-muted/20">+91</span>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="bg-card border rounded-xl p-6 shadow-sm">
+                    <h3 className="text-lg font-bold mb-4">Register New Field Executive</h3>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium">Full Name</label>
                             <input
-                                type="tel"
-                                value={phone}
-                                onChange={(e) => {
-                                    const val = e.target.value.replace(/\D/g, '');
-                                    if (val.length <= 10) setPhone(val);
-                                }}
-                                className="w-full p-2 text-sm outline-none bg-transparent"
-                                placeholder="9876543210"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="w-full h-10 px-3 border rounded-lg bg-background outline-none focus:border-primary transition-all text-sm"
+                                placeholder="e.g. John Doe"
                             />
                         </div>
-                    </div>
-                    {currentUserRole !== 'PARTNER' && partners.length > 0 && (
-                        <div className="flex-1 space-y-2 w-full">
-                            <label className="text-sm font-medium">Assign to Partner</label>
-                            <select
-                                value={partnerId || ''}
-                                onChange={(e) => setPartnerId(e.target.value)}
-                                className="w-full p-2 border rounded-lg bg-background"
-                            >
-                                <option value="">None (Unassigned)</option>
-                                {partners.map((p) => (
-                                    <option key={p.id} value={p.id}>{p.name}</option>
-                                ))}
-                            </select>
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium">Phone Number</label>
+                            <div className="flex items-center w-full h-10 border rounded-lg bg-background overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all">
+                                <span className="pl-3 pr-2 py-2 border-r border-border/50 text-muted-foreground font-medium text-xs bg-muted/20">+91</span>
+                                <input
+                                    type="tel"
+                                    value={phone}
+                                    onChange={(e) => {
+                                        const val = e.target.value.replace(/\D/g, '');
+                                        if (val.length <= 10) setPhone(val);
+                                    }}
+                                    className="w-full h-full px-3 text-sm outline-none bg-transparent"
+                                    placeholder="9876543210"
+                                />
+                            </div>
                         </div>
-                    )}
-                    <button
-                        disabled={isLoading || !name || !phone}
-                        className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 h-[42px] min-w-[100px] flex justify-center items-center"
-                    >
-                        {isLoading ? <Loader2 className="animate-spin" /> : <div className="flex items-center gap-2"><Plus className="w-4 h-4" /> Add</div>}
-                    </button>
-                </form>
+                        {currentUserRole !== 'PARTNER' && partners.length > 0 && (
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium">Assign to Partner</label>
+                                <select
+                                    value={partnerId || ''}
+                                    onChange={(e) => setPartnerId(e.target.value)}
+                                    className="w-full h-10 px-3 border rounded-lg bg-background outline-none focus:border-primary transition-all text-sm"
+                                >
+                                    <option value="">None (Unassigned)</option>
+                                    {partners.map((p) => (
+                                        <option key={p.id} value={p.id}>{p.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
+                        <button
+                            disabled={isLoading || !name || !phone}
+                            className="w-full h-10 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 font-bold transition-all flex justify-center items-center gap-2"
+                        >
+                            {isLoading ? <Loader2 className="animate-spin w-4 h-4" /> : <><Plus className="w-4 h-4" /> Register Logistics Staff</>}
+                        </button>
+                    </form>
+                </div>
+
+                <div className="bg-card border rounded-xl p-6 shadow-sm border-dashed">
+                    <h3 className="text-lg font-bold mb-4">Grant Login Access</h3>
+                    <p className="text-sm text-muted-foreground mb-6">Upgrade an existing registered user to Field Executive role so they can access the admin dashboard.</p>
+                    
+                    <form onSubmit={handleGrantExecutive} className="space-y-4">
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium">User Email Address</label>
+                            <input
+                                type="email"
+                                value={grantEmail}
+                                onChange={(e) => setGrantEmail(e.target.value)}
+                                className="w-full h-10 px-3 border rounded-lg bg-background outline-none focus:border-primary transition-all text-sm"
+                                placeholder="rider@fonzkart.in"
+                                required
+                            />
+                        </div>
+                        <button
+                            disabled={isGranting || !grantEmail}
+                            className="w-full h-10 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 disabled:opacity-50 font-bold transition-all flex justify-center items-center gap-2"
+                        >
+                            {isGranting ? <Loader2 className="animate-spin w-4 h-4" /> : <><Plus className="w-4 h-4" /> Grant Dashboard Access</>}
+                        </button>
+                    </form>
+                </div>
             </div>
 
             {currentUserRole !== 'PARTNER' && partners.length > 0 && (

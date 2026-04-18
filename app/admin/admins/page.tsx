@@ -16,6 +16,17 @@ export default async function AdminsPage() {
     const admins = allUsers.filter(u => u.role === 'ADMIN');
     const zonalHeads = allUsers.filter(u => u.role === 'ZONAL_HEAD');
     const partners = allUsers.filter(u => u.role === 'PARTNER');
+    
+    // Combine native riders with users granted FIELD_EXECUTIVE privilege
+    const fieldExecutiveUsers = allUsers.filter(u => u.role === 'FIELD_EXECUTIVE').map(u => ({
+        id: u.id,
+        name: u.name,
+        phone: u.phone || u.email,
+        status: 'available',
+        partnerId: null
+    }));
+    
+    const combinedRiders = [...riders, ...fieldExecutiveUsers];
 
     return (
         <div className="container mx-auto max-w-6xl w-full">
@@ -29,7 +40,7 @@ export default async function AdminsPage() {
                 admins={admins}
                 zonalHeads={zonalHeads}
                 partners={partners}
-                riders={riders}
+                riders={combinedRiders}
             />
         </div>
     );

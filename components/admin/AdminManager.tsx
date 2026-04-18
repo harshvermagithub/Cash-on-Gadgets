@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { addAdmin, removeAdmin, removeUserRole, deleteRider } from '@/actions/admin';
+import { addAdmin, addZonalHead, addPartner, addFieldExecutive, removeAdmin, removeUserRole, deleteRider } from '@/actions/admin';
 import { Trash2, Plus, Loader2, ShieldCheck, Mail, Briefcase, Building2, Users, Crown, Phone } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -30,17 +30,38 @@ export default function AdminManager({
         setIsLoading(true);
         try {
             const result = await addAdmin(email);
-            if (result.success) {
-                setEmail('');
-                router.refresh();
-            } else {
-                alert(result.error || 'Failed to add admin');
-            }
-        } catch {
-            alert('Failed to add admin');
-        } finally {
-            setIsLoading(false);
-        }
+            if (result.success) { setEmail(''); router.refresh(); } else { alert(result.error || 'Failed to add admin'); }
+        } catch { alert('Failed to add admin'); } finally { setIsLoading(false); }
+    };
+
+    const handleAddZonalHead = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!email) return;
+        setIsLoading(true);
+        try {
+            const result = await addZonalHead(email);
+            if (result.success) { setEmail(''); router.refresh(); } else { alert(result.error || 'Failed'); }
+        } catch { alert('Failed'); } finally { setIsLoading(false); }
+    };
+
+    const handleAddPartner = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!email) return;
+        setIsLoading(true);
+        try {
+            const result = await addPartner(email);
+            if (result.success) { setEmail(''); router.refresh(); } else { alert(result.error || 'Failed'); }
+        } catch { alert('Failed'); } finally { setIsLoading(false); }
+    };
+
+    const handleAddFieldExecutive = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!email) return;
+        setIsLoading(true);
+        try {
+            const result = await addFieldExecutive(email);
+            if (result.success) { setEmail(''); router.refresh(); } else { alert(result.error || 'Failed'); }
+        } catch { alert('Failed'); } finally { setIsLoading(false); }
     };
 
     const handleRemoveAdmin = async (adminEmail: string) => {
@@ -206,6 +227,31 @@ export default function AdminManager({
                     </div>
                 )}
                 {activeTab === 'zonalHeads' && (
+                    <div className="space-y-8">
+                        <div className="bg-card border rounded-xl p-6 shadow-sm">
+                            <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                                <Briefcase className="w-5 h-5 text-blue-500" />
+                                Grant Zonal Head Privilege
+                            </h3>
+                            <form onSubmit={handleAddZonalHead} className="flex flex-col md:flex-row gap-4 items-end">
+                                <div className="flex-1 space-y-2 w-full">
+                                    <label className="text-sm font-medium text-muted-foreground">User Email Address</label>
+                                    <input
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        type="email"
+                                        className="w-full h-10 px-3 border rounded-lg bg-background outline-none focus:border-primary transition-colors"
+                                        placeholder="user@example.com"
+                                    />
+                                </div>
+                                <button
+                                    disabled={isLoading || !email}
+                                    className="px-4 h-10 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 min-w-[120px] flex justify-center items-center text-sm font-medium transition-colors"
+                                >
+                                    {isLoading ? <Loader2 className="animate-spin w-4 h-4" /> : <div className="flex items-center gap-2"><Plus className="w-4 h-4" /> Grant Role</div>}
+                                </button>
+                            </form>
+                        </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {zonalHeads.map((zh) => (
                             <div key={zh.id} className="p-4 border rounded-xl bg-card shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between group gap-4">
@@ -234,9 +280,35 @@ export default function AdminManager({
                         ))}
                         {zonalHeads.length === 0 && <p className="text-muted-foreground text-sm col-span-1 md:col-span-2 lg:col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Zonal Heads found.</p>}
                     </div>
+                </div>
                 )}
 
                 {activeTab === 'partners' && (
+                    <div className="space-y-8">
+                        <div className="bg-card border rounded-xl p-6 shadow-sm">
+                            <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                                <Building2 className="w-5 h-5 text-purple-500" />
+                                Grant Partner Privilege
+                            </h3>
+                            <form onSubmit={handleAddPartner} className="flex flex-col md:flex-row gap-4 items-end">
+                                <div className="flex-1 space-y-2 w-full">
+                                    <label className="text-sm font-medium text-muted-foreground">User Email Address</label>
+                                    <input
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        type="email"
+                                        className="w-full h-10 px-3 border rounded-lg bg-background outline-none focus:border-primary transition-colors"
+                                        placeholder="user@example.com"
+                                    />
+                                </div>
+                                <button
+                                    disabled={isLoading || !email}
+                                    className="px-4 h-10 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 min-w-[120px] flex justify-center items-center text-sm font-medium transition-colors"
+                                >
+                                    {isLoading ? <Loader2 className="animate-spin w-4 h-4" /> : <div className="flex items-center gap-2"><Plus className="w-4 h-4" /> Grant Role</div>}
+                                </button>
+                            </form>
+                        </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {partners.map((partner) => (
                             <div key={partner.id} className="p-4 border rounded-xl bg-card shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between group gap-4">
@@ -265,9 +337,35 @@ export default function AdminManager({
                         ))}
                         {partners.length === 0 && <p className="text-muted-foreground text-sm col-span-1 md:col-span-2 lg:col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Partners found.</p>}
                     </div>
+                </div>
                 )}
 
                 {activeTab === 'riders' && (
+                    <div className="space-y-8">
+                         <div className="bg-card border rounded-xl p-6 shadow-sm">
+                            <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                                <Users className="w-5 h-5 text-orange-500" />
+                                Grant Field Executive Login Privilege
+                            </h3>
+                            <form onSubmit={handleAddFieldExecutive} className="flex flex-col md:flex-row gap-4 items-end">
+                                <div className="flex-1 space-y-2 w-full">
+                                    <label className="text-sm font-medium text-muted-foreground">User Email Address</label>
+                                    <input
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        type="email"
+                                        className="w-full h-10 px-3 border rounded-lg bg-background outline-none focus:border-primary transition-colors"
+                                        placeholder="user@example.com"
+                                    />
+                                </div>
+                                <button
+                                    disabled={isLoading || !email}
+                                    className="px-4 h-10 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 min-w-[120px] flex justify-center items-center text-sm font-medium transition-colors"
+                                >
+                                    {isLoading ? <Loader2 className="animate-spin w-4 h-4" /> : <div className="flex items-center gap-2"><Plus className="w-4 h-4" /> Grant Role</div>}
+                                </button>
+                            </form>
+                        </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {riders.map((rider) => (
                             <div key={rider.id} className="p-4 border rounded-xl bg-card shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between group gap-4">
@@ -301,6 +399,7 @@ export default function AdminManager({
                         ))}
                         {riders.length === 0 && <p className="text-muted-foreground text-sm col-span-1 md:col-span-2 lg:col-span-3 p-4 bg-muted/20 border-dashed border rounded-xl text-center">No Field Executives found.</p>}
                     </div>
+                </div>
                 )}
             </div>
         </div>

@@ -40,6 +40,38 @@ export async function addAdmin(email: string) {
     return { success: true };
 }
 
+export async function addZonalHead(email: string) {
+    await requireAdmin();
+    const user = await db.findUserByEmail(email);
+    if (!user) return { success: false, error: 'User not found. They must register first.' };
+
+    await db.updateUserRole(email, 'ZONAL_HEAD');
+    revalidatePath('/admin/admins');
+    revalidatePath('/admin/zonal-heads');
+    return { success: true };
+}
+
+export async function addPartner(email: string) {
+    await requireAdmin();
+    const user = await db.findUserByEmail(email);
+    if (!user) return { success: false, error: 'User not found. They must register first.' };
+
+    await db.updateUserRole(email, 'PARTNER');
+    revalidatePath('/admin/admins');
+    revalidatePath('/admin/partners');
+    return { success: true };
+}
+
+export async function addFieldExecutive(email: string) {
+    await requireAdmin();
+    const user = await db.findUserByEmail(email);
+    if (!user) return { success: false, error: 'User not found. They must register first.' };
+
+    await db.updateUserRole(email, 'FIELD_EXECUTIVE');
+    revalidatePath('/admin/admins');
+    return { success: true };
+}
+
 export async function removeAdmin(email: string) {
     await requireAdmin();
     const session = await getSession();

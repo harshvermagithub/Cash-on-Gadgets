@@ -174,6 +174,12 @@ export async function signin(prevState: { error?: string } | null, formData: For
 
     console.log('DEBUG SIGNIN USER:', user);
     await login({ id: user.id, email: user.email, name: user.name, role: user.role });
+    
+    // Redirect privileged users to admin panel, normal users to homepage
+    if (['SUPER_ADMIN', 'ADMIN', 'ZONAL_HEAD', 'PARTNER', 'FIELD_EXECUTIVE'].includes(user.role)) {
+        redirect('/admin');
+    }
+    
     redirect('/');
 }
 
