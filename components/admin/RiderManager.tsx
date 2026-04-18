@@ -51,6 +51,26 @@ export default function RiderManager({ initialRiders, partners = [], currentUser
         }
     };
 
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!name || !phone) return;
+
+        setIsLoading(true);
+        try {
+            await addRider(name, phone, partnerId || undefined);
+            setName('');
+            setPhone('');
+            if (currentUserRole !== 'PARTNER') {
+                setPartnerId('');
+            }
+            router.refresh();
+        } catch {
+            alert('Failed to add rider');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const handleDelete = async (e: React.MouseEvent, id: string) => {
         e.stopPropagation();
         if (!confirm('Are you sure you want to remove this executive?')) return;
