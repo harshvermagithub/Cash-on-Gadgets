@@ -63,7 +63,14 @@ export const db = {
         });
     },
     findUserByEmail: async (email: string) => {
-        return await prisma.user.findUnique({ where: { email } });
+        return await prisma.user.findFirst({ 
+            where: { 
+                email: { 
+                    equals: email.trim().toLowerCase(), 
+                    mode: 'insensitive' 
+                } 
+            } 
+        });
     },
     findUserById: async (id: string) => {
         return await prisma.user.findUnique({ where: { id } });

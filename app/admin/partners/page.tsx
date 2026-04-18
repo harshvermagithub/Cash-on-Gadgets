@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation';
 import { addPartner } from '@/actions/admin';
 
 import PincodeInput from '@/components/admin/PincodeInput';
+import PartnerUpgradeForm from '@/components/admin/PartnerUpgradeForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -124,39 +125,7 @@ export default async function PartnersPage() {
                             </button>
                         </form>
 
-                        <div className="mt-8 pt-8 border-t">
-                            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-4">Upgrade Existing User</h3>
-                            <form action={async (data) => {
-                                'use server';
-                                const email = data.get('email') as string;
-                                const cityId = data.get('cityId') as string;
-                                if (email) {
-                                    const res = await addPartner(email, cityId || undefined);
-                                    if (!res.success) {
-                                         // Error handling
-                                    }
-                                    revalidatePath('/admin/partners');
-                                }
-                            }} className="space-y-3">
-                                <p className="text-xs text-muted-foreground">Grant Partner role to a registered user.</p>
-                                <div>
-                                    <label className="block text-[10px] font-bold uppercase text-muted-foreground mb-1">User Email</label>
-                                    <input name="email" type="email" required placeholder="user@email.com" className="w-full h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background" />
-                                </div>
-                                <div>
-                                    <label className="block text-[10px] font-bold uppercase text-muted-foreground mb-1">Assign City (Optional)</label>
-                                    <select name="cityId" className="w-full h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background shadow-sm">
-                                        <option value="">No City Assigned</option>
-                                        {availableCities.map(city => (
-                                            <option key={city.id} value={city.id}>{city.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <button type="submit" className="w-full h-9 bg-secondary text-secondary-foreground rounded-md text-xs font-semibold hover:bg-secondary/80 transition-colors mt-2">
-                                    Grant Partner Access
-                                </button>
-                            </form>
-                        </div>
+                        <PartnerUpgradeForm cities={availableCities} />
                     </div>
                 </div>
 

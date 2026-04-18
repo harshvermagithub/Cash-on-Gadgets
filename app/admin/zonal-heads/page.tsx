@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import { getSession, isAdmin } from '@/lib/session';
 import { redirect } from 'next/navigation';
 import { addZonalHead } from '@/actions/admin';
+import ZonalHeadUpgradeForm from '@/components/admin/ZonalHeadUpgradeForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -85,26 +86,7 @@ export default async function ZonalHeadsPage() {
                             </button>
                         </form>
 
-                        <div className="mt-8 pt-8 border-t">
-                            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-4">Upgrade Existing User</h3>
-                            <form action={async (data) => {
-                                'use server';
-                                const email = data.get('email') as string;
-                                if (email) {
-                                    const res = await addZonalHead(email);
-                                    if (!res.success) {
-                                         // Error handling could be improved but simple alert/redirect works in server actions usually
-                                    }
-                                    revalidatePath('/admin/zonal-heads');
-                                }
-                            }} className="space-y-3">
-                                <p className="text-xs text-muted-foreground">Grant Zonal Head role to a registered user.</p>
-                                <input name="email" type="email" required placeholder="user@email.com" className="w-full h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background" />
-                                <button type="submit" className="w-full h-9 bg-secondary text-secondary-foreground rounded-md text-xs font-semibold hover:bg-secondary/80 transition-colors">
-                                    Grant Zonal Head Access
-                                </button>
-                            </form>
-                        </div>
+                        <ZonalHeadUpgradeForm />
                     </div>
                 </div>
 
