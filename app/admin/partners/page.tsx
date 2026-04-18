@@ -129,8 +129,9 @@ export default async function PartnersPage() {
                             <form action={async (data) => {
                                 'use server';
                                 const email = data.get('email') as string;
+                                const cityId = data.get('cityId') as string;
                                 if (email) {
-                                    const res = await addPartner(email);
+                                    const res = await addPartner(email, cityId || undefined);
                                     if (!res.success) {
                                          // Error handling
                                     }
@@ -138,8 +139,20 @@ export default async function PartnersPage() {
                                 }
                             }} className="space-y-3">
                                 <p className="text-xs text-muted-foreground">Grant Partner role to a registered user.</p>
-                                <input name="email" type="email" required placeholder="user@email.com" className="w-full h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background" />
-                                <button type="submit" className="w-full h-9 bg-secondary text-secondary-foreground rounded-md text-xs font-semibold hover:bg-secondary/80 transition-colors">
+                                <div>
+                                    <label className="block text-[10px] font-bold uppercase text-muted-foreground mb-1">User Email</label>
+                                    <input name="email" type="email" required placeholder="user@email.com" className="w-full h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background" />
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] font-bold uppercase text-muted-foreground mb-1">Assign City (Optional)</label>
+                                    <select name="cityId" className="w-full h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background shadow-sm">
+                                        <option value="">No City Assigned</option>
+                                        {availableCities.map(city => (
+                                            <option key={city.id} value={city.id}>{city.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <button type="submit" className="w-full h-9 bg-secondary text-secondary-foreground rounded-md text-xs font-semibold hover:bg-secondary/80 transition-colors mt-2">
                                     Grant Partner Access
                                 </button>
                             </form>

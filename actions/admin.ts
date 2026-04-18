@@ -32,6 +32,7 @@ export async function getAdmins() {
 
 export async function addAdmin(email: string) {
     await requireAdmin();
+    console.log(`[RoleMgmt] Granting ADMIN role to ${email}`);
     const user = await db.findUserByEmail(email);
     if (!user) return { success: false, error: 'User not found. They must register first.' };
 
@@ -42,6 +43,7 @@ export async function addAdmin(email: string) {
 
 export async function addZonalHead(email: string) {
     await requireAdmin();
+    console.log(`[RoleMgmt] Granting ZONAL_HEAD role to ${email}`);
     const user = await db.findUserByEmail(email);
     if (!user) return { success: false, error: 'User not found. They must register first.' };
 
@@ -51,12 +53,24 @@ export async function addZonalHead(email: string) {
     return { success: true };
 }
 
-export async function addPartner(email: string) {
+export async function addPartner(email: string, cityId?: string) {
     await requireAdmin();
+    console.log(`[RoleMgmt] Attempting to grant PARTNER role to ${email}${cityId ? ` in city ${cityId}` : ''}`);
     const user = await db.findUserByEmail(email);
-    if (!user) return { success: false, error: 'User not found. They must register first.' };
+    if (!user) {
+        console.warn(`[RoleMgmt] Failed: User ${email} not found`);
+        return { success: false, error: 'User not found. They must register first.' };
+    }
 
-    await db.updateUserRole(email, 'PARTNER');
+    await prisma.user.update({
+        where: { email },
+        data: { 
+            role: 'PARTNER',
+            ...(cityId ? { cityId } : {})
+        }
+    });
+
+    console.log(`[RoleMgmt] Success: ${email} is now a PARTNER`);
     revalidatePath('/admin/admins');
     revalidatePath('/admin/partners');
     return { success: true };

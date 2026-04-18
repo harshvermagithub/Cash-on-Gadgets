@@ -30,7 +30,13 @@ export default function AdminManager({
         setIsLoading(true);
         try {
             const result = await addAdmin(email);
-            if (result.success) { setEmail(''); router.refresh(); } else { alert(result.error || 'Failed to add admin'); }
+            if (result.success) { 
+                alert(`Successfully granted Admin role to ${email}`);
+                setEmail(''); 
+                router.refresh(); 
+            } else { 
+                alert(result.error || 'Failed to add admin'); 
+            }
         } catch { alert('Failed to add admin'); } finally { setIsLoading(false); }
     };
 
@@ -40,7 +46,13 @@ export default function AdminManager({
         setIsLoading(true);
         try {
             const result = await addZonalHead(email);
-            if (result.success) { setEmail(''); router.refresh(); } else { alert(result.error || 'Failed'); }
+            if (result.success) { 
+                alert(`Successfully granted Zonal Head role to ${email}`);
+                setEmail(''); 
+                router.refresh(); 
+            } else { 
+                alert(result.error || 'Failed'); 
+            }
         } catch { alert('Failed'); } finally { setIsLoading(false); }
     };
 
@@ -50,7 +62,13 @@ export default function AdminManager({
         setIsLoading(true);
         try {
             const result = await addPartner(email);
-            if (result.success) { setEmail(''); router.refresh(); } else { alert(result.error || 'Failed'); }
+            if (result.success) { 
+                alert(`Successfully granted Partner role to ${email}`);
+                setEmail(''); 
+                router.refresh(); 
+            } else { 
+                alert(result.error || 'Failed'); 
+            }
         } catch { alert('Failed'); } finally { setIsLoading(false); }
     };
 
@@ -60,7 +78,13 @@ export default function AdminManager({
         setIsLoading(true);
         try {
             const result = await addFieldExecutive(email);
-            if (result.success) { setEmail(''); router.refresh(); } else { alert(result.error || 'Failed'); }
+            if (result.success) { 
+                alert(`Successfully granted Field Executive role to ${email}`);
+                setEmail(''); 
+                router.refresh(); 
+            } else { 
+                alert(result.error || 'Failed'); 
+            }
         } catch { alert('Failed'); } finally { setIsLoading(false); }
     };
 
