@@ -61,10 +61,10 @@ export async function addZonalHead(email: string) {
     return { success: true };
 }
 
-export async function addPartner(email: string, cityId?: string) {
+export async function addPartner(email: string, cityId?: string, managerId?: string) {
     await requireAdmin();
     const cleanEmail = email.trim().toLowerCase();
-    console.log(`[RoleMgmt] Attempting to grant PARTNER role to ${cleanEmail}${cityId ? ` in city ${cityId}` : ''}`);
+    console.log(`[RoleMgmt] Attempting to grant PARTNER role to ${cleanEmail}${cityId ? ` in city ${cityId}` : ''}${managerId ? ` managed by ${managerId}` : ''}`);
     
     const user = await db.findUserByEmail(cleanEmail);
     if (!user) {
@@ -76,6 +76,7 @@ export async function addPartner(email: string, cityId?: string) {
         where: { id: user.id },
         data: { 
             role: 'PARTNER',
+            managerId: managerId || null,
             ...(cityId ? { cityId } : {})
         }
     });
@@ -85,6 +86,44 @@ export async function addPartner(email: string, cityId?: string) {
     revalidatePath('/admin/partners');
     return { success: true };
 }
+
+export async function updatePartnerManager(partnerId: string, managerId: string | null) {
+    await requireAdmin();
+    await prisma.user.update({
+        where: { id: partnerId },
+        data: { managerId: managerId }
+    });
+    revalidatePath('/admin/partners');
+    return { success: true };
+}
+
+async function requireZonalOrAdmin() {
+    const session = await getSession();
+    if (!session || !session.user) throw new Error('Unauthorized');
+    const roles = ['SUPER_ADMIN', 'ADMIN', 'ZONAL_HEAD'];
+    if (!roles.includes(session.user.role || '')) throw new Error('Forbidden: Admin or Zonal Head access required');
+}
+
+async function requirePartnerOrAbove() {
+    const session = await getSession();
+    if (!session || !session.user) throw new Error('Unauthorized');
+    const roles = ['SUPER_ADMIN', 'ADMIN', 'ZONAL_HEAD', 'PARTNER'];
+    if (!roles.includes(session.user.role || '')) throw new Error('Forbidden: Insufficient privileges');
+}
+
+
+export async function getPartnersManagedBy(managerId: string) {
+    return await prisma.user.findMany({
+        where: { 
+            managerId: managerId,
+            role: 'PARTNER'
+        },
+        include: {
+            city: true
+        }
+    });
+}
+
 
 export async function addFieldExecutive(email: string) {
     await requireAdmin();
@@ -314,7 +353,7 @@ export async function updateRiderPartner(riderId: string, partnerId: string | nu
 // --- Orders ---
 
 export async function assignRider(orderId: string, riderId: string) {
-    await requireAdmin();
+    await requirePartnerOrAbove();
     const success = await db.updateOrderRider(orderId, riderId);
     if (!success) throw new Error('Order not found');
 

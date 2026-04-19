@@ -22,6 +22,12 @@ model User {
   cityId           String?
   pincodes         String[]  @default([])
   managedCities    City[]    @relation("ZonalManager")
+  
+  // Hierarchical Management
+  managerId        String?
+  manager          User?     @relation("UserManagement", fields: [managerId], references: [id])
+  managedUsers     User[]    @relation("UserManagement")
+
   orders           Order[]
   riders           Rider[]
   city             City?     @relation("UserCity", fields: [cityId], references: [id])

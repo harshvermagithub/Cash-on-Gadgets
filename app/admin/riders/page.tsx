@@ -32,7 +32,10 @@ export default async function RidersPage() {
         partners = await prisma.user.findMany({
             where: { 
                 role: 'PARTNER', 
-                cityId: { in: managedCityIds } 
+                OR: [
+                    { cityId: { in: managedCityIds } },
+                    { managerId: currentUser.id }
+                ]
             }
         });
         const partnerIds = partners.map(p => p.id);

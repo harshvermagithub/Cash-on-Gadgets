@@ -27,14 +27,23 @@ export default async function PartnersPage() {
     const partners = await prisma.user.findMany({
         where: {
             role: 'PARTNER',
-            ...(isZonalHead ? { cityId: { in: managedCityIds } } : {})
+            ...(isZonalHead ? { 
+                OR: [
+                    { cityId: { in: managedCityIds } },
+                    { managerId: currentUser.id }
+                ]
+            } : {})
         },
-        include: { city: true },
+        include: { 
+            city: true,
+            manager: true 
+        },
         orderBy: { name: 'asc' }
     });
 
-    const cities = await prisma.city.findMany({
-        include: { users: true }
+    const zonalHeads = await prisma.user.findMany({
+        where: { role: 'ZONAL_HEAD' },
+        orderBy: { name: 'asc' }
     });
 
     const availableCities = await prisma.city.findMany({
@@ -61,25 +70,26 @@ export default async function PartnersPage() {
                         <h2 className="text-xl font-bold mb-6">Register Partner</h2>
                         <form action={async (data) => {
                             'use server';
-                            // ... existing registration logic ...
                             const name = data.get('name') as string;
                             const email = data.get('email') as string;
                             const phone = data.get('phone') as string;
                             const password = data.get('password') as string;
                             const cityId = data.get('cityId') as string;
+                            const managerId = data.get('managerId') as string;
 
                             if (name && email && password) {
                                 const passwordHash = await bcrypt.hash(password, 10);
 
-                                // Security: Zonal heads can only assign to cities they manage
                                 const finalCityId = isZonalHead
                                     ? (managedCityIds.includes(cityId) ? cityId : null)
                                     : (cityId || null);
 
-                                if (isZonalHead && !finalCityId) {
-                                    // Could add error handling here
-                                    return;
-                                }
+                                if (isZonalHead && !finalCityId) return;
+
+                                // If Zonal Head creates, they are the manager. If Admin creates, they can pick.
+                                const finalManagerId = isZonalHead 
+                                    ? currentUser.id 
+                                    : (managerId === 'none' ? null : managerId);
 
                                 await prisma.user.create({
                                     data: {
@@ -88,7 +98,8 @@ export default async function PartnersPage() {
                                         phone,
                                         passwordHash,
                                         role: 'PARTNER',
-                                        cityId: finalCityId
+                                        cityId: finalCityId,
+                                        managerId: finalManagerId
                                     }
                                 });
                                 revalidatePath('/admin/partners');
@@ -120,6 +131,17 @@ export default async function PartnersPage() {
                                     ))}
                                 </select>
                             </div>
+                            {!isZonalHead && (
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">Assign Zonal Head (Manager)</label>
+                                    <select name="managerId" className="w-full h-10 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background">
+                                        <option value="none">None (Independent)</option>
+                                        {zonalHeads.map(zh => (
+                                            <option key={zh.id} value={zh.id}>{zh.name} ({zh.email})</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
                             <button type="submit" className="w-full h-10 mt-2 bg-primary text-primary-foreground rounded-md text-sm font-medium hover:bg-primary/90">
                                 Create New Partner
                             </button>
@@ -137,61 +159,95 @@ export default async function PartnersPage() {
                             <p className="text-sm">Use the form to register new partners.</p>
                         </div>
                     ) : partners.map(p => (
-                        <div key={p.id} className="bg-card border rounded-xl p-6 shadow-sm flex flex-col xl:flex-row xl:items-start justify-between gap-4 w-full overflow-hidden">
-                            <div className="shrink-0">
-                                <div className="flex items-center gap-3 mb-1">
-                                    <h3 className="text-lg font-bold truncate max-w-[200px] sm:max-w-[300px]">{p.name}</h3>
-                                    <span className="shrink-0 px-2 py-0.5 rounded text-[10px] font-bold bg-primary/20 text-primary uppercase tracking-wider">
-                                        Partner
-                                    </span>
-                                </div>
-                                <div className="text-sm text-muted-foreground flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
-                                    <span className="truncate max-w-[200px] sm:max-w-none">{p.email}</span>
-                                    <span className="hidden sm:inline">•</span>
-                                    <span className="truncate">{p.phone}</span>
-                                </div>
-                            </div>
-
-                            <div className="w-full xl:w-auto flex-1 min-w-0 mt-2 xl:mt-0">
-                                <form action={async (data) => {
-                                    'use server';
-                                    const newCityId = data.get('cityId') as string;
-                                    const pincodesStr = data.get('pincodes') as string;
-                                    const pincodes = pincodesStr ? pincodesStr.split(',').map((p: string) => p.trim()).filter(Boolean) : [];
-
-                                    // Security check: Zonal heads can only assign to cities they manage
-                                    const finalCityId = isZonalHead
-                                        ? (managedCityIds.includes(newCityId) ? newCityId : p.cityId)
-                                        : (newCityId === 'none' ? null : newCityId);
-
-                                    await prisma.user.update({
-                                        where: { id: p.id },
-                                        data: {
-                                            cityId: finalCityId,
-                                            pincodes
-                                        }
-                                    });
-                                    revalidatePath('/admin/partners');
-                                    revalidatePath('/admin/cities');
-                                }} className="flex flex-col sm:flex-row gap-4 items-start bg-muted/20 p-4 rounded-lg w-full">
-                                    <div className="flex flex-col gap-1 w-full sm:w-[180px] shrink-0">
-                                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Assigned City</label>
-                                        <select
-                                            name="cityId"
-                                            defaultValue={p.cityId || 'none'}
-                                            className="w-full h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background shrink-0"
-                                        >
-                                            <option value="none" className="italic text-muted-foreground">Unassigned</option>
-                                            {availableCities.map(city => (
-                                                <option key={city.id} value={city.id}>{city.name}</option>
-                                            ))}
-                                        </select>
+                        <div key={p.id} className="bg-card border rounded-xl p-6 shadow-sm flex flex-col gap-6 w-full overflow-hidden">
+                            <div className="flex flex-col xl:flex-row xl:items-start justify-between gap-4">
+                                <div className="shrink-0">
+                                    <div className="flex items-center gap-3 mb-1">
+                                        <h3 className="text-lg font-bold truncate max-w-[200px] sm:max-w-[300px]">{p.name}</h3>
+                                        <span className="shrink-0 px-2 py-0.5 rounded text-[10px] font-bold bg-primary/20 text-primary uppercase tracking-wider">
+                                            Partner
+                                        </span>
                                     </div>
-                                    <div className="w-full min-w-0">
-                                        <PincodeInput initialPincodes={p.pincodes || []} />
+                                    <div className="text-sm text-muted-foreground flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                                        <span className="truncate max-w-[200px] sm:max-w-none">{p.email}</span>
+                                        <span className="hidden sm:inline">•</span>
+                                        <span className="truncate">{p.phone}</span>
                                     </div>
-                                    <button type="submit" className="h-9 px-4 shrink-0 bg-secondary text-secondary-foreground rounded-md text-sm font-medium hover:bg-secondary/80 w-full sm:w-auto mt-2 sm:mt-0 sm:self-end text-center flex-none">Save Settings</button>
-                                </form>
+                                    {p.manager && (
+                                        <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100 text-[10px] font-black uppercase tracking-tighter shadow-sm">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>
+                                            Managed by: {p.manager.name}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="w-full xl:w-auto flex-1 min-w-0">
+                                    <form action={async (data) => {
+                                        'use server';
+                                        const newCityId = data.get('cityId') as string;
+                                        const managerId = data.get('managerId') as string;
+                                        const pincodesStr = data.get('pincodes') as string;
+                                        const pincodes = pincodesStr ? pincodesStr.split(',').map((p: string) => p.trim()).filter(Boolean) : [];
+
+                                        const finalCityId = isZonalHead
+                                            ? (managedCityIds.includes(newCityId) ? newCityId : p.cityId)
+                                            : (newCityId === 'none' ? null : newCityId);
+                                        
+                                        const finalManagerId = isZonalHead 
+                                            ? p.managerId // Zonal heads cannot reassign managers
+                                            : (managerId === 'none' ? null : managerId);
+
+                                        await prisma.user.update({
+                                            where: { id: p.id },
+                                            data: {
+                                                cityId: finalCityId,
+                                                managerId: finalManagerId,
+                                                pincodes
+                                            }
+                                        });
+                                        revalidatePath('/admin/partners');
+                                    }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 bg-muted/20 p-4 rounded-lg">
+                                        <div className="flex flex-col gap-1 shrink-0">
+                                            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Assigned City</label>
+                                            <select
+                                                name="cityId"
+                                                defaultValue={p.cityId || 'none'}
+                                                className="w-full h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background shrink-0"
+                                            >
+                                                <option value="none" className="italic text-muted-foreground">Unassigned</option>
+                                                {availableCities.map(city => (
+                                                    <option key={city.id} value={city.id}>{city.name}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        
+                                        {!isZonalHead && (
+                                            <div className="flex flex-col gap-1 shrink-0">
+                                                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Managed By</label>
+                                                <select
+                                                    name="managerId"
+                                                    defaultValue={p.managerId || 'none'}
+                                                    className="w-full h-9 px-3 rounded-md border text-sm outline-none focus:border-primary bg-background shrink-0"
+                                                >
+                                                    <option value="none" className="italic text-muted-foreground">No Zonal Head</option>
+                                                    {zonalHeads.map(zh => (
+                                                        <option key={zh.id} value={zh.id}>{zh.name}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        )}
+
+                                        <div className="md:col-span-2 lg:col-span-1 xl:col-span-1">
+                                            <PincodeInput initialPincodes={p.pincodes || []} />
+                                        </div>
+                                        
+                                        <div className="md:col-span-2 lg:col-span-3 xl:col-span-3">
+                                            <button type="submit" className="h-9 px-4 w-full bg-secondary text-secondary-foreground rounded-md text-sm font-medium hover:bg-secondary/80 text-center">
+                                                Save Partner Configuration
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     ))}
