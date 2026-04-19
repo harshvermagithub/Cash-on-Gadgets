@@ -13,6 +13,8 @@ export async function syncImapEmails(targetAccount?: string) {
         where: targetAccount ? { email: targetAccount } : {}
     });
 
+    const results = [];
+
     for (const acc of accounts) {
         try {
             const client = new ImapFlow({
@@ -28,8 +30,7 @@ export async function syncImapEmails(targetAccount?: string) {
             try {
                 const mailbox = client.mailbox as any;
                 if (mailbox && mailbox.exists > 0) {
-                    // Fetch more emails (last 100 or so)
-                    const limit = 100;
+                    const limit = 50; 
                     const seq = mailbox.exists > limit ? `${mailbox.exists - (limit - 1)}:*` : '1:*';
                     
                     for await (let msg of client.fetch(seq, { source: true, uid: true })) {
@@ -37,9 +38,8 @@ export async function syncImapEmails(targetAccount?: string) {
                             const parsed = await simpleParser(msg.source);
                             const fromEmail = (parsed.from as any)?.value?.[0]?.address || (parsed.from as any)?.text || '';
                             const toEmail = (parsed.to as any)?.value?.[0]?.address || (parsed.to as any)?.text || acc.email;
-                            const messageId = msg.uid.toString() + '-' + acc.email; // Local unique ID
+                            const messageId = msg.uid.toString() + '-' + acc.email;
 
-                            // Upsert into DB to avoid duplicates
                             await prisma.emailMessage.upsert({
                                 where: { messageId },
                                 create: {
@@ -54,87 +54,101 @@ export async function syncImapEmails(targetAccount?: string) {
                                     isOutbound: false,
                                     status: 'received'
                                 },
-                                update: {} // Don't update once received
+                                update: {}
                             });
                         }
                     }
                 }
+                results.push({ email: acc.email, status: 'success' });
             } finally {
                 lock.release();
             }
             await client.logout();
-        } catch (e) {
+        } catch (e: any) {
             console.error(`IMAP sync failed for ${acc.email}: ${e}`);
+            results.push({ email: acc.email, status: 'failed', error: e.message });
         }
     }
+    return results;
 }
 
 export async function fetchRoleBasedEmails(selectedAccount?: string, skipSync: boolean = false) {
-    const session = await getSession();
-    if (!session || !session.user) throw new Error('Unauthorized');
+    try {
+        const session = await getSession();
+        if (!session || !session.user) return { error: 'Unauthorized', emails: [] };
 
-    const currentUser = await prisma.user.findUnique({
-        where: { id: session.user.id },
-        include: { managedCities: true }
-    });
-    if (!currentUser) throw new Error('User not found');
-
-    const role = currentUser.role;
-
-    // Trigger background sync only if not skipped
-    if (role === 'SUPER_ADMIN' && !skipSync) {
-        try {
-            await syncImapEmails(selectedAccount);
-        } catch (e) {
-            console.error("Auto-sync failed", e);
-        }
-    }
-
-    // Fetch from database
-    let whereClause: any = {};
-    if (selectedAccount) {
-        whereClause = {
-            OR: [
-                { from: selectedAccount },
-                { to: selectedAccount }
-            ]
-        };
-    }
-
-    const messages = await prisma.emailMessage.findMany({
-        where: whereClause,
-        orderBy: { receivedAt: 'desc' },
-        take: 300 
-    });
-
-    const allEmails = messages.map(msg => ({
-        id: msg.id,
-        subject: msg.subject || 'No Subject',
-        fromEmail: msg.from,
-        toEmail: msg.to,
-        date: msg.receivedAt,
-        text: msg.bodyText || '',
-        snippet: msg.bodySnippet || '',
-        isOutbound: msg.isOutbound,
-        bodyHtml: msg.bodyHtml
-    }));
-
-    if (role === 'SUPER_ADMIN') {
-        return allEmails;
-    }
-
-    const allUsers = await prisma.user.findMany({ select: { email: true, role: true }});
-    
-    if (role === 'ADMIN') {
-        const superAdmins = allUsers.filter(u => u.role === 'SUPER_ADMIN').map(u => u.email);
-        return allEmails.filter(e => {
-             const fromSuper = superAdmins.some(sa => e.fromEmail.includes(sa));
-             const toSuper = superAdmins.some(sa => e.toEmail.includes(sa));
-             return !(fromSuper && toSuper);
+        const currentUser = await prisma.user.findUnique({
+            where: { id: session.user.id },
+            include: { managedCities: true }
         });
-    }
+        if (!currentUser) return { error: 'User not found in database', emails: [] };
 
-    return allEmails.filter(e => e.fromEmail.includes(currentUser.email) || e.toEmail.includes(currentUser.email));
+        const role = currentUser.role;
+
+        // Trigger sync only if requested
+        if (role === 'SUPER_ADMIN' && !skipSync) {
+            await syncImapEmails(selectedAccount);
+        }
+
+        // Fetch from database
+        let whereClause: any = {};
+        if (selectedAccount) {
+            whereClause = {
+                OR: [
+                    { from: selectedAccount },
+                    { to: selectedAccount }
+                ]
+            };
+        }
+
+        const messages = await prisma.emailMessage.findMany({
+            where: whereClause,
+            orderBy: { receivedAt: 'desc' },
+            take: 300 
+        });
+
+        const totalInDb = await prisma.emailMessage.count();
+        const totalAccounts = await prisma.emailAccount.count();
+
+        const allEmails = messages.map(msg => ({
+            id: msg.id,
+            subject: msg.subject || 'No Subject',
+            fromEmail: msg.from,
+            toEmail: msg.to,
+            date: msg.receivedAt,
+            text: msg.bodyText || '',
+            snippet: msg.bodySnippet || '',
+            isOutbound: msg.isOutbound,
+            bodyHtml: msg.bodyHtml
+        }));
+
+        let filtered = allEmails;
+
+        if (role !== 'SUPER_ADMIN') {
+            const allUsers = await prisma.user.findMany({ select: { email: true, role: true }});
+            
+            if (role === 'ADMIN') {
+                const superAdmins = allUsers.filter(u => u.role === 'SUPER_ADMIN').map(u => u.email);
+                filtered = allEmails.filter(e => {
+                    const fromSuper = superAdmins.some(sa => e.fromEmail.includes(sa));
+                    const toSuper = superAdmins.some(sa => e.toEmail.includes(sa));
+                    return !(fromSuper && toSuper);
+                });
+            } else {
+                filtered = allEmails.filter(e => e.fromEmail.includes(currentUser.email) || e.toEmail.includes(currentUser.email));
+            }
+        }
+
+        return { 
+            emails: filtered, 
+            totalInDb, 
+            totalAccounts,
+            userRole: role,
+            userEmail: currentUser.email 
+        };
+    } catch (e: any) {
+        return { error: e.message, emails: [], totalInDb: 0 };
+    }
 }
 
 export async function fetchEmailById(id: string) {

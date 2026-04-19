@@ -17,11 +17,12 @@ import {
     Plus,
     X,
     CheckCircle2,
-    Loader2
+    Loader2,
+    AlertCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function EmailClient({ role, userEmail }: { role: string, userEmail: string }) {
+export default function EmailClient({ role: initialRole, userEmail: initialUserEmail }: { role: string, userEmail: string }) {
   const [activeTab, setActiveTab] = useState<'inbox' | 'sent' | 'compose' | 'manage'>('inbox');
   const [emails, setEmails] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +30,13 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
   const [selectedEmailId, setSelectedEmailId] = useState<string | null>(null);
   const [fullEmail, setFullEmail] = useState<any | null>(null);
   
+  // Diagnostic State
+  const [debugData, setDebugData] = useState({
+      role: initialRole,
+      dbCount: 0,
+      error: null as string | null
+  });
+
   // Filtering
   const [accounts, setAccounts] = useState<any[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<string>('');
@@ -48,18 +56,30 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
 
   useEffect(() => {
     loadEmails(true); // Skip sync on mount for speed
-    if (role === 'SUPER_ADMIN') {
+    if (initialRole === 'SUPER_ADMIN') {
         fetchAccounts();
     }
-  }, [selectedAccount, role]);
+  }, [selectedAccount, initialRole]);
 
   const loadEmails = async (skipSync: boolean = false) => {
     setIsLoading(true);
     try {
-      const data = await fetchRoleBasedEmails(selectedAccount || undefined, skipSync);
-      setEmails(data);
-    } catch (e) {
+      const result: any = await fetchRoleBasedEmails(selectedAccount || undefined, skipSync);
+      if (result.error) {
+          setDebugData(prev => ({ ...prev, error: result.error }));
+      } else {
+          setEmails(result.emails);
+          setDebugData(prev => ({ 
+              ...prev, 
+              dbCount: result.totalInDb, 
+              accountCount: result.totalAccounts,
+              role: result.userRole,
+              error: null
+          }));
+      }
+    } catch (e: any) {
       console.error(e);
+      setDebugData(prev => ({ ...prev, error: e.message }));
     } finally {
       setIsLoading(false);
     }
@@ -68,10 +88,11 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
   const handleManualSync = async () => {
     setIsSyncing(true);
     try {
-        await syncImapEmails(selectedAccount || undefined);
+        const syncResult = await syncImapEmails(selectedAccount || undefined);
+        console.log("Sync Result:", syncResult);
         await loadEmails(true); // Fetch updated DB records
-    } catch (e) {
-        alert('Sync failed');
+    } catch (e: any) {
+        alert('Sync failed: ' + e.message);
     } finally {
         setIsSyncing(false);
     }
@@ -94,7 +115,6 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
     const email = emails.find(e => e.id === id);
     if (email) {
         setFullEmail(email);
-        // Also fetch from server to get full body if snippet was used
         try {
             const detailed = await fetchEmailById(id);
             if (detailed) setFullEmail(detailed);
@@ -116,7 +136,7 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
       formData.append('to', composeTo);
       formData.append('subject', composeSubject);
       formData.append('text', composeBody);
-
+      
       attachments.forEach(file => {
           formData.append('attachments', file);
       });
@@ -133,13 +153,13 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
         setComposeBody('');
         setAttachments([]);
         setActiveTab('sent');
-        loadEmails();
+        loadEmails(true);
       } else {
         const error = await res.json();
         alert('Error: ' + error.message);
       }
-    } catch (e) {
-      alert('Error sending email');
+    } catch (e: any) {
+      alert('Error sending email: ' + e.message);
     } finally {
       setIsSending(false);
     }
@@ -147,7 +167,7 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
 
   const filteredEmails = emails.filter(e => {
       const isTypeMatch = activeTab === 'sent' ? e.isOutbound : !e.isOutbound;
-      const isSearchMatch = (e.subject + e.fromEmail + e.text).toLowerCase().includes(searchQuery.toLowerCase());
+      const isSearchMatch = (e.subject + e.fromEmail + (e.text || '')).toLowerCase().includes(searchQuery.toLowerCase());
       return isTypeMatch && isSearchMatch;
   });
 
@@ -179,7 +199,7 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
                 { id: 'sent', label: 'Sent', icon: Send },
                 { id: 'manage', label: 'Accounts', icon: Settings, adminOnly: true }
             ].map((item) => {
-                if (item.adminOnly && role !== 'SUPER_ADMIN') return null;
+                if (item.adminOnly && initialRole !== 'SUPER_ADMIN') return null;
                 const Icon = item.icon;
                 return (
                     <button
@@ -198,25 +218,33 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
                             <Icon className={`w-5 h-5 ${activeTab === item.id ? 'text-emerald-600' : 'text-slate-400'}`} />
                             <span className="font-medium">{item.label}</span>
                         </div>
-                        {item.id === 'inbox' && emails.filter(e => !e.isOutbound).length > 0 && (
-                             <span className="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                                {emails.filter(e => !e.isOutbound).length}
-                             </span>
-                        )}
                     </button>
                 );
             })}
         </nav>
 
-        {/* Debug Info */}
-        <div className="p-4 m-2 rounded-lg bg-amber-50 text-[10px] text-amber-800 border border-amber-100 font-mono">
-            <p>ROLE: {role}</p>
-            <p>DB EMAILS: {emails.length}</p>
-            <p>FILTER: {selectedAccount || 'ALL'}</p>
-            <p>USER: {userEmail}</p>
+        {/* Diagnostic Panel */}
+        <div className="p-4 m-2 rounded-xl bg-slate-900 text-[10px] text-slate-300 font-mono space-y-1 shadow-inner">
+            <div className="flex justify-between">
+                <span>ROLE:</span>
+                <span className="text-emerald-400 font-bold">{debugData.role}</span>
+            </div>
+            <div className="flex justify-between">
+                <span>DB EMAILS:</span>
+                <span className="text-white font-bold">{debugData.dbCount}</span>
+            </div>
+            <div className="flex justify-between">
+                <span>LOADED:</span>
+                <span className="text-blue-400 font-bold">{emails.length}</span>
+            </div>
+            {debugData.error && (
+                <div className="mt-2 text-red-400 break-words opacity-80">
+                    ERR: {debugData.error}
+                </div>
+            )}
         </div>
 
-        {role === 'SUPER_ADMIN' && (
+        {initialRole === 'SUPER_ADMIN' && (
             <div className="p-4 border-t border-slate-100">
                 <label className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2 block">Viewing Account</label>
                 <select 
@@ -255,14 +283,14 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
                 <button 
                     onClick={handleManualSync}
                     disabled={isSyncing}
-                    className="p-2 hover:bg-slate-50 rounded-full text-slate-500 transition-colors"
+                    className="p-2 hover:bg-slate-50 rounded-full text-slate-500 transition-colors flex items-center gap-2"
                 >
                     <RefreshCw className={`w-5 h-5 ${isSyncing ? 'animate-spin' : ''}`} />
                 </button>
                 <div className="h-8 w-px bg-slate-100 mx-2"></div>
                 <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs uppercase">
-                        {userEmail.charAt(0)}
+                        {initialUserEmail.charAt(0)}
                     </div>
                 </div>
             </div>
@@ -285,13 +313,6 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
                         </div>
                         <h3 className="font-bold text-slate-800">No emails found</h3>
                         <p className="text-slate-400 text-sm max-w-[240px] mt-1">Try syncing manually or check your active account filter.</p>
-                        <button 
-                            onClick={handleManualSync}
-                            className="mt-6 text-emerald-600 font-semibold flex items-center gap-2 hover:underline"
-                        >
-                            <RefreshCw className="w-4 h-4" />
-                            Sync Now
-                        </button>
                     </div>
                 ) : (
                     <div className="divide-y divide-slate-50">
@@ -320,7 +341,7 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
                                     {email.subject}
                                 </h4>
                                 <p className="text-[11px] text-slate-400 line-clamp-2 mt-0.5 leading-relaxed">
-                                    {email.snippet || email.text.substring(0, 100)}
+                                    {email.snippet || (email.text && email.text.substring(0, 100)) || 'No content preview'}
                                 </p>
                             </motion.div>
                         ))}
@@ -328,7 +349,7 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
                 )}
             </div>
 
-            {/* EMAIL DETAIL (Gmail Expansion Style) */}
+            {/* EMAIL DETAIL */}
             <AnimatePresence>
                 {(selectedEmailId && fullEmail) && (
                     <motion.div 
@@ -357,7 +378,7 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
                             <div className="flex items-center justify-between mb-8 pb-8 border-b border-slate-50">
                                 <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold">
-                                        {(fullEmail.fromEmail || fullEmail.from).charAt(0).toUpperCase()}
+                                        {(fullEmail.fromEmail || fullEmail.from || '').charAt(0).toUpperCase()}
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-2">
@@ -415,7 +436,7 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
                         </header>
                         <form onSubmit={handleSendEmail} className="p-8 space-y-6">
                             <div className="grid gap-6">
-                                {role === 'SUPER_ADMIN' && (
+                                {initialRole === 'SUPER_ADMIN' && (
                                     <div className="space-y-2">
                                         <label className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1">From Account</label>
                                         <select 
@@ -510,8 +531,8 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
                 </div>
             )}
 
-            {/* MANAGE ACCOUNTS (SUPER ADMIN) */}
-            {!selectedEmailId && activeTab === 'manage' && role === 'SUPER_ADMIN' && (
+            {/* MANAGE ACCOUNTS */}
+            {!selectedEmailId && activeTab === 'manage' && initialRole === 'SUPER_ADMIN' && (
                 <div className="flex-1 overflow-y-auto p-12 bg-[#f8fafc]">
                     <div className="max-w-4xl mx-auto space-y-12">
                         <div>
@@ -525,7 +546,7 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
                                     <Plus className="w-5 h-5 text-emerald-500" />
                                     Provision New Identity
                                 </h3>
-                                <form onSubmit={handleSendEmail} className="space-y-5">
+                                <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
                                     <div className="space-y-2">
                                         <label className="text-xs font-bold text-slate-400 uppercase pl-1">Email Alias</label>
                                         <div className="flex">
@@ -586,9 +607,6 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
                                                         <p className="text-[10px] text-emerald-500 font-bold uppercase tracking-widest">Active & Routed</p>
                                                     </div>
                                                 </div>
-                                                <button className="p-2 text-slate-300 hover:text-red-500 transition-colors">
-                                                    <X className="w-4 h-4" />
-                                                </button>
                                             </div>
                                         ))
                                     )}
@@ -603,8 +621,7 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
     </div>
   );
 
-  async function handleCreateAccount(e: any) {
-    e.preventDefault();
+  async function handleCreateAccount() {
     setIsCreating(true);
     try {
       const res = await fetch('/api/email/account', {
@@ -619,10 +636,10 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
         fetchAccounts();
       } else {
         const error = await res.json();
-        alert('Error: ' + error.message);
+        alert('Error: ' + (error.message || error.error));
       }
-    } catch (e) {
-      alert('Error creating account');
+    } catch (e: any) {
+      alert('Error creating account: ' + e.message);
     } finally {
       setIsCreating(false);
     }

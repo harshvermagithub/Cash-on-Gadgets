@@ -51,22 +51,34 @@ export async function POST(req: NextRequest) {
       attachments,
     });
 
-    // Optionally save to EmailMessage table for history
-    await prisma.emailMessage.create({
-      data: {
-        messageId: info.messageId,
-        from: account.email,
-        to,
-        subject,
-        bodyText: text,
-        isOutbound: true,
-        receivedAt: new Date(),
-      }
-    });
+    // Save to EmailMessage table for history
+    try {
+      console.log("Saving email to DB...", { messageId: info.messageId });
+      await prisma.emailMessage.create({
+        data: {
+          messageId: info.messageId,
+          from: account.email,
+          to,
+          subject,
+          bodyText: text,
+          isOutbound: true,
+          receivedAt: new Date(),
+        }
+      });
+      console.log("Email saved to DB successfully");
+    } catch (dbErr: any) {
+      console.error("Database save failed for sent email:", dbErr);
+      return NextResponse.json({ 
+        success: true, 
+        messageId: info.messageId, 
+        warning: 'Email sent but failed to save in history log', 
+        error: dbErr.message 
+      });
+    }
 
     return NextResponse.json({ success: true, messageId: info.messageId });
   } catch (e: any) {
     console.error("SMTP Error:", e);
-    return NextResponse.json({ message: e.message }, { status: 500 });
+    return NextResponse.json({ message: e.message || 'Unknown SMTP error' }, { status: 500 });
   }
 }
