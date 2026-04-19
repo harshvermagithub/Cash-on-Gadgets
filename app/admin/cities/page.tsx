@@ -98,7 +98,7 @@ export default async function CitiesAdminPage() {
                 <p className="text-red-600 mb-4">The application is running newer code than the database supports. This usually happens after a hierarchy update.</p>
                 <div className="bg-slate-900 text-emerald-400 p-4 rounded-xl font-mono text-sm mb-4">
                     Run this in Coolify Terminal:<br/>
-                    <span className="text-white">npx prisma db push --accept-data-loss</span>
+                    <span className="text-white">npx prisma@5.21.1 db push --accept-data-loss</span>
                 </div>
                 <p className="text-xs text-slate-500 italic">Error Details: {error.message}</p>
             </div>
