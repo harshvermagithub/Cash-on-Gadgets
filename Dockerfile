@@ -53,6 +53,5 @@ COPY --from=builder /app/prisma ./prisma
 EXPOSE 3000
 ENV PORT 3000
 
-# We still want to run prisma db push on start
-# We'll use a shell command to run both
-CMD npx prisma db push --accept-data-loss && node server.js
+# Start the server directly to avoid npx overhead in the lean container
+CMD ["node", "server.js"]
