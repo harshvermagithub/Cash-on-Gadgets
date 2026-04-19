@@ -211,85 +211,106 @@ export function HomeClient({ initialBrands, activeCities = [], displayPrices = [
             </section>
 
             {/* Why Choose Us Section */}
-            <section className="py-24 bg-slate-900 dark:bg-black overflow-hidden w-full">
-                <div className="container mx-auto px-6">
-                    <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-                        <motion.h2
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6 }}
-                            viewport={{ once: true }}
-                            className="text-3xl md:text-4xl font-bold uppercase tracking-wide text-green-400"
-                        >
-                            WHY CHOOSE US
-                        </motion.h2>
-                        <motion.div
-                            initial={{ width: 0 }}
-                            whileInView={{ width: 80 }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                            viewport={{ once: true }}
-                            className="h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto rounded-full"
-                        />
+            <section className="py-24 bg-slate-950 overflow-hidden w-full relative">
+                {/* Background Glow */}
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/5 blur-[120px] rounded-full -mr-64 -mt-64" />
+                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emerald-500/5 blur-[120px] rounded-full -ml-64 -mb-64 opacity-50" />
+
+                <div className="container mx-auto px-6 relative z-10">
+                    <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-20">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-[0.2em] mb-6">
+                            The Fonzkart Advantage
+                        </div>
+                        <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white mb-6 leading-none">
+                            Why <span className="text-emerald-500">Choose</span> Us
+                        </h2>
+                        <div className="h-1.5 w-24 bg-gradient-to-r from-emerald-500 to-transparent rounded-full mb-8" />
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8">
                         {/* Benefit 1: Prices */}
                         <motion.div
                             whileHover={{ y: -10 }}
-                            initial={{ opacity: 0, scale: 0.9 }}
+                            initial={{ opacity: 0, scale: 0.95 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.5 }}
-                            className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-white/[0.03] dark:backdrop-blur-xl p-6 rounded-3xl border border-slate-700 dark:border-white/10 hover:border-green-600 dark:hover:border-white/20 dark:hover:bg-white/[0.06] hover:shadow-2xl dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)] transition-all duration-300 group cursor-default"
+                            className="group p-8 bg-white/[0.03] border border-white/5 rounded-[2.5rem] relative overflow-hidden transition-all duration-500 hover:bg-white/[0.05] hover:border-emerald-500/30"
                         >
-                            <div className="relative w-28 h-28 flex-shrink-0 flex items-center justify-center pointer-events-none">
-                                <PriceGraphic />
-                            </div>
-                            <div className="space-y-2">
-                                <h3 className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">Amazing Prices</h3>
-                                <p className="text-slate-400 text-sm leading-relaxed">
-                                    Buying or selling, we guarantee the best market rates for your device.
-                                </p>
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-3xl -mr-16 -mt-16 group-hover:bg-emerald-500/20 transition-all duration-500" />
+                            
+                            <div className="relative z-10 space-y-6">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-widest">
+                                    Premium Value
+                                </div>
+                                
+                                <div className="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center border border-white/10 shadow-2xl group-hover:scale-110 group-hover:bg-emerald-500 transition-all duration-500">
+                                    <PriceGraphic className="w-8 h-8 group-hover:text-slate-950 transition-colors" />
+                                </div>
+
+                                <div className="space-y-3">
+                                    <h3 className="text-2xl font-black text-white tracking-tight group-hover:text-emerald-400 transition-colors">Amazing Prices</h3>
+                                    <p className="text-slate-400 text-sm leading-relaxed font-medium">
+                                        We use real-time market indexing to guarantee you the absolute highest cash offer for your device compared to any competitor.
+                                    </p>
+                                </div>
                             </div>
                         </motion.div>
 
                         {/* Benefit 2: Speed */}
                         <motion.div
                             whileHover={{ y: -10 }}
-                            initial={{ opacity: 0, scale: 0.9 }}
+                            initial={{ opacity: 0, scale: 0.95 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: 0.1 }}
-                            className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-white/[0.03] dark:backdrop-blur-xl p-6 rounded-3xl border border-slate-700 dark:border-white/10 hover:border-teal-600 dark:hover:border-white/20 dark:hover:bg-white/[0.06] hover:shadow-2xl dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)] transition-all duration-300 group cursor-default"
+                            transition={{ delay: 0.1 }}
+                            className="group p-8 bg-white/[0.03] border border-white/5 rounded-[2.5rem] relative overflow-hidden transition-all duration-500 hover:bg-white/[0.05] hover:border-emerald-500/30"
                         >
-                            <div className="relative w-28 h-28 flex-shrink-0 flex items-center justify-center pointer-events-none">
-                                <SpeedGraphic />
-                            </div>
-                            <div className="space-y-2">
-                                <h3 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">Quick & Fast Service</h3>
-                                <p className="text-slate-400 text-sm leading-relaxed">
-                                    Get cash instantly at your doorstep just before the pickup completes. No waiting—payment is processed immediately.
-                                </p>
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-3xl -mr-16 -mt-16 group-hover:bg-emerald-500/20 transition-all duration-500" />
+                            
+                            <div className="relative z-10 space-y-6">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-widest">
+                                    Instant Service
+                                </div>
+                                
+                                <div className="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center border border-white/10 shadow-2xl group-hover:scale-110 group-hover:bg-emerald-500 transition-all duration-500">
+                                    <SpeedGraphic className="w-8 h-8 group-hover:text-slate-950 transition-colors" />
+                                </div>
+
+                                <div className="space-y-3">
+                                    <h3 className="text-2xl font-black text-white tracking-tight group-hover:text-emerald-400 transition-colors">3-Hour Pickup</h3>
+                                    <p className="text-slate-400 text-sm leading-relaxed font-medium">
+                                        No waiting for days. Our field executives reach your doorstep within 3 hours of order confirmation. Instant cash on the spot.
+                                    </p>
+                                </div>
                             </div>
                         </motion.div>
 
                         {/* Benefit 3: Safety */}
                         <motion.div
                             whileHover={{ y: -10 }}
-                            initial={{ opacity: 0, scale: 0.9 }}
+                            initial={{ opacity: 0, scale: 0.95 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
-                            className="flex flex-col items-center text-center gap-6 bg-slate-800 dark:bg-white/[0.03] dark:backdrop-blur-xl p-6 rounded-3xl border border-slate-700 dark:border-white/10 hover:border-lime-600 dark:hover:border-white/20 dark:hover:bg-white/[0.06] hover:shadow-2xl dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)] transition-all duration-300 group cursor-default"
+                            transition={{ delay: 0.2 }}
+                            className="group p-8 bg-white/[0.03] border border-white/5 rounded-[2.5rem] relative overflow-hidden transition-all duration-500 hover:bg-white/[0.05] hover:border-emerald-500/30"
                         >
-                            <div className="relative w-28 h-28 flex-shrink-0 flex items-center justify-center pointer-events-none">
-                                <SecurityGraphic />
-                            </div>
-                            <div className="space-y-2">
-                                <h3 className="text-xl font-bold text-white group-hover:text-green-400 transition-colors">Safety Guaranteed</h3>
-                                <p className="text-slate-400 text-sm leading-relaxed">
-                                    We are the safest hands for your device security. 100% Data Wipe.
-                                </p>
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-3xl -mr-16 -mt-16 group-hover:bg-emerald-500/20 transition-all duration-500" />
+                            
+                            <div className="relative z-10 space-y-6">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-widest">
+                                    Data Shield
+                                </div>
+                                
+                                <div className="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center border border-white/10 shadow-2xl group-hover:scale-110 group-hover:bg-emerald-500 transition-all duration-500">
+                                    <SecurityGraphic className="w-8 h-8 group-hover:text-slate-950 transition-colors" />
+                                </div>
+
+                                <div className="space-y-3">
+                                    <h3 className="text-2xl font-black text-white tracking-tight group-hover:text-emerald-400 transition-colors">Safety Guaranteed</h3>
+                                    <p className="text-slate-400 text-sm leading-relaxed font-medium">
+                                        Your privacy is our mission. We perform a certified 100% data wipe for every device we purchase. Safe and secure.
+                                    </p>
+                                </div>
                             </div>
                         </motion.div>
                     </div>
