@@ -208,6 +208,14 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
             })}
         </nav>
 
+        {/* Debug Info */}
+        <div className="p-4 m-2 rounded-lg bg-amber-50 text-[10px] text-amber-800 border border-amber-100 font-mono">
+            <p>ROLE: {role}</p>
+            <p>DB EMAILS: {emails.length}</p>
+            <p>FILTER: {selectedAccount || 'ALL'}</p>
+            <p>USER: {userEmail}</p>
+        </div>
+
         {role === 'SUPER_ADMIN' && (
             <div className="p-4 border-t border-slate-100">
                 <label className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2 block">Viewing Account</label>
