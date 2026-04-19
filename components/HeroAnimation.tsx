@@ -117,7 +117,7 @@ const GROUPS = [
     {
         id: "phones",
         name: "Smartphones",
-        value: "₹85k+",
+        value: "₹129k+",
         items: [
             { type: "pixel", color: "#fef3c7", Component: PixelSVG, rotate: -20, x: -35, y: 15 },
             { type: "iphone", color: "#475569", Component: IPhoneSVG, rotate: 15, x: 30, y: -5 },
@@ -127,7 +127,7 @@ const GROUPS = [
     {
         id: "tablets",
         name: "Tablets",
-        value: "₹60k+",
+        value: "₹120k+",
         items: [
             { type: "ipad-mini", color: "#fca5a5", Component: IPadSVG, rotate: -15, x: -25, y: 10 },
             { type: "galaxy-tab", color: "#93c5fd", Component: GalaxyTabSVG, rotate: 10, x: 35, y: 15 },
@@ -137,7 +137,7 @@ const GROUPS = [
     {
         id: "laptops",
         name: "Laptops",
-        value: "₹70k+",
+        value: "₹149k+",
         items: [
             { type: "surface", color: "#cbd5e1", Component: SurfaceSVG, rotate: 12, x: 25, y: 5 },
             { type: "macbook-dark", color: "#334155", Component: MacbookSVG, rotate: -12, x: -25, y: 5 },
@@ -147,7 +147,7 @@ const GROUPS = [
     {
         id: "watches",
         name: "Watches",
-        value: "₹45k+",
+        value: "₹65k+",
         items: [
             { type: "round", color: "#3b82f6", Component: WatchRoundSVG, rotate: 20, x: 35, y: 5 },
             { type: "series", color: "#f87171", Component: WatchUltraSVG, rotate: -20, x: -35, y: 15 },
