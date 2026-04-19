@@ -78,8 +78,7 @@ export async function fetchRoleBasedEmails(selectedAccount?: string, skipSync: b
         if (!session || !session.user) return { error: 'Unauthorized', emails: [] };
 
         const currentUser = await prisma.user.findUnique({
-            where: { id: session.user.id },
-            include: { managedCities: true }
+            where: { id: session.user.id }
         });
         if (!currentUser) return { error: 'User not found in database', emails: [] };
 
@@ -124,19 +123,29 @@ export async function fetchRoleBasedEmails(selectedAccount?: string, skipSync: b
 
         let filtered = allEmails;
 
-        if (role !== 'SUPER_ADMIN') {
+        // Elevated Roles Logic:
+        // SUPER_ADMIN, ADMIN, ZONAL_HEAD should see broader emails.
+        if (role === 'ADMIN' || role === 'ZONAL_HEAD') {
             const allUsers = await prisma.user.findMany({ select: { email: true, role: true }});
+            const superAdmins = allUsers.filter(u => u.role === 'SUPER_ADMIN').map(u => u.email);
             
-            if (role === 'ADMIN') {
-                const superAdmins = allUsers.filter(u => u.role === 'SUPER_ADMIN').map(u => u.email);
-                filtered = allEmails.filter(e => {
-                    const fromSuper = superAdmins.some(sa => e.fromEmail.includes(sa));
-                    const toSuper = superAdmins.some(sa => e.toEmail.includes(sa));
-                    return !(fromSuper && toSuper);
-                });
-            } else {
-                filtered = allEmails.filter(e => e.fromEmail.includes(currentUser.email) || e.toEmail.includes(currentUser.email));
-            }
+            filtered = allEmails.filter(e => {
+                // Allow if it involves the current user specifically
+                if (e.fromEmail.includes(currentUser.email) || e.toEmail.includes(currentUser.email)) return true;
+                
+                // Exclude if it's exclusively between super admins
+                const fromSuper = superAdmins.some(sa => e.fromEmail.includes(sa));
+                const toSuper = superAdmins.some(sa => e.toEmail.includes(sa));
+                if (fromSuper && toSuper) return false;
+
+                // For Zonal Head/Admin, allow seeing emails with system accounts (e.g. fonzkart.in)
+                if (e.fromEmail.includes('@fonzkart.in') || e.toEmail.includes('@fonzkart.in')) return true;
+
+                return false;
+            });
+        } else if (role !== 'SUPER_ADMIN') {
+            // Normal users only see their own
+            filtered = allEmails.filter(e => e.fromEmail.includes(currentUser.email) || e.toEmail.includes(currentUser.email));
         }
 
         return { 
