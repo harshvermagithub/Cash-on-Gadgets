@@ -124,7 +124,7 @@ export const db = {
         return orders.map(mapPrismaOrderToAppOrder);
     },
     addOrder: async (order: Order) => {
-        await prisma.order.create({
+        const newOrder = await prisma.order.create({
             data: {
                 id: order.id,
                 userId: order.userId,
@@ -136,19 +136,49 @@ export const db = {
                 locationLat: order.location?.lat,
                 locationLng: order.location?.lng,
                 answers: order.answers ? JSON.stringify(order.answers) : null,
-                createdAt: new Date(order.date), // Assuming ISO string is passed
+                createdAt: new Date(order.date),
             }
         });
+
+        // Notify Admins, Zonal Heads, Partners
+        const rolesToNotify = ['SUPER_ADMIN', 'ADMIN', 'ZONAL_HEAD', 'PARTNER'];
+        try {
+            await Promise.all(rolesToNotify.map(role => 
+                prisma.notification.create({
+                    data: {
+                        role,
+                        title: 'New Order Placed',
+                        message: `New order #${newOrder.orderNumber} for ${newOrder.device} needs assignment.`,
+                        type: 'order_new',
+                        orderId: newOrder.id
+                    }
+                })
+            ));
+        } catch (e) {
+            console.error("Notification broadcast failed:", e);
+        }
     },
     updateOrderRider: async (orderId: string, riderId: string) => {
         try {
-            await prisma.order.update({
+            const updatedOrder = await prisma.order.update({
                 where: { id: orderId },
                 data: { riderId, status: 'assigned' }
             });
+
+            // Notify Rider
+            await prisma.notification.create({
+                data: {
+                    riderId: riderId,
+                    title: 'New Task Assigned',
+                    message: `You have been assigned order #${updatedOrder.orderNumber} for pickup.`,
+                    type: 'order_assigned',
+                    orderId: updatedOrder.id
+                }
+            });
+            
             return true;
         } catch (error) {
-            console.error("DEBUG Order Rider Update Failed:", error);
+            console.error("Order Rider Update/Notify Failed:", error);
             return false;
         }
     },

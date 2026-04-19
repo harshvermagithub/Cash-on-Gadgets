@@ -157,3 +157,16 @@ model DeviceDisplayPrice {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String?  // Target user (if specific)
+  role      String?  // Target role (for broadcasting e.g. ADMIN, ZONAL_HEAD)
+  title     String
+  message   String
+  type      String   @default("info") // info, order_new, order_assigned
+  orderId   String?
+  riderId   String?  // Target rider (if specific)
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
