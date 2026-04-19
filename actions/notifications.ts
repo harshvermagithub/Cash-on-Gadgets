@@ -1,5 +1,5 @@
 "use server";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 export type NotificationType = "info" | "order_new" | "order_assigned";
