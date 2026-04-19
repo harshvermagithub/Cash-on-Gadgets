@@ -113,7 +113,7 @@ const CameraSVG = ({ color }: { color: string }) => (
 )
 
 // --- Data Structure ---
-const GROUPS = [
+const DEFAULT_GROUPS = [
     {
         id: "phones",
         name: "Smartphones",
@@ -166,17 +166,26 @@ const GROUPS = [
     }
 ]
 
-export default function HeroAnimation() {
+export default function HeroAnimation({ displayPrices = [] }: { displayPrices?: any[] }) {
     const [currentIndex, setCurrentIndex] = useState(0)
+
+    // Map dynamic prices to groups
+    const groups = DEFAULT_GROUPS.map(g => {
+        const custom = displayPrices.find(p => p.categoryKey === g.id);
+        if (custom && custom.displayPrice) {
+            return { ...g, value: custom.displayPrice };
+        }
+        return g;
+    });
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % GROUPS.length)
+            setCurrentIndex((prev) => (prev + 1) % groups.length)
         }, 5000)
         return () => clearInterval(timer)
-    }, [])
+    }, [groups.length])
 
-    const group = GROUPS[currentIndex] || GROUPS[0];
+    const group = groups[currentIndex] || groups[0];
 
     return (
         <div className="relative w-full h-full flex flex-row items-center justify-center overflow-visible">

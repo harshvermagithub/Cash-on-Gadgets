@@ -24,7 +24,8 @@ import {
     ChevronLeft,
     Camera,
     Monitor,
-    Headphones
+    Headphones,
+    Banknote
 } from 'lucide-react';
 
 const CATEGORIES = [
@@ -142,6 +143,7 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                         <>
                             {renderSectionTitle('System')}
                             {renderLink('/admin/admins', 'Users', Users, pathname.includes('/admin/admins'))}
+                            {renderLink('/admin/prices', 'Banner Prices', Banknote, pathname.includes('/admin/prices'))}
                             {renderLink('/admin/email', 'Email', Mail, pathname.includes('/admin/email'))}
                         </>
                     )}

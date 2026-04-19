@@ -137,3 +137,12 @@ model EmailAccount {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
+
+model DeviceDisplayPrice {
+  id            String   @id @default(cuid())
+  categoryKey   String   @unique // e.g., 'phones', 'tablets', 'laptops', 'watches', 'cameras'
+  categoryName  String   // e.g., 'Smartphones'
+  displayPrice  String   // e.g., '₹129k+'
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

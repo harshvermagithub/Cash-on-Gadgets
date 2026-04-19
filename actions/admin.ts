@@ -358,3 +358,42 @@ export async function upsertEvaluationRule(data: { category: string, questionKey
     revalidatePath('/sell');
     return { success: true };
 }
+// --- Device Display Prices ---
+
+export async function getDeviceDisplayPrices() {
+    await requireAdmin();
+    const prices = await prisma.deviceDisplayPrice.findMany({
+        orderBy: { categoryName: 'asc' }
+    });
+    
+    // Seed defaults if empty
+    if (prices.length === 0) {
+        const defaults = [
+            { categoryKey: 'phones', categoryName: 'Smartphones', displayPrice: '₹129k+' },
+            { categoryKey: 'tablets', categoryName: 'Tablets', displayPrice: '₹120k+' },
+            { categoryKey: 'laptops', categoryName: 'Laptops', displayPrice: '₹149k+' },
+            { categoryKey: 'watches', categoryName: 'Watches', displayPrice: '₹65k+' },
+            { categoryKey: 'cameras', categoryName: 'Cameras', displayPrice: '₹1.2L+' },
+        ];
+        
+        await prisma.deviceDisplayPrice.createMany({
+            data: defaults
+        });
+        
+        return await prisma.deviceDisplayPrice.findMany({
+            orderBy: { categoryName: 'asc' }
+        });
+    }
+    
+    return prices;
+}
+
+export async function updateDeviceDisplayPrice(id: string, displayPrice: string) {
+    await requireAdmin();
+    await prisma.deviceDisplayPrice.update({
+        where: { id },
+        data: { displayPrice }
+    });
+    revalidatePath('/');
+    return { success: true };
+}

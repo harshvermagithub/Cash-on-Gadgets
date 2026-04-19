@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation';
 import { PriceGraphic, SpeedGraphic, SecurityGraphic } from '@/components/icons/FeatureIcons';
 import { Brand } from '@/lib/store';
 
-export function HomeClient({ initialBrands, activeCities = [] }: { initialBrands: Brand[], activeCities?: string[] }) {
+export function HomeClient({ initialBrands, activeCities = [], displayPrices = [] }: { initialBrands: Brand[], activeCities?: string[], displayPrices?: any[] }) {
     const router = useRouter();
 
     const handleCategorySelect = (category: string) => {
@@ -78,7 +78,7 @@ export function HomeClient({ initialBrands, activeCities = [] }: { initialBrands
                                 </div>
                                 <div className="w-full h-[180px] sm:h-[350px] relative mt-0 mb-16 flex items-center justify-center overflow-visible">
                                     <div className="origin-center w-full h-full">
-                                        <HeroAnimation />
+                                        <HeroAnimation displayPrices={displayPrices} />
                                     </div>
                                 </div>
                                 <div className="relative z-20 bg-background/80 backdrop-blur-sm pt-2 rounded-xl w-full max-w-full overflow-hidden">
@@ -136,7 +136,7 @@ export function HomeClient({ initialBrands, activeCities = [] }: { initialBrands
                         <div className="hidden xl:flex relative w-full h-[500px] max-w-[800px] animate-in zoom-in-50 fade-in duration-1000 delay-200 perspective-1000 items-center justify-center mx-auto">
                             {/* Decorative Blob under Animation */}
                             <div className="absolute inset-0 bg-gradient-to-tr from-green-500/5 to-emerald-500/5 rounded-full blur-3xl transform scale-90" />
-                            <HeroAnimation />
+                            <HeroAnimation displayPrices={displayPrices} />
                         </div>
                     </div>
                 </div>

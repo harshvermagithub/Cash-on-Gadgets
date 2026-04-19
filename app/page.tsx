@@ -15,7 +15,8 @@ export default async function Home() {
         where: { isActive: true },
         select: { name: true }
     });
-    const activeCities = citiesObj.map(c => c.name);
+    // Fetch display prices for the hero animation
+    const displayPrices = await prisma.deviceDisplayPrice.findMany();
 
-    return <HomeClient initialBrands={brands} activeCities={activeCities} />;
+    return <HomeClient initialBrands={brands} activeCities={activeCities} displayPrices={displayPrices} />;
 }
