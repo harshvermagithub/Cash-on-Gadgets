@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 # Force development to ensure devDependencies (typescript, etc) are installed for building
 ENV NODE_ENV development
-RUN npm ci
+RUN npm ci --ignore-scripts
 
 # Stage 2: Builder
 FROM node:20-alpine AS builder
