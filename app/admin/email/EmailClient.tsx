@@ -38,6 +38,7 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
   const [composeTo, setComposeTo] = useState('');
   const [composeSubject, setComposeSubject] = useState('');
   const [composeBody, setComposeBody] = useState('');
+  const [attachments, setAttachments] = useState<File[]>([]);
   const [isSending, setIsSending] = useState(false);
 
   // Manage Accounts State
@@ -46,16 +47,16 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
   const [isCreating, setIsCreating] = useState(false);
 
   useEffect(() => {
-    loadEmails();
+    loadEmails(true); // Skip sync on mount for speed
     if (role === 'SUPER_ADMIN') {
         fetchAccounts();
     }
-  }, [selectedAccount]);
+  }, [selectedAccount, role]);
 
-  const loadEmails = async () => {
+  const loadEmails = async (skipSync: boolean = false) => {
     setIsLoading(true);
     try {
-      const data = await fetchRoleBasedEmails(selectedAccount || undefined);
+      const data = await fetchRoleBasedEmails(selectedAccount || undefined, skipSync);
       setEmails(data);
     } catch (e) {
       console.error(e);
@@ -68,7 +69,7 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
     setIsSyncing(true);
     try {
         await syncImapEmails(selectedAccount || undefined);
-        await loadEmails();
+        await loadEmails(true); // Fetch updated DB records
     } catch (e) {
         alert('Sync failed');
     } finally {
@@ -116,6 +117,10 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
       formData.append('subject', composeSubject);
       formData.append('text', composeBody);
 
+      attachments.forEach(file => {
+          formData.append('attachments', file);
+      });
+
       const res = await fetch('/api/email/send', {
         method: 'POST',
         body: formData,
@@ -126,6 +131,7 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
         setComposeTo('');
         setComposeSubject('');
         setComposeBody('');
+        setAttachments([]);
         setActiveTab('sent');
         loadEmails();
       } else {
@@ -448,6 +454,39 @@ export default function EmailClient({ role, userEmail }: { role: string, userEma
                                         className="w-full p-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500 font-medium resize-none"
                                         placeholder="Write your email here..."
                                     ></textarea>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1">Attachments</label>
+                                    <div className="flex flex-wrap gap-2 mb-2">
+                                        {attachments.map((file, idx) => (
+                                            <div key={idx} className="bg-slate-100 px-3 py-1.5 rounded-full flex items-center gap-2 text-xs font-medium text-slate-600">
+                                                <span className="truncate max-w-[150px]">{file.name}</span>
+                                                <button type="button" onClick={() => setAttachments(prev => prev.filter((_, i) => i !== idx))} className="text-slate-400 hover:text-red-500">
+                                                    <X className="w-3 h-3" />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <input 
+                                        type="file" 
+                                        multiple 
+                                        onChange={(e) => {
+                                            if (e.target.files) {
+                                                const files = Array.from(e.target.files);
+                                                setAttachments(prev => [...prev, ...files]);
+                                            }
+                                        }}
+                                        className="hidden" 
+                                        id="attachment-input"
+                                    />
+                                    <label 
+                                        htmlFor="attachment-input"
+                                        className="inline-flex items-center gap-2 text-xs font-bold text-emerald-600 cursor-pointer hover:bg-emerald-50 px-3 py-2 rounded-lg transition-colors border border-emerald-100"
+                                    >
+                                        <Plus className="w-3.5 h-3.5" />
+                                        Add Files
+                                    </label>
                                 </div>
                             </div>
                             <button 

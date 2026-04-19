@@ -69,7 +69,7 @@ export async function syncImapEmails(targetAccount?: string) {
     }
 }
 
-export async function fetchRoleBasedEmails(selectedAccount?: string) {
+export async function fetchRoleBasedEmails(selectedAccount?: string, skipSync: boolean = false) {
     const session = await getSession();
     if (!session || !session.user) throw new Error('Unauthorized');
 
@@ -81,8 +81,8 @@ export async function fetchRoleBasedEmails(selectedAccount?: string) {
 
     const role = currentUser.role;
 
-    // Trigger background sync (non-blocking if possible, but for consistency we do it here)
-    if (role === 'SUPER_ADMIN') {
+    // Trigger background sync only if not skipped
+    if (role === 'SUPER_ADMIN' && !skipSync) {
         try {
             await syncImapEmails(selectedAccount);
         } catch (e) {

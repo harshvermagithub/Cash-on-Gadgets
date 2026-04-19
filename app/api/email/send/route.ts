@@ -56,11 +56,13 @@ export async function POST(req: NextRequest) {
     // Optionally save to EmailMessage table for history
     await prisma.emailMessage.create({
       data: {
+        messageId: info.messageId,
         from: account.email,
         to,
         subject,
         bodyText: text,
         isOutbound: true,
+        receivedAt: new Date(),
       }
     });
 

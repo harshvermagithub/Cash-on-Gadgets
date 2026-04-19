@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import EmailClient from "./EmailClient";
