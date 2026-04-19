@@ -220,10 +220,25 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
       {/* MAIN CONTENT AREA */}
       <div className="flex-1 flex flex-col h-full bg-white dark:bg-slate-950 relative">
         <header className="h-16 border-b border-slate-100 dark:border-white/10 flex items-center justify-between px-4 lg:px-6 shrink-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md z-30">
-            <div className="flex items-center gap-4 flex-1">
+            <div className="flex items-center gap-2 lg:gap-4 flex-1">
                 {selectedEmailId ? (
                     <button onClick={() => setSelectedEmailId(null)} className="md:hidden p-2 -ml-2 text-slate-500"><ChevronLeft className="w-5 h-5" /></button>
-                ) : null}
+                ) : (
+                    isElevatedRole && (
+                        <div className="md:hidden flex items-center bg-slate-100 dark:bg-white/5 rounded-xl px-2.5 py-1.5 border border-transparent focus-within:border-emerald-500/50 transition-all">
+                            <User className="w-3.5 h-3.5 text-emerald-500 mr-2" />
+                            <select 
+                                value={selectedAccount}
+                                onChange={(e) => setSelectedAccount(e.target.value)}
+                                className="bg-transparent border-none outline-none text-[10px] font-black uppercase tracking-tight text-slate-900 dark:text-white appearance-none pr-4 min-w-[70px]"
+                                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2310b981\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'4\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right center', backgroundSize: '8px' }}
+                            >
+                                <option value="" className="dark:bg-slate-900">ALL NODES</option>
+                                {accounts.map(acc => <option key={acc.email} value={acc.email} className="dark:bg-slate-900">{acc.email.split('@')[0].toUpperCase()}</option>)}
+                            </select>
+                        </div>
+                    )
+                )}
                 <div className="relative flex-1 max-w-lg">
                     <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input 
@@ -240,6 +255,15 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
                 <button onClick={handleManualSync} disabled={isSyncing} className="hidden md:flex p-2.5 hover:bg-slate-100 dark:hover:bg-white/5 rounded-full text-slate-500 transition-all">
                     <RefreshCw className={`w-5 h-5 ${isSyncing ? 'animate-spin' : ''}`} />
                 </button>
+
+                {/* Mobile Diagnostic Status */}
+                <div className="md:hidden flex items-center bg-slate-900 rounded-full px-2 py-0.5 border border-white/5 shadow-lg">
+                    <div className="flex gap-2 text-[8px] font-mono font-bold leading-none">
+                        <span className="text-emerald-400 flex items-center gap-0.5"><div className="w-1 h-1 bg-emerald-500 rounded-full"></div> {debugData.dbCount}</span>
+                        <span className="text-blue-400">/ {emails.length}</span>
+                    </div>
+                </div>
+
                 <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-100 to-teal-50 dark:from-emerald-500/20 dark:to-teal-500/10 flex items-center justify-center text-emerald-700 dark:text-emerald-400 font-bold text-sm border border-emerald-200/50 dark:border-emerald-500/20">
                     {initialUserEmail.charAt(0).toUpperCase()}
                 </div>
