@@ -53,5 +53,5 @@ COPY --from=builder /app/prisma ./prisma
 EXPOSE 3000
 ENV PORT 3000
 
-# Start the server (with a tiny sync check)
-CMD npx prisma db push --accept-data-loss && node server.js
+# Start the server directly for maximum stability
+CMD ["node", "server.js"]
