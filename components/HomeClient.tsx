@@ -59,7 +59,7 @@ export function HomeClient({ initialBrands, activeCities = [], displayPrices = [
                             {/* Mobile View Specifics (Logo + Chips) */}
                             <div className="block xl:hidden w-full space-y-4 pt-0 mb-12">
                                 <div className="flex flex-wrap justify-center gap-2 px-2 pt-6 pb-2">
-                                    {activeCities.length > 0 ? [...activeCities].sort((a, b) => a.localeCompare(b)).map(city => (
+                                    {activeCities.length > 0 ? activeCities.map(city => (
                                         <div key={city} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 text-black dark:text-white text-[10px] font-bold border border-green-200/50 shadow-sm transition-all cursor-default whitespace-nowrap">
                                             <MapPin className="w-3 h-3 text-green-500" />
                                             {city}

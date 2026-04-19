@@ -97,6 +97,29 @@ export async function updatePartnerManager(partnerId: string, managerId: string 
     return { success: true };
 }
 
+export async function toggleFeaturedCity(id: string, isFeatured: boolean) {
+    await requireAdmin();
+    await prisma.city.update({
+        where: { id },
+        data: { isFeatured }
+    });
+    revalidatePath('/');
+    revalidatePath('/admin/homepage');
+    return { success: true };
+}
+
+export async function updateCityDisplayOrder(id: string, order: number) {
+    await requireAdmin();
+    await prisma.city.update({
+        where: { id },
+        data: { displayOrder: parseInt(order.toString()) }
+    });
+    revalidatePath('/');
+    revalidatePath('/admin/homepage');
+    return { success: true };
+}
+
+
 async function requireZonalOrAdmin() {
     const session = await getSession();
     if (!session || !session.user) throw new Error('Unauthorized');

@@ -10,10 +10,15 @@ export default async function Home() {
     // Fetch critical data on the server with caching
     const brands = await fetchBrands('smartphone');
 
-    // Fetch active cities mapped simply as string names
+    // Fetch active cities mapped simply as string names, ordered by feature status and custom order
     const citiesObj = await prisma.city.findMany({
         where: { isActive: true },
-        select: { name: true }
+        select: { name: true },
+        orderBy: [
+            { isFeatured: 'desc' },
+            { displayOrder: 'asc' },
+            { name: 'asc' }
+        ]
     });
     const activeCities = citiesObj.map(c => c.name);
 
