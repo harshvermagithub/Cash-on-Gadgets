@@ -20,10 +20,9 @@ async function requireAdmin() {
         console.log(`[Auth] Blocked non-admin user: ${session.user.email} (${session.user.role})`);
         throw new Error('Forbidden: Admin access required');
     }
-    // return;
 }
 
-// --- Brands ---
+// --- Admins & Staff ---
 
 export async function getAdmins() {
     await requireAdmin();
@@ -33,7 +32,6 @@ export async function getAdmins() {
 export async function addAdmin(email: string) {
     await requireAdmin();
     const cleanEmail = email.trim().toLowerCase();
-    console.log(`[RoleMgmt] Granting ADMIN role to ${cleanEmail}`);
     const user = await db.findUserByEmail(cleanEmail);
     if (!user) return { success: false, error: 'User not found. They must register first.' };
 
@@ -48,7 +46,6 @@ export async function addAdmin(email: string) {
 export async function addZonalHead(email: string) {
     await requireAdmin();
     const cleanEmail = email.trim().toLowerCase();
-    console.log(`[RoleMgmt] Granting ZONAL_HEAD role to ${cleanEmail}`);
     const user = await db.findUserByEmail(cleanEmail);
     if (!user) return { success: false, error: 'User not found. They must register first.' };
 
@@ -64,13 +61,8 @@ export async function addZonalHead(email: string) {
 export async function addPartner(email: string, cityId?: string, managerId?: string) {
     await requireAdmin();
     const cleanEmail = email.trim().toLowerCase();
-    console.log(`[RoleMgmt] Attempting to grant PARTNER role to ${cleanEmail}${cityId ? ` in city ${cityId}` : ''}${managerId ? ` managed by ${managerId}` : ''}`);
-    
     const user = await db.findUserByEmail(cleanEmail);
-    if (!user) {
-        console.warn(`[RoleMgmt] Failed: User ${cleanEmail} not found`);
-        return { success: false, error: `User "${cleanEmail}" not found. They must register first.` };
-    }
+    if (!user) return { success: false, error: `User "${cleanEmail}" not found. They must register first.` };
 
     await prisma.user.update({
         where: { id: user.id },
@@ -81,7 +73,6 @@ export async function addPartner(email: string, cityId?: string, managerId?: str
         }
     });
 
-    console.log(`[RoleMgmt] Success: ${user.email} is now a PARTNER`);
     revalidatePath('/admin/admins');
     revalidatePath('/admin/partners');
     return { success: true };
@@ -119,7 +110,6 @@ export async function updateCityDisplayOrder(id: string, order: number) {
     return { success: true };
 }
 
-
 async function requireZonalOrAdmin() {
     const session = await getSession();
     if (!session || !session.user) throw new Error('Unauthorized');
@@ -134,7 +124,6 @@ async function requirePartnerOrAbove() {
     if (!roles.includes(session.user.role || '')) throw new Error('Forbidden: Insufficient privileges');
 }
 
-
 export async function getPartnersManagedBy(managerId: string) {
     return await prisma.user.findMany({
         where: { 
@@ -147,11 +136,15 @@ export async function getPartnersManagedBy(managerId: string) {
     });
 }
 
-
 export async function addFieldExecutive(email: string) {
-    await requireAdmin();
+    const session = await getSession();
+    if (!session || !session.user) throw new Error('Unauthorized');
+    
+    if (!isAdmin(session.user)) {
+        throw new Error('Forbidden: Insufficient privileges to grant executive access');
+    }
+
     const cleanEmail = email.trim().toLowerCase();
-    console.log(`[RoleMgmt] Granting FIELD_EXECUTIVE role to ${cleanEmail}`);
     const user = await db.findUserByEmail(cleanEmail);
     if (!user) return { success: false, error: 'User not found. They must register first.' };
 
@@ -159,7 +152,35 @@ export async function addFieldExecutive(email: string) {
         where: { id: user.id },
         data: { role: 'FIELD_EXECUTIVE' }
     });
+
+    if (user.phone) {
+        const existingRider = await prisma.rider.findFirst({
+            where: { phone: user.phone }
+        });
+
+        if (!existingRider) {
+            console.log(`[RoleMgmt] Synchronizing: Creating Rider record for ${user.name} (${user.phone})`);
+            const partnerId = session.user.role === 'PARTNER' ? session.user.id : null;
+
+            await prisma.rider.create({
+                data: {
+                    name: user.name,
+                    phone: user.phone,
+                    status: 'available',
+                    partnerId: partnerId
+                }
+            });
+        } else if (session.user.role === 'PARTNER' && !existingRider.partnerId) {
+            await prisma.rider.update({
+                where: { id: existingRider.id },
+                data: { partnerId: session.user.id }
+            });
+        }
+    }
+
     revalidatePath('/admin/admins');
+    revalidatePath('/admin/riders');
+    revalidatePath('/admin/orders');
     return { success: true };
 }
 
@@ -190,6 +211,8 @@ export async function removeUserRole(email: string) {
     return { success: true };
 }
 
+// --- Brands ---
+
 export async function getBrands() {
     return await db.getBrands();
 }
@@ -197,15 +220,12 @@ export async function getBrands() {
 export async function addBrand(name: string, logo: string, category?: string, priority: number = 100) {
     await requireAdmin();
     const id = name.toLowerCase().replace(/\s+/g, '-');
-
-    // Check if brand exists to append category instead of fail/duplicate
     const existing = await db.getBrand(id);
 
     if (existing) {
         if (category) {
             await db.addCategoryToBrand(id, category);
         }
-        // Update details (last write wins for name/logo/priority)
         await db.updateBrand(id, name, logo, priority);
     } else {
         await db.addBrand({
@@ -213,7 +233,6 @@ export async function addBrand(name: string, logo: string, category?: string, pr
             name,
             logo,
             categories: category ? [category] : []
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any);
     }
 
@@ -227,17 +246,10 @@ export async function deleteBrand(id: string, category?: string) {
     await requireAdmin();
 
     if (category) {
-        // Check if brand actually has this category
-        const brand = await db.getBrand(id);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const b = brand as any;
-
-        if (b && b.categories && b.categories.includes(category)) {
+        const brand = await db.getBrand(id) as any;
+        if (brand && brand.categories && brand.categories.includes(category)) {
             await db.removeCategoryFromBrand(id, category);
-        } else if (b && (!b.categories || b.categories.length === 0)) {
-            // It's an orphan/untagged brand appearing via fallback (e.g. smartphone)
-            // User likely wants to delete this garbage entry entirely.
-            // Attempt full delete (will fail if constraints exist, but for 'as' it should work)
+        } else if (brand && (!brand.categories || brand.categories.length === 0)) {
             await db.deleteBrand(id);
         }
     } else {
@@ -247,7 +259,7 @@ export async function deleteBrand(id: string, category?: string) {
     if (category) revalidatePath(`/admin/category/${category}`);
     revalidatePath('/sell');
     revalidatePath('/');
-    revalidatePath('/admin/brands'); // General refresh
+    revalidatePath('/admin/brands');
     return { success: true };
 }
 
@@ -276,7 +288,6 @@ export async function addModel(brandId: string, name: string, img: string, categ
         img,
         category,
         priority
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
     revalidatePath('/admin/models');
     revalidatePath('/');
@@ -293,12 +304,9 @@ export async function updateModel(id: string, brandId: string, name: string, img
 
 export async function reorderModels(items: { id: string, priority: number }[]) {
     await requireAdmin();
-    // Use transaction to ensure consistency if possible, or just Promise.all
-    // Prisma transaction is preferred for bulk updates, but simple loops work for small batches.
-    // For SQLite/Postgres with Prisma:
     await db.updateModelPriorities(items);
     revalidatePath('/admin/models');
-    revalidatePath('/sell'); // Ensure frontend updates immediately
+    revalidatePath('/sell');
     revalidatePath('/');
     return { success: true };
 }
@@ -420,6 +428,7 @@ export async function upsertEvaluationRule(data: { category: string, questionKey
     revalidatePath('/sell');
     return { success: true };
 }
+
 // --- Device Display Prices ---
 
 export async function getDeviceDisplayPrices() {
@@ -428,7 +437,6 @@ export async function getDeviceDisplayPrices() {
         orderBy: { categoryName: 'asc' }
     });
     
-    // Seed defaults if empty
     if (prices.length === 0) {
         const defaults = [
             { categoryKey: 'phones', categoryName: 'Smartphones', displayPrice: '₹129k+' },
