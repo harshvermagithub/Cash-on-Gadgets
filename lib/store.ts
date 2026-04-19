@@ -137,25 +137,89 @@ export const db = {
                 locationLng: order.location?.lng,
                 answers: order.answers ? JSON.stringify(order.answers) : null,
                 createdAt: new Date(order.date),
+            },
+            include: {
+                user: true
             }
         });
 
-        // Notify Admins, Zonal Heads, Partners
-        const rolesToNotify = ['SUPER_ADMIN', 'ADMIN', 'ZONAL_HEAD', 'PARTNER'];
+        // Broadcast Notifications
         try {
-            await Promise.all(rolesToNotify.map(role => 
+            // 1. Identify recipients
+            // Admins & Super Admins (Always notify)
+            const globalAdmins = await prisma.user.findMany({
+                where: { role: { in: ['SUPER_ADMIN', 'ADMIN'] } }
+            });
+
+            // Targeted Zonal Heads (If order has pincode, find city, then find manager of that city)
+            // For now, let's just find all Zonal Heads if we don't have a direct city link yet
+            const zonalHeads = await prisma.user.findMany({
+                where: { role: 'ZONAL_HEAD' }
+            });
+
+            // Partners (Specific to pincode or city)
+            const targetedPartners = await prisma.user.findMany({
+                where: {
+                    role: 'PARTNER',
+                    OR: [
+                        { pincodes: { has: order.pincode || '' } },
+                        // Fallback: If no pincodes defined for partner but they are in the same city (future use)
+                    ]
+                }
+            });
+
+            const allRecipients = [...globalAdmins, ...zonalHeads, ...targetedPartners];
+            // Remove duplicates by email
+            const uniqueRecipients = Array.from(new Map(allRecipients.map(r => [r.email, r])).values());
+
+            // 2. Create System Notifications
+            await Promise.all(uniqueRecipients.map(recipient => 
                 prisma.notification.create({
                     data: {
-                        role,
-                        title: 'New Order Placed',
-                        message: `New order #${newOrder.orderNumber} for ${newOrder.device} needs assignment.`,
+                        userId: recipient.id,
+                        title: 'New Order: Action Required',
+                        message: `Order #${newOrder.orderNumber} for ${newOrder.device} placed in ${newOrder.pincode || 'unknown area'}.`,
                         type: 'order_new',
                         orderId: newOrder.id
                     }
                 })
             ));
+
+            // Also create a role-based broadcast for UI fallback
+            await prisma.notification.create({
+                data: {
+                    role: 'ADMIN',
+                    title: 'New Order Placed',
+                    message: `New global order #${newOrder.orderNumber} needs assignment.`,
+                    type: 'order_new',
+                    orderId: newOrder.id
+                }
+            });
+
+            // 3. Send Emails
+            const { sendSystemEmail } = await import('@/lib/email');
+            const emailHtml = `
+                <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 2px solid #10b981; border-radius: 15px;">
+                    <h2 style="color: #10b981; font-size: 24px;">🚀 New Order Received!</h2>
+                    <p style="font-size: 16px; color: #333;">Order <b>#${newOrder.orderNumber}</b> has been placed and requires your attention.</p>
+                    <div style="background-color: #f0fdf4; padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px solid #d1fae5;">
+                        <p style="margin: 5px 0;"><b>Device:</b> ${newOrder.device}</p>
+                        <p style="margin: 5px 0;"><b>Estimated Offer:</b> ₹${newOrder.price}</p>
+                        <p style="margin: 5px 0;"><b>Pincode:</b> ${newOrder.pincode || 'Not provided'}</p>
+                        <p style="margin: 5px 0;"><b>Customer:</b> ${newOrder.user.name}</p>
+                    </div>
+                    <a href="${process.env.NEXT_PUBLIC_APP_URL}/admin/orders" style="display: inline-block; background-color: #10b981; color: white; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 10px;">View in Dashboard</a>
+                    <p style="color: #888; font-size: 12px; margin-top: 25px;">Fonzkart Logistics Management System</p>
+                </div>
+            `;
+
+            // Sequential or concurrent sending? Concurrent for speed.
+            Promise.all(uniqueRecipients.map(r => 
+                sendSystemEmail(r.email, `New Order Alert: #${newOrder.orderNumber} (${newOrder.pincode})`, emailHtml)
+            )).catch(err => console.error("Email broadcast partial failure:", err));
+
         } catch (e) {
-            console.error("Notification broadcast failed:", e);
+            console.error("Critical Notification broadcast failed:", e);
         }
     },
     updateOrderRider: async (orderId: string, riderId: string) => {

@@ -48,12 +48,23 @@ export function NotificationProvider({
         }
     };
 
+    const [showPermissionPrompt, setShowPermissionPrompt] = useState(false);
+
     useEffect(() => {
         if (!userId && !riderId && !userRole) return;
 
         fetchNotifications();
 
-        // Subscribe to real-time notifications
+        // Browser Permission Check
+        if (typeof window !== 'undefined' && typeof Notification !== 'undefined') {
+            if (Notification.permission === 'default') {
+                // Show custom UI prompt after a short delay
+                const timer = setTimeout(() => setShowPermissionPrompt(true), 2000);
+                return () => clearTimeout(timer);
+            }
+        }
+
+        // Subscribe... (rest of the logic remains)
         const channel = supabaseClient
             .channel('notifications')
             .on(
@@ -65,8 +76,6 @@ export function NotificationProvider({
                 },
                 (payload) => {
                     const newNotif = payload.new as any;
-                    
-                    // Check if this notification belongs to the current user
                     const isForMe = 
                         (newNotif.userId === userId) || 
                         (newNotif.riderId === riderId) ||
@@ -79,7 +88,6 @@ export function NotificationProvider({
                             ...prev
                         ]);
 
-                        // Browser Notification
                         if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
                             new window.Notification(newNotif.title, {
                                 body: newNotif.message,
@@ -91,15 +99,23 @@ export function NotificationProvider({
             )
             .subscribe();
 
-        // Request Browser Permission
-        if (typeof window !== 'undefined' && typeof Notification !== 'undefined' && Notification.permission === 'default') {
-            Notification.requestPermission();
-        }
-
         return () => {
             supabaseClient.removeChannel(channel);
         };
     }, [userId, userRole, riderId]);
+
+    const requestBrowserPermission = async () => {
+        if (typeof Notification !== 'undefined') {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                new window.Notification("Notifications Enabled!", {
+                    body: "You will now receive alerts for new orders and assignments.",
+                    icon: '/icon.png'
+                });
+            }
+            setShowPermissionPrompt(false);
+        }
+    };
 
     const markRead = async (id: string) => {
         const res = await markAsRead(id);
@@ -116,6 +132,37 @@ export function NotificationProvider({
             markRead 
         }}>
             {children}
+
+            {/* Permission Prompt Modal */}
+            {showPermissionPrompt && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+                    <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 max-w-sm w-full shadow-2xl border border-emerald-500/20 text-center animate-in zoom-in duration-300">
+                        <div className="w-20 h-20 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg className="w-10 h-10 text-emerald-500 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                        </div>
+                        <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3">Enable Alerts?</h3>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm font-medium mb-8 leading-relaxed">
+                            Stay updated with real-time notifications for new orders and assignments even when the app is in the background.
+                        </p>
+                        <div className="flex flex-col gap-3">
+                            <button 
+                                onClick={requestBrowserPermission}
+                                className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-black rounded-2xl shadow-lg shadow-emerald-500/20 transition-all active:scale-[0.98]"
+                            >
+                                ALLOW NOTIFICATIONS
+                            </button>
+                            <button 
+                                onClick={() => setShowPermissionPrompt(false)}
+                                className="w-full py-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 font-bold text-xs uppercase tracking-widest transition-colors"
+                            >
+                                Not Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </NotificationContext.Provider>
     );
 }
