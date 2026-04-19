@@ -2,8 +2,11 @@
 FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat openssl
 WORKDIR /app
+
 COPY package.json package-lock.json ./
-RUN npm ci --ignore-scripts
+# Force development to ensure devDependencies (typescript, etc) are installed for building
+ENV NODE_ENV development
+RUN npm ci
 
 # Stage 2: Builder
 FROM node:20-alpine AS builder
@@ -36,14 +39,20 @@ RUN apk add --no-cache \
       openssl
 
 WORKDIR /app
+
 ENV NODE_ENV production
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
-COPY --from=builder /app ./
+# In standalone mode, we only need these files
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/prisma ./prisma
 
 EXPOSE 3000
 ENV PORT 3000
 
-CMD ["npm", "start"]
-
+# We still want to run prisma db push on start
+# We'll use a shell command to run both
+CMD npx prisma db push --accept-data-loss && node server.js
