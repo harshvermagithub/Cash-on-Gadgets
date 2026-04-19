@@ -10,16 +10,10 @@ import {
     RefreshCw, 
     ChevronLeft, 
     User, 
-    Clock, 
-    Filter,
-    ArrowRight,
-    Download,
     Plus,
     X,
     CheckCircle2,
-    Loader2,
-    AlertCircle,
-    Layout
+    Loader2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -125,41 +119,41 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
     }
   };
 
-  const activeInboxCount = emails.filter(e => !e.isOutbound).length;
-
   return (
-    <div className="flex h-screen md:h-[calc(100vh-64px)] bg-[#f8fafc] overflow-hidden flex-col md:flex-row">
+    <div className="flex h-screen lg:h-[calc(100vh-64px)] bg-[#f8fafc] overflow-hidden flex-col md:flex-row font-sans">
       
-      {/* SIDEBAR - Responsive */}
-      <div className="w-full md:w-64 bg-white border-r border-slate-200 flex flex-col shrink-0">
-        <div className="p-4 md:p-6 flex items-center justify-between md:block">
-            <h1 className="text-lg md:text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent flex items-center gap-2">
-                <Mail className="w-5 h-5 text-emerald-600" />
-                FonzMail
-            </h1>
+      {/* SIDEBAR - Adaptive width for tablet/desktop */}
+      <div className="w-full md:w-20 lg:w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 transition-all duration-300">
+        <div className="p-4 lg:p-6 flex items-center justify-between md:justify-center lg:justify-start">
+            <div className="flex items-center gap-3">
+                <Mail className="w-6 h-6 text-emerald-600 shrink-0" />
+                <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent hidden lg:block truncate">
+                    FonzMail
+                </h1>
+            </div>
             <div className="md:hidden flex items-center gap-2">
                 <button onClick={handleManualSync} className="p-2 text-slate-400 hover:text-emerald-600">
-                    <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
+                    <RefreshCw className={`w-5 h-5 ${isSyncing ? 'animate-spin' : ''}`} />
                 </button>
             </div>
         </div>
 
-        <div className="px-4 mb-4 md:mb-6 hidden md:block">
+        <div className="px-3 lg:px-4 mb-4 lg:mb-6 hidden md:block">
             <button 
                 onClick={() => { setActiveTab('compose'); setSelectedEmailId(null); }}
-                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl py-3 px-4 flex items-center justify-center gap-2 shadow-lg shadow-emerald-200 transition-all font-semibold"
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl lg:rounded-2xl py-3 px-2 lg:px-4 flex items-center justify-center gap-2 shadow-lg shadow-emerald-200 transition-all font-semibold"
             >
-                <Plus className="w-5 h-5" />
-                Compose
+                <Plus className="w-5 h-5 shrink-0" />
+                <span className="hidden lg:inline">Compose</span>
             </button>
         </div>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex flex-1 px-2 space-y-1">
+        {/* Navigation - Adaptive Labels */}
+        <nav className="hidden md:flex flex-1 flex-col px-2 space-y-1">
             {[ 
                 { id: 'inbox', label: 'Inbox', icon: Mail },
                 { id: 'sent', label: 'Sent', icon: Send },
-                { id: 'manage', label: 'Accounts', icon: Settings, authReq: isElevatedRole }
+                { id: 'manage', label: 'Identity Hub', icon: Settings, authReq: isElevatedRole }
             ].map((item) => {
                 if (item.authReq === false) return null;
                 const Icon = item.icon;
@@ -167,88 +161,86 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
                     <button
                         key={item.id}
                         onClick={() => { setActiveTab(item.id as any); setSelectedEmailId(null); }}
-                        className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all ${
-                            activeTab === item.id ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50'
+                        className={`w-full flex items-center justify-center lg:justify-start px-3 lg:px-4 py-3.5 rounded-xl transition-all ${
+                            activeTab === item.id ? 'bg-emerald-50 text-emerald-700' : 'text-slate-500 hover:bg-slate-50'
                         }`}
+                        title={item.label}
                     >
                         <div className="flex items-center gap-3">
-                            <Icon className={`w-5 h-5 ${activeTab === item.id ? 'text-emerald-600' : 'text-slate-400'}`} />
-                            <span className="font-medium">{item.label}</span>
+                            <Icon className={`w-5 h-5 shrink-0 ${activeTab === item.id ? 'text-emerald-600' : 'text-slate-400'}`} />
+                            <span className="font-semibold text-sm hidden lg:inline tracking-tight">{item.label}</span>
                         </div>
                     </button>
                 );
             })}
         </nav>
 
-        {/* Mobile Nav Bar */}
-        <div className="md:hidden flex items-center justify-around border-t border-slate-100 p-2 bg-white sticky bottom-0">
+        {/* Mobile Nav Bar - Only on small screens */}
+        <div className="md:hidden flex items-center justify-around border-t border-slate-100 p-2 bg-white sticky bottom-0 z-50">
              <button onClick={() => { setActiveTab('inbox'); setSelectedEmailId(null); }} className={`p-3 ${activeTab === 'inbox' ? 'text-emerald-600' : 'text-slate-400'}`}><Mail className="w-6 h-6" /></button>
              <button onClick={() => { setActiveTab('sent'); setSelectedEmailId(null); }} className={`p-3 ${activeTab === 'sent' ? 'text-emerald-600' : 'text-slate-400'}`}><Send className="w-6 h-6" /></button>
              <button onClick={() => { setActiveTab('compose'); setSelectedEmailId(null); }} className="p-3 bg-emerald-600 text-white rounded-full shadow-lg -mt-8 border-4 border-white"><Plus className="w-6 h-6" /></button>
              {isElevatedRole && <button onClick={() => { setActiveTab('manage'); setSelectedEmailId(null); }} className={`p-3 ${activeTab === 'manage' ? 'text-emerald-600' : 'text-slate-400'}`}><Settings className="w-6 h-6" /></button>}
         </div>
 
-        {/* Diagnostic Panel - Improved positioning */}
-        <div className="hidden md:block p-4 mt-auto">
-            <div className="p-3 rounded-xl bg-slate-900 text-[10px] text-slate-400 font-mono space-y-1 shadow-2xl border border-white/5">
-                <div className="flex justify-between border-b border-white/5 pb-1 mb-1">
-                    <span className="text-slate-500">SYSTEM STATUS</span>
-                </div>
-                <div className="flex justify-between">
-                    <span>ROLE:</span>
-                    <span className="text-emerald-400 font-bold uppercase">{debugData.role}</span>
-                </div>
-                <div className="flex justify-between">
-                    <span>DB CACHE:</span>
-                    <span className="text-white font-bold">{debugData.dbCount}</span>
-                </div>
-                <div className="flex justify-between">
-                    <span>MATCHED:</span>
-                    <span className="text-blue-400 font-bold">{emails.length}</span>
-                </div>
-                {debugData.error && <div className="mt-2 text-red-400 text-[9px] leading-tight break-words">! {debugData.error}</div>}
-            </div>
-        </div>
-
+        {/* Scoped Selector - Adaptive */}
         {isElevatedRole && (
-            <div className="hidden md:block p-4 border-t border-slate-100 pb-8">
-                <label className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-2 block">Scoped View</label>
+            <div className="hidden md:block p-3 lg:p-4 border-t border-slate-100">
+                <label className="text-[9px] uppercase tracking-widest font-black text-slate-400 mb-2 hidden lg:block px-1">Scope</label>
                 <select 
                     value={selectedAccount}
                     onChange={(e) => setSelectedAccount(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs font-medium outline-none focus:ring-1 focus:ring-emerald-500"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-[10px] lg:text-xs font-bold outline-none focus:ring-2 focus:ring-emerald-500/20"
                 >
-                    <option value="">All Accounts</option>
-                    {accounts.map(acc => <option key={acc.email} value={acc.email}>{acc.email}</option>)}
+                    <option value="">All</option>
+                    {accounts.map(acc => <option key={acc.email} value={acc.email}>{acc.email.split('@')[0]}</option>)}
                 </select>
             </div>
         )}
+
+        {/* Diagnostic Panel - Adaptive */}
+        <div className="hidden md:block p-3 lg:p-4">
+            <div className="p-3 rounded-xl bg-slate-900 shadow-xl border border-white/5 space-y-1.5">
+                <div className="flex justify-between items-center border-b border-white/10 pb-1 mb-1 hidden lg:flex">
+                    <span className="text-[10px] text-slate-500 font-black uppercase">Engine</span>
+                    <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                </div>
+                <div className="flex justify-between items-center text-[10px] font-mono">
+                    <span className="text-slate-500 hidden lg:inline">DB:</span>
+                    <span className="text-emerald-400 font-bold ml-auto">{debugData.dbCount}</span>
+                </div>
+                <div className="flex justify-between items-center text-[10px] font-mono">
+                    <span className="text-slate-500 hidden lg:inline">HIT:</span>
+                    <span className="text-blue-400 font-bold ml-auto">{emails.length}</span>
+                </div>
+            </div>
+        </div>
       </div>
 
       {/* MAIN CONTENT AREA */}
       <div className="flex-1 flex flex-col h-full bg-white relative">
-        <header className="h-16 border-b border-slate-50 flex items-center justify-between px-4 md:px-6 shrink-0 bg-white z-30">
+        <header className="h-16 border-b border-slate-100 flex items-center justify-between px-4 lg:px-6 shrink-0 bg-white/80 backdrop-blur-md z-30">
             <div className="flex items-center gap-4 flex-1">
                 {selectedEmailId ? (
                     <button onClick={() => setSelectedEmailId(null)} className="md:hidden p-2 -ml-2 text-slate-500"><ChevronLeft className="w-5 h-5" /></button>
                 ) : null}
-                <div className="relative flex-1 max-w-md">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <div className="relative flex-1 max-w-lg">
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input 
                         type="text"
-                        placeholder="Search mail..."
+                        placeholder="Search fonzmail..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-slate-50 border-none rounded-full py-2 pl-10 pr-4 text-sm outline-none"
+                        className="w-full bg-slate-100/50 border-none rounded-2xl py-2.5 pl-11 pr-4 text-sm outline-none focus:ring-2 focus:ring-emerald-500/10 placeholder:text-slate-400 font-medium transition-all"
                     />
                 </div>
             </div>
 
-            <div className="flex items-center gap-2 md:gap-3 ml-2">
-                <button onClick={handleManualSync} disabled={isSyncing} className="hidden md:flex p-2 hover:bg-slate-50 rounded-full text-slate-500 transition-colors">
+            <div className="flex items-center gap-2 lg:gap-4 ml-4">
+                <button onClick={handleManualSync} disabled={isSyncing} className="hidden md:flex p-2.5 hover:bg-slate-100 rounded-full text-slate-500 transition-all">
                     <RefreshCw className={`w-5 h-5 ${isSyncing ? 'animate-spin' : ''}`} />
                 </button>
-                <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-100 to-teal-50 flex items-center justify-center text-emerald-700 font-bold text-sm border border-emerald-200/50">
                     {initialUserEmail.charAt(0).toUpperCase()}
                 </div>
             </div>
@@ -256,61 +248,66 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
 
         <div className="flex-1 flex flex-row overflow-hidden relative">
             
-            {/* EMAIL LIST */}
-            <div className={`transition-all duration-300 flex-1 overflow-y-auto ${selectedEmailId ? 'max-w-[400px] border-r border-slate-50 hidden md:block' : 'w-full'}`}>
+            {/* EMAIL LIST - Responsive Width */}
+            <div className={`transition-all duration-300 flex-1 overflow-y-auto ${selectedEmailId ? 'max-w-0 md:max-w-xs lg:max-w-sm xl:max-w-md border-r border-slate-50 hidden md:block' : 'w-full'}`}>
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-20"><Loader2 className="w-10 h-10 text-emerald-500 animate-spin" /></div>
                 ) : emails.filter(e => activeTab === 'sent' ? e.isOutbound : !e.isOutbound).length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full text-center px-6">
                         <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4"><Mail className="w-8 h-8 text-slate-200" /></div>
-                        <h3 className="font-bold text-slate-800">Inbox is empty</h3>
-                        <p className="text-slate-400 text-sm mt-1 max-w-[200px]">No messages matched your role or account filter.</p>
+                        <h3 className="font-bold text-slate-800">No emails here</h3>
+                        <p className="text-slate-400 text-sm mt-1 max-w-[200px]">Everything is up to date.</p>
                     </div>
                 ) : (
-                    <div className="divide-y divide-slate-50">
+                    <div className="divide-y divide-slate-100/50">
                         {emails.filter(e => activeTab === 'sent' ? e.isOutbound : !e.isOutbound).map((email, i) => (
                             <motion.div 
                                 initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                                 key={email.id}
                                 onClick={() => viewEmailDetail(email.id)}
-                                className={`cursor-pointer px-4 md:px-6 py-4 flex flex-col gap-1 ${selectedEmailId === email.id ? 'bg-emerald-50' : 'hover:bg-slate-50'}`}
+                                className={`cursor-pointer px-4 lg:px-6 py-5 flex flex-col gap-1.5 transition-all ${selectedEmailId === email.id ? 'bg-emerald-50/70 border-l-4 border-emerald-500' : 'hover:bg-slate-50 border-l-4 border-transparent'}`}
                             >
-                                <div className="flex justify-between items-start text-xs">
+                                <div className="flex justify-between items-start text-[11px] lg:text-xs">
                                     <span className="font-bold text-slate-900 truncate pr-4">{email.isOutbound ? `To: ${email.toEmail}` : email.fromEmail}</span>
-                                    <span className="text-slate-400 font-medium whitespace-nowrap">{new Date(email.date).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
+                                    <span className="text-slate-400 font-semibold whitespace-nowrap">{new Date(email.date).toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
                                 </div>
-                                <h4 className={`text-[11px] md:text-xs font-semibold truncate ${selectedEmailId === email.id ? 'text-emerald-700' : 'text-slate-700'}`}>{email.subject}</h4>
-                                <p className="text-[10px] md:text-[11px] text-slate-400 line-clamp-1 mt-0.5">{email.snippet || (email.text && email.text.substring(0, 80)) || 'Empty content'}</p>
+                                <h4 className={`text-xs font-bold truncate ${selectedEmailId === email.id ? 'text-emerald-700' : 'text-slate-700'}`}>{email.subject}</h4>
+                                <p className="text-[11px] text-slate-400 line-clamp-1 font-medium">{email.snippet || (email.text && email.text.substring(0, 80)) || 'No content'}</p>
                             </motion.div>
                         ))}
                     </div>
                 )}
             </div>
 
-            {/* EMAIL DETAIL */}
+            {/* EMAIL DETAIL - Responsive Viewport */}
             <AnimatePresence>
                 {(selectedEmailId && fullEmail) && (
-                    <motion.div initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: 50, opacity: 0 }}
-                        className="flex-1 bg-white flex flex-col z-40 absolute inset-0 md:relative"
+                    <motion.div initial={{ x: 30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: 30, opacity: 0 }}
+                        className="flex-1 bg-white flex flex-col z-40 absolute inset-0 md:relative overflow-hidden"
                     >
-                        <div className="h-14 border-b border-slate-50 flex items-center justify-between px-4 md:px-6 shrink-0">
-                            <button onClick={() => setSelectedEmailId(null)} className="p-2 -ml-2 text-slate-500 hover:bg-slate-50 rounded-full"><ChevronLeft className="w-5 h-5" /></button>
-                            <button onClick={() => setSelectedEmailId(null)} className="p-2 text-slate-400 transition-all"><X className="w-5 h-5" /></button>
-                        </div>
-                        <div className="flex-1 overflow-y-auto p-4 md:p-10 max-w-4xl mx-auto w-full">
-                            <h1 className="text-xl md:text-3xl font-bold text-slate-800 mb-6 leading-tight">{fullEmail.subject}</h1>
-                            <div className="flex items-center gap-4 mb-8">
-                                <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-lg">{(fullEmail.fromEmail || '?').charAt(0).toUpperCase()}</div>
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-2">
-                                        <span className="font-bold text-slate-900 truncate">{fullEmail.fromEmail || fullEmail.from}</span>
-                                        <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter border border-slate-100 px-1.5 py-0.5 rounded-full w-fit">Verified Contact</span>
-                                    </div>
-                                    <p className="text-[10px] md:text-xs text-slate-400 mt-0.5">To: {fullEmail.toEmail || fullEmail.to}</p>
-                                </div>
-                                <div className="hidden sm:block text-right shrink-0"><span className="text-[10px] md:text-xs text-slate-400 font-medium">{new Date(fullEmail.receivedAt || fullEmail.date).toLocaleString()}</span></div>
+                        <div className="h-14 border-b border-slate-100 flex items-center justify-between px-4 lg:px-6 shrink-0 bg-white">
+                            <button onClick={() => setSelectedEmailId(null)} className="p-2 -ml-2 text-slate-500 hover:bg-slate-50 rounded-full transition-all"><ChevronLeft className="w-5 h-5" /></button>
+                            <div className="flex items-center gap-2">
+                                <button onClick={() => setSelectedEmailId(null)} className="p-2 text-slate-300 hover:text-slate-600 transition-all"><X className="w-5 h-5" /></button>
                             </div>
-                            <div className="text-slate-600 text-sm md:text-base leading-relaxed break-words">
+                        </div>
+                        <div className="flex-1 overflow-y-auto p-5 lg:p-12 xl:p-16 max-w-5xl mx-auto w-full">
+                            <h1 className="text-2xl lg:text-4xl font-black text-slate-900 mb-8 leading-[1.1] tracking-tight">{fullEmail.subject}</h1>
+                            <div className="flex items-center gap-4 mb-10 pb-8 border-b border-slate-100">
+                                <div className="w-12 h-12 rounded-2xl bg-emerald-600/5 flex items-center justify-center text-emerald-600 font-black text-xl border border-emerald-100">{(fullEmail.fromEmail || '?').charAt(0).toUpperCase()}</div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex flex-col lg:flex-row lg:items-center gap-1 lg:gap-3">
+                                        <span className="font-bold text-slate-900 truncate text-sm lg:text-base">{fullEmail.fromEmail || fullEmail.from}</span>
+                                        <span className="text-[9px] text-emerald-600 font-black uppercase tracking-widest bg-emerald-50 px-2 py-0.5 rounded-full w-fit border border-emerald-100/50">Verified Sender</span>
+                                    </div>
+                                    <p className="text-[11px] lg:text-xs text-slate-400 mt-1 font-semibold truncate">To: {fullEmail.toEmail || fullEmail.to}</p>
+                                </div>
+                                <div className="hidden sm:block text-right shrink-0">
+                                    <span className="text-[10px] text-slate-400 font-black uppercase mb-1 block">Sent on</span>
+                                    <span className="text-xs text-slate-600 font-bold">{new Date(fullEmail.receivedAt || fullEmail.date).toLocaleString()}</span>
+                                </div>
+                            </div>
+                            <div className="text-slate-700 text-sm lg:text-lg leading-relaxed lg:leading-[1.8] font-medium break-words">
                                 {fullEmail.bodyHtml ? <div dangerouslySetInnerHTML={{ __html: fullEmail.bodyHtml }} className="email-content-wrapper" /> : <p className="whitespace-pre-wrap">{fullEmail.bodyText || fullEmail.text}</p>}
                             </div>
                         </div>
@@ -320,55 +317,74 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
 
             {/* COMPOSE VIEW */}
             {!selectedEmailId && activeTab === 'compose' && (
-                <div className="flex-1 flex flex-col items-center bg-[#f8fafc] overflow-y-auto p-4 md:p-8">
-                    <div className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-100 transition-all flex flex-col h-fit">
-                        <header className="px-6 py-4 border-b border-slate-50 flex items-center justify-between">
-                            <h2 className="font-bold text-slate-800">New Message</h2>
-                            <button onClick={() => setActiveTab('inbox')} className="text-slate-300 hover:text-slate-600 p-1"><X className="w-5 h-5" /></button>
+                <div className="flex-1 flex flex-col items-center bg-[#f8fafc] overflow-y-auto p-4 lg:p-12">
+                    <div className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-100/50 transition-all flex flex-col h-fit">
+                        <header className="px-6 lg:px-8 py-5 border-b border-slate-50 flex items-center justify-between">
+                            <h2 className="font-black text-slate-900 text-lg tracking-tight">New Message</h2>
+                            <button onClick={() => setActiveTab('inbox')} className="text-slate-300 hover:text-slate-600 p-2"><X className="w-5 h-5" /></button>
                         </header>
-                        <form onSubmit={handleSendEmail} className="p-6 space-y-4 md:space-y-6">
+                        <form onSubmit={handleSendEmail} className="p-6 lg:p-10 space-y-5 lg:space-y-8">
                             {isElevatedRole && (
-                                <div className="space-y-1.5 md:space-y-2">
-                                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">From Account</label>
-                                    <select value={selectedAccount} onChange={(e) => setSelectedAccount(e.target.value)} className="w-full p-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500 font-semibold text-sm">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">From Account</label>
+                                    <select value={selectedAccount} onChange={(e) => setSelectedAccount(e.target.value)} className="w-full p-3.5 lg:p-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-emerald-500/5 font-bold text-sm transition-all appearance-none cursor-pointer">
                                         <option value="">Default (support@fonzkart.in)</option>
                                         {accounts.map(acc => <option key={acc.email} value={acc.email}>{acc.email}</option>)}
                                     </select>
                                 </div>
                             )}
-                            <div className="space-y-1.5"><label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Recipient</label><input type="email" required value={composeTo} onChange={(e) => setComposeTo(e.target.value)} className="w-full p-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500 text-sm" placeholder="e.g. user@example.com" /></div>
-                            <div className="space-y-1.5"><label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Subject</label><input type="text" required value={composeSubject} onChange={(e) => setComposeSubject(e.target.value)} className="w-full p-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500 text-sm" placeholder="Subject" /></div>
-                            <div className="space-y-1.5"><label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Message</label><textarea required rows={6} value={composeBody} onChange={(e) => setComposeBody(e.target.value)} className="w-full p-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500 text-sm resize-none"></textarea></div>
-                            <button type="submit" disabled={isSending} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white p-4 rounded-2xl font-bold flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-all">
-                                {isSending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />} {isSending ? 'Sending...' : 'Send Message'}
+                            <div className="space-y-2"><label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Recipient</label><input type="email" required value={composeTo} onChange={(e) => setComposeTo(e.target.value)} className="w-full p-3.5 lg:p-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-emerald-500/5 font-bold text-sm transition-all shadow-inner" placeholder="user@domain.com" /></div>
+                            <div className="space-y-2"><label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Topic</label><input type="text" required value={composeSubject} onChange={(e) => setComposeSubject(e.target.value)} className="w-full p-3.5 lg:p-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-emerald-500/5 font-bold text-sm transition-all" placeholder="Subject line" /></div>
+                            <div className="space-y-2"><label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Message</label><textarea required rows={8} value={composeBody} onChange={(e) => setComposeBody(e.target.value)} className="w-full p-3.5 lg:p-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-emerald-500/5 font-medium text-sm lg:text-base resize-none transition-all shadow-inner"></textarea></div>
+                            <button type="submit" disabled={isSending} className="w-full bg-slate-900 hover:bg-black text-white p-4 lg:p-5 rounded-2xl font-black flex items-center justify-center gap-3 shadow-xl active:scale-[0.98] transition-all group">
+                                {isSending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />} {isSending ? 'SENDING...' : 'DISPATCH EMAIL'}
                             </button>
                         </form>
                     </div>
                 </div>
             )}
 
-            {/* ACCOUNTS VIEW */}
+            {/* IDENTITY HUB - Advanced Responsive Grid */}
             {!selectedEmailId && activeTab === 'manage' && isElevatedRole && (
-                <div className="flex-1 overflow-y-auto p-4 md:p-12 bg-[#f8fafc]">
-                    <div className="max-w-5xl mx-auto space-y-8 md:space-y-12 pb-20 md:pb-0">
-                        <div><h2 className="text-xl md:text-4xl font-bold text-slate-800 tracking-tight">Identity Hub</h2><p className="text-slate-400 mt-1 md:mt-2 text-sm md:text-lg">Manage and provision shared email accounts for your zone.</p></div>
-                        <div className="grid lg:grid-cols-2 gap-8 md:gap-12">
-                            <section className="bg-white p-6 md:p-10 rounded-[32px] border border-slate-100 shadow-xl shadow-slate-100">
-                                <h3 className="font-bold text-slate-800 mb-6 flex items-center gap-2"><Plus className="w-5 h-5 text-emerald-500" /> New Account</h3>
-                                <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
-                                    <div className="space-y-2"><label className="text-[10px] font-bold text-slate-400 uppercase pl-1">Email Alias</label><div className="flex"><input type="text" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} className="flex-1 p-3 md:p-4 bg-slate-50 border-none rounded-l-2xl focus:ring-2 focus:ring-emerald-500 text-sm" placeholder="partner" /><span className="inline-flex items-center px-4 bg-slate-100 text-slate-400 rounded-r-2xl font-bold text-[10px] md:text-xs">@fonzkart.in</span></div></div>
-                                    <div className="space-y-2"><label className="text-[10px] font-bold text-slate-400 uppercase pl-1">Password</label><input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="w-full p-3 md:p-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500 text-sm" placeholder="Secure Key" /></div>
-                                    <button type="button" onClick={handleCreateAccount} disabled={isCreating} className="w-full bg-slate-900 hover:bg-black text-white p-4 rounded-2xl font-bold shadow-lg shadow-slate-200 transition-all active:scale-95">{isCreating ? 'Provisioning...' : 'Deploy Mailbox'}</button>
+                <div className="flex-1 overflow-y-auto p-4 lg:p-12 xl:p-16 bg-[#f8fafc]">
+                    <div className="max-w-6xl mx-auto space-y-10 lg:space-y-16 pb-24 lg:pb-0">
+                        <header className="space-y-2">
+                            <div className="flex items-center gap-3 text-emerald-600 mb-2">
+                                <Settings className="w-6 h-6 lg:w-8 lg:h-8" />
+                                <span className="text-xs font-black uppercase tracking-[0.3em]">Module Identity</span>
+                            </div>
+                            <h2 className="text-3xl lg:text-6xl font-black text-slate-900 tracking-tight leading-none">Identity Hub</h2>
+                            <p className="text-slate-400 text-sm lg:text-xl font-medium max-w-2xl">Provision and manage secure communication endpoints for your zonal infrastructure.</p>
+                        </header>
+
+                        <div className="grid xl:grid-cols-5 gap-8 lg:gap-12">
+                            {/* Provision Form */}
+                            <section className="xl:col-span-2 bg-white p-7 lg:p-10 rounded-[40px] border border-slate-100 shadow-2xl shadow-slate-200/50 h-fit">
+                                <h3 className="font-black text-slate-900 text-xl mb-8 flex items-center gap-3"><Plus className="w-6 h-6 text-emerald-500" /> New Account</h3>
+                                <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+                                    <div className="space-y-2.5"><label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Alias</label><div className="flex items-center group transition-all"><input type="text" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} className="flex-1 p-4 bg-slate-50 border-none rounded-l-2xl focus:ring-4 focus:ring-emerald-500/5 font-bold text-sm transition-all" placeholder="partner_name" /><span className="inline-flex items-center px-5 h-[52px] bg-slate-100 text-slate-500 rounded-r-2xl font-black text-xs border-l border-slate-200">@fonzkart.in</span></div></div>
+                                    <div className="space-y-2.5"><label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Keyphrase</label><input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="w-full p-4 bg-slate-50 border-none rounded-2xl focus:ring-4 focus:ring-emerald-500/5 font-bold text-sm" placeholder="Secure Password" /></div>
+                                    <button type="button" onClick={handleCreateAccount} disabled={isCreating} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white p-4.5 rounded-2xl font-black shadow-lg shadow-emerald-200/50 transition-all active:scale-[0.97] uppercase tracking-widest text-xs py-5">
+                                        {isCreating ? 'Provisioning...' : 'Deploy Mailbox'}
+                                    </button>
                                 </form>
                             </section>
-                            <section className="space-y-6">
-                                <h3 className="font-bold text-slate-800 flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-emerald-500" /> Live accounts</h3>
-                                <div className="grid sm:grid-cols-1 gap-3 shrink-0 overflow-visible">
+
+                            {/* Live Accounts List */}
+                            <section className="xl:col-span-3 space-y-6">
+                                <div className="flex items-center justify-between mb-2">
+                                    <h3 className="font-black text-slate-800 text-xl flex items-center gap-3"><CheckCircle2 className="w-6 h-6 text-emerald-500" /> Active Mailboxes</h3>
+                                    <span className="text-[10px] font-black bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full">{accounts.length} Total</span>
+                                </div>
+                                <div className="grid sm:grid-cols-2 gap-4 lg:gap-5">
                                     {accounts.map((acc) => (
-                                        <div key={acc.email} className="bg-white p-4 md:p-5 rounded-2xl border border-slate-100 flex items-center justify-between min-w-0 group hover:shadow-lg transition-all">
-                                            <div className="flex items-center gap-3 md:gap-4 min-w-0">
-                                                <div className="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0"><User className="w-5 h-5" /></div>
-                                                <div className="min-w-0"><p className="font-bold text-slate-800 text-sm md:text-base truncate">{acc.email}</p><p className="text-[9px] md:text-[10px] text-emerald-500 font-bold uppercase tracking-widest bg-emerald-50/50 w-fit px-2 py-0.5 rounded-full mt-0.5">Routed</p></div>
+                                        <div key={acc.email} className="bg-white p-5 lg:p-6 rounded-[24px] border border-slate-100 flex items-center justify-between group hover:shadow-xl hover:border-emerald-100 transition-all duration-300">
+                                            <div className="flex items-center gap-4 min-w-0">
+                                                <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-emerald-50 group-hover:text-emerald-500 transition-colors shrink-0"><User className="w-6 h-6" /></div>
+                                                <div className="min-w-0">
+                                                    <p className="font-black text-slate-800 text-sm truncate">{acc.email}</p>
+                                                    <p className="text-[9px] text-emerald-500 font-black uppercase tracking-[.15em] bg-emerald-50/50 w-fit px-2 py-0.5 rounded-full mt-1.5 border border-emerald-100/30">Active & Routing</p>
+                                                </div>
                                             </div>
                                         </div>
                                     ))}
@@ -384,6 +400,7 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
   );
 
   async function handleCreateAccount() {
+    if (!newEmail || !newPassword) return alert('Email and Password are required');
     setIsCreating(true);
     try {
       const res = await fetch('/api/email/account', {
@@ -392,12 +409,11 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
         body: JSON.stringify({ email: newEmail, password: newPassword }),
       });
       if (res.ok) {
-        alert('Account created successfully');
         setNewEmail(''); setNewPassword(''); fetchAccounts();
       } else {
         const error = await res.json(); alert('Error: ' + (error.message || error.error));
       }
-    } catch (e: any) { alert('Error creating account: ' + e.message); } finally { setIsCreating(false); }
+    } catch (e: any) { alert('Error: ' + e.message); } finally { setIsCreating(false); }
   }
 
   async function handleSendEmail(e: React.FormEvent) {
@@ -409,15 +425,13 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
       formData.append('to', composeTo);
       formData.append('subject', composeSubject);
       formData.append('text', composeBody);
-      attachments.forEach(file => formData.append('attachments', file));
       const res = await fetch('/api/email/send', { method: 'POST', body: formData });
       if (res.ok) {
-        alert('Email sent successfully');
         setComposeTo(''); setComposeSubject(''); setComposeBody(''); setAttachments([]);
         setActiveTab('sent'); loadEmails(true);
       } else {
         const error = await res.json(); alert('Error: ' + error.message);
       }
-    } catch (e: any) { alert('Error sending email: ' + e.message); } finally { setIsSending(false); }
+    } catch (e: any) { alert('Error: ' + e.message); } finally { setIsSending(false); }
   }
 }
