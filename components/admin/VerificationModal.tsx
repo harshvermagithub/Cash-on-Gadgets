@@ -6,12 +6,15 @@ import ImageUploader from './ImageUploader';
 import ChecklistWizard from '@/components/sell/ChecklistWizard';
 import { calculatePrice } from '@/actions/priceCalculation';
 import { findVariantByName } from '@/actions/catalog';
+import ImeiScanner from './ImeiScanner';
 
 export default function VerificationModal({ order, onClose, onSubmit }: { order: any, onClose: () => void, onSubmit: (data: any) => void }) {
     const [step, setStep] = useState<'photos' | 'conditions' | 'imei' | 'summary'>('photos');
     const [images, setImages] = useState<string[]>([]);
     const [notes, setNotes] = useState('');
     const [imei, setImei] = useState('');
+    const [imei2, setImei2] = useState('');
+    const [showScanner, setShowScanner] = useState(false);
     const [answers, setAnswers] = useState<Record<string, unknown>>({});
     const [isCalculating, setIsCalculating] = useState(false);
     const [finalPrice, setFinalPrice] = useState(order.price);
@@ -112,59 +115,77 @@ export default function VerificationModal({ order, onClose, onSubmit }: { order:
 
                     {step === 'imei' && (
                         <div className="space-y-8 animate-in fade-in slide-in-from-right-4">
-                            <div className="bg-blue-500/5 p-6 rounded-3xl border border-blue-500/10 flex flex-col items-center text-center space-y-4">
-                                <div className="p-4 bg-blue-500/10 text-blue-500 rounded-2xl">
-                                    <Package className="w-8 h-8" />
-                                </div>
-                                <div>
-                                    <h4 className="text-xl font-bold">Step 3: IMEI Verification</h4>
-                                    <p className="text-sm text-muted-foreground mt-1">Dial *#06# on the device to get the IMEI number.</p>
-                                </div>
-                            </div>
+                            {showScanner ? (
+                                <ImeiScanner 
+                                    onDetected={(i1, i2) => {
+                                        setImei(i1);
+                                        if (i2) setImei2(i2);
+                                        setShowScanner(false);
+                                    }}
+                                    onClose={() => setShowScanner(false)}
+                                />
+                            ) : (
+                                <>
+                                    <div className="bg-blue-500/5 p-6 rounded-3xl border border-blue-500/10 flex flex-col items-center text-center space-y-4">
+                                        <div className="p-4 bg-blue-500/10 text-blue-500 rounded-2xl">
+                                            <Package className="w-8 h-8" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-xl font-bold">Step 3: IMEI Verification</h4>
+                                            <p className="text-sm text-muted-foreground mt-1">Reveal the IMEI by scanning the barcode or label.</p>
+                                        </div>
+                                    </div>
 
-                            <div className="space-y-4">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold pl-1 uppercase tracking-widest text-muted-foreground">IMEI Number</label>
-                                    <input 
-                                        type="text" 
-                                        value={imei}
-                                        onChange={(e) => setImei(e.target.value.replace(/\D/g, '').slice(0, 15))}
-                                        className="w-full h-14 px-5 rounded-2xl border bg-card text-lg font-mono tracking-[0.2em] outline-none focus:ring-4 focus:ring-primary/10 transition-all text-center"
-                                        placeholder="15-digit IMEI"
-                                    />
-                                </div>
+                                    <div className="space-y-6">
+                                        <button 
+                                            onClick={() => setShowScanner(true)}
+                                            className="w-full h-24 bg-primary/10 border-2 border-dashed border-primary/30 rounded-[2rem] flex flex-col items-center justify-center gap-2 hover:bg-primary/20 transition-all group"
+                                        >
+                                            <div className="p-2 bg-primary text-white rounded-full group-hover:scale-110 transition-transform">
+                                                <Camera className="w-6 h-6" />
+                                            </div>
+                                            <span className="font-black text-xs uppercase tracking-[0.2em] text-primary">Open Barcode Scanner</span>
+                                        </button>
 
-                                <div className="p-4 bg-muted/30 rounded-2xl border space-y-3 text-center">
-                                    <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Or Scan Device Label</p>
-                                    <input 
-                                        type="file" 
-                                        accept="image/*" 
-                                        capture="environment"
-                                        className="hidden" 
-                                        id="imei-capture"
-                                        onChange={(e) => {
-                                            alert("Image captured. Manual entry still required for verification accuracy.");
-                                        }}
-                                    />
-                                    <label 
-                                        htmlFor="imei-capture"
-                                        className="w-full h-12 flex items-center justify-center gap-2 border-2 border-dashed border-primary/30 rounded-xl cursor-pointer hover:bg-primary/5 transition-colors text-xs font-bold text-primary"
-                                    >
-                                        <Camera className="w-4 h-4" /> Capture IMEI Label
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div className="flex gap-4 pt-4">
-                                <button onClick={() => setStep('conditions')} className="px-6 h-14 border-2 rounded-2xl font-bold hover:bg-muted transition-all">Back</button>
-                                <button
-                                    onClick={() => setStep('summary')}
-                                    disabled={imei.length < 15}
-                                    className="flex-1 h-14 bg-slate-900 text-white font-black rounded-2xl shadow-xl hover:bg-slate-800 disabled:opacity-50 transition-all flex items-center justify-center gap-3"
-                                >
-                                    Review Summary <ArrowRight className="w-5 h-5" />
-                                </button>
-                            </div>
+                                        <div className="space-y-4">
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] font-black pl-1 uppercase tracking-widest text-muted-foreground">IMEI 1 (Primary)</label>
+                                                <input 
+                                                    type="text" 
+                                                    value={imei}
+                                                    onChange={(e) => setImei(e.target.value.replace(/\D/g, '').slice(0, 15))}
+                                                    className="w-full h-14 px-5 rounded-2xl border bg-card text-lg font-mono tracking-[0.2em] outline-none focus:ring-4 focus:ring-primary/10 transition-all text-center"
+                                                    placeholder="Manual Entry Fallback"
+                                                />
+                                            </div>
+
+                                            {imei2 && (
+                                                <div className="space-y-2 animate-in slide-in-from-top-2">
+                                                    <label className="text-[10px] font-black pl-1 uppercase tracking-widest text-muted-foreground">IMEI 2 (Secondary)</label>
+                                                    <input 
+                                                        type="text" 
+                                                        value={imei2}
+                                                        onChange={(e) => setImei2(e.target.value.replace(/\D/g, '').slice(0, 15))}
+                                                        className="w-full h-14 px-5 rounded-2xl border bg-card text-lg font-mono tracking-[0.2em] outline-none focus:ring-4 focus:ring-primary/10 transition-all text-center opacity-70"
+                                                        placeholder="Secondary IMEI"
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex gap-4 pt-4">
+                                        <button onClick={() => setStep('conditions')} className="px-6 h-14 border-2 rounded-2xl font-bold hover:bg-muted transition-all">Back</button>
+                                        <button
+                                            onClick={() => setStep('summary')}
+                                            disabled={imei.length < 15}
+                                            className="flex-1 h-14 bg-slate-900 text-white font-black rounded-2xl shadow-xl hover:bg-slate-800 disabled:opacity-50 transition-all flex items-center justify-center gap-3"
+                                        >
+                                            Review Summary <ArrowRight className="w-5 h-5" />
+                                        </button>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     )}
 
@@ -180,8 +201,9 @@ export default function VerificationModal({ order, onClose, onSubmit }: { order:
                                         <IndianRupee className="w-6 h-6" />
                                     </div>
                                 </div>
-                                <div className="pt-4 border-t border-white/20 flex gap-4">
-                                    <div className="bg-white/10 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase">IMEI: {imei}</div>
+                                <div className="pt-4 border-t border-white/20 flex flex-wrap gap-4">
+                                    <div className="bg-white/10 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase">IMEI 1: {imei}</div>
+                                    {imei2 && <div className="bg-white/10 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase">IMEI 2: {imei2}</div>}
                                     <div className="bg-white/10 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase">{images.length} Photos</div>
                                 </div>
                             </div>
@@ -201,7 +223,7 @@ export default function VerificationModal({ order, onClose, onSubmit }: { order:
                             <div className="flex gap-4 pt-4 sticky bottom-0 bg-background py-2">
                                 <button onClick={() => setStep('imei')} className="px-6 h-14 border-2 rounded-2xl font-bold hover:bg-muted transition-all">Back</button>
                                 <button 
-                                    onClick={() => onSubmit({ images, notes, finalOffer: finalPrice, imei })}
+                                    onClick={() => onSubmit({ images, notes, finalOffer: finalPrice, imei, imei2 })}
                                     className="flex-1 h-14 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all flex items-center justify-center gap-3"
                                 >
                                     Submit for Approval <Check className="w-6 h-6" />
