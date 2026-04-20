@@ -48,14 +48,35 @@ export function NotificationProvider({
         }
     };
 
-    const [showPermissionPrompt, setShowPermissionPrompt] = useState(false);
+    const [hasUnassigned, setHasUnassigned] = useState(false);
+    const [buzzerActive, setBuzzerActive] = useState(false);
 
-    const playNotificationSound = () => {
+    const playNotificationSound = (loop = false) => {
         try {
             const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+            if (loop) audio.loop = true;
             audio.play().catch(e => console.log("Audio play blocked", e));
+            return audio;
         } catch (e) {
             console.error("Audio failed", e);
+            return null;
+        }
+    };
+
+    const checkUnassigned = async () => {
+        if (userRole !== 'SUPER_ADMIN' && userRole !== 'ADMIN' && userRole !== 'ZONAL_HEAD') return;
+        try {
+            const res = await fetch('/api/admin/orders/unassigned-count');
+            const data = await res.json();
+            if (data.count > 0) {
+                setHasUnassigned(true);
+                if (!buzzerActive) setBuzzerActive(true);
+            } else {
+                setHasUnassigned(false);
+                setBuzzerActive(false);
+            }
+        } catch (e) {
+            console.error("Failed to check unassigned orders", e);
         }
     };
 
@@ -63,6 +84,7 @@ export function NotificationProvider({
         if (!userId && !riderId && !userRole) return;
 
         fetchNotifications();
+        checkUnassigned();
 
         // Browser Permission Check
         if (typeof window !== 'undefined' && typeof Notification !== 'undefined') {
@@ -105,13 +127,19 @@ export function NotificationProvider({
                                 renotify: true
                             } as any);
                         }
+                        
+                        if (newNotif.type === 'order_new') {
+                           checkUnassigned();
+                        }
                     }
                 }
             )
             .subscribe();
 
-        // Polling Fallback (Every 30 seconds)
-        const pollTimer = setInterval(fetchNotifications, 30000);
+        const pollTimer = setInterval(() => {
+            fetchNotifications();
+            checkUnassigned();
+        }, 30000);
 
         return () => {
             supabaseClient.removeChannel(channel);
@@ -119,16 +147,32 @@ export function NotificationProvider({
         };
     }, [userId, userRole, riderId]);
 
+    // Handle Buzzer Loop
+    useEffect(() => {
+        let audio: HTMLAudioElement | null = null;
+        if (buzzerActive && hasUnassigned) {
+            audio = playNotificationSound(true);
+        }
+        return () => {
+            if (audio) {
+                audio.pause();
+                audio.remove();
+            }
+        };
+    }, [buzzerActive, hasUnassigned]);
+
     const requestBrowserPermission = async () => {
         if (typeof Notification !== 'undefined') {
             const permission = await Notification.requestPermission();
             if (permission === 'granted') {
                 new window.Notification("Notifications Enabled!", {
-                    body: "You will now receive alerts for new orders and assignments.",
+                    body: "You will now receive alerts for new orders even when in background.",
                     icon: '/icon.png'
                 });
             }
             setShowPermissionPrompt(false);
+            // This also helps unlock audio context
+            playNotificationSound();
         }
     };
 
@@ -147,6 +191,19 @@ export function NotificationProvider({
             markRead 
         }}>
             {children}
+
+            {/* Global Buzzer Indicator */}
+            {buzzerActive && hasUnassigned && (
+                <div className="fixed bottom-6 right-6 z-[100] animate-bounce">
+                    <button 
+                        onClick={() => setBuzzerActive(false)}
+                        className="bg-red-500 text-white px-6 py-3 rounded-full shadow-2xl font-black flex items-center gap-3 border-4 border-white dark:border-slate-900"
+                    >
+                       <div className="w-3 h-3 bg-white rounded-full animate-ping" />
+                       NEW ORDER WAITING! STOP BUZZER
+                    </button>
+                </div>
+            )}
 
             {/* Permission Prompt Modal */}
             {showPermissionPrompt && (

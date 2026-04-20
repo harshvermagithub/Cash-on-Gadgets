@@ -19,6 +19,14 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
         setOrders(initialOrders);
     }, [initialOrders]);
 
+    // Auto-refresh every 30 seconds to sync with server/database
+    useEffect(() => {
+        const interval = setInterval(() => {
+            router.refresh();
+        }, 30000);
+        return () => clearInterval(interval);
+    }, [router]);
+
     const [assigningId, setAssigningId] = useState<string | null>(null);
     const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
     const [activeTab, setActiveTab] = useState<'to_be_assigned' | 'pending_pickup' | 'completed' | 'failed'>('to_be_assigned');
