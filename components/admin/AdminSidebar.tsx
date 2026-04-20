@@ -213,45 +213,14 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
 
                 </nav>
 
-                    {['SUPER_ADMIN', 'ADMIN'].includes(role) && (
-                        <>
-                            {renderSectionTitle('System')}
-                            {renderLink('/admin/admins', 'Users', Users, pathname.includes('/admin/admins'))}
-                            {renderLink('/admin/homepage', 'Landing Page', LayoutDashboard, pathname.includes('/admin/homepage'))}
-                            {renderLink('/admin/email', 'Email', Mail, pathname.includes('/admin/email'))}
-                        </>
-                    )}
-
-                    {['SUPER_ADMIN', 'ADMIN', 'ZONAL_HEAD'].includes(role) && (
-                        <>
-                            {renderSectionTitle('Hierarchy')}
-                            {renderLink('/admin/cities', 'Cities Workspace', MapPin, pathname.includes('/admin/cities'))}
-                        </>
-                    )}
-
-                    {['SUPER_ADMIN', 'ADMIN'].includes(role) && (
-                        renderLink('/admin/zonal-heads', 'Zonal Heads', Briefcase, pathname.includes('/admin/zonal-heads'))
-                    )}
-
-                    {['SUPER_ADMIN', 'ADMIN', 'ZONAL_HEAD'].includes(role) && (
-                        renderLink('/admin/partners', 'Partners', Building2, pathname.includes('/admin/partners'))
-                    )}
-
-                    {renderSectionTitle('Logistics')}
-                    {role !== 'RIDER' && renderLink('/admin/riders', 'Field Executives', Users, pathname.includes('riders'))}
-                    {renderLink('/admin/orders', role === 'RIDER' ? 'Assigned Orders' : 'Orders', ShoppingCart, pathname.includes('orders'))}
-
-                    {role === 'RIDER' && (
-                        <>
-                            {renderSectionTitle('Communication')}
-                            {renderLink('/admin/inbox', 'Email Inbox', Mail, pathname.includes('inbox'))}
-                        </>
-                    )}
-
-                </nav>
+                <div className="p-2 lg:p-4 border-t border-border dark:border-white/10 mt-auto flex flex-col gap-2">
+                    {renderLink('/', 'View Website', ExternalLink)}
+                    {isPrivileged && renderLink('/admin/payouts', 'Payouts Hub', Banknote, pathname.includes('payouts'))}
+                </div>
 
                 <div className="p-2 lg:p-4 border-t border-border dark:border-white/10 mt-auto flex flex-col gap-2">
                     {renderLink('/', 'View Website', ExternalLink)}
+                    {isPrivileged && renderLink('/admin/payouts', 'Payouts Hub', Banknote, pathname.includes('payouts'))}
                 </div>
             </aside>
         </>
