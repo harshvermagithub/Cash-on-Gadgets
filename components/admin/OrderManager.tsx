@@ -10,9 +10,23 @@ import { useRouter } from 'next/navigation';
 
 import OrderStepper from '@/components/orders/OrderStepper';
 
-export default function OrderManager({ initialOrders, riders }: { initialOrders: Order[], riders: Rider[] }) {
+export default function OrderManager({ 
+    initialOrders, 
+    riders, 
+    userRole = 'SUPER_ADMIN' 
+}: { 
+    initialOrders: Order[], 
+    riders: Rider[], 
+    userRole?: string 
+}) {
     const router = useRouter();
     const [orders, setOrders] = useState<Order[]>(initialOrders);
+
+    const isRider = userRole === 'RIDER';
+
+    const [activeTab, setActiveTab] = useState<'to_be_assigned' | 'pending_pickup' | 'completed' | 'failed'>(
+        isRider ? 'pending_pickup' : 'to_be_assigned'
+    );
 
     // Sync if server sends new orders (e.g. from polling or navigations)
     useEffect(() => {
@@ -29,7 +43,6 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
 
     const [assigningId, setAssigningId] = useState<string | null>(null);
     const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
-    const [activeTab, setActiveTab] = useState<'to_be_assigned' | 'pending_pickup' | 'completed' | 'failed'>('to_be_assigned');
     const [selectedOrderIds, setSelectedOrderIds] = useState<string[]>([]);
     const [isBulkProcessing, setIsBulkProcessing] = useState(false);
 
@@ -358,7 +371,7 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                     </div>
 
                                     <button
-                                        onClick={() => setViewingOrder(order)}
+                        onClick={() => setViewingOrder(order)}
                                         className="text-sm font-medium text-primary hover:underline flex items-center gap-1 mt-1"
                                     >
                                         <Eye className="w-4 h-4" /> View Evaluation Details
@@ -366,41 +379,43 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                 </div>
 
                                 <div className="w-full lg:w-auto min-w-[300px] border-t lg:border-t-0 lg:border-l pt-4 lg:pt-0 lg:pl-6 space-y-4">
-                                    <div>
-                                        <label className="text-sm font-medium mb-1 block">Assign Field Executive</label>
-                                        <div className="flex gap-2">
-                                            {(() => {
-                                                const availableRiders = riders.filter(r => {
-                                                    if (!order.pincode) return true;
-                                                    // @ts-ignore
-                                                    if (r.partner && r.partner.pincodes && r.partner.pincodes.length > 0) {
+                                    {!isRider && (
+                                        <div>
+                                            <label className="text-sm font-medium mb-1 block text-slate-500 uppercase tracking-tighter text-[10px]">Assign Field Executive</label>
+                                            <div className="flex gap-2">
+                                                {(() => {
+                                                    const availableRiders = riders.filter(r => {
+                                                        if (!order.pincode) return true;
                                                         // @ts-ignore
-                                                        return r.partner.pincodes.includes(order.pincode);
-                                                    }
-                                                    return true;
-                                                }).sort((a, b) => a.status === 'available' ? -1 : 1);
+                                                        if (r.partner && r.partner.pincodes && r.partner.pincodes.length > 0) {
+                                                            // @ts-ignore
+                                                            return r.partner.pincodes.includes(order.pincode);
+                                                        }
+                                                        return true;
+                                                    }).sort((a, b) => a.status === 'available' ? -1 : 1);
 
-                                                return (
-                                                    <select
-                                                        className="flex-1 p-2 border rounded-lg bg-background text-sm"
-                                                        value={order.riderId || ""}
-                                                        onChange={(e) => handleAssign(order.id, e.target.value)}
-                                                        disabled={assigningId === order.id}
-                                                    >
-                                                        <option value="">Select Field Executive...</option>
-                                                        {availableRiders.map(r => (
-                                                            <option key={r.id} value={r.id}>
-                                                                {r.name} ({r.status.toUpperCase()})
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                );
-                                            })()}
-                                            {assigningId === order.id && (
-                                                <div className="flex items-center justify-center p-2">
-                                                    <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                                                </div>
-                                            )}
+                                                    return (
+                                                        <select
+                                                            className="flex-1 p-2 border rounded-lg bg-background text-sm"
+                                                            value={order.riderId || ""}
+                                                            onChange={(e) => handleAssign(order.id, e.target.value)}
+                                                            disabled={assigningId === order.id}
+                                                        >
+                                                            <option value="">Select Field Executive...</option>
+                                                            {availableRiders.map(r => (
+                                                                <option key={r.id} value={r.id}>
+                                                                    {r.name} ({r.status.toUpperCase()})
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    );
+                                                })()}
+                                                {assigningId === order.id && (
+                                                    <div className="flex items-center justify-center p-2">
+                                                        <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                                                    </div>
+                                                )}
+                                            </div>
                                             <button
                                                 onClick={async () => {
                                                     const reason = window.prompt("Mark order as FAILED. Reason:", "Customer unavailable");
@@ -419,7 +434,17 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
                                                 Fail Order
                                             </button>
                                         </div>
-                                    </div>
+                                    )}
+
+                                    {isRider && order.status === 'assigned' && (
+                                        <button
+                                            onClick={() => router.push('/pickup/dashboard')}
+                                            className="w-full py-3 bg-emerald-500 text-white font-black rounded-xl hover:bg-emerald-600 transition-all flex items-center justify-center gap-3 shadow-lg shadow-emerald-500/20 uppercase tracking-widest text-xs"
+                                        >
+                                            <Camera className="w-5 h-5 mx-1" />
+                                            Start Evaluation
+                                        </button>
+                                    )}
 
                                     {assignedRider && (
                                         <div className="bg-blue-50 text-blue-700 p-3 rounded-lg text-sm flex items-center gap-3">

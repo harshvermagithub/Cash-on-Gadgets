@@ -33,6 +33,16 @@ export default async function OrdersPage(props: { searchParams?: Promise<{ rider
         const allowedPincodes = currentUser.pincodes || [];
         orders = orders.filter(o => o.pincode && allowedPincodes.includes(o.pincode));
         riders = riders.filter(r => r.partnerId === currentUser.id);
+    } else if (currentUser.role === 'RIDER') {
+        const rider = await prisma.rider.findFirst({
+            where: { userId: currentUser.id }
+        });
+        if (rider) {
+            orders = orders.filter(o => o.riderId === rider.id);
+        } else {
+            orders = [];
+        }
+        riders = []; // Riders don't need to see other riders
     } else if (currentUser.role === 'ZONAL_HEAD') {
         if (currentUser.managedCities.length > 0) {
             const managedCityIds = currentUser.managedCities.map((c: any) => c.id);
@@ -67,8 +77,8 @@ export default async function OrdersPage(props: { searchParams?: Promise<{ rider
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold">
-                {filterRiderId ? `Orders for Field Executive` : `Manage Orders`}
+            <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-slate-900 to-slate-500 dark:from-white dark:to-slate-400 bg-clip-text text-transparent uppercase">
+                {currentUser.role === 'RIDER' ? 'Assigned Orders' : filterRiderId ? `Orders for Field Executive` : `Manage Orders`}
             </h1>
             {currentUser.role === 'ZONAL_HEAD' && (
                 <p className="text-muted-foreground text-sm font-medium text-primary">
@@ -76,8 +86,13 @@ export default async function OrdersPage(props: { searchParams?: Promise<{ rider
                 </p>
             )}
             {currentUser.role === 'PARTNER' && <p className="text-muted-foreground text-sm font-medium text-emerald-600">Assigned Pincodes: {currentUser.pincodes?.join(', ') || 'None'}</p>}
-            <p className="text-muted-foreground">View incoming sell requests and assign field executives for pickup.</p>
-            <OrderManager initialOrders={orders} riders={riders} />
+            <p className="text-muted-foreground">
+                {currentUser.role === 'RIDER' 
+                    ? 'View and manage your currently assigned sell requests and pick-up tasks.'
+                    : 'View incoming sell requests and assign field executives for pickup.'
+                }
+            </p>
+            <OrderManager initialOrders={orders} riders={riders} userRole={currentUser.role} />
         </div>
     );
 }

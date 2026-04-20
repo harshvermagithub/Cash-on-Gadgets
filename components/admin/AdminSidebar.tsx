@@ -47,6 +47,7 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
     const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false);
 
     const dashboardTitle = role === 'ZONAL_HEAD' ? 'Zonal Head' :
+        role === 'RIDER' ? 'Field Partner' :
         ['SUPER_ADMIN', 'ADMIN'].includes(role) ? 'Admin' :
             'Partner';
 
@@ -131,7 +132,7 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                 <nav className="flex-1 overflow-y-auto px-2 py-4 lg:p-4 space-y-1">
                     {renderLink('/admin', 'Dashboard', LayoutDashboard, pathname === '/admin')}
 
-                    {renderSectionTitle('Inventory')}
+                    {role !== 'RIDER' && renderSectionTitle('Inventory')}
 
                     {['SUPER_ADMIN', 'ADMIN'].includes(role) && CATEGORIES.map((cat) => (
                         <div key={cat.id}>
@@ -164,8 +165,15 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                     )}
 
                     {renderSectionTitle('Logistics')}
-                    {renderLink('/admin/riders', 'Field Executives', Users, pathname.includes('riders'))}
-                    {renderLink('/admin/orders', 'Orders', ShoppingCart, pathname.includes('orders'))}
+                    {role !== 'RIDER' && renderLink('/admin/riders', 'Field Executives', Users, pathname.includes('riders'))}
+                    {renderLink('/admin/orders', role === 'RIDER' ? 'Assigned Orders' : 'Orders', ShoppingCart, pathname.includes('orders'))}
+
+                    {role === 'RIDER' && (
+                        <>
+                            {renderSectionTitle('Communication')}
+                            {renderLink('/admin/inbox', 'Email Inbox', Mail, pathname.includes('inbox'))}
+                        </>
+                    )}
 
                 </nav>
 
