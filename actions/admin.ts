@@ -5,9 +5,7 @@ import { getSession, isAdmin } from '@/lib/session';
 import { revalidatePath } from 'next/cache';
 import { randomUUID } from 'crypto';
 import { sendSystemEmail } from '@/lib/email';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/db';
 
 // Auth check helper
 async function requireAdmin() {
