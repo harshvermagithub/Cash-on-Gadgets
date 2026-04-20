@@ -19,3 +19,23 @@ export async function fetchVariants(modelId: string, category: string = 'smartph
     // Fetch variants from DB
     return await db.getVariants(modelId);
 }
+
+export async function findVariantByName(deviceName: string) {
+    // deviceName is usually "Model Name (Variant Name)"
+    const match = deviceName.match(/(.+)\s\((.+)\)/);
+    if (!match) return null;
+
+    const name = match[1];
+    const variant = match[2];
+
+    const { prisma } = await import('@/lib/db');
+    const found = await prisma.variant.findFirst({
+        where: {
+            name: variant,
+            model: {
+                name: name
+            }
+        }
+    });
+    return found;
+}

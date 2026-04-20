@@ -24,7 +24,7 @@ export default async function RidersPage() {
     if (currentUser.role === 'SUPER_ADMIN' || currentUser.role === 'ADMIN') {
         partners = await prisma.user.findMany({ where: { role: 'PARTNER' } });
         riders = await prisma.rider.findMany({
-            include: { partner: true },
+            include: { partner: true, orders: true },
             orderBy: { createdAt: 'desc' }
         });
     } else if (currentUser.role === 'ZONAL_HEAD') {
@@ -41,14 +41,14 @@ export default async function RidersPage() {
         const partnerIds = partners.map(p => p.id);
         riders = await prisma.rider.findMany({
             where: { partnerId: { in: partnerIds } },
-            include: { partner: true },
+            include: { partner: true, orders: true },
             orderBy: { createdAt: 'desc' }
         });
     } else if (currentUser.role === 'PARTNER') {
         partners = [currentUser];
         riders = await prisma.rider.findMany({
             where: { partnerId: currentUser.id },
-            include: { partner: true },
+            include: { partner: true, orders: true },
             orderBy: { createdAt: 'desc' }
         });
     }

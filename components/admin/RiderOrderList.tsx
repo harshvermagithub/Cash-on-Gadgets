@@ -54,11 +54,15 @@ export default function RiderOrderList({
         setUpdatingId(verifyingOrder.id);
         try {
             await submitVerification(verifyingOrder.id, {
-                riderAnswers: { notes: data.notes },
+                riderAnswers: { 
+                    notes: data.notes, 
+                    imei: data.imei,
+                    verifiedAt: new Date().toISOString()
+                },
                 verificationImages: data.images,
                 offeredPrice: data.finalOffer
             });
-            alert('Verification submitted for admin approval.');
+            alert('Verification submitted with IMEI ' + data.imei + ' for admin approval.');
             setVerifyingOrder(null);
             router.refresh();
         } catch {
@@ -282,7 +286,7 @@ export default function RiderOrderList({
                                                 className="w-full py-3 bg-secondary text-secondary-foreground font-bold rounded-xl hover:bg-secondary/80 transition-all flex items-center justify-center gap-2 shadow-sm"
                                             >
                                                 <Camera className="w-5 h-5" />
-                                                Start Verification
+                                                Start Verification (IMEI Required)
                                             </button>
                                             <div className="text-center">
                                                 <span className="text-xs text-muted-foreground mx-2 uppercase tracking-widest font-bold">OR</span>
