@@ -103,7 +103,7 @@ export function NotificationProvider({
                                 badge: '/icon.png',
                                 tag: newNotif.id,
                                 renotify: true
-                            });
+                            } as any);
                         }
                     }
                 }
