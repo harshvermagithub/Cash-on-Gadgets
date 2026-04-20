@@ -35,7 +35,7 @@ export default async function OrdersPage(props: { searchParams?: Promise<{ rider
         riders = riders.filter(r => r.partnerId === currentUser.id);
     } else if (currentUser.role === 'RIDER') {
         const rider = await prisma.rider.findFirst({
-            where: { userId: currentUser.id }
+            where: { phone: currentUser.phone || '' }
         });
         if (rider) {
             orders = orders.filter(o => o.riderId === rider.id);
