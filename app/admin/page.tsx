@@ -9,7 +9,13 @@ export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
     const session = await getSession();
-    if (session?.user?.role === 'FIELD_EXECUTIVE' || session?.user?.role === 'RIDER') {
+    const role = session?.user?.role;
+
+    if (role === 'FIELD_EXECUTIVE' || role === 'RIDER') {
+        redirect('/admin/orders');
+    }
+
+    if (role === 'ZONAL_HEAD' || role === 'PARTNER') {
         redirect('/admin/orders');
     }
 

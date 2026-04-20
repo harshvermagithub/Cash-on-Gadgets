@@ -45,25 +45,34 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
     const pathname = usePathname();
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false);
+    const [isInventoryOpen, setIsInventoryOpen] = useState(false);
 
     const dashboardTitle = role === 'ZONAL_HEAD' ? 'Zonal Head' :
         role === 'RIDER' ? 'Field Partner' :
         ['SUPER_ADMIN', 'ADMIN'].includes(role) ? 'Admin' :
             'Partner';
 
-    const renderLink = (href: string, title: string, Icon: any, isActive: boolean = false) => {
+    const isPrivileged = ['SUPER_ADMIN', 'ADMIN'].includes(role);
+    const isZonal = role === 'ZONAL_HEAD';
+    const isPartner = role === 'PARTNER';
+    const isRider = role === 'RIDER';
+
+    const renderLink = (href: string, title: string, Icon: any, isActive: boolean = false, onClickExtra?: () => void) => {
         return (
             <Link
                 href={href}
                 title={title}
-                className={`flex items-center gap-3 text-sm font-medium rounded-lg transition-colors ${isActive ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
+                className={`flex items-center gap-3 text-sm font-medium rounded-lg transition-colors relative ${isActive ? 'bg-primary/10 text-primary' : 'hover:bg-muted text-muted-foreground'
                     } ${isMobileOpen
                         ? 'justify-start px-4 py-3'
                         : isDesktopCollapsed
                             ? 'justify-center p-3'
                             : 'justify-center p-3 lg:justify-start lg:px-4 lg:py-3'
                     }`}
-                onClick={() => setIsMobileOpen(false)}
+                onClick={() => {
+                    setIsMobileOpen(false);
+                    if (onClickExtra) onClickExtra();
+                }}
             >
                 <Icon className="w-5 h-5 shrink-0" />
                 <span className={`${isMobileOpen ? 'inline' : isDesktopCollapsed ? 'hidden' : 'hidden lg:inline'} whitespace-nowrap`}>
@@ -129,16 +138,80 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                     </Link>
                 </div>
 
-                <nav className="flex-1 overflow-y-auto px-2 py-4 lg:p-4 space-y-1">
-                    {renderLink('/admin', 'Dashboard', LayoutDashboard, pathname === '/admin')}
+                <nav className="flex-1 overflow-y-auto px-2 py-4 lg:p-4 space-y-1 scrollbar-hide">
+                    {/* Dashboard only for Admins */}
+                    {isPrivileged && renderLink('/admin', 'Dashboard', LayoutDashboard, pathname === '/admin')}
 
-                    {role !== 'RIDER' && renderSectionTitle('Inventory')}
-
-                    {['SUPER_ADMIN', 'ADMIN'].includes(role) && CATEGORIES.map((cat) => (
-                        <div key={cat.id}>
-                            {renderLink(`/admin/category/${cat.id}`, cat.label, cat.icon, pathname === `/admin/category/${cat.id}`)}
+                    {/* Inventory Accordion for Admins */}
+                    {isPrivileged && (
+                        <div className="space-y-1">
+                            <button
+                                onClick={() => setIsInventoryOpen(!isInventoryOpen)}
+                                className={`w-full flex items-center gap-3 text-sm font-medium rounded-lg transition-colors hover:bg-muted text-muted-foreground ${isMobileOpen ? 'px-4 py-3' : isDesktopCollapsed ? 'justify-center p-3' : 'px-4 py-3'}`}
+                            >
+                                <Smartphone className="w-5 h-5 shrink-0" />
+                                <span className={`${isMobileOpen ? 'inline' : isDesktopCollapsed ? 'hidden' : 'hidden lg:inline'} flex-1 text-left`}>Inventory</span>
+                                <ChevronRight className={`w-4 h-4 transition-transform ${isInventoryOpen ? 'rotate-90' : ''} ${isMobileOpen || !isDesktopCollapsed ? 'block' : 'hidden'}`} />
+                            </button>
+                            
+                            {(isInventoryOpen && (isMobileOpen || !isDesktopCollapsed)) && (
+                                <motion.div 
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: 'auto' }}
+                                    className="pl-4 space-y-1 mt-1"
+                                >
+                                    {CATEGORIES.map((cat) => (
+                                        <div key={cat.id}>
+                                            {renderLink(
+                                                `/admin/category/${cat.id}`, 
+                                                cat.label, 
+                                                cat.icon, 
+                                                pathname === `/admin/category/${cat.id}`,
+                                                () => setIsInventoryOpen(false)
+                                            )}
+                                        </div>
+                                    ))}
+                                </motion.div>
+                            )}
                         </div>
-                    ))}
+                    )}
+
+                    {isPrivileged && (
+                        <>
+                            {renderSectionTitle('System')}
+                            {renderLink('/admin/admins', 'Users', Users, pathname.includes('/admin/admins'))}
+                            {renderLink('/admin/homepage', 'Landing Page', LayoutDashboard, pathname.includes('/admin/homepage'))}
+                            {renderLink('/admin/email', 'Email System', Mail, pathname.includes('/admin/email'))}
+                        </>
+                    )}
+
+                    {(isPrivileged || isZonal) && (
+                        <>
+                            {renderSectionTitle('Hierarchy')}
+                            {renderLink('/admin/cities', 'Cities Workspace', MapPin, pathname.includes('/admin/cities'))}
+                        </>
+                    )}
+
+                    {isPrivileged && (
+                        renderLink('/admin/zonal-heads', 'Zonal Heads', Briefcase, pathname.includes('/admin/zonal-heads'))
+                    )}
+
+                    {(isPrivileged || isZonal) && (
+                        renderLink('/admin/partners', 'Partners', Building2, pathname.includes('/admin/partners'))
+                    )}
+
+                    {renderSectionTitle('Logistics')}
+                    {(isPrivileged || isZonal || isPartner) && renderLink('/admin/riders', 'Field Executives', Users, pathname.includes('riders'))}
+                    {renderLink('/admin/orders', (isRider ? 'Assigned Orders' : 'Orders'), ShoppingCart, pathname.includes('orders'))}
+
+                    {(isRider || isPartner || isZonal) && (
+                        <>
+                            {renderSectionTitle('Communication')}
+                            {renderLink('/admin/inbox', 'Mail Inbox', Mail, pathname.includes('inbox'))}
+                        </>
+                    )}
+
+                </nav>
 
                     {['SUPER_ADMIN', 'ADMIN'].includes(role) && (
                         <>
