@@ -50,6 +50,15 @@ export function NotificationProvider({
 
     const [showPermissionPrompt, setShowPermissionPrompt] = useState(false);
 
+    const playNotificationSound = () => {
+        try {
+            const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+            audio.play().catch(e => console.log("Audio play blocked", e));
+        } catch (e) {
+            console.error("Audio failed", e);
+        }
+    };
+
     useEffect(() => {
         if (!userId && !riderId && !userRole) return;
 
@@ -58,13 +67,11 @@ export function NotificationProvider({
         // Browser Permission Check
         if (typeof window !== 'undefined' && typeof Notification !== 'undefined') {
             if (Notification.permission === 'default') {
-                // Show custom UI prompt after a short delay
                 const timer = setTimeout(() => setShowPermissionPrompt(true), 2000);
                 return () => clearTimeout(timer);
             }
         }
 
-        // Subscribe... (rest of the logic remains)
         const channel = supabaseClient
             .channel('notifications')
             .on(
@@ -83,6 +90,7 @@ export function NotificationProvider({
                         (!newNotif.userId && !newNotif.role && !newNotif.riderId); 
 
                     if (isForMe) {
+                        playNotificationSound();
                         setNotifications(prev => [
                             { ...newNotif, createdAt: new Date(newNotif.createdAt) },
                             ...prev
@@ -91,7 +99,10 @@ export function NotificationProvider({
                         if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
                             new window.Notification(newNotif.title, {
                                 body: newNotif.message,
-                                icon: '/icon.png'
+                                icon: '/icon.png',
+                                badge: '/icon.png',
+                                tag: newNotif.id,
+                                renotify: true
                             });
                         }
                     }

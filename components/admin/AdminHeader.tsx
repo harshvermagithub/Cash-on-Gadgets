@@ -19,6 +19,25 @@ export function AdminHeader() {
             </div>
             
             <div className="flex items-center gap-2 md:gap-4 ml-auto">
+                {/* Debug: Test Notification Trigger */}
+                <button 
+                  onClick={async () => {
+                    if (typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
+                      alert('Please enable notifications first via the pop-up or browser settings.');
+                    }
+                    // Import and call server action to create a real DB entry
+                    const { createNotification } = await import('@/actions/notifications');
+                    await createNotification({
+                        title: "Test Alert",
+                        message: "This is a verification signal to confirm your notification system is LIVE.",
+                        type: "info"
+                    });
+                  }}
+                  className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 rounded-lg text-[10px] font-black uppercase tracking-widest border border-emerald-500/20 transition-all"
+                >
+                  Test Alert
+                </button>
+
                 {/* Notification Bell */}
                 <NotificationBell />
                 
