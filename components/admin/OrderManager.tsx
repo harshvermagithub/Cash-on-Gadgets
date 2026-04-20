@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { assignRider } from '@/actions/admin';
 import { Rider, Order } from '@/lib/store'; // Need to export Order from store/lib
-import { Calendar, MapPin, Smartphone, User, CheckCircle2, Eye, X, Download, Phone, Mail, AlertTriangle, Trash2, CheckSquare, Square } from 'lucide-react';
+import { Calendar, MapPin, Smartphone, User, CheckCircle2, Eye, X, Download, Phone, Mail, AlertTriangle, Trash2, CheckSquare, Square, Camera } from 'lucide-react';
 import OrderDetails from '@/components/OrderDetails';
 import { useRouter } from 'next/navigation';
 
