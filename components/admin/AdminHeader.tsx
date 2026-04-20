@@ -18,7 +18,8 @@ function AudioAlertToggle() {
             }`}
         >
             <Activity className={`w-3 h-3 ${audioEnabled ? 'animate-pulse' : ''}`} />
-            <span>{audioEnabled ? 'Buzzer Active' : 'Buzzer Muted'}</span>
+            <span className="hidden xs:inline">{audioEnabled ? 'Buzzer Active' : 'Buzzer Muted'}</span>
+            <span className="xs:hidden">{audioEnabled ? 'ON' : 'OFF'}</span>
             {audioEnabled ? <Volume2 className="w-3 h-3" /> : <VolumeX className="w-3 h-3" />}
         </button>
     );
@@ -26,7 +27,7 @@ function AudioAlertToggle() {
 
 export function AdminHeader() {
     return (
-        <header className="h-16 border-b border-border dark:border-white/10 bg-card dark:bg-black/50 backdrop-blur-md sticky top-0 z-20 flex items-center justify-between px-4 md:px-8">
+        <header className="h-16 border-b border-border dark:border-white/10 bg-card dark:bg-black/50 backdrop-blur-md sticky top-0 z-20 flex items-center justify-between px-2 md:px-8">
             <div className="flex-1 max-w-md hidden md:block">
                 <div className="relative group">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-emerald-500 transition-colors" />
@@ -38,7 +39,7 @@ export function AdminHeader() {
                 </div>
             </div>
             
-            <div className="flex items-center gap-2 md:gap-4 ml-auto">
+            <div className="flex items-center gap-1.5 md:gap-4 ml-auto">
                 <AudioAlertToggle />
                 {/* Debug: Test Notification Trigger */}
                 <button 
@@ -54,7 +55,7 @@ export function AdminHeader() {
                         const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
                         audio.play().catch(() => {});
                       } else {
-                        alert('Please enable notifications first via the pop-up or browser settings (click the lock icon in address bar).');
+                        alert('Please enable notifications first via browser settings.');
                       }
                     }
                     
@@ -66,9 +67,10 @@ export function AdminHeader() {
                         type: "info"
                     });
                   }}
-                  className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 rounded-lg text-[10px] font-black uppercase tracking-widest border border-emerald-500/20 transition-all"
+                  className="flex items-center gap-2 px-2 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 rounded-lg text-[10px] font-black uppercase tracking-widest border border-emerald-500/20 transition-all"
                 >
-                  Test Alert
+                  <span className="hidden sm:inline">Test Alert</span>
+                  <span className="sm:hidden text-[8px]">TEST</span>
                 </button>
 
                 {/* Notification Bell */}
