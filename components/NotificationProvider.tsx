@@ -50,6 +50,7 @@ export function NotificationProvider({
 
     const [hasUnassigned, setHasUnassigned] = useState(false);
     const [buzzerActive, setBuzzerActive] = useState(false);
+    const [showPermissionPrompt, setShowPermissionPrompt] = useState(false);
 
     const playNotificationSound = (loop = false) => {
         try {
