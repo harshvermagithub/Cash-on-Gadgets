@@ -4,6 +4,7 @@ import { db } from '@/lib/store';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { getSession } from '@/lib/session';
 
 export async function loginExecutive(phone: string, password?: string) {
     const riders = await db.getRiders();
@@ -57,10 +58,29 @@ export async function logoutExecutive() {
 export async function getExecutiveSession() {
     const cookieStore = await cookies();
     const executiveId = cookieStore.get('executive_id')?.value;
-    if (!executiveId) return null;
+    
+    if (executiveId) {
+        const riders = await db.getRiders();
+        return riders.find(r => r.id === executiveId) || null;
+    }
 
-    const riders = await db.getRiders();
-    return riders.find(r => r.id === executiveId) || null;
+    // Try main session
+    const session = await getSession();
+    if (session?.user?.role === 'FIELD_EXECUTIVE' || session?.user?.role === 'RIDER') {
+        const riders = await db.getRiders();
+        // Link via phone/id from the session user
+        // The session user.id should ideally be linked to the Rider record
+        const executive = riders.find(r => r.id === session.user.id);
+        if (executive) return executive;
+        
+        // Fallback to phone if ID doesn't match
+        const prismaUser = await db.findUserByEmail(session.user.email);
+        if (prismaUser?.phone) {
+            return riders.find(r => r.phone === prismaUser.phone) || null;
+        }
+    }
+    
+    return null;
 }
 
 export async function getExecutiveOrders() {
@@ -99,12 +119,14 @@ export async function updateOrderStatus(orderId: string, status: string, reason?
                 }
             });
             revalidatePath('/pickup/dashboard');
+            revalidatePath('/admin/orders');
             return { success: true };
         }
     }
 
     await db.updateOrderStatus(orderId, status);
     revalidatePath('/pickup/dashboard');
+    revalidatePath('/admin/orders');
     return { success: true };
 }
 
@@ -125,5 +147,6 @@ export async function submitVerification(orderId: string, payload: { riderAnswer
     });
 
     revalidatePath('/pickup/dashboard');
+    revalidatePath('/admin/orders');
     return { success: true };
 }

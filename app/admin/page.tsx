@@ -1,10 +1,18 @@
 import { db } from "@/lib/store";
 import { Layers, Smartphone, Tag, ShoppingCart, PlusCircle, Monitor, Headphones, Gamepad2, Tv, Camera } from "lucide-react";
 import Link from 'next/link';
+import { getSession } from "@/lib/session";
+import { redirect } from "next/navigation";
+
 export const dynamic = 'force-dynamic';
 
 
 export default async function AdminDashboard() {
+    const session = await getSession();
+    if (session?.user?.role === 'FIELD_EXECUTIVE' || session?.user?.role === 'RIDER') {
+        redirect('/admin/orders');
+    }
+
     const brands = await db.getBrands();
     const models = await db.getModels();
     const variants = await db.getVariants();

@@ -3,6 +3,7 @@ import { getSession } from "@/lib/session";
 import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 import OrderManager from "@/components/admin/OrderManager";
+import RiderOrderList from "@/components/admin/RiderOrderList";
 
 export const dynamic = 'force-dynamic';
 
@@ -73,6 +74,10 @@ export default async function OrdersPage(props: { searchParams?: Promise<{ rider
 
     if (filterRiderId) {
         orders = orders.filter(o => o.riderId === filterRiderId);
+    }
+
+    if (currentUser.role === 'RIDER') {
+        return <RiderOrderList orders={orders} executiveName={currentUser.name} isEmbedded={true} />;
     }
 
     return (
