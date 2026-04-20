@@ -19,6 +19,8 @@ interface NotificationContextType {
     unreadCount: number;
     refreshNotifications: () => Promise<void>;
     markRead: (id: string) => Promise<void>;
+    audioEnabled: boolean;
+    setAudioEnabled: (enabled: boolean) => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -51,12 +53,20 @@ export function NotificationProvider({
     const [hasUnassigned, setHasUnassigned] = useState(false);
     const [buzzerActive, setBuzzerActive] = useState(false);
     const [showPermissionPrompt, setShowPermissionPrompt] = useState(false);
+    const [audioEnabled, setAudioEnabled] = useState(false);
 
     const playNotificationSound = (loop = false) => {
+        if (!audioEnabled) return null;
         try {
             const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
             if (loop) audio.loop = true;
-            audio.play().catch(e => console.log("Audio play blocked", e));
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(e => {
+                    console.log("Audio play blocked by browser policy. User interaction required.", e);
+                    setAudioEnabled(false);
+                });
+            }
             return audio;
         } catch (e) {
             console.error("Audio failed", e);
@@ -71,7 +81,8 @@ export function NotificationProvider({
             const data = await res.json();
             if (data.count > 0) {
                 setHasUnassigned(true);
-                if (!buzzerActive) setBuzzerActive(true);
+                // Auto-activate buzzer if audio was previously enabled
+                if (!buzzerActive && audioEnabled) setBuzzerActive(true);
             } else {
                 setHasUnassigned(false);
                 setBuzzerActive(false);
@@ -87,7 +98,7 @@ export function NotificationProvider({
         fetchNotifications();
         checkUnassigned();
 
-        // Browser Permission Check
+        // Browser Permission Check (System Notifications)
         if (typeof window !== 'undefined' && typeof Notification !== 'undefined') {
             if (Notification.permission === 'default') {
                 const timer = setTimeout(() => setShowPermissionPrompt(true), 2000);
@@ -113,7 +124,7 @@ export function NotificationProvider({
                         (!newNotif.userId && !newNotif.role && !newNotif.riderId); 
 
                     if (isForMe) {
-                        playNotificationSound();
+                        if (audioEnabled) playNotificationSound();
                         setNotifications(prev => [
                             { ...newNotif, createdAt: new Date(newNotif.createdAt) },
                             ...prev
@@ -146,12 +157,12 @@ export function NotificationProvider({
             supabaseClient.removeChannel(channel);
             clearInterval(pollTimer);
         };
-    }, [userId, userRole, riderId]);
+    }, [userId, userRole, riderId, audioEnabled]);
 
     // Handle Buzzer Loop
     useEffect(() => {
         let audio: HTMLAudioElement | null = null;
-        if (buzzerActive && hasUnassigned) {
+        if (buzzerActive && hasUnassigned && audioEnabled) {
             audio = playNotificationSound(true);
         }
         return () => {
@@ -160,20 +171,17 @@ export function NotificationProvider({
                 audio.remove();
             }
         };
-    }, [buzzerActive, hasUnassigned]);
+    }, [buzzerActive, hasUnassigned, audioEnabled]);
 
     const requestBrowserPermission = async () => {
         if (typeof Notification !== 'undefined') {
             const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                new window.Notification("Notifications Enabled!", {
-                    body: "You will now receive alerts for new orders even when in background.",
-                    icon: '/icon.png'
-                });
-            }
             setShowPermissionPrompt(false);
-            // This also helps unlock audio context
-            playNotificationSound();
+            // This also helps unlock audio context if they click "Allow"
+            if (!audioEnabled) {
+                setAudioEnabled(true);
+                setTimeout(() => playNotificationSound(), 100);
+            }
         }
     };
 
@@ -189,7 +197,9 @@ export function NotificationProvider({
             notifications, 
             unreadCount, 
             refreshNotifications: fetchNotifications,
-            markRead 
+            markRead,
+            audioEnabled,
+            setAudioEnabled
         }}>
             {children}
 

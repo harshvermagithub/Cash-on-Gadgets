@@ -3,6 +3,26 @@
 import React from 'react';
 import { NotificationBell } from './NotificationBell';
 import { Search, UserCircle } from 'lucide-react';
+import { useNotifications } from '../NotificationProvider';
+import { Volume2, VolumeX, Activity } from 'lucide-react';
+
+function AudioAlertToggle() {
+    const { audioEnabled, setAudioEnabled } = useNotifications();
+    return (
+        <button 
+            onClick={() => setAudioEnabled(!audioEnabled)}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border transition-all ${
+                audioEnabled 
+                    ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20 shadow-lg shadow-emerald-500/5' 
+                    : 'bg-slate-500/10 text-slate-500 border-slate-500/20'
+            }`}
+        >
+            <Activity className={`w-3 h-3 ${audioEnabled ? 'animate-pulse' : ''}`} />
+            <span>{audioEnabled ? 'Buzzer Active' : 'Buzzer Muted'}</span>
+            {audioEnabled ? <Volume2 className="w-3 h-3" /> : <VolumeX className="w-3 h-3" />}
+        </button>
+    );
+}
 
 export function AdminHeader() {
     return (
@@ -12,13 +32,14 @@ export function AdminHeader() {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-emerald-500 transition-colors" />
                     <input 
                         type="text"
-                        placeholder="Search orders, clients, or executives..." 
+                        placeholder="Search orders..." 
                         className="w-full pl-10 h-10 bg-muted/50 border border-transparent focus:border-emerald-500/50 focus:bg-background outline-none transition-all rounded-xl text-sm"
                     />
                 </div>
             </div>
             
             <div className="flex items-center gap-2 md:gap-4 ml-auto">
+                <AudioAlertToggle />
                 {/* Debug: Test Notification Trigger */}
                 <button 
                   onClick={async () => {
