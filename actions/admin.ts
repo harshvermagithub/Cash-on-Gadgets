@@ -202,10 +202,15 @@ export async function removeUserRole(email: string) {
     }
 
     await db.updateUserRole(email, 'USER');
+    
+    // Comprehensive path revalidation
+    revalidatePath('/admin');
     revalidatePath('/admin/admins');
     revalidatePath('/admin/zonal-heads');
     revalidatePath('/admin/partners');
     revalidatePath('/admin/riders');
+    revalidatePath('/admin/orders');
+    
     return { success: true };
 }
 
@@ -367,9 +372,41 @@ export async function addRider(name: string, phone: string, partnerId?: string |
 
 export async function deleteRider(id: string) {
     await requireAdmin();
-    await db.deleteRider(id);
-    revalidatePath('/admin/riders');
-    return { success: true };
+    let wasUserResetted = false;
+    let wasRiderDeleted = false;
+
+    try {
+        // 1. Reset user role if it's a User record
+        const user = await prisma.user.findUnique({ where: { id } });
+        if (user) {
+            await prisma.user.update({
+                where: { id },
+                data: { role: 'USER' }
+            });
+            wasUserResetted = true;
+        }
+
+        // 2. Try to actually delete from Rider model
+        // If it has orders, this will fail unless we handle it, but we'll try.
+        try {
+            await prisma.rider.delete({ where: { id } });
+            wasRiderDeleted = true;
+        } catch (riderError) {
+            console.warn(`[RoleMgmt] Could not delete Rider record ${id} (likely has orders), but role was resetted if User existed.`);
+        }
+
+        revalidatePath('/admin/admins');
+        revalidatePath('/admin/riders');
+        revalidatePath('/admin/orders');
+
+        if (wasUserResetted || wasRiderDeleted) {
+            return { success: true };
+        }
+        return { success: false, error: 'Record not found in Users or Riders' };
+    } catch (e: any) {
+        console.error("deleteRider failure:", e);
+        return { success: false, error: e.message };
+    }
 }
 
 export async function updateRiderPartner(riderId: string, partnerId: string | null) {

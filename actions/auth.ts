@@ -139,9 +139,26 @@ export async function signin(prevState: { error?: string } | null, formData: For
         return { error: 'Please fill all fields' };
     }
 
-    const user = await db.findUserByEmail(email);
+    let user = await db.findUserByEmail(email);
+    
+    // Support phone-based login (common for field executives)
+    if (!user) {
+        let cleanPhone = email.trim();
+        // If it looks like a phone number (digits only or starts with +), try phone lookup
+        if (/^\+?[\d\s\-]{10,}$/.test(cleanPhone)) {
+            if (!cleanPhone.startsWith('+')) {
+                // If 10 digits, assume India
+                if (cleanPhone.length === 10) cleanPhone = `+91${cleanPhone}`;
+                else if (cleanPhone.length === 12 && cleanPhone.startsWith('91')) cleanPhone = `+${cleanPhone}`;
+            }
+            user = await prisma.user.findFirst({
+                where: { phone: cleanPhone }
+            }) as any;
+        }
+    }
+
     if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
-        return { error: 'Invalid email or password' };
+        return { error: 'Invalid email/phone or password' };
     }
 
     if (user.role === 'UNVERIFIED') {

@@ -27,13 +27,13 @@ export default function LoginPage() {
 
                 <form action={action} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium mb-1">Email</label>
+                        <label className="block text-sm font-medium mb-1">Email or Phone Number</label>
                         <input
                             name="email"
-                            type="email"
+                            type="text"
                             required
                             className="w-full h-12 px-4 rounded-lg border bg-background focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                            placeholder="john@example.com"
+                            placeholder="Email or 10-digit number"
                         />
                     </div>
                     <div>

@@ -34,7 +34,7 @@ export default async function OrdersPage(props: { searchParams?: Promise<{ rider
         const allowedPincodes = currentUser.pincodes || [];
         orders = orders.filter(o => o.pincode && allowedPincodes.includes(o.pincode));
         riders = riders.filter(r => r.partnerId === currentUser.id);
-    } else if (currentUser.role === 'RIDER') {
+    } else if (currentUser.role === 'FIELD_EXECUTIVE') {
         const rider = await prisma.rider.findFirst({
             where: { phone: currentUser.phone || '' }
         });
@@ -76,14 +76,14 @@ export default async function OrdersPage(props: { searchParams?: Promise<{ rider
         orders = orders.filter(o => o.riderId === filterRiderId);
     }
 
-    if (currentUser.role === 'RIDER') {
+    if (currentUser.role === 'FIELD_EXECUTIVE') {
         return <RiderOrderList orders={orders} executiveName={currentUser.name} isEmbedded={true} />;
     }
 
     return (
         <div className="space-y-6">
             <h1 className="text-3xl font-black tracking-tight bg-gradient-to-r from-slate-900 to-slate-500 dark:from-white dark:to-slate-400 bg-clip-text text-transparent uppercase">
-                {currentUser.role === 'RIDER' ? 'Assigned Orders' : filterRiderId ? `Orders for Field Executive` : `Manage Orders`}
+                {currentUser.role === 'FIELD_EXECUTIVE' ? 'My Pickups' : filterRiderId ? `Orders for Field Executive` : `Manage Orders`}
             </h1>
             {currentUser.role === 'ZONAL_HEAD' && (
                 <p className="text-muted-foreground text-sm font-medium text-primary">
@@ -92,7 +92,7 @@ export default async function OrdersPage(props: { searchParams?: Promise<{ rider
             )}
             {currentUser.role === 'PARTNER' && <p className="text-muted-foreground text-sm font-medium text-emerald-600">Assigned Pincodes: {currentUser.pincodes?.join(', ') || 'None'}</p>}
             <p className="text-muted-foreground">
-                {currentUser.role === 'RIDER' 
+                {currentUser.role === 'FIELD_EXECUTIVE' 
                     ? 'View and manage your currently assigned sell requests and pick-up tasks.'
                     : 'View incoming sell requests and assign field executives for pickup.'
                 }

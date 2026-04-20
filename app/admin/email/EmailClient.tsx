@@ -1,7 +1,7 @@
 
 "use client";
 import { useState, useEffect } from 'react';
-import { fetchRoleBasedEmails, fetchEmailById, syncImapEmails } from '@/actions/email-hub';
+import { fetchRoleBasedEmails, fetchEmailById, syncImapEmails, deleteEmailAccountAction } from '@/actions/email-hub';
 import { 
     Mail, 
     Send, 
@@ -13,7 +13,8 @@ import {
     Plus,
     X,
     CheckCircle2,
-    Loader2
+    Loader2,
+    Trash2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -34,7 +35,7 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
   });
 
   // Filtering
-  const [accounts, setAccounts] = useState<any[]>([]);
+  const [reachableEmails, setReachableEmails] = useState<string[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -50,13 +51,11 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
   const [newPassword, setNewPassword] = useState('');
   const [isCreating, setIsCreating] = useState(false);
 
-  const isElevatedRole = initialRole === 'SUPER_ADMIN' || initialRole === 'ADMIN' || initialRole === 'ZONAL_HEAD';
+  const isScopeVisible = ['SUPER_ADMIN', 'ADMIN', 'ZONAL_HEAD', 'PARTNER'].includes(initialRole);
+  const isIdentityHubVisible = ['SUPER_ADMIN', 'ADMIN'].includes(initialRole);
 
   useEffect(() => {
     loadEmails(true); 
-    if (isElevatedRole) {
-        fetchAccounts();
-    }
   }, [selectedAccount, initialRole]);
 
   const loadEmails = async (skipSync: boolean = false) => {
@@ -67,6 +66,7 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
           setDebugData(prev => ({ ...prev, error: result.error }));
       } else {
           setEmails(result.emails);
+          if (result.reachableEmails) setReachableEmails(result.reachableEmails);
           setDebugData(prev => ({ 
               ...prev, 
               dbCount: result.totalInDb, 
@@ -94,18 +94,6 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
         setIsSyncing(false);
     }
   }
-
-  const fetchAccounts = async () => {
-    try {
-      const res = await fetch('/api/email/account');
-      const data = await res.json();
-      if (data.accounts) {
-        setAccounts(data.accounts);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   const viewEmailDetail = async (id: string) => {
     setSelectedEmailId(id);
@@ -153,7 +141,7 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
             {[ 
                 { id: 'inbox', label: 'Inbox', icon: Mail },
                 { id: 'sent', label: 'Sent', icon: Send },
-                { id: 'manage', label: 'Identity Hub', icon: Settings, authReq: isElevatedRole }
+                { id: 'manage', label: 'Identity Hub', icon: Settings, authReq: isIdentityHubVisible }
             ].map((item) => {
                 if (item.authReq === false) return null;
                 const Icon = item.icon;
@@ -180,11 +168,11 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
              <button onClick={() => { setActiveTab('inbox'); setSelectedEmailId(null); }} className={`p-3 ${activeTab === 'inbox' ? 'text-emerald-600' : 'text-slate-400'}`}><Mail className="w-6 h-6" /></button>
              <button onClick={() => { setActiveTab('sent'); setSelectedEmailId(null); }} className={`p-3 ${activeTab === 'sent' ? 'text-emerald-600' : 'text-slate-400'}`}><Send className="w-6 h-6" /></button>
              <button onClick={() => { setActiveTab('compose'); setSelectedEmailId(null); }} className="p-3 bg-emerald-600 text-white rounded-full shadow-lg -mt-8 border-4 border-white dark:border-slate-950"><Plus className="w-6 h-6" /></button>
-             {isElevatedRole && <button onClick={() => { setActiveTab('manage'); setSelectedEmailId(null); }} className={`p-3 ${activeTab === 'manage' ? 'text-emerald-600' : 'text-slate-400'}`}><Settings className="w-6 h-6" /></button>}
+             {isIdentityHubVisible && <button onClick={() => { setActiveTab('manage'); setSelectedEmailId(null); }} className={`p-3 ${activeTab === 'manage' ? 'text-emerald-600' : 'text-slate-400'}`}><Settings className="w-6 h-6" /></button>}
         </div>
 
         {/* Scoped Selector - Adaptive */}
-        {isElevatedRole && (
+        {isScopeVisible && (
             <div className="hidden md:block p-3 lg:p-4 border-t border-slate-100 dark:border-white/10">
                 <label className="text-[9px] uppercase tracking-widest font-black text-slate-400 mb-2 hidden lg:block px-1">Scope</label>
                 <select 
@@ -193,7 +181,11 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
                     className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-2 text-[10px] lg:text-xs font-bold outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-900 dark:text-white"
                 >
                     <option value="" className="dark:bg-slate-900">All Nodes</option>
-                    {accounts.map(acc => <option key={acc.email} value={acc.email} className="dark:bg-slate-900">{acc.email.split('@')[0]}</option>)}
+                    {reachableEmails.map(acc => (
+                        <option key={acc} value={acc} className="dark:bg-slate-900">
+                            {acc.split('@')[0]}
+                        </option>
+                    ))}
                 </select>
             </div>
         )}
@@ -224,7 +216,7 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
                 {selectedEmailId ? (
                     <button onClick={() => setSelectedEmailId(null)} className="md:hidden p-2 -ml-2 text-slate-500"><ChevronLeft className="w-5 h-5" /></button>
                 ) : (
-                    isElevatedRole && (
+                    isScopeVisible && (
                         <div className="md:hidden flex items-center bg-slate-100 dark:bg-white/5 rounded-xl px-2.5 py-1.5 border border-transparent focus-within:border-emerald-500/50 transition-all">
                             <User className="w-3.5 h-3.5 text-emerald-500 mr-2" />
                             <select 
@@ -234,7 +226,11 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
                                 style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2310b981\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'4\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right center', backgroundSize: '8px' }}
                             >
                                 <option value="" className="dark:bg-slate-900">ALL NODES</option>
-                                {accounts.map(acc => <option key={acc.email} value={acc.email} className="dark:bg-slate-900">{acc.email.split('@')[0].toUpperCase()}</option>)}
+                                {reachableEmails.map(acc => (
+                                    <option key={acc} value={acc} className="dark:bg-slate-900">
+                                        {acc.split('@')[0].toUpperCase()}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                     )
@@ -350,12 +346,12 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
                             <button onClick={() => setActiveTab('inbox')} className="text-slate-300 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-300 p-2"><X className="w-5 h-5" /></button>
                         </header>
                         <form onSubmit={handleSendEmail} className="p-6 lg:p-10 space-y-5 lg:space-y-8">
-                            {isElevatedRole && (
+                            {isScopeVisible && (
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">From Account</label>
                                     <select value={selectedAccount} onChange={(e) => setSelectedAccount(e.target.value)} className="w-full p-3.5 lg:p-4 bg-slate-50 dark:bg-white/5 text-slate-900 dark:text-white border-none rounded-2xl focus:ring-4 focus:ring-emerald-500/5 font-bold text-sm transition-all appearance-none cursor-pointer">
-                                        <option value="" className="dark:bg-slate-900">Default (support@fonzkart.in)</option>
-                                        {accounts.map(acc => <option key={acc.email} value={acc.email} className="dark:bg-slate-900">{acc.email}</option>)}
+                                        <option value="" className="dark:bg-slate-900">Default (System)</option>
+                                        {reachableEmails.map(email => <option key={email} value={email} className="dark:bg-slate-900">{email}</option>)}
                                     </select>
                                 </div>
                             )}
@@ -371,7 +367,7 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
             )}
 
             {/* IDENTITY HUB - Clean Full-Width Redesign */}
-            {!selectedEmailId && activeTab === 'manage' && isElevatedRole && (
+            {!selectedEmailId && activeTab === 'manage' && isIdentityHubVisible && (
                 <div className="flex-1 overflow-y-auto p-6 lg:p-12 xl:p-20 bg-slate-50 dark:bg-slate-950">
                     <div className="max-w-7xl mx-auto space-y-12 lg:space-y-20 pb-24 lg:pb-10">
                         <header className="space-y-4">
@@ -418,22 +414,29 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
                                         <h3 className="font-black text-slate-800 dark:text-white text-2xl tracking-tight">Active Mailboxes</h3>
                                     </div>
                                     <div className="flex flex-col items-end">
-                                        <span className="text-[10px] font-black bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 px-4 py-1.5 rounded-full border border-emerald-500/20 uppercase tracking-widest leading-none">{accounts.length} Total Nodes</span>
+                                        <span className="text-[10px] font-black bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 px-4 py-1.5 rounded-full border border-emerald-500/20 uppercase tracking-widest leading-none">{reachableEmails.length} Total Nodes</span>
                                     </div>
                                 </div>
                                 <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-5">
-                                    {accounts.map((acc) => (
-                                        <div key={acc.email} className="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] border border-slate-100 dark:border-white/5 flex items-center justify-between group hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:border-emerald-500/50 transition-all duration-500">
+                                    {reachableEmails.map((accEmail) => (
+                                        <div key={accEmail} className="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] border border-slate-100 dark:border-white/5 flex items-center justify-between group hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:border-emerald-500/50 transition-all duration-500">
                                             <div className="flex items-center gap-5 min-w-0">
                                                 <div className="w-14 h-14 rounded-3xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-slate-400 group-hover:bg-emerald-500/10 group-hover:text-emerald-500 transition-all shrink-0"><User className="w-7 h-7" /></div>
                                                 <div className="min-w-0">
-                                                    <p className="font-black text-slate-800 dark:text-slate-100 text-base truncate pr-2 tracking-tight">{acc.email}</p>
+                                                    <p className="font-black text-slate-800 dark:text-slate-100 text-base truncate pr-2 tracking-tight">{accEmail}</p>
                                                     <div className="flex items-center gap-2 mt-2">
                                                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                                                         <p className="text-[9px] text-emerald-500 font-black uppercase tracking-[.15em]">Live & Routing</p>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <button 
+                                                onClick={() => handleDeleteEmailAccount(accEmail)}
+                                                className="p-3 text-red-500 hover:text-red-400 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-2xl transition-all shrink-0 ml-4 group/delete"
+                                                title="Delete Account"
+                                            >
+                                                <Trash2 className="w-5 h-5 transition-transform group-hover/delete:scale-110" />
+                                            </button>
                                         </div>
                                     ))}
                                 </div>
@@ -457,11 +460,29 @@ export default function EmailClient({ role: initialRole, userEmail: initialUserE
         body: JSON.stringify({ email: newEmail, password: newPassword }),
       });
       if (res.ok) {
-        setNewEmail(''); setNewPassword(''); fetchAccounts();
+        setNewEmail(''); setNewPassword(''); loadEmails(true);
       } else {
         const error = await res.json(); alert('Error: ' + (error.message || error.error));
       }
     } catch (e: any) { alert('Error: ' + e.message); } finally { setIsCreating(false); }
+  }
+
+  async function handleDeleteEmailAccount(email: string) {
+      if (!confirm(`Permanently delete ${email}? This will remove all messages and the mailbox on VPS.`)) return;
+      setIsLoading(true);
+      try {
+          const res = await deleteEmailAccountAction(email);
+          if (res.success) {
+              alert('Account removed successfully');
+              await loadEmails(true);
+          } else {
+              alert(res.error || 'Failed to delete');
+          }
+      } catch (e) {
+          alert('Network error during deletion');
+      } finally {
+          setIsLoading(false);
+      }
   }
 
   async function handleSendEmail(e: React.FormEvent) {

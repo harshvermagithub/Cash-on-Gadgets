@@ -11,7 +11,7 @@ export default async function AdminDashboard() {
     const session = await getSession();
     const role = session?.user?.role;
 
-    if (role === 'FIELD_EXECUTIVE' || role === 'RIDER') {
+    if (role === 'FIELD_EXECUTIVE') {
         redirect('/admin/orders');
     }
 

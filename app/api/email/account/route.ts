@@ -79,3 +79,52 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: e.message }, { status: 500 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const email = searchParams.get('email');
+
+    if (!email) {
+      return NextResponse.json({ message: 'Email query parameter required' }, { status: 400 });
+    }
+
+    // 1. Delete from LOCAL DB
+    const deleted = await prisma.emailAccount.delete({
+      where: { email }
+    }).catch(e => {
+        console.error("Local DB Deletion failed:", e.message);
+        return null;
+    });
+
+    if (!deleted) {
+        return NextResponse.json({ message: 'Account not found in local database. It may have already been removed.' }, { status: 404 });
+    }
+
+    // 2. SSH into VPS and remove account from mailserver
+    let vpsStatus = 'skipped';
+    try {
+      await execSSH(`docker exec $(docker ps -q -f "ancestor=ghcr.io/docker-mailserver/docker-mailserver:latest") setup email del ${email}`);
+      vpsStatus = 'success';
+    } catch (e: any) {
+      console.warn("SSH removal failed, but continued with local purge.", e);
+      vpsStatus = 'failed: ' + e.message;
+    }
+
+    // 3. Clear associated messages
+    const msgStats = await prisma.emailMessage.deleteMany({
+      where: {
+        OR: [ { from: email }, { to: email } ]
+      }
+    });
+
+    return NextResponse.json({ 
+        success: true, 
+        message: `Account ${email} purged.`,
+        vpsStatus,
+        messagesCleared: msgStats.count
+    });
+  } catch (e: any) {
+    return NextResponse.json({ message: e.message }, { status: 500 });
+  }
+}

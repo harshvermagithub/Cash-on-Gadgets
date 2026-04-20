@@ -2,6 +2,8 @@
 
 import { getSession } from '@/lib/session';
 import { prisma } from '@/lib/db';
+import { execSSH } from '@/lib/ssh';
+import { revalidatePath } from 'next/cache';
 import { ImapFlow } from 'imapflow';
 import { simpleParser } from 'mailparser';
 
@@ -77,25 +79,54 @@ export async function fetchRoleBasedEmails(selectedAccount?: string, skipSync: b
         const session = await getSession();
         if (!session || !session.user) return { error: 'Unauthorized', emails: [] };
 
-        const currentUser = await prisma.user.findUnique({
-            where: { id: session.user.id }
+        const currentUser: any = await prisma.user.findUnique({
+            where: { id: session.user.id },
+            include: { managedCities: { include: { users: { where: { role: 'PARTNER' } } } } }
         });
         if (!currentUser) return { error: 'User not found in database', emails: [] };
 
         const role = currentUser.role;
+        const isAdmin = role === 'SUPER_ADMIN' || role === 'ADMIN';
 
-        // Trigger sync only if requested
-        if (role === 'SUPER_ADMIN' && !skipSync) {
+        // Fetch reachable accounts for this user
+        let reachableEmails: string[] = [currentUser.email];
+        
+        if (role === 'ZONAL_HEAD') {
+            const partnerIds = currentUser.managedCities.flatMap((c: any) => c.users.map((u: any) => u.id));
+            const partners = await prisma.user.findMany({ where: { id: { in: partnerIds } }, select: { email: true } });
+            const riders = await prisma.rider.findMany({ where: { partnerId: { in: partnerIds } }, select: { phone: true } });
+            
+            reachableEmails.push(...partners.map(p => p.email));
+            reachableEmails.push(...riders.map(r => `${r.phone}@fonzkart.in`));
+        } else if (role === 'PARTNER') {
+            const riders = await prisma.rider.findMany({ where: { partnerId: currentUser.id }, select: { phone: true } });
+            reachableEmails.push(...riders.map(r => `${r.phone}@fonzkart.in`));
+        } else if (isAdmin) {
+            const allAccounts = await prisma.emailAccount.findMany({ select: { email: true } });
+            reachableEmails = allAccounts.map(a => a.email);
+        }
+
+        // Trigger sync only if requested and user has rights
+        if (!skipSync && selectedAccount && (isAdmin || reachableEmails.includes(selectedAccount))) {
             await syncImapEmails(selectedAccount);
         }
 
-        // Fetch from database
+        // Build where clause
         let whereClause: any = {};
         if (selectedAccount) {
+            // Security check: is selectedAccount reachable?
+            if (!reachableEmails.includes(selectedAccount) && !isAdmin) {
+                 return { error: 'Access denied to this mailbox', emails: [] };
+            }
+            whereClause = {
+                OR: [ { from: selectedAccount }, { to: selectedAccount } ]
+            };
+        } else if (!isAdmin) {
+            // If No account selected and not admin, show all emails for reachable accounts
             whereClause = {
                 OR: [
-                    { from: selectedAccount },
-                    { to: selectedAccount }
+                    { from: { in: reachableEmails } },
+                    { to: { in: reachableEmails } }
                 ]
             };
         }
@@ -107,7 +138,7 @@ export async function fetchRoleBasedEmails(selectedAccount?: string, skipSync: b
         });
 
         const totalInDb = await prisma.emailMessage.count();
-        const totalAccounts = await prisma.emailAccount.count();
+        const totalAccounts = reachableEmails.length;
 
         const allEmails = messages.map(msg => ({
             id: msg.id,
@@ -121,39 +152,13 @@ export async function fetchRoleBasedEmails(selectedAccount?: string, skipSync: b
             bodyHtml: msg.bodyHtml
         }));
 
-        let filtered = allEmails;
-
-        // Elevated Roles Logic:
-        // SUPER_ADMIN, ADMIN, ZONAL_HEAD should see broader emails.
-        if (role === 'ADMIN' || role === 'ZONAL_HEAD') {
-            const allUsers = await prisma.user.findMany({ select: { email: true, role: true }});
-            const superAdmins = allUsers.filter(u => u.role === 'SUPER_ADMIN').map(u => u.email);
-            
-            filtered = allEmails.filter(e => {
-                // Allow if it involves the current user specifically
-                if (e.fromEmail.includes(currentUser.email) || e.toEmail.includes(currentUser.email)) return true;
-                
-                // Exclude if it's exclusively between super admins
-                const fromSuper = superAdmins.some(sa => e.fromEmail.includes(sa));
-                const toSuper = superAdmins.some(sa => e.toEmail.includes(sa));
-                if (fromSuper && toSuper) return false;
-
-                // For Zonal Head/Admin, allow seeing emails with system accounts (e.g. fonzkart.in)
-                if (e.fromEmail.includes('@fonzkart.in') || e.toEmail.includes('@fonzkart.in')) return true;
-
-                return false;
-            });
-        } else if (role !== 'SUPER_ADMIN') {
-            // Normal users only see their own
-            filtered = allEmails.filter(e => e.fromEmail.includes(currentUser.email) || e.toEmail.includes(currentUser.email));
-        }
-
         return { 
-            emails: filtered, 
+            emails: allEmails, 
             totalInDb, 
             totalAccounts,
             userRole: role,
-            userEmail: currentUser.email 
+            userEmail: currentUser.email,
+            reachableEmails
         };
     } catch (e: any) {
         return { error: e.message, emails: [], totalInDb: 0 };
@@ -167,4 +172,47 @@ export async function fetchEmailById(id: string) {
     return await prisma.emailMessage.findUnique({
         where: { id }
     });
+}
+
+export async function deleteEmailAccountAction(email: string) {
+    try {
+        const session = await getSession();
+        if (!session || !session.user) throw new Error('Unauthorized');
+        
+        const role = session.user.role;
+        if (!['SUPER_ADMIN', 'ADMIN'].includes(role)) {
+            throw new Error('Forbidden: Only administrators can delete accounts');
+        }
+
+        // 1. Delete from LOCAL DB
+        const deleted = await prisma.emailAccount.delete({
+            where: { email }
+        }).catch(e => {
+            console.error("Local DB Deletion failed:", e.message);
+            return null;
+        });
+
+        if (!deleted) {
+            throw new Error('Account not found in database.');
+        }
+
+        // 2. SSH into VPS and remove account from mailserver
+        try {
+            await execSSH(`docker exec $(docker ps -q -f "ancestor=ghcr.io/docker-mailserver/docker-mailserver:latest") setup email del ${email}`);
+        } catch (e: any) {
+            console.warn("VPS removal failed, continuing...", e.message);
+        }
+
+        // 3. Clear associated messages
+        await prisma.emailMessage.deleteMany({
+            where: {
+                OR: [ { from: email }, { to: email } ]
+            }
+        });
+
+        revalidatePath('/admin/email');
+        return { success: true };
+    } catch (e: any) {
+        return { error: e.message };
+    }
 }

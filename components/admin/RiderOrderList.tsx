@@ -90,24 +90,26 @@ export default function RiderOrderList({
                 </div>
             )}
 
-            <div className="flex bg-muted/50 p-1 rounded-xl w-full sm:w-fit">
-                <button
-                    onClick={() => setActiveTab('pending')}
-                    className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'pending' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-                >
-                    Pending <span className="ml-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs">{pendingOrders.length}</span>
-                </button>
-                <button
-                    onClick={() => setActiveTab('completed')}
-                    className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'completed' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-                >
-                    Finished <span className="ml-1 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs">{completedOrders.length}</span>
-                </button>
-            </div>
+            {!isEmbedded && (
+                <div className="flex bg-muted/50 p-1 rounded-xl w-full sm:w-fit">
+                    <button
+                        onClick={() => setActiveTab('pending')}
+                        className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'pending' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                    >
+                        Pending <span className="ml-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs">{pendingOrders.length}</span>
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('completed')}
+                        className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'completed' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                    >
+                        Finished <span className="ml-1 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs">{completedOrders.length}</span>
+                    </button>
+                </div>
+            )}
 
             {displayedOrders.length === 0 ? (
                 <div className="text-center py-20 bg-card rounded-2xl border">
-                    <p className="text-muted-foreground">No orders in this tab.</p>
+                    <p className="text-muted-foreground">No orders found.</p>
                 </div>
             ) : (
                 <div className="space-y-4">

@@ -48,14 +48,15 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
     const [isInventoryOpen, setIsInventoryOpen] = useState(false);
 
     const dashboardTitle = role === 'ZONAL_HEAD' ? 'Zonal Head' :
-        role === 'RIDER' ? 'Field Partner' :
+        role === 'FIELD_EXECUTIVE' ? 'Field Executive' :
         ['SUPER_ADMIN', 'ADMIN'].includes(role) ? 'Admin' :
             'Partner';
 
     const isPrivileged = ['SUPER_ADMIN', 'ADMIN'].includes(role);
     const isZonal = role === 'ZONAL_HEAD';
     const isPartner = role === 'PARTNER';
-    const isRider = role === 'RIDER';
+    const isRider = role === 'FIELD_EXECUTIVE';
+    const isMobileOnlyRole = role === 'FIELD_EXECUTIVE';
 
     const renderLink = (href: string, title: string, Icon: any, isActive: boolean = false, onClickExtra?: () => void) => {
         return (
@@ -181,7 +182,6 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                             {renderSectionTitle('System')}
                             {renderLink('/admin/admins', 'Users', Users, pathname.includes('/admin/admins'))}
                             {renderLink('/admin/homepage', 'Landing Page', LayoutDashboard, pathname.includes('/admin/homepage'))}
-                            {renderLink('/admin/email', 'Email System', Mail, pathname.includes('/admin/email'))}
                         </>
                     )}
 
@@ -202,12 +202,12 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
 
                     {renderSectionTitle('Logistics')}
                     {(isPrivileged || isZonal || isPartner) && renderLink('/admin/riders', 'Field Executives', Users, pathname.includes('riders'))}
-                    {renderLink('/admin/orders', (isRider ? 'Assigned Orders' : 'Orders'), ShoppingCart, pathname.includes('orders'))}
+                    {renderLink('/admin/orders', (isRider ? 'My Pickups' : 'Orders'), ShoppingCart, pathname.includes('orders'))}
 
-                    {(isRider || isPartner || isZonal) && (
+                    {(isPrivileged || isZonal || isPartner || isRider) && (
                         <>
                             {renderSectionTitle('Communication')}
-                            {renderLink('/admin/inbox', 'Mail Inbox', Mail, pathname.includes('inbox'))}
+                            {renderLink('/admin/email', 'Email System', Mail, pathname.includes('/admin/email'))}
                         </>
                     )}
 
@@ -215,12 +215,6 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
 
                 <div className="p-2 lg:p-4 border-t border-border dark:border-white/10 mt-auto flex flex-col gap-2">
                     {renderLink('/', 'View Website', ExternalLink)}
-                    {isPrivileged && renderLink('/admin/payouts', 'Payouts Hub', Banknote, pathname.includes('payouts'))}
-                </div>
-
-                <div className="p-2 lg:p-4 border-t border-border dark:border-white/10 mt-auto flex flex-col gap-2">
-                    {renderLink('/', 'View Website', ExternalLink)}
-                    {isPrivileged && renderLink('/admin/payouts', 'Payouts Hub', Banknote, pathname.includes('payouts'))}
                 </div>
             </aside>
         </>

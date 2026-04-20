@@ -32,7 +32,7 @@ export async function loginExecutive(phone: string, password?: string) {
     const cookieStore = await cookies();
     cookieStore.set('executive_id', executive.id, { httpOnly: true, path: '/' });
 
-    redirect('/pickup/dashboard');
+    redirect('/admin/orders');
 }
 
 export async function onboardExecutive(id: string, password: string) {
@@ -46,13 +46,13 @@ export async function onboardExecutive(id: string, password: string) {
     const cookieStore = await cookies();
     cookieStore.set('executive_id', executive.id, { httpOnly: true, path: '/' });
 
-    redirect('/pickup/dashboard');
+    redirect('/admin/orders');
 }
 
 export async function logoutExecutive() {
     const cookieStore = await cookies();
     cookieStore.delete('executive_id');
-    redirect('/pickup');
+    redirect('/login');
 }
 
 export async function getExecutiveSession() {
@@ -66,18 +66,20 @@ export async function getExecutiveSession() {
 
     // Try main session
     const session = await getSession();
-    if (session?.user?.role === 'FIELD_EXECUTIVE' || session?.user?.role === 'RIDER') {
+    if (session?.user?.role === 'FIELD_EXECUTIVE') {
         const riders = await db.getRiders();
-        // Link via phone/id from the session user
-        // The session user.id should ideally be linked to the Rider record
-        const executive = riders.find(r => r.id === session.user.id);
-        if (executive) return executive;
         
-        // Fallback to phone if ID doesn't match
-        const prismaUser = await db.findUserByEmail(session.user.email);
+        // 1. Try to find user record to get phone
+        const { prisma } = await import('@/lib/db');
+        const prismaUser = await prisma.user.findUnique({ where: { id: session.user.id } });
         if (prismaUser?.phone) {
-            return riders.find(r => r.phone === prismaUser.phone) || null;
+            const executive = riders.find(r => r.phone === prismaUser.phone);
+            if (executive) return executive;
         }
+
+        // 2. Fallback to ID match
+        const executiveById = riders.find(r => r.id === session.user.id);
+        if (executiveById) return executiveById;
     }
     
     return null;
@@ -125,7 +127,6 @@ export async function updateOrderStatus(orderId: string, status: string, reason?
     }
 
     await db.updateOrderStatus(orderId, status);
-    revalidatePath('/pickup/dashboard');
     revalidatePath('/admin/orders');
     return { success: true };
 }
@@ -146,7 +147,6 @@ export async function submitVerification(orderId: string, payload: { riderAnswer
         }
     });
 
-    revalidatePath('/pickup/dashboard');
     revalidatePath('/admin/orders');
     return { success: true };
 }
