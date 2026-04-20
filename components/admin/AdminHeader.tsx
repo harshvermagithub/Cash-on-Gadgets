@@ -22,14 +22,26 @@ export function AdminHeader() {
                 {/* Debug: Test Notification Trigger */}
                 <button 
                   onClick={async () => {
-                    if (typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
-                      alert('Please enable notifications first via the pop-up or browser settings.');
+                    // Local Feedback FIRST
+                    if (typeof Notification !== 'undefined') {
+                      if (Notification.permission === 'granted') {
+                        new window.Notification("Verification Signal Sent!", {
+                          body: "If you see this, browser notifications are working. Checking DB sync...",
+                          icon: '/icon.png'
+                        });
+                        // Play sound locally too
+                        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+                        audio.play().catch(() => {});
+                      } else {
+                        alert('Please enable notifications first via the pop-up or browser settings (click the lock icon in address bar).');
+                      }
                     }
-                    // Import and call server action to create a real DB entry
+                    
+                    // DB Pulse SECOND
                     const { createNotification } = await import('@/actions/notifications');
                     await createNotification({
-                        title: "Test Alert",
-                        message: "This is a verification signal to confirm your notification system is LIVE.",
+                        title: "Live Database Heartbeat",
+                        message: "The real-time synchronization link is active and synchronized.",
                         type: "info"
                     });
                   }}

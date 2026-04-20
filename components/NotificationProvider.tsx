@@ -110,8 +110,12 @@ export function NotificationProvider({
             )
             .subscribe();
 
+        // Polling Fallback (Every 30 seconds)
+        const pollTimer = setInterval(fetchNotifications, 30000);
+
         return () => {
             supabaseClient.removeChannel(channel);
+            clearInterval(pollTimer);
         };
     }, [userId, userRole, riderId]);
 
