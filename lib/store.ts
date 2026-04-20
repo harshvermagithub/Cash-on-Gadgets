@@ -229,16 +229,20 @@ export const db = {
                 data: { riderId, status: 'assigned' }
             });
 
-            // Notify Rider
-            await prisma.notification.create({
-                data: {
-                    riderId: riderId,
-                    title: 'New Task Assigned',
-                    message: `You have been assigned order #${updatedOrder.orderNumber} for pickup.`,
-                    type: 'order_assigned',
-                    orderId: updatedOrder.id
-                }
-            });
+            // Notify Rider (Wrap in catch to avoid failing the whole transaction)
+            try {
+                await prisma.notification.create({
+                    data: {
+                        riderId: riderId,
+                        title: 'New Task Assigned',
+                        message: `You have been assigned order #${updatedOrder.orderNumber} for pickup.`,
+                        type: 'order_assigned',
+                        orderId: updatedOrder.id
+                    }
+                });
+            } catch (e) {
+                console.error("Delayed notification creation failed:", e);
+            }
             
             return true;
         } catch (error) {

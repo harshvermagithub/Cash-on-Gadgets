@@ -33,8 +33,8 @@ export default function OrderManager({ initialOrders, riders }: { initialOrders:
             // Optimistically update the UI to instantly move to the new tab!
             setOrders(prev => prev.map(o => o.id === orderId ? { ...o, riderId, status: 'assigned' } : o));
             router.refresh();
-        } catch {
-            alert('Failed to assign rider');
+        } catch (error: any) {
+            alert(error.message || 'Failed to assign rider');
         } finally {
             setAssigningId(null);
         }

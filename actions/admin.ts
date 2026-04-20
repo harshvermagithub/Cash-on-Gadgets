@@ -384,7 +384,7 @@ export async function updateRiderPartner(riderId: string, partnerId: string | nu
 export async function assignRider(orderId: string, riderId: string) {
     await requirePartnerOrAbove();
     const success = await db.updateOrderRider(orderId, riderId);
-    if (!success) throw new Error('Order not found');
+    if (!success) throw new Error('Database level failure: Could not update order with assigned executive. Please check if the executive still exists.');
 
     const order = await prisma.order.findUnique({
         where: { id: orderId },
