@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Html5Qrcode } from 'html5-qrcode';
-import { Camera, X, Check, Loader2, AlertCircle, ArrowRight } from 'lucide-react';
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
+import { Camera, X, Check, Loader2, AlertCircle, ArrowRight, Zap, ZapOff } from 'lucide-react';
 
 interface ImeiScannerProps {
     onDetected: (imei1: string, imei2?: string) => void;
@@ -12,40 +12,81 @@ interface ImeiScannerProps {
 export default function ImeiScanner({ onDetected, onClose }: ImeiScannerProps) {
     const [scannedResult, setScannedResult] = useState<string[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [hasFlash, setHasFlash] = useState(false);
+    const [isFlashOn, setIsFlashOn] = useState(false);
     const scannerRef = useRef<Html5Qrcode | null>(null);
 
     useEffect(() => {
         const scannerId = "imei-reader";
         
-        const config = { 
-            fps: 10, 
-            qrbox: { width: 300, height: 150 },
-            aspectRatio: 1.0 
-        };
+        // Priority formats for IMEI barcodes
+        const formatsToSupport = [
+            Html5QrcodeSupportedFormats.CODE_128,
+            Html5QrcodeSupportedFormats.EAN_13,
+            Html5QrcodeSupportedFormats.EAN_8,
+            Html5QrcodeSupportedFormats.CODE_39,
+            Html5QrcodeSupportedFormats.UPC_A,
+            Html5QrcodeSupportedFormats.UPC_E,
+            Html5QrcodeSupportedFormats.ITF
+        ];
 
-        const html5QrCode = new Html5Qrcode(scannerId);
+        const html5QrCode = new Html5Qrcode(scannerId, { 
+            verbose: false,
+            formatsToSupport: formatsToSupport 
+        });
         scannerRef.current = html5QrCode;
 
         const startScanner = async () => {
             try {
+                const config = { 
+                    fps: 20, // Increased FPS for faster detection
+                    qrbox: (viewfinderWidth: number, viewfinderHeight: number) => {
+                        // Wider box for long barcodes
+                        const width = Math.min(viewfinderWidth * 0.8, 400);
+                        const height = Math.min(viewfinderHeight * 0.3, 150);
+                        return { width, height };
+                    },
+                    aspectRatio: 1.0,
+                    // Use native barcode detector if available (Chrome/Android feature)
+                    experimentalFeatures: {
+                        useBarCodeDetectorIfSupported: true
+                    }
+                };
+
                 await html5QrCode.start(
                     { facingMode: "environment" },
                     config,
                     (decodedText) => {
-                        const imeiMatch = decodedText.match(/\d{15}/);
-                        if (imeiMatch) {
-                            const foundImei = imeiMatch[0];
-                            setScannedResult(prev => {
-                                if (prev.includes(foundImei)) return prev;
-                                return [...prev, foundImei];
-                            });
+                        // Improved regex to find 15-digit sequences in strings
+                        const matches = decodedText.match(/\b\d{14,16}\b/g);
+                        if (matches) {
+                            for (const match of matches) {
+                                // Standard IMEI is 15 digits
+                                if (match.length === 15) {
+                                    setScannedResult(prev => {
+                                        if (prev.includes(match)) return prev;
+                                        // Vibrate on success
+                                        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+                                            navigator.vibrate(100);
+                                        }
+                                        return [...prev, match];
+                                    });
+                                }
+                            }
                         }
                     },
                     () => {}
                 );
+
+                // Check for flash support
+                const cameraCaps = html5QrCode.getRunningTrackCapabilities();
+                if ((cameraCaps as any).torch) {
+                    setHasFlash(true);
+                }
+
             } catch (err) {
                 console.error("Scanner start error:", err);
-                setError("Camera access denied or not available. Please ensure HTTPS is used.");
+                setError("Camera access denied or hardware busy. Please check permissions.");
             }
         };
 
@@ -57,6 +98,20 @@ export default function ImeiScanner({ onDetected, onClose }: ImeiScannerProps) {
             }
         };
     }, []);
+
+    const toggleFlash = async () => {
+        if (scannerRef.current && hasFlash) {
+            try {
+                const newState = !isFlashOn;
+                await scannerRef.current.applyVideoConstraints({
+                    advanced: [{ torch: newState }] as any
+                });
+                setIsFlashOn(newState);
+            } catch (e) {
+                console.error("Flash toggle failed", e);
+            }
+        }
+    };
 
     const handleConfirm = () => {
         if (scannedResult.length > 0) {
@@ -84,15 +139,32 @@ export default function ImeiScanner({ onDetected, onClose }: ImeiScannerProps) {
             <div className="relative flex-1 rounded-3xl overflow-hidden border-2 border-white/20 ">
                 <div id="imei-reader" className="w-full h-full"></div>
                 
+                {/* Overlay UI */}
                 <div className="absolute inset-0 border-[40px] border-black/40 pointer-events-none">
                     <div className="w-full h-full border-2 border-primary/50 relative">
                         <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-primary"></div>
                         <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-primary"></div>
                         <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-primary"></div>
                         <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-primary"></div>
+                        
+                        {/* Scanning Line Animation */}
                         <div className="absolute top-0 left-0 w-full h-[2px] bg-primary/50 shadow-[0_0_10px_rgba(16,185,129,1)] animate-scan"></div>
                     </div>
                 </div>
+
+                {/* Flashlight Toggle */}
+                {hasFlash && (
+                    <button 
+                        onClick={toggleFlash}
+                        className={`absolute bottom-6 left-1/2 -translate-x-1/2 p-4 rounded-full backdrop-blur-xl border transition-all ${
+                            isFlashOn 
+                                ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' 
+                                : 'bg-white/10 text-white border-white/20'
+                        }`}
+                    >
+                        {isFlashOn ? <Zap className="w-6 h-6" /> : <ZapOff className="w-6 h-6" />}
+                    </button>
+                )}
 
                 {error && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/80 p-8 text-center flex-col gap-4">
@@ -105,7 +177,7 @@ export default function ImeiScanner({ onDetected, onClose }: ImeiScannerProps) {
 
             <div className="mt-6">
                 {scannedResult.length > 0 ? (
-                    <div className="bg-white/10 p-6 rounded-3xl space-y-4 animate-in slide-in-from-bottom-2">
+                    <div className="bg-white/10 p-6 rounded-3xl space-y-4 animate-in slide-in-from-bottom-2 max-h-[250px] overflow-y-auto">
                         <p className="text-[10px] font-black uppercase tracking-widest text-primary flex justify-between items-center">
                             <span>Detected Numbers</span>
                             <span className="bg-primary/20 text-primary px-2 py-0.5 rounded">{scannedResult.length}</span>
@@ -122,7 +194,7 @@ export default function ImeiScanner({ onDetected, onClose }: ImeiScannerProps) {
                         </div>
                         <button 
                             onClick={handleConfirm}
-                            className="w-full h-14 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all flex items-center justify-center gap-3 active:scale-95"
+                            className="w-full h-14 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/20 hover:bg-primary/90 transition-all flex items-center justify-center gap-3 active:scale-95 sticky bottom-0"
                         >
                             Confirm & Auto-fill <ArrowRight className="w-6 h-6" />
                         </button>
@@ -135,7 +207,7 @@ export default function ImeiScanner({ onDetected, onClose }: ImeiScannerProps) {
                                     <Loader2 className="w-6 h-6 animate-spin" />
                                     <span className="font-black text-sm uppercase tracking-widest">Searching for Barcode...</span>
                                 </div>
-                                <p className="text-xs text-white/30 text-center max-w-[200px]">Align the IMEI barcode within the frame</p>
+                                <p className="text-xs text-white/30 text-center max-w-[200px]">Align the IMEI barcode within the frame. Ensure good lighting.</p>
                             </>
                         )}
                     </div>

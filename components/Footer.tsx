@@ -1,9 +1,16 @@
+'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 
 export default function Footer() {
+    const pathname = usePathname();
+    const isAdminPath = pathname?.startsWith('/admin');
+
+    if (isAdminPath) return null;
+
     return (
         <footer className="w-full border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 pt-16 pb-8">
             <div className="container mx-auto px-4 md:px-6">
