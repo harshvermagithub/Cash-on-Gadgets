@@ -133,10 +133,19 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                 </button>
 
                 <div className={`h-16 border-b border-border dark:border-white/10 shrink-0 flex items-center relative ${isMobileOpen ? 'justify-start px-6' : isDesktopCollapsed ? 'justify-center lg:px-0' : 'justify-center lg:justify-start lg:px-6'}`}>
-                    <Link href="/admin" className={`flex items-center gap-2 font-bold text-lg text-primary leading-tight overflow-hidden`} title={dashboardTitle}>
-                        <LayoutDashboard className="shrink-0 w-6 h-6" />
-                        <span className={`${isMobileOpen ? 'inline' : isDesktopCollapsed ? 'hidden' : 'hidden lg:inline'} whitespace-nowrap`}>{dashboardTitle}</span>
+                    <Link href="/" className={`flex items-center gap-2 font-black text-xl text-foreground tracking-tighter overflow-hidden group`} title="Go to Website">
+                        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+                            {/* Simplified Icon for Sidebar Top */}
+                            <Smartphone className="w-5 h-5" />
+                        </div>
+                        <span className={`${isMobileOpen ? 'inline' : isDesktopCollapsed ? 'hidden' : 'hidden lg:inline'} whitespace-nowrap`}>Fonz<span className="text-primary font-black">kart</span></span>
                     </Link>
+                </div>
+
+                <div className="px-4 pt-4 pb-2 border-b border-white/5 opacity-60">
+                     <p className={`${isMobileOpen ? 'block' : isDesktopCollapsed ? 'hidden' : 'hidden lg:block'} text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground`}>
+                        {dashboardTitle} Control
+                    </p>
                 </div>
 
                 <nav className="flex-1 overflow-y-auto px-2 py-4 lg:p-4 space-y-1 scrollbar-hide">

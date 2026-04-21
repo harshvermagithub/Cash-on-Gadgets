@@ -27,7 +27,7 @@ export default async function AdminLayout({
 
                 {/* Main Content Area */}
                 <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-                    <AdminHeader />
+                    <AdminHeader user={session.user} />
                     <main className="flex-1 p-4 md:p-8 overflow-y-auto bg-slate-50 dark:bg-slate-950/20">
                         <div className="max-w-[1600px] mx-auto">
                             {children}
