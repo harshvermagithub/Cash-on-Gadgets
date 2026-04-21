@@ -1,7 +1,8 @@
 
 import Link from 'next/link';
 import { User, LogOut } from 'lucide-react';
-import { getSession, logout, isAdmin } from '@/lib/session';
+import { getSession, logout } from '@/lib/session';
+import { isAdmin } from '@/lib/auth-utils';
 import { NavLinks } from './NavLinks';
 
 export default async function HeaderActions() {
@@ -18,13 +19,10 @@ export default async function HeaderActions() {
                 <div className="flex items-center gap-4">
                     <Link href="/profile" className="flex items-center gap-2 hover:text-primary transition-colors text-sm font-medium">
                         <User className="h-4 w-4" />
-                        <span className="hidden md:inline-block">Hi, {session.user?.name}</span>
+                        <span className="hidden md:inline-block text-foreground">Hi, {session.user?.name}</span>
                     </Link>
-                    <form action={async () => {
-                        'use server';
-                        await logout();
-                    }}>
-                        <button className="flex items-center gap-2 rounded-full border border-input bg-card px-4 py-2 text-sm font-medium hover:bg-accent transition-colors text-foreground">
+                    <form action={logout}>
+                        <button type="submit" className="flex items-center gap-2 rounded-full border border-input bg-card px-4 py-2 text-sm font-medium hover:bg-accent transition-colors text-foreground">
                             <LogOut className="h-4 w-4" />
                             <span className="hidden sm:inline">Logout</span>
                         </button>

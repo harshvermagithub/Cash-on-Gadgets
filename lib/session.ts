@@ -1,31 +1,12 @@
+'use server';
 
-import { SignJWT, jwtVerify, JWTPayload } from 'jose';
+import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
-// import { redirect } from 'next/navigation';
+import { SessionPayload } from './auth-utils';
 
 const KEY = new TextEncoder().encode(process.env.AUTH_SECRET || 'secret_key_123');
 
-export interface SessionUser {
-    id: string;
-    email: string;
-    name: string;
-    role: string;
-    cityId?: string | null;
-}
-
-export const ADMIN_EMAILS = ['admin@fonzkart.com', 'mobilesouls.in@gmail.com'];
-
-export function isAdmin(user: SessionUser) {
-    if (!user) return false;
-    return ADMIN_EMAILS.includes(user.email) || ['ADMIN', 'SUPER_ADMIN', 'ZONAL_HEAD', 'PARTNER', 'FIELD_EXECUTIVE'].includes(user.role);
-}
-
-export interface SessionPayload extends JWTPayload {
-    user: SessionUser;
-    expires: Date | string;
-}
-
-export async function encrypt(payload: JWTPayload) {
+export async function encrypt(payload: any) {
     return await new SignJWT(payload)
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
@@ -37,21 +18,15 @@ export async function decrypt(input: string): Promise<SessionPayload> {
     const { payload } = await jwtVerify(input, KEY, {
         algorithms: ['HS256'],
     });
-    return payload as SessionPayload;
+    return payload as unknown as SessionPayload;
 }
 
 export async function getSession(): Promise<SessionPayload | null> {
     const sessionCookie = (await cookies()).get('session')?.value;
-    if (!sessionCookie) {
-        console.log('DEBUG: No session cookie found');
-        return null;
-    }
+    if (!sessionCookie) return null;
     try {
-        const payload = await decrypt(sessionCookie);
-        console.log('DEBUG: Decrypted payload:', JSON.stringify(payload, null, 2));
-        return payload;
+        return await decrypt(sessionCookie);
     } catch (e) {
-        console.log('DEBUG: Session decryption failed', e);
         return null;
     }
 }

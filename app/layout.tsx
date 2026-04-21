@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
+import HeaderVisibility from "@/components/HeaderVisibility";
 
 import Footer from "@/components/Footer";
 import InitialLoader from "@/components/ui/InitialLoader";
@@ -43,11 +44,17 @@ export default function RootLayout({
           {/* Initial Splash Loader for first visit/refresh */}
           <InitialLoader />
 
-          <Header />
+          <HeaderVisibility>
+            <Header />
+          </HeaderVisibility>
+          
           <main className="flex-1">
             {children}
           </main>
-          <Footer />
+
+          <HeaderVisibility>
+            <Footer />
+          </HeaderVisibility>
         </ThemeProvider>
       </body>
     </html>

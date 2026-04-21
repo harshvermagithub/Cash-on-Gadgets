@@ -1,7 +1,8 @@
 'use server';
 
 import { db } from '@/lib/store';
-import { getSession, isAdmin } from '@/lib/session';
+import { getSession } from '@/lib/session';
+import { isAdmin } from '@/lib/auth-utils';
 import { revalidatePath } from 'next/cache';
 import { randomUUID } from 'crypto';
 import { sendSystemEmail } from '@/lib/email';

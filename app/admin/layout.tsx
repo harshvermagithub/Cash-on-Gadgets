@@ -1,6 +1,7 @@
 
 import Link from 'next/link';
-import { getSession, isAdmin } from '@/lib/session';
+import { getSession } from '@/lib/session';
+import { isAdmin } from '@/lib/auth-utils';
 import { redirect } from 'next/navigation';
 import { LayoutDashboard, Smartphone, Layers, Tag, ExternalLink, Users, ShoppingCart } from 'lucide-react';
 
