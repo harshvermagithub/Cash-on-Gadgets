@@ -30,7 +30,7 @@ ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
 ENV DATABASE_URL=$POSTGRES_PRISMA_URL
 
 # Limit Node's old space memory to avoid VPS OOM crash during build
-ENV NODE_OPTIONS="--max-old-space-size=1536"
+ENV NODE_OPTIONS="--max-old-space-size=512"
 
 RUN npx prisma generate
 
