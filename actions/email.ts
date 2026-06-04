@@ -7,13 +7,16 @@ import nodemailer from 'nodemailer';
 // Ensure the NodeMailer transport uses standard SMTP environment variables
 // This completely unhooks the application from Resend.
 const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || '',
-    port: parseInt(process.env.SMTP_PORT || '465'),
-    secure: process.env.SMTP_SECURE === 'true' || true, // true for 465, false for 587/25
+    host: process.env.SMTP_HOST || '89.116.27.217',
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    secure: process.env.SMTP_SECURE === 'true', // true for 465, false for 587/25
     auth: {
         user: process.env.SMTP_USER || '',
         pass: process.env.SMTP_PASS || '',
     },
+    tls: {
+        rejectUnauthorized: false
+    }
 });
 
 export async function getEmails() {
@@ -38,8 +41,8 @@ export async function sendEmail(prevState: { error?: string, success?: string } 
         return { error: 'Please fill all fields.' };
     }
 
-    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-        return { error: 'Your custom Mail Server is not hooked up yet. Please provide SMTP_HOST, SMTP_USER, and SMTP_PASS in the Vercel variables.' };
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+        return { error: 'Your custom Mail Server is not hooked up yet. Please provide SMTP_USER and SMTP_PASS in the environment variables.' };
     }
 
     try {
