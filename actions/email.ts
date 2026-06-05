@@ -4,10 +4,18 @@ import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/db';
 import nodemailer from 'nodemailer';
 
+const getSMTPHost = () => {
+    const host = process.env.SMTP_HOST;
+    if (!host || host === '10.0.5.2') {
+        return '89.116.27.217';
+    }
+    return host;
+};
+
 // Ensure the NodeMailer transport uses standard SMTP environment variables
 // This completely unhooks the application from Resend.
 const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || '89.116.27.217',
+    host: getSMTPHost(),
     port: parseInt(process.env.SMTP_PORT || '587'),
     secure: process.env.SMTP_SECURE === 'true', // true for 465, false for 587/25
     auth: {

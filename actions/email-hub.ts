@@ -19,8 +19,12 @@ export async function syncImapEmails(targetAccount?: string) {
 
     for (const acc of accounts) {
         try {
+            const imapHost = (!process.env.SMTP_HOST || process.env.SMTP_HOST === '10.0.5.2')
+                ? '89.116.27.217'
+                : process.env.SMTP_HOST;
+
             const client = new ImapFlow({
-                host: process.env.SMTP_HOST || '89.116.27.217',
+                host: imapHost,
                 port: 143,
                 secure: false,
                 auth: { user: acc.email, pass: acc.password },

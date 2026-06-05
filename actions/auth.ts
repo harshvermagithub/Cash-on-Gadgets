@@ -12,6 +12,14 @@ import { PrismaClient } from '@prisma/client';
 import { sendSystemEmail } from '@/lib/email';
 const prisma = new PrismaClient();
 
+const getSMTPHost = () => {
+    const host = process.env.SMTP_HOST;
+    if (!host || host === '10.0.5.2') {
+        return '89.116.27.217';
+    }
+    return host;
+};
+
 export async function signup(prevState: { error?: string } | null, formData: FormData) {
     const name = formData.get('name') as string;
     const email = formData.get('email') as string;
@@ -65,7 +73,7 @@ export async function signup(prevState: { error?: string } | null, formData: For
         }
 
         const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST || '89.116.27.217',
+            host: getSMTPHost(),
             port: parseInt(process.env.SMTP_PORT || '587'),
             secure: process.env.SMTP_SECURE === 'true',
             auth: {
@@ -186,7 +194,7 @@ export async function signin(prevState: { error?: string } | null, formData: For
             const smtpPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || systemAccount?.password;
 
             const transporter = nodemailer.createTransport({
-                host: process.env.SMTP_HOST || '89.116.27.217',
+                host: getSMTPHost(),
                 port: parseInt(process.env.SMTP_PORT || '587'),
                 secure: process.env.SMTP_SECURE === 'true',
                 auth: { user: smtpUser, pass: smtpPass },
@@ -245,7 +253,7 @@ export async function requestPasswordReset(prevState: { error?: string, success?
         }
 
         const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST || '89.116.27.217',
+            host: getSMTPHost(),
             port: parseInt(process.env.SMTP_PORT || '587'),
             secure: process.env.SMTP_SECURE === 'true',
             auth: {
