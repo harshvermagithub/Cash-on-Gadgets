@@ -77,9 +77,12 @@ export default function Footer() {
                     <p className="text-sm text-muted-foreground text-foreground">
                         © {new Date().getFullYear()} Fonzkart. All rights reserved.
                     </p>
-                    <div className="flex gap-6 text-sm text-muted-foreground">
-                        <Link href="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
-                        <Link href="/terms" className="hover:text-primary transition-colors">Terms</Link>
+                    <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground justify-center md:justify-end">
+                        <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+                        <Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
+                        <Link href="/cancellation-policy" className="hover:text-primary transition-colors">Cancellation Policy</Link>
+                        <Link href="/refund-policy" className="hover:text-primary transition-colors">Refund Policy</Link>
+                        <Link href="/return-policy" className="hover:text-primary transition-colors">Return & Exchange Policy</Link>
                         <Link href="/sitemap" className="hover:text-primary transition-colors">Sitemap</Link>
                     </div>
                 </div>
