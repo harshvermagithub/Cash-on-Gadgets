@@ -61,14 +61,15 @@ export default function Footer() {
                                 <Phone className="h-5 w-5 text-primary shrink-0" />
                                 <span>+91 90603 36060</span>
                             </li>
+                            <li className="flex items-center gap-3">
+                                <Mail className="h-5 w-5 text-primary shrink-0" />
+                                <span>connect@fonzkart.in</span>
+                            </li>
                             <li className="flex items-start gap-3">
                                 <Mail className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                                <div className="flex flex-col gap-2">
-                                    <span>connect@fonzkart.in</span>
-                                    <div>
-                                        <span className="block text-foreground font-medium">ceo@fonzkart.in</span>
-                                        <span className="text-xs text-muted-foreground block mt-0.5">Connect CEO: Syed Yaseen Ahmed R</span>
-                                    </div>
+                                <div>
+                                    <span className="block text-foreground font-medium">ceo@fonzkart.in</span>
+                                    <span className="text-xs text-muted-foreground block mt-0.5">Connect CEO: Syed Yaseen Ahmed R</span>
                                 </div>
                             </li>
                             <li className="flex items-center gap-3">
