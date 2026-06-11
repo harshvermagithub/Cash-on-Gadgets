@@ -66,8 +66,8 @@ export default function Footer() {
                                 <div className="flex flex-col gap-2">
                                     <span>connect@fonzkart.in</span>
                                     <div>
-                                        <span className="block text-foreground font-medium">care@fonzkart.in</span>
-                                        <span className="text-xs text-muted-foreground block mt-0.5">Support Executive: Syed Yaseen Ahmed R</span>
+                                        <span className="block text-foreground font-medium">ceo@fonzkart.in</span>
+                                        <span className="text-xs text-muted-foreground block mt-0.5">Connect CEO: Syed Yaseen Ahmed R</span>
                                     </div>
                                 </div>
                             </li>
