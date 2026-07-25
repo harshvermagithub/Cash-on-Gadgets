@@ -1,10 +1,19 @@
 'use client'
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { DEVICE_LIST } from '@/components/icons/DeviceIcons';
 
 export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
+    const [currentDeviceIndex, setCurrentDeviceIndex] = useState(0);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentDeviceIndex((prev) => (prev + 1) % DEVICE_LIST.length);
+        }, 3000);
+        return () => clearInterval(timer);
+    }, []);
+
     return (
         <div className={`relative flex items-end justify-center overflow-visible pt-1 pb-1 px-1 ${className}`} aria-label="Fonzkart">
             {/* The Cart Container - Tilted Left */}
@@ -14,21 +23,38 @@ export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
 
                     {/* Top Row: F inside Phone + ONZ */}
                     <div className="flex items-center justify-center gap-0.5 mb-0.5">
-                        {/* F Logo Box */}
+                        {/* Device Icon Box */}
                         <div
                             className="relative w-4 h-6 flex items-center justify-center rounded-[3px] border border-slate-700 dark:border-white/20 shadow-inner overflow-hidden transition-colors duration-300 bg-black"
                         >
-                            <motion.div
-                                animate={{ opacity: [1, 0, 1, 0, 1, 1, 0.2, 1] }}
-                                transition={{
-                                    duration: 2.5,
-                                    repeat: Infinity,
-                                    times: [0, 0.1, 0.2, 0.3, 0.4, 0.8, 0.9, 1]
-                                }}
-                                className="w-[85%] h-[85%] rounded-[1px] bg-green-500 overflow-hidden relative"
-                            >
-                                <Image src="/logo_final_v3.png" alt="F" fill className="object-cover" />
-                            </motion.div>
+                            <AnimatePresence mode="wait">
+                                {(() => {
+                                    const DeviceIcon = DEVICE_LIST[currentDeviceIndex].Icon;
+                                    const isPhone = DEVICE_LIST[currentDeviceIndex].key === 'phone';
+                                    return (
+                                        <motion.div
+                                            key={currentDeviceIndex}
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.8 }}
+                                            transition={{ duration: 0.3 }}
+                                            className="absolute inset-0 flex items-center justify-center"
+                                        >
+                                            <motion.div
+                                                animate={{ opacity: [1, 0, 1, 0, 1, 1, 0.2, 1] }}
+                                                transition={{
+                                                    duration: 2.5,
+                                                    repeat: Infinity,
+                                                    times: [0, 0.1, 0.2, 0.3, 0.4, 0.8, 0.9, 1]
+                                                }}
+                                                className={`flex items-center justify-center text-green-500 ${isPhone ? 'scale-100' : 'scale-[0.85]'}`}
+                                            >
+                                                <DeviceIcon className="w-3.5 h-3.5" />
+                                            </motion.div>
+                                        </motion.div>
+                                    );
+                                })()}
+                            </AnimatePresence>
                         </div>
 
                         <span

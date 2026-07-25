@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { DEVICE_LIST } from '@/components/icons/DeviceIcons';
 
 /**
  * Simplified Fonzkart Logo:
@@ -17,6 +17,16 @@ export const FCartLogo = ({
     size?: number;
     animate?: boolean;
 }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        if (!animate) return;
+        const interval = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % DEVICE_LIST.length);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, [animate]);
+
     // Scale factors relative to size
     const cartW = size;
     const cartH = size * 0.85;
@@ -36,6 +46,8 @@ export const FCartLogo = ({
     const wheelPulse = animate
         ? { animate: { scale: [1, 1.15, 1] }, transition: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' as const } }
         : {};
+
+    const currentDevice = DEVICE_LIST[currentIndex];
 
     return (
         <div
@@ -140,7 +152,7 @@ export const FCartLogo = ({
                     )}
                 </MotionOrSvg>
 
-                {/* F Logo Image — Centered inside the cart basket */}
+                {/* Device Icon — Centered inside the cart basket */}
                 <div
                     className="absolute flex items-center justify-center"
                     style={{
@@ -151,17 +163,20 @@ export const FCartLogo = ({
                         transform: 'translate(-42%, -40%)',
                     }}
                 >
-                    <div className="relative w-full h-full flex items-center justify-center rounded-[4px] border-2 border-slate-700 dark:border-white/20 shadow-inner overflow-hidden transition-colors duration-300 bg-black">
-                        <MotionOrDiv
-                            {...(animate ? {
-                                animate: { opacity: [1, 0, 1, 0, 1, 1, 0.2, 1] },
-                                transition: { duration: 2.5, repeat: Infinity, times: [0, 0.1, 0.2, 0.3, 0.4, 0.8, 0.9, 1] }
-                            } : {})}
-                            className="w-[85%] h-[85%] rounded-[2px] bg-green-500 overflow-hidden relative"
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={currentDevice.key}
+                            initial={animate ? { opacity: 0, scale: 0.7, y: 4 } : { opacity: 1, scale: 1, y: 0 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={animate ? { opacity: 0, scale: 0.7, y: -4 } : { opacity: 1, scale: 1, y: 0 }}
+                            transition={{ duration: 0.35, ease: 'easeInOut' }}
+                            className={`absolute inset-0 flex items-center justify-center ${
+                                currentDevice.key === 'phone' ? 'scale-100' : 'scale-[0.85]'
+                            }`}
                         >
-                            <Image src="/logo_final_v3.png" alt="F" fill className="object-cover" priority />
-                        </MotionOrDiv>
-                    </div>
+                            <currentDevice.Icon className="w-full h-full" />
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
             </MotionOrDiv>
         </div>

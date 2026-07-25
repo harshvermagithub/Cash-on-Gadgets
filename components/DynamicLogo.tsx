@@ -2,15 +2,37 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
+import { DEVICE_LIST } from '@/components/icons/DeviceIcons';
 
-const F_Icon = () => (
-    <div className="relative w-5 h-8 flex items-center justify-center rounded-[4px] border border-slate-700 dark:border-white/20 shadow-inner overflow-hidden bg-black mr-0.5">
-        <div className="w-[90%] h-[90%] rounded-[2px] bg-green-500 relative overflow-hidden">
-            <Image src="/logo_final_v3.png" alt="F" fill className="object-cover" />
+const DeviceIcon = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % DEVICE_LIST.length);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const CurrentDevice = DEVICE_LIST[currentIndex];
+
+    return (
+        <div className="relative w-5 h-8 flex items-center justify-center rounded-[4px] border border-slate-700 dark:border-white/20 shadow-inner overflow-hidden bg-black mr-0.5">
+            <AnimatePresence mode="popLayout" initial={false}>
+                <motion.div
+                    key={CurrentDevice.key}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: CurrentDevice.key === 'phone' ? 1 : 0.85 }}
+                    exit={{ opacity: 0, scale: 0.5 }}
+                    transition={{ duration: 0.4 }}
+                    className="absolute inset-0 flex items-center justify-center text-green-500"
+                >
+                    <CurrentDevice.Icon className="w-full h-full p-[2px]" />
+                </motion.div>
+            </AnimatePresence>
         </div>
-    </div>
-);
+    );
+};
 
 const CartIcon = () => (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-emerald-500 overflow-visible">
@@ -38,7 +60,7 @@ export const DynamicLogo = ({ className = "" }: { className?: string }) => {
 
     return (
         <div className={`flex items-center font-black text-2xl tracking-tighter ${className}`} aria-label="Fonzkart">
-            <F_Icon />
+            <DeviceIcon />
             <span className="text-foreground">ONZ</span>
 
             {/* K A R T Animation Container */}
