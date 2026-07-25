@@ -177,3 +177,73 @@ export const CyclingDeviceIcon = ({
 };
 
 export default CyclingDeviceIcon;
+
+// --- Multi-Gadget Composition (All devices shown together inside cart) ---
+
+interface MultiGadgetCompositionProps {
+    className?: string;
+    /** Scale factor for overall arrangement */
+    scale?: number;
+}
+
+/**
+ * Renders all gadget icons simultaneously in a balanced hierarchy:
+ * - Phone: Big, central anchor
+ * - Laptop: Left side
+ * - Smart TV: Right side
+ * - Camera: Top-left float
+ * - Smart Watch: Bottom-right float
+ */
+export const MultiGadgetComposition = ({
+    className = '',
+}: MultiGadgetCompositionProps) => {
+    return (
+        <div className={`relative flex items-center justify-center select-none ${className}`}>
+            {/* Center: Main Smartphone */}
+            <motion.div
+                animate={{ y: [0, -1.5, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                className="z-20 relative w-5 h-9 drop-shadow-lg"
+            >
+                <PhoneIcon className="w-full h-full" />
+            </motion.div>
+
+            {/* Left: Laptop / Tablet */}
+            <motion.div
+                animate={{ y: [0, 1.5, 0], rotate: [-2, 0, -2] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
+                className="absolute left-[-16px] bottom-0 z-10 w-6 h-4.5 drop-shadow-md"
+            >
+                <LaptopIcon className="w-full h-full" />
+            </motion.div>
+
+            {/* Right: Smart TV */}
+            <motion.div
+                animate={{ y: [0, -1.5, 0], rotate: [2, 0, 2] }}
+                transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
+                className="absolute right-[-18px] bottom-0 z-10 w-6.5 h-4.5 drop-shadow-md"
+            >
+                <TvIcon className="w-full h-full" />
+            </motion.div>
+
+            {/* Top-Left: Camera */}
+            <motion.div
+                animate={{ y: [0, -2, 0], scale: [1, 1.05, 1] }}
+                transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
+                className="absolute left-[-12px] top-[-4px] z-15 w-4.5 h-3.5 drop-shadow-sm opacity-90"
+            >
+                <CameraIcon className="w-full h-full" />
+            </motion.div>
+
+            {/* Bottom-Right / Side: Smartwatch */}
+            <motion.div
+                animate={{ y: [0, 1.5, 0], scale: [1, 1.05, 1] }}
+                transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+                className="absolute right-[-10px] top-[-2px] z-15 w-3.5 h-5 drop-shadow-sm opacity-90"
+            >
+                <WatchIcon className="w-full h-full" />
+            </motion.div>
+        </div>
+    );
+};
+

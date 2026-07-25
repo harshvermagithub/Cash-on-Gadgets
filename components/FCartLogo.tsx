@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { DEVICE_LIST } from '@/components/icons/DeviceIcons';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { MultiGadgetComposition } from '@/components/icons/DeviceIcons';
 
 /**
- * Simplified Fonzkart Logo:
- * Just the "F" sitting inside a shopping cart. Nothing else.
+ * Fonzkart Cart Logo:
+ * Multi-gadgets (Phone, Laptop, TV, Camera, Watch) sitting inside the shopping cart.
  */
 export const FCartLogo = ({
     className = '',
@@ -17,20 +17,9 @@ export const FCartLogo = ({
     size?: number;
     animate?: boolean;
 }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    useEffect(() => {
-        if (!animate) return;
-        const interval = setInterval(() => {
-            setCurrentIndex((prev) => (prev + 1) % DEVICE_LIST.length);
-        }, 3000);
-        return () => clearInterval(interval);
-    }, [animate]);
-
     // Scale factors relative to size
     const cartW = size;
     const cartH = size * 0.85;
-    const fSize = size * 0.38;
 
     const MotionOrDiv = animate ? motion.div : 'div';
     const MotionOrSvg = animate ? motion.svg : 'svg';
@@ -46,8 +35,6 @@ export const FCartLogo = ({
     const wheelPulse = animate
         ? { animate: { scale: [1, 1.15, 1] }, transition: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' as const } }
         : {};
-
-    const currentDevice = DEVICE_LIST[currentIndex];
 
     return (
         <div
@@ -152,31 +139,16 @@ export const FCartLogo = ({
                     )}
                 </MotionOrSvg>
 
-                {/* Device Icon — Centered inside the cart basket */}
+                {/* Multi-Gadget Composition — Centered inside the cart basket */}
                 <div
-                    className="absolute flex items-center justify-center"
+                    className="absolute flex items-center justify-center pointer-events-none"
                     style={{
-                        width: fSize * 0.96,
-                        height: fSize * 1.44,
-                        left: '50%',
-                        top: '26%',
-                        transform: 'translate(-42%, -40%)',
+                        left: '52%',
+                        top: '32%',
+                        transform: 'translate(-50%, -50%) scale(0.85)',
                     }}
                 >
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={currentDevice.key}
-                            initial={animate ? { opacity: 0, scale: 0.7, y: 4 } : { opacity: 1, scale: 1, y: 0 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={animate ? { opacity: 0, scale: 0.7, y: -4 } : { opacity: 1, scale: 1, y: 0 }}
-                            transition={{ duration: 0.35, ease: 'easeInOut' }}
-                            className={`absolute inset-0 flex items-center justify-center ${
-                                currentDevice.key === 'phone' ? 'scale-100' : 'scale-[0.85]'
-                            }`}
-                        >
-                            <currentDevice.Icon className="w-full h-full" />
-                        </motion.div>
-                    </AnimatePresence>
+                    <MultiGadgetComposition />
                 </div>
             </MotionOrDiv>
         </div>
@@ -184,3 +156,4 @@ export const FCartLogo = ({
 };
 
 export default FCartLogo;
+

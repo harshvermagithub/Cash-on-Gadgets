@@ -1,103 +1,17 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { DEVICE_LIST } from '@/components/icons/DeviceIcons';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { MultiGadgetComposition } from '@/components/icons/DeviceIcons';
 
 export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
-    const [currentDeviceIndex, setCurrentDeviceIndex] = useState(0);
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentDeviceIndex((prev) => (prev + 1) % DEVICE_LIST.length);
-        }, 3000);
-        return () => clearInterval(timer);
-    }, []);
-
     return (
         <div className={`relative flex items-end justify-center overflow-visible pt-1 pb-1 px-1 ${className}`} aria-label="Fonzkart">
             {/* The Cart Container - Tilted Left */}
             <div className="relative -rotate-3 origin-bottom-right">
-                {/* Content Inside the Cart - Scaled Down & Raised to float inside */}
-                <div className="absolute bottom-[35%] left-1/2 -translate-x-[45%] flex flex-col items-center leading-none z-10 w-full text-center pb-0 scale-[0.85]">
-
-                    {/* Top Row: F inside Phone + ONZ */}
-                    <div className="flex items-center justify-center gap-0.5 mb-0.5">
-                        {/* Device Icon Box */}
-                        <div
-                            className="relative w-4 h-6 flex items-center justify-center rounded-[3px] border border-slate-700 dark:border-white/20 shadow-inner overflow-hidden transition-colors duration-300 bg-black"
-                        >
-                            <AnimatePresence mode="wait">
-                                {(() => {
-                                    const DeviceIcon = DEVICE_LIST[currentDeviceIndex].Icon;
-                                    const isPhone = DEVICE_LIST[currentDeviceIndex].key === 'phone';
-                                    return (
-                                        <motion.div
-                                            key={currentDeviceIndex}
-                                            initial={{ opacity: 0, scale: 0.8 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            exit={{ opacity: 0, scale: 0.8 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="absolute inset-0 flex items-center justify-center"
-                                        >
-                                            <motion.div
-                                                animate={{ opacity: [1, 0, 1, 0, 1, 1, 0.2, 1] }}
-                                                transition={{
-                                                    duration: 2.5,
-                                                    repeat: Infinity,
-                                                    times: [0, 0.1, 0.2, 0.3, 0.4, 0.8, 0.9, 1]
-                                                }}
-                                                className={`flex items-center justify-center text-green-500 ${isPhone ? 'scale-100' : 'scale-[0.85]'}`}
-                                            >
-                                                <DeviceIcon className="w-3.5 h-3.5" />
-                                            </motion.div>
-                                        </motion.div>
-                                    );
-                                })()}
-                            </AnimatePresence>
-                        </div>
-
-                        <span
-                            className="font-black text-lg tracking-tighter transition-colors duration-300"
-                            style={{ color: 'var(--logo-text)' }}
-                        >
-                            ONZ
-                        </span>
-                    </div>
-
-                    {/* Bottom Row: KA + Cash/Rupee + T */}
-                    <div className="flex items-center justify-center gap-0.5">
-                        <span
-                            className="font-bold text-xs tracking-tight transition-colors duration-300"
-                            style={{ color: 'var(--logo-ka-t-color)' }}
-                        >
-                            KA
-                        </span>
-
-                        {/* R replacement: 500 Rupee Note */}
-                        <div className="relative w-3.5 h-5 bg-emerald-50 dark:bg-emerald-950 rounded-[2px] border border-emerald-600 dark:border-emerald-400 flex items-center justify-center shadow-sm -mt-0.5 overflow-hidden">
-                            <span className="absolute top-[0.5px] left-[1px] text-[2px] font-bold text-emerald-800 dark:text-emerald-300">500</span>
-                            <motion.span
-                                animate={{ opacity: [1, 0, 1, 0, 1, 1, 0.2, 1] }}
-                                transition={{
-                                    duration: 2.5,
-                                    repeat: Infinity,
-                                    times: [0, 0.1, 0.2, 0.3, 0.4, 0.8, 0.9, 1]
-                                }}
-                                className="text-[6px] text-emerald-800 dark:text-emerald-300 font-bold"
-                            >
-                                ₹
-                            </motion.span>
-                        </div>
-
-
-                        <span
-                            className="font-bold text-xs tracking-tight transition-colors duration-300"
-                            style={{ color: 'var(--logo-ka-t-color)' }}
-                        >
-                            T
-                        </span>
-                    </div>
+                {/* Content Inside the Cart - Multi-Gadgets Floating Basket */}
+                <div className="absolute bottom-[38%] left-1/2 -translate-x-[48%] flex items-center justify-center z-10 w-full pb-0 scale-[0.85]">
+                    <MultiGadgetComposition />
                 </div>
 
                 {/* Custom Shopping Cart Graphic (Elongated & Open Top) -> NextGen Animated Version */}
@@ -155,9 +69,10 @@ export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
                     <motion.circle cx="26" cy="3" r="0.75" className="fill-emerald-400" animate={{ y: [0, -4, 0], opacity: [0, 1, 0] }} transition={{ duration: 2.5, repeat: Infinity }} />
                     <motion.circle cx="22" cy="6" r="0.6" className="fill-lime-400" animate={{ y: [0, -3, 0], opacity: [0, 1, 0] }} transition={{ duration: 2, repeat: Infinity, delay: 0.8 }} />
                 </motion.svg>
-            </div >
-        </div >
+            </div>
+        </div>
     );
 };
 
 export default Logo;
+
