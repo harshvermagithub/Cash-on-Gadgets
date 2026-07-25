@@ -145,7 +145,7 @@ export const FCartLogo = ({
                     style={{
                         left: '52%',
                         top: '32%',
-                        transform: 'translate(-50%, -50%) scale(0.95)',
+                        transform: 'translate(-50%, -50%) scale(0.88)',
                     }}
                 >
                     <MultiGadgetComposition />

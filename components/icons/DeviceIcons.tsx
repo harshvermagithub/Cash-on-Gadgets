@@ -183,10 +183,11 @@ interface MultiGadgetCompositionProps {
 }
 
 /**
- * Renders all 5 gadget icons simultaneously in separate non-overlapping positions:
+ * Renders all 5 gadget icons simultaneously in separate non-overlapping positions,
+ * sized proportionally to fit inside the shopping cart basket cleanly:
  * - Phone: Centered, green screen brand anchor
- * - Smart TV: Right side (large, blue display)
- * - Laptop: Left side (indigo display + keyboard)
+ * - Smart TV: Right side (vivid blue display, larger than laptop)
+ * - Laptop: Left side (indigo display + keyboard base)
  * - Camera: Top-left (DSLR camera + cyan lens)
  * - Smart Watch: Top-right (OLED watch + orange ring)
  */
@@ -194,53 +195,54 @@ export const MultiGadgetComposition = ({
     className = '',
 }: MultiGadgetCompositionProps) => {
     return (
-        <div className={`relative w-[130px] h-[65px] flex items-center justify-center select-none ${className}`}>
+        <div className={`relative w-[86px] h-[46px] flex items-center justify-center select-none ${className}`}>
             {/* 1. Center: Main Smartphone (Green Screen with F Logo) */}
             <motion.div
-                animate={{ y: [0, -2, 0] }}
+                animate={{ y: [0, -1.5, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                className="z-30 relative w-[24px] h-[45px] drop-shadow-xl"
+                className="z-30 relative w-[16px] h-[30px] drop-shadow-md"
             >
                 <PhoneIcon className="w-full h-full" />
             </motion.div>
 
             {/* 2. Left: Laptop (Indigo Screen) - Positioned left of phone */}
             <motion.div
-                animate={{ y: [0, 1.5, 0] }}
+                animate={{ y: [0, 1.2, 0] }}
                 transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
-                className="absolute left-[8px] bottom-[4px] z-20 w-[42px] h-[28px] drop-shadow-md"
+                className="absolute left-[3px] bottom-[2px] z-20 w-[27px] h-[18px] drop-shadow-sm"
             >
                 <LaptopIcon className="w-full h-full" />
             </motion.div>
 
             {/* 3. Right: Smart TV (Vivid Blue Screen) - Positioned right of phone, bigger than laptop */}
             <motion.div
-                animate={{ y: [0, -1.5, 0] }}
+                animate={{ y: [0, -1.2, 0] }}
                 transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
-                className="absolute right-[4px] bottom-[2px] z-20 w-[48px] h-[34px] drop-shadow-md"
+                className="absolute right-[1px] bottom-[1px] z-20 w-[32px] h-[23px] drop-shadow-sm"
             >
                 <TvIcon className="w-full h-full" />
             </motion.div>
 
             {/* 4. Top-Left: DSLR Camera (Cyan Lens) - Positioned above laptop */}
             <motion.div
-                animate={{ y: [0, -2, 0], scale: [1, 1.04, 1] }}
+                animate={{ y: [0, -1.5, 0], scale: [1, 1.03, 1] }}
                 transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
-                className="absolute left-[2px] top-[2px] z-25 w-[30px] h-[22px] drop-shadow-sm"
+                className="absolute left-[1px] top-[1px] z-25 w-[19px] h-[14px] drop-shadow-xs"
             >
                 <CameraIcon className="w-full h-full" />
             </motion.div>
 
             {/* 5. Top-Right: Smart Watch (Dark OLED & Orange Ring) - Positioned above TV */}
             <motion.div
-                animate={{ y: [0, 1.5, 0], scale: [1, 1.04, 1] }}
+                animate={{ y: [0, 1.2, 0], scale: [1, 1.03, 1] }}
                 transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-                className="absolute right-[12px] top-[0px] z-25 w-[20px] h-[32px] drop-shadow-sm"
+                className="absolute right-[7px] top-[0px] z-25 w-[13px] h-[21px] drop-shadow-xs"
             >
                 <WatchIcon className="w-full h-full" />
             </motion.div>
         </div>
     );
 };
+
 
 
