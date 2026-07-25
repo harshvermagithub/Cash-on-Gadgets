@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Recycle, ArrowRight } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 
 export default function Footer() {
@@ -72,13 +72,33 @@ export default function Footer() {
                                     <span className="text-xs text-muted-foreground block mt-0.5">Connect CEO: Syed Yaseen Ahmed R</span>
                                 </div>
                             </li>
-                            <li className="flex items-center gap-3">
+
+                            {/* Bulk Orders & Recycling Option */}
+                            <li className="pt-2">
+                                <Link 
+                                    href="/contact?topic=bulk"
+                                    className="group inline-flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-semibold transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 w-full"
+                                >
+                                    <div className="w-7 h-7 rounded-lg bg-emerald-500/20 flex items-center justify-center shrink-0">
+                                        <Recycle className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                                    </div>
+                                    <div className="flex flex-col flex-1">
+                                        <span className="font-bold text-foreground group-hover:text-primary transition-colors">Bulk Orders & Recycling</span>
+                                        <span className="text-[11px] text-muted-foreground group-hover:text-foreground transition-colors flex items-center gap-1 font-normal">
+                                            View More <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform text-emerald-600 dark:text-emerald-400" />
+                                        </span>
+                                    </div>
+                                </Link>
+                            </li>
+
+                            <li className="flex items-center gap-3 pt-1">
                                 <MapPin className="h-5 w-5 text-primary shrink-0" />
                                 <span>Bengaluru, Karnataka, India</span>
                             </li>
                         </ul>
                     </div>
                 </div>
+
 
                 <div className="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-sm text-muted-foreground text-foreground">
