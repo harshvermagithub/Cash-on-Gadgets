@@ -4,24 +4,24 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MultiGadgetComposition } from '@/components/icons/DeviceIcons';
 
-export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
+export const Logo = ({ className = "h-16 w-auto" }: { className?: string }) => {
     return (
         <div className={`relative flex items-end justify-center overflow-visible pt-1 pb-1 px-1 ${className}`} aria-label="Fonzkart">
             {/* The Cart Container - Tilted Left */}
-            <div className="relative -rotate-3 origin-bottom-right">
+            <div className="relative -rotate-2 origin-bottom-right">
                 {/* Content Inside the Cart - Multi-Gadgets Floating Basket */}
-                <div className="absolute bottom-[38%] left-1/2 -translate-x-[48%] flex items-center justify-center z-10 w-full pb-0 scale-[0.85]">
+                <div className="absolute bottom-[36%] left-1/2 -translate-x-[48%] flex items-center justify-center z-10 w-full pb-0 scale-[0.95]">
                     <MultiGadgetComposition />
                 </div>
 
-                {/* Custom Shopping Cart Graphic (Elongated & Open Top) -> NextGen Animated Version */}
+                {/* Custom Shopping Cart Graphic (Enlarged & Open Top) */}
                 <motion.svg
-                    width="80"
-                    height="70"
+                    width="96"
+                    height="84"
                     viewBox="0 0 28 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="drop-shadow-[0_0_12px_rgba(34,197,94,0.6)]"
+                    className="drop-shadow-[0_0_15px_rgba(34,197,94,0.6)]"
                     style={{ overflow: 'visible' }}
                     animate={{ y: [0, -1.5, 0] }}
                     transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}

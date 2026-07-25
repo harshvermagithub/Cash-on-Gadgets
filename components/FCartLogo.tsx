@@ -10,7 +10,7 @@ import { MultiGadgetComposition } from '@/components/icons/DeviceIcons';
  */
 export const FCartLogo = ({
     className = '',
-    size = 80,
+    size = 100,
     animate = true,
 }: {
     className?: string;
@@ -145,7 +145,7 @@ export const FCartLogo = ({
                     style={{
                         left: '52%',
                         top: '32%',
-                        transform: 'translate(-50%, -50%) scale(0.85)',
+                        transform: 'translate(-50%, -50%) scale(0.95)',
                     }}
                 >
                     <MultiGadgetComposition />

@@ -35,21 +35,19 @@ export const PhoneIcon = ({ className = '' }: { className?: string }) => (
         {/* Screen shine */}
         <path d="M2.5 2.5H29.5V20L2.5 35V2.5Z" fill="white" fillOpacity="0.1" />
     </svg>
-);
-
-/** Laptop icon */
+);/** Laptop icon */
 export const LaptopIcon = ({ className = '' }: { className?: string }) => (
     <svg viewBox="0 0 48 34" className={`drop-shadow-md ${className}`} fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Screen lid */}
         <rect x="4" y="1" width="40" height="26" rx="2" className="fill-[#0f172a] dark:fill-black stroke-slate-600 dark:stroke-white/30" strokeWidth="1.5" />
-        {/* Screen content */}
-        <rect x="6" y="3" width="36" height="22" rx="1" fill="#10B981" opacity="0.85" />
+        {/* Screen content - Indigo */}
+        <rect x="6" y="3" width="36" height="22" rx="1" fill="#6366F1" opacity="0.9" />
         {/* Code lines on screen */}
-        <rect x="9" y="7" width="16" height="2" rx="1" fill="black" opacity="0.3" />
-        <rect x="9" y="11" width="24" height="2" rx="1" fill="black" opacity="0.2" />
-        <rect x="9" y="15" width="20" height="2" rx="1" fill="black" opacity="0.15" />
+        <rect x="9" y="7" width="16" height="2" rx="1" fill="white" opacity="0.4" />
+        <rect x="9" y="11" width="24" height="2" rx="1" fill="white" opacity="0.3" />
+        <rect x="9" y="15" width="20" height="2" rx="1" fill="white" opacity="0.25" />
         {/* Screen shine */}
-        <path d="M6 3H42V14L6 22V3Z" fill="white" fillOpacity="0.08" />
+        <path d="M6 3H42V14L6 22V3Z" fill="white" fillOpacity="0.12" />
         {/* Keyboard base */}
         <path d="M0 27H48L46 33H2L0 27Z" className="fill-slate-300 dark:fill-slate-600 stroke-slate-400 dark:stroke-slate-500" strokeWidth="0.5" />
         {/* Trackpad */}
@@ -62,15 +60,15 @@ export const TvIcon = ({ className = '' }: { className?: string }) => (
     <svg viewBox="0 0 52 38" className={`drop-shadow-md ${className}`} fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* TV body */}
         <rect x="1" y="1" width="50" height="30" rx="2" className="fill-[#0f172a] dark:fill-black stroke-slate-600 dark:stroke-white/30" strokeWidth="1.5" />
-        {/* Screen */}
-        <rect x="3" y="3" width="46" height="26" rx="1" fill="#10B981" opacity="0.8" />
-        {/* Content blocks */}
-        <rect x="6" y="7" width="12" height="8" rx="1" fill="black" opacity="0.2" />
-        <rect x="20" y="7" width="12" height="8" rx="1" fill="black" opacity="0.15" />
-        <rect x="34" y="7" width="12" height="8" rx="1" fill="black" opacity="0.1" />
-        <rect x="6" y="18" width="40" height="3" rx="1" fill="black" opacity="0.1" />
+        {/* Screen - Vivid Blue */}
+        <rect x="3" y="3" width="46" height="26" rx="1" fill="#0284C7" opacity="0.95" />
+        {/* Content blocks / Streaming cards */}
+        <rect x="6" y="6" width="12" height="9" rx="1" fill="#EF4444" opacity="0.9" />
+        <rect x="20" y="6" width="12" height="9" rx="1" fill="#F59E0B" opacity="0.9" />
+        <rect x="34" y="6" width="12" height="9" rx="1" fill="#6366F1" opacity="0.9" />
+        <rect x="6" y="18" width="40" height="4" rx="1" fill="white" opacity="0.3" />
         {/* Screen shine */}
-        <path d="M3 3H49V16L3 26V3Z" fill="white" fillOpacity="0.06" />
+        <path d="M3 3H49V16L3 26V3Z" fill="white" fillOpacity="0.1" />
         {/* Stand */}
         <path d="M20 31L26 37L32 31" className="stroke-slate-400 dark:stroke-slate-500" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
     </svg>
@@ -84,13 +82,13 @@ export const CameraIcon = ({ className = '' }: { className?: string }) => (
         {/* Camera body */}
         <rect x="2" y="7" width="44" height="28" rx="4" className="fill-[#0f172a] dark:fill-black stroke-slate-600 dark:stroke-white/30" strokeWidth="1.5" />
         {/* Lens outer ring */}
-        <circle cx="24" cy="22" r="10" className="stroke-slate-500 dark:stroke-slate-400" strokeWidth="2" fill="none" />
-        {/* Lens inner */}
-        <circle cx="24" cy="22" r="6" fill="#10B981" opacity="0.7" />
+        <circle cx="24" cy="22" r="10" className="stroke-cyan-400 dark:stroke-cyan-300" strokeWidth="2" fill="none" />
+        {/* Lens inner - Cyan glass */}
+        <circle cx="24" cy="22" r="6" fill="#0EA5E9" opacity="0.9" />
         {/* Lens highlight */}
-        <circle cx="22" cy="19" r="2" fill="white" opacity="0.3" />
+        <circle cx="22" cy="19" r="2" fill="white" opacity="0.5" />
         {/* Recording LED */}
-        <circle cx="40" cy="12" r="2" fill="#ef4444" opacity="0.8" />
+        <circle cx="40" cy="12" r="2" fill="#ef4444" opacity="0.9" />
     </svg>
 );
 
@@ -98,20 +96,20 @@ export const CameraIcon = ({ className = '' }: { className?: string }) => (
 export const WatchIcon = ({ className = '' }: { className?: string }) => (
     <svg viewBox="0 0 32 52" className={`drop-shadow-md ${className}`} fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Top band */}
-        <path d="M9 0H23V12H9Z" className="fill-slate-400 dark:fill-slate-600" />
+        <path d="M9 0H23V12H9Z" className="fill-slate-500 dark:fill-slate-600" />
         {/* Bottom band */}
-        <path d="M9 40H23V52H9Z" className="fill-slate-400 dark:fill-slate-600" />
+        <path d="M9 40H23V52H9Z" className="fill-slate-500 dark:fill-slate-600" />
         {/* Watch body */}
         <rect x="2" y="10" width="28" height="32" rx="6" className="fill-[#0f172a] dark:fill-black stroke-slate-600 dark:stroke-white/30" strokeWidth="1.5" />
-        {/* Screen */}
-        <rect x="5" y="13" width="22" height="26" rx="4" fill="#10B981" opacity="0.8" />
+        {/* Screen - Dark OLED */}
+        <rect x="5" y="13" width="22" height="26" rx="4" fill="#0F172A" />
         {/* Time display */}
-        <rect x="8" y="18" width="16" height="4" rx="1" fill="black" opacity="0.2" />
-        {/* Activity ring */}
-        <circle cx="16" cy="31" r="5" className="stroke-black/20" strokeWidth="1.5" fill="none" />
-        <circle cx="16" cy="31" r="5" stroke="#10B981" strokeWidth="1.5" fill="none" strokeDasharray="20 12" strokeLinecap="round" />
+        <rect x="8" y="17" width="16" height="4" rx="1" fill="#38BDF8" opacity="0.9" />
+        {/* Activity ring - Coral Orange */}
+        <circle cx="16" cy="30" r="5" className="stroke-slate-700" strokeWidth="1.5" fill="none" />
+        <circle cx="16" cy="30" r="5" stroke="#F97316" strokeWidth="1.5" fill="none" strokeDasharray="20 12" strokeLinecap="round" />
         {/* Crown button */}
-        <rect x="29" y="20" width="3" height="8" rx="1" className="fill-slate-500 dark:fill-slate-400" />
+        <rect x="29" y="20" width="3" height="8" rx="1" className="fill-slate-400 dark:fill-slate-400" />
     </svg>
 );
 
@@ -178,72 +176,71 @@ export const CyclingDeviceIcon = ({
 
 export default CyclingDeviceIcon;
 
-// --- Multi-Gadget Composition (All devices shown together inside cart) ---
+// --- Multi-Gadget Composition (All devices shown together inside cart without overlap) ---
 
 interface MultiGadgetCompositionProps {
     className?: string;
-    /** Scale factor for overall arrangement */
-    scale?: number;
 }
 
 /**
- * Renders all gadget icons simultaneously in a balanced hierarchy:
- * - Phone: Big, central anchor
- * - Laptop: Left side
- * - Smart TV: Right side
- * - Camera: Top-left float
- * - Smart Watch: Bottom-right float
+ * Renders all 5 gadget icons simultaneously in separate non-overlapping positions:
+ * - Phone: Centered, green screen brand anchor
+ * - Smart TV: Right side (large, blue display)
+ * - Laptop: Left side (indigo display + keyboard)
+ * - Camera: Top-left (DSLR camera + cyan lens)
+ * - Smart Watch: Top-right (OLED watch + orange ring)
  */
 export const MultiGadgetComposition = ({
     className = '',
 }: MultiGadgetCompositionProps) => {
     return (
-        <div className={`relative flex items-center justify-center select-none ${className}`}>
-            {/* Center: Main Smartphone */}
+        <div className={`relative w-[130px] h-[65px] flex items-center justify-center select-none ${className}`}>
+            {/* 1. Center: Main Smartphone (Green Screen with F Logo) */}
             <motion.div
-                animate={{ y: [0, -1.5, 0] }}
+                animate={{ y: [0, -2, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                className="z-20 relative w-5 h-9 drop-shadow-lg"
+                className="z-30 relative w-[24px] h-[45px] drop-shadow-xl"
             >
                 <PhoneIcon className="w-full h-full" />
             </motion.div>
 
-            {/* Left: Laptop / Tablet */}
+            {/* 2. Left: Laptop (Indigo Screen) - Positioned left of phone */}
             <motion.div
-                animate={{ y: [0, 1.5, 0], rotate: [-2, 0, -2] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
-                className="absolute left-[-16px] bottom-0 z-10 w-6 h-4.5 drop-shadow-md"
+                animate={{ y: [0, 1.5, 0] }}
+                transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
+                className="absolute left-[8px] bottom-[4px] z-20 w-[42px] h-[28px] drop-shadow-md"
             >
                 <LaptopIcon className="w-full h-full" />
             </motion.div>
 
-            {/* Right: Smart TV */}
+            {/* 3. Right: Smart TV (Vivid Blue Screen) - Positioned right of phone, bigger than laptop */}
             <motion.div
-                animate={{ y: [0, -1.5, 0], rotate: [2, 0, 2] }}
+                animate={{ y: [0, -1.5, 0] }}
                 transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
-                className="absolute right-[-18px] bottom-0 z-10 w-6.5 h-4.5 drop-shadow-md"
+                className="absolute right-[4px] bottom-[2px] z-20 w-[48px] h-[34px] drop-shadow-md"
             >
                 <TvIcon className="w-full h-full" />
             </motion.div>
 
-            {/* Top-Left: Camera */}
+            {/* 4. Top-Left: DSLR Camera (Cyan Lens) - Positioned above laptop */}
             <motion.div
-                animate={{ y: [0, -2, 0], scale: [1, 1.05, 1] }}
+                animate={{ y: [0, -2, 0], scale: [1, 1.04, 1] }}
                 transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
-                className="absolute left-[-12px] top-[-4px] z-15 w-4.5 h-3.5 drop-shadow-sm opacity-90"
+                className="absolute left-[2px] top-[2px] z-25 w-[30px] h-[22px] drop-shadow-sm"
             >
                 <CameraIcon className="w-full h-full" />
             </motion.div>
 
-            {/* Bottom-Right / Side: Smartwatch */}
+            {/* 5. Top-Right: Smart Watch (Dark OLED & Orange Ring) - Positioned above TV */}
             <motion.div
-                animate={{ y: [0, 1.5, 0], scale: [1, 1.05, 1] }}
-                transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-                className="absolute right-[-10px] top-[-2px] z-15 w-3.5 h-5 drop-shadow-sm opacity-90"
+                animate={{ y: [0, 1.5, 0], scale: [1, 1.04, 1] }}
+                transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+                className="absolute right-[12px] top-[0px] z-25 w-[20px] h-[32px] drop-shadow-sm"
             >
                 <WatchIcon className="w-full h-full" />
             </motion.div>
         </div>
     );
 };
+
 
