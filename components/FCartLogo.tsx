@@ -144,8 +144,8 @@ export const FCartLogo = ({
                     className="absolute flex items-center justify-center pointer-events-none"
                     style={{
                         left: '52%',
-                        top: '32%',
-                        transform: 'translate(-50%, -50%) scale(0.88)',
+                        top: '38%',
+                        transform: 'translate(-50%, -50%) scale(1.0)',
                     }}
                 >
                     <MultiGadgetComposition />

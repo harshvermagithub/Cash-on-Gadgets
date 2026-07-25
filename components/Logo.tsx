@@ -4,20 +4,20 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { MultiGadgetComposition } from '@/components/icons/DeviceIcons';
 
-export const Logo = ({ className = "h-14 w-auto" }: { className?: string }) => {
+export const Logo = ({ className = "h-12 w-auto" }: { className?: string }) => {
     return (
-        <div className={`relative flex items-end justify-center overflow-visible pt-1 pb-1 px-1 ${className}`} aria-label="Fonzkart">
-            {/* The Cart Container - Tilted Left */}
-            <div className="relative -rotate-2 origin-bottom-right">
+        <div className={`relative flex items-center justify-center pt-0 pb-0 px-1 ${className}`} aria-label="Fonzkart">
+            {/* The Cart Container */}
+            <div className="relative origin-center">
                 {/* Content Inside the Cart - Multi-Gadgets Floating Basket */}
-                <div className="absolute bottom-[38%] left-1/2 -translate-x-[48%] flex items-center justify-center z-10 w-full pb-0 scale-[0.88]">
+                <div className="absolute bottom-[44%] left-1/2 -translate-x-[48%] flex items-center justify-center z-10 w-full pb-0 scale-[1.0]">
                     <MultiGadgetComposition />
                 </div>
 
                 {/* Custom Shopping Cart Graphic */}
                 <motion.svg
-                    width="76"
-                    height="66"
+                    width="70"
+                    height="60"
                     viewBox="0 0 28 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
