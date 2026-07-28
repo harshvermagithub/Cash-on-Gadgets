@@ -13,6 +13,7 @@ import { HomeSearch } from '@/components/HomeSearch';
 import { BrandRail } from '@/components/BrandRail';
 import { DynamicLogo } from '@/components/DynamicLogo';
 import { useRouter } from 'next/navigation';
+import { AnimatedTrustChip } from '@/components/AnimatedTrustChip';
 import { PriceGraphic, SpeedGraphic, SecurityGraphic } from '@/components/icons/FeatureIcons';
 import { Brand } from '@/lib/store';
 
@@ -47,13 +48,9 @@ export function HomeClient({ initialBrands, activeCities = [], displayPrices = [
                                 <DynamicLogo />
                             </div>
 
-                            {/* Trust Badge / Pill */}
-                            <div className="hidden xl:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-green-200/60 shadow-sm mb-6 hover:shadow-md transition-all cursor-default w-fit">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                                </span>
-                                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-wide uppercase">India&apos;s Most Trusted Re-commerce</span>
+                            {/* Animated Trust Chip (Cart Moves Left to Right -> FonzKart Text -> Tagline) */}
+                            <div className="hidden xl:flex justify-center mb-6">
+                                <AnimatedTrustChip />
                             </div>
 
                             {/* Mobile View Specifics (Logo + Chips) */}
