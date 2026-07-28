@@ -5,12 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FCartLogo } from '@/components/FCartLogo';
 import { HeroLogo } from '@/components/HeroLogo';
 
-interface DynamicLogoProps {
-    className?: string;
-    size?: 'small' | 'normal';
-}
-
-export const DynamicLogo = ({ className = "", size = "normal" }: DynamicLogoProps) => {
+export const DynamicLogo = ({ className = "" }: { className?: string }) => {
     const [animationPhase, setAnimationPhase] = useState<'cart' | 'fonzkart'>('cart');
 
     useEffect(() => {
@@ -20,14 +15,9 @@ export const DynamicLogo = ({ className = "", size = "normal" }: DynamicLogoProp
         return () => clearInterval(interval);
     }, []);
 
-    const isSmall = size === 'small';
-    const cartSize = isSmall ? 65 : 100;
-
     return (
         <div
-            className={`relative flex items-center justify-center select-none ${
-                isSmall ? 'min-h-[48px] min-w-[200px]' : 'min-h-[95px] w-full max-w-[460px] mx-auto'
-            } overflow-hidden ${className}`}
+            className={`relative flex items-center justify-center min-h-[95px] w-full max-w-[460px] mx-auto overflow-hidden select-none ${className}`}
             aria-label="Fonzkart"
         >
             <AnimatePresence mode="popLayout" initial={false}>
@@ -48,7 +38,7 @@ export const DynamicLogo = ({ className = "", size = "normal" }: DynamicLogoProp
                             ease: 'easeInOut'
                         }}
                     >
-                        <FCartLogo size={cartSize} animate={true} />
+                        <FCartLogo size={100} animate={true} />
                     </motion.div>
                 ) : (
                     /* PHASE 2: WORDMARK APPEARS INSTANTLY IN CENTER (ZERO BLANK TIME) AND FADES FROM CENTER */
@@ -58,7 +48,7 @@ export const DynamicLogo = ({ className = "", size = "normal" }: DynamicLogoProp
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.94 }}
                         transition={{ duration: 0.45, ease: 'easeInOut' }}
-                        className={`flex items-center justify-center ${isSmall ? 'scale-[0.62] origin-center py-0' : 'py-2'}`}
+                        className="flex items-center justify-center py-2"
                     >
                         <HeroLogo forceLight={false} />
                     </motion.div>
@@ -69,6 +59,7 @@ export const DynamicLogo = ({ className = "", size = "normal" }: DynamicLogoProp
 };
 
 export default DynamicLogo;
+
 
 
 
