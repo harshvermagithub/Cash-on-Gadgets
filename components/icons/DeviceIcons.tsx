@@ -195,48 +195,48 @@ export const MultiGadgetComposition = ({
     className = '',
 }: MultiGadgetCompositionProps) => {
     return (
-        <div className={`relative w-[60px] h-[36px] flex items-center justify-center select-none ${className}`}>
-            {/* 1. Center: Main Smartphone (Green Screen with F Logo) - Moved UP further & Enlarged by 5% */}
+        <div className={`relative w-full h-full flex items-center justify-center select-none ${className}`}>
+            {/* 1. Center: Main Smartphone (Green Screen with F Logo) */}
             <motion.div
-                animate={{ y: [-5, -6, -5] }}
+                animate={{ y: [-2, -4, -2] }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                className="z-30 relative w-[14.2px] h-[27.3px] drop-shadow-md scale-[1.11] -top-[6px]"
+                className="z-30 absolute left-1/2 top-[5%] -translate-x-1/2 w-[26%] h-[72%] drop-shadow-md"
             >
                 <PhoneIcon className="w-full h-full" />
             </motion.div>
 
-            {/* 2. Left: Laptop (Indigo Screen) - Shifted rightward inside cart basket wall */}
+            {/* 2. Left: Laptop (Indigo Screen) - Bottom Left Basket Floor */}
             <motion.div
                 animate={{ y: [0, 1, 0] }}
                 transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
-                className="absolute left-[6px] bottom-[1px] z-20 w-[22px] h-[15px] drop-shadow-sm"
+                className="absolute left-[8%] bottom-[2%] z-20 w-[40%] h-[42%] drop-shadow-sm"
             >
                 <LaptopIcon className="w-full h-full" />
             </motion.div>
 
-            {/* 3. Right: Smart TV (Vivid Blue Screen) - Tucked inside right basket wall */}
+            {/* 3. Right: Smart TV (Vivid Blue Screen) - Bottom Right Basket Floor */}
             <motion.div
                 animate={{ y: [0, -1, 0] }}
                 transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
-                className="absolute right-[0px] bottom-[0px] z-20 w-[26px] h-[19px] drop-shadow-sm"
+                className="absolute right-[4%] bottom-[0%] z-20 w-[46%] h-[50%] drop-shadow-sm"
             >
                 <TvIcon className="w-full h-full" />
             </motion.div>
 
-            {/* 4. Top-Left: DSLR Camera (Cyan Lens) - Tucked behind/above laptop */}
+            {/* 4. Top-Left: DSLR Camera (Cyan Lens) - Top Left Basket space above laptop */}
             <motion.div
-                animate={{ y: [0, -1.2, 0] }}
+                animate={{ y: [0, -1.5, 0] }}
                 transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
-                className="absolute left-[4px] top-[1px] z-15 w-[15px] h-[11px] drop-shadow-xs"
+                className="absolute left-[4%] top-[10%] z-15 w-[28%] h-[34%] drop-shadow-xs"
             >
                 <CameraIcon className="w-full h-full" />
             </motion.div>
 
-            {/* 5. Top-Right: Smart Watch (Dark OLED & Orange Ring) - Moved UP higher to avoid TV overlap */}
+            {/* 5. Top-Right: Smart Watch (Dark OLED & Orange Ring) - Top Right Basket space above TV */}
             <motion.div
-                animate={{ y: [-3, -2, -3] }}
+                animate={{ y: [-2, 0, -2] }}
                 transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-                className="absolute right-[6px] -top-[4px] z-15 w-[11px] h-[17px] drop-shadow-xs"
+                className="absolute right-[12%] top-[4%] z-15 w-[22%] h-[46%] drop-shadow-xs"
             >
                 <WatchIcon className="w-full h-full" />
             </motion.div>

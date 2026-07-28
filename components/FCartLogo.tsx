@@ -143,12 +143,14 @@ export const FCartLogo = ({
                 <div
                     className="absolute flex items-center justify-center pointer-events-none"
                     style={{
-                        left: '52%',
-                        top: '38%',
-                        transform: 'translate(-50%, -50%) scale(1.0)',
+                        left: '54%',
+                        top: '40%',
+                        width: '62%',
+                        height: '50%',
+                        transform: 'translate(-50%, -50%)',
                     }}
                 >
-                    <MultiGadgetComposition />
+                    <MultiGadgetComposition className="w-full h-full" />
                 </div>
             </MotionOrDiv>
         </div>
