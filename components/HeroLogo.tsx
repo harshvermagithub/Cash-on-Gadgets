@@ -79,14 +79,10 @@ export const HeroLogo = ({ className = "", forceLight = false }: { className?: s
                 KA
             </span>
 
-            {/* Rupee '₹' Symbol (Vibrant Green R replacement) */}
-            <motion.span
-                animate={{ scale: [1, 1.08, 1], opacity: [0.9, 1, 0.9] }}
-                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                className="font-black text-3xl sm:text-4xl text-emerald-500 font-heading mx-0.5 inline-block"
-            >
+            {/* Rupee '₹' Symbol (Static Vibrant Green R replacement) */}
+            <span className="font-black text-3xl sm:text-4xl text-emerald-500 font-heading mx-0.5 inline-block">
                 ₹
-            </motion.span>
+            </span>
 
             {/* T */}
             <span className={`font-black text-3xl sm:text-4xl tracking-tight font-heading ${textClass}`}>
