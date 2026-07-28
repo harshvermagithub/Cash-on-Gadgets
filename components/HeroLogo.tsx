@@ -1,8 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
-import { motion, Transition } from 'framer-motion';
-import Image from 'next/image';
+import React from 'react';
 import { useTheme } from 'next-themes';
 
 const SmartphoneSVG = ({ forceLight = false }: { forceLight?: boolean }) => (
@@ -97,53 +95,13 @@ const RupeeNoteSVG = ({ forceLight = false }: { forceLight?: boolean }) => (
 );
 
 export const HeroLogo = ({ className = "", forceLight = false }: { className?: string, forceLight?: boolean }) => {
-    const { resolvedTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-
-    // Animation constants
-    const cycleDuration = 4;
-
-    const transitionSettings: Transition = {
-        duration: cycleDuration,
-        repeat: Infinity,
-        ease: "easeInOut",
-        times: [0, 0.4, 0.5, 0.9, 1]
-    };
-
     const textClass = forceLight ? 'text-slate-900' : 'text-slate-900 dark:text-white';
-    const invertClass = forceLight ? '' : 'dark:invert dark:hue-rotate-180';
 
     return (
         <div className={`flex items-center gap-1 select-none ${className}`} aria-label="Fonzkart">
-            {/* F / Smartphone Animation */}
-            <div className="relative w-8 h-12 flex items-center justify-center mr-0.5">
-                {/* State 1: F Logo Image */}
-                <motion.div
-                    animate={{ opacity: [0, 0, 1, 1, 0] }}
-                    transition={transitionSettings}
-                    className="absolute inset-0 flex items-center justify-center"
-                >
-                    <div
-                        className={`relative w-full h-full p-0.5 transition-[filter] duration-300 ${invertClass}`}
-                    >
-                        <Image
-                            src="/logo_final_v3.png"
-                            alt="F"
-                            fill
-                            className="object-contain"
-                            priority
-                        />
-                    </div>
-                </motion.div>
-
-                {/* State 2: Smartphone SVG */}
-                <motion.div
-                    animate={{ opacity: [1, 1, 0, 0, 1] }}
-                    transition={transitionSettings}
-                    className="absolute inset-0 flex items-center justify-center z-10"
-                >
-                    <SmartphoneSVG forceLight={forceLight} />
-                </motion.div>
+            {/* F / Smartphone - Always Smartphone SVG */}
+            <div className="relative w-8 h-12 flex items-center justify-center mr-0.5 z-10">
+                <SmartphoneSVG forceLight={forceLight} />
             </div>
 
             {/* O N Z K A */}
@@ -151,34 +109,17 @@ export const HeroLogo = ({ className = "", forceLight = false }: { className?: s
                 <span className={`font-black text-4xl tracking-tight transition-colors duration-300 ${textClass}`}>ONZKA</span>
             </div>
 
-            {/* R / Rupee Animation */}
-            <div className="relative w-9 h-14 flex items-center justify-center mx-1">
-                {/* State 1: Rupee Symbol */}
-                <motion.div
-                    animate={{ opacity: [0, 0, 1, 1, 0] }}
-                    transition={transitionSettings}
-                    className="absolute inset-0 flex items-center justify-center"
-                >
-                    <span className={`font-black text-4xl transition-colors duration-300 ${textClass}`}>₹</span>
-                </motion.div>
-
-                {/* State 2: 500 Note SVG */}
-                <motion.div
-                    animate={{ opacity: [1, 1, 0, 0, 1] }}
-                    transition={transitionSettings}
-                    className="absolute inset-0 flex items-center justify-center z-10"
-                >
-                    <div className="w-full h-full scale-[1.05]">
-                        <RupeeNoteSVG forceLight={forceLight} />
-                    </div>
-                </motion.div>
+            {/* R / Rupee - Always Rupee Note SVG */}
+            <div className="relative w-9 h-14 flex items-center justify-center mx-1 z-10">
+                <div className="w-full h-full scale-[1.05]">
+                    <RupeeNoteSVG forceLight={forceLight} />
+                </div>
             </div>
 
             {/* T */}
             <div className="flex items-center tracking-tighter">
                 <span className={`font-black text-4xl transition-colors duration-300 ${textClass}`}>T</span>
             </div>
-
         </div>
     );
 };
