@@ -10,16 +10,14 @@ const SmartphoneFLogo = () => (
             {/* Outer Phone Frame */}
             <rect x="1" y="1" width="30" height="56" rx="4" className="fill-[#0f172a] dark:fill-black stroke-slate-600 dark:stroke-white/30" strokeWidth="1.5" />
             
-            {/* Pulsing Green Screen */}
-            <motion.rect
+            {/* Solid Green Screen */}
+            <rect
                 x="2.5"
                 y="2.5"
                 width="27"
                 height="53"
                 rx="2.5"
                 fill="#10B981"
-                animate={{ opacity: [1, 0.85, 1, 0.9, 1] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             />
 
             {/* F Logo Mask Extraction */}
@@ -43,8 +41,8 @@ const SmartphoneFLogo = () => (
                 </mask>
             </defs>
 
-            {/* Black F Overlay with Blinking Animation */}
-            <motion.rect
+            {/* Black F Overlay (Solid, No Blinking) */}
+            <rect
                 x="-8"
                 y="-6"
                 width="48"
@@ -52,12 +50,6 @@ const SmartphoneFLogo = () => (
                 fill="black"
                 mask="url(#heroFMask)"
                 clipPath="url(#heroScreenClip)"
-                animate={{ opacity: [1, 0, 1, 0.1, 1, 1, 0.2, 1] }}
-                transition={{
-                    duration: 2.5,
-                    repeat: Infinity,
-                    times: [0, 0.1, 0.2, 0.3, 0.4, 0.8, 0.9, 1]
-                }}
             />
 
             {/* Top Speaker Notch */}
