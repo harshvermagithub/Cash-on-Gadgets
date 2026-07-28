@@ -196,11 +196,11 @@ export const MultiGadgetComposition = ({
 }: MultiGadgetCompositionProps) => {
     return (
         <div className={`relative w-[60px] h-[36px] flex items-center justify-center select-none ${className}`}>
-            {/* 1. Center: Main Smartphone (Green Screen with F Logo) - Moved UP & Enlarged by 6% */}
+            {/* 1. Center: Main Smartphone (Green Screen with F Logo) - Moved UP further & Enlarged by 5% */}
             <motion.div
-                animate={{ y: [-3, -4, -3] }}
+                animate={{ y: [-5, -6, -5] }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                className="z-30 relative w-[13.8px] h-[26.5px] drop-shadow-md scale-[1.06] -top-[3px]"
+                className="z-30 relative w-[14.2px] h-[27.3px] drop-shadow-md scale-[1.11] -top-[6px]"
             >
                 <PhoneIcon className="w-full h-full" />
             </motion.div>
@@ -214,7 +214,7 @@ export const MultiGadgetComposition = ({
                 <LaptopIcon className="w-full h-full" />
             </motion.div>
 
-            {/* 3. Right: Smart TV (Vivid Blue Screen) - Tucked inside right basket wall, larger than laptop */}
+            {/* 3. Right: Smart TV (Vivid Blue Screen) - Tucked inside right basket wall */}
             <motion.div
                 animate={{ y: [0, -1, 0] }}
                 transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
@@ -232,11 +232,11 @@ export const MultiGadgetComposition = ({
                 <CameraIcon className="w-full h-full" />
             </motion.div>
 
-            {/* 5. Top-Right: Smart Watch (Dark OLED & Orange Ring) - Tucked behind/above TV */}
+            {/* 5. Top-Right: Smart Watch (Dark OLED & Orange Ring) - Moved UP higher to avoid TV overlap */}
             <motion.div
-                animate={{ y: [0, 1, 0] }}
+                animate={{ y: [-3, -2, -3] }}
                 transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-                className="absolute right-[6px] top-[0px] z-15 w-[11px] h-[17px] drop-shadow-xs"
+                className="absolute right-[6px] -top-[4px] z-15 w-[11px] h-[17px] drop-shadow-xs"
             >
                 <WatchIcon className="w-full h-full" />
             </motion.div>
