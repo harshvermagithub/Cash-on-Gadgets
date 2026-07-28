@@ -3,6 +3,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+import Image from 'next/image';
+
 /** Vector Smartphone with F Logo Mask & Pulsing Screen Animation */
 const SmartphoneFLogo = () => (
     <div className="relative w-8 sm:w-10 h-11 sm:h-14 flex items-center justify-center shrink-0 drop-shadow-md">
@@ -20,44 +22,25 @@ const SmartphoneFLogo = () => (
                 fill="#10B981"
             />
 
-            {/* F Logo Mask Extraction */}
-            <defs>
-                <filter id="heroExtractF">
-                    <feColorMatrix type="matrix" values="5 0 0 0 -1  5 0 0 0 -1  5 0 0 0 -1  0 0 0 1 0" />
-                </filter>
-                <clipPath id="heroScreenClip">
-                    <rect x="2.5" y="2.5" width="27" height="53" rx="2.5" />
-                </clipPath>
-                <mask id="heroFMask">
-                    <image
-                        href="/logo_final_v3.png"
-                        x="-8"
-                        y="-6"
-                        width="48"
-                        height="70"
-                        preserveAspectRatio="xMidYMid meet"
-                        filter="url(#heroExtractF)"
-                    />
-                </mask>
-            </defs>
-
-            {/* Black F Overlay (Solid, No Blinking) */}
-            <rect
-                x="-8"
-                y="-6"
-                width="48"
-                height="70"
-                fill="black"
-                mask="url(#heroFMask)"
-                clipPath="url(#heroScreenClip)"
-            />
-
             {/* Top Speaker Notch */}
             <rect x="10" y="3" width="12" height="2.5" rx="1.2" className="fill-black dark:fill-white/80" />
 
             {/* Screen Glass Reflection Shine */}
             <path d="M2.5 2.5H29.5V18L2.5 32V2.5Z" fill="white" fillOpacity="0.12" />
         </svg>
+
+        {/* F Logo Image Overlay — 100% Mobile & WebKit Compatible */}
+        <div className="absolute inset-0 flex items-center justify-center p-[4px] pointer-events-none">
+            <div className="relative w-[75%] h-[75%] flex items-center justify-center overflow-hidden">
+                <Image
+                    src="/logo_final_v3.png"
+                    alt="FonzKart F Logo"
+                    fill
+                    className="object-contain"
+                    priority
+                />
+            </div>
+        </div>
     </div>
 );
 
