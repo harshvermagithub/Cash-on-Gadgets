@@ -1,126 +1,102 @@
-'use client'
+'use client';
 
 import React from 'react';
-import { useTheme } from 'next-themes';
+import { motion } from 'framer-motion';
 
-const SmartphoneSVG = ({ forceLight = false }: { forceLight?: boolean }) => (
-    <svg width="100%" height="100%" viewBox="0 0 32 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect
-            x="1"
-            y="1"
-            width="30"
-            height="58"
-            rx="4"
-            strokeWidth="1.5"
-            className={`transition-colors duration-300 ${forceLight ? 'fill-[#0f172a] stroke-[#334155]' : 'fill-[#0f172a] dark:fill-black stroke-[#334155] dark:stroke-white'}`}
-        />
-        <rect x="2.5" y="2.5" width="27" height="55" rx="2.5" fill="#10B981" />
-        <defs>
-            <filter id="extractF">
-                <feColorMatrix type="matrix" values="5 0 0 0 -1  5 0 0 0 -1  5 0 0 0 -1  0 0 0 1 0" />
-            </filter>
-            <clipPath id="screenClip">
-                <rect x="2.5" y="2.5" width="27" height="55" rx="2.5" />
-            </clipPath>
-            <mask id="fMask">
-                <image
-                    href="/logo_final_v3.png"
-                    x="-8"
-                    y="-6"
-                    width="48"
-                    height="72"
-                    preserveAspectRatio="xMidYMid meet"
-                    filter="url(#extractF)"
-                />
-            </mask>
-        </defs>
-        <rect
-            x="-8"
-            y="-6"
-            width="48"
-            height="72"
-            fill="black"
-            mask="url(#fMask)"
-            clipPath="url(#screenClip)"
-        />
-        <rect
-            x="10"
-            y="3"
-            width="12"
-            height="3"
-            rx="1.5"
-            className={`transition-colors duration-300 ${forceLight ? 'fill-black' : 'fill-black dark:fill-white'}`}
-        />
-        <path d="M2.5 2.5H29.5V20L2.5 35V2.5Z" fill="white" fillOpacity="0.1" />
-    </svg>
-);
+/** Vector Smartphone with F Logo Mask & Pulsing Screen Animation */
+const SmartphoneFLogo = () => (
+    <div className="relative w-8 sm:w-10 h-11 sm:h-14 flex items-center justify-center shrink-0 drop-shadow-md">
+        <svg viewBox="0 0 32 58" fill="none" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+            {/* Outer Phone Frame */}
+            <rect x="1" y="1" width="30" height="56" rx="4" className="fill-[#0f172a] dark:fill-black stroke-slate-600 dark:stroke-white/30" strokeWidth="1.5" />
+            
+            {/* Pulsing Green Screen */}
+            <motion.rect
+                x="2.5"
+                y="2.5"
+                width="27"
+                height="53"
+                rx="2.5"
+                fill="#10B981"
+                animate={{ opacity: [1, 0.85, 1, 0.9, 1] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            />
 
-const RupeeNoteSVG = ({ forceLight = false }: { forceLight?: boolean }) => (
-    <svg width="100%" height="100%" viewBox="0 0 40 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect
-            x="1"
-            y="1"
-            width="38"
-            height="68"
-            rx="2"
-            strokeWidth="1"
-            className={`transition-colors duration-300 ${forceLight ? 'fill-[#e2e8f0] stroke-[#64748b]' : 'fill-[#e2e8f0] dark:fill-[#cbd5e1] stroke-[#64748b] dark:stroke-[#94a3b8]'}`}
-        />
-        <rect x="4" y="4" width="32" height="62" rx="1" fill="#D1FAE5" fillOpacity="0.5" />
+            {/* F Logo Mask Extraction */}
+            <defs>
+                <filter id="heroExtractF">
+                    <feColorMatrix type="matrix" values="5 0 0 0 -1  5 0 0 0 -1  5 0 0 0 -1  0 0 0 1 0" />
+                </filter>
+                <clipPath id="heroScreenClip">
+                    <rect x="2.5" y="2.5" width="27" height="53" rx="2.5" />
+                </clipPath>
+                <mask id="heroFMask">
+                    <image
+                        href="/logo_final_v3.png"
+                        x="-8"
+                        y="-6"
+                        width="48"
+                        height="70"
+                        preserveAspectRatio="xMidYMid meet"
+                        filter="url(#heroExtractF)"
+                    />
+                </mask>
+            </defs>
 
-        <text x="20" y="10" fontFamily="sans-serif" fontSize="5" fontWeight="bold" fill="#047857" textAnchor="middle">₹500</text>
-        <text x="20" y="66" fontFamily="sans-serif" fontSize="5" fontWeight="bold" fill="#047857" textAnchor="middle">500</text>
+            {/* Black F Overlay */}
+            <rect
+                x="-8"
+                y="-6"
+                width="48"
+                height="70"
+                fill="black"
+                mask="url(#heroFMask)"
+                clipPath="url(#heroScreenClip)"
+            />
 
-        <circle cx="20" cy="35" r="14" stroke="#10B981" strokeWidth="0.5" fill="white" fillOpacity="0.8" />
-        <text
-            x="20"
-            y="36"
-            fontFamily="sans-serif"
-            fontSize="20"
-            fontWeight="bold"
-            fill="#047857"
-            textAnchor="middle"
-            dominantBaseline="middle"
-        >
-            ₹
-        </text>
+            {/* Top Speaker Notch */}
+            <rect x="10" y="3" width="12" height="2.5" rx="1.2" className="fill-black dark:fill-white/80" />
 
-        <line x1="2" y1="50" x2="38" y2="50" stroke="#10B981" strokeWidth="1.5" strokeDasharray="4 2" />
-        <path
-            d="M2 24H38M2 46H38"
-            className={`transition-colors duration-300 strokeWidth="0.5" ${forceLight ? 'stroke-[#94a3b8]' : 'stroke-[#94a3b8] dark:stroke-[#64748b]'}`}
-            strokeWidth="0.5"
-        />
-    </svg>
+            {/* Screen Glass Reflection Shine */}
+            <path d="M2.5 2.5H29.5V18L2.5 32V2.5Z" fill="white" fillOpacity="0.12" />
+        </svg>
+    </div>
 );
 
 export const HeroLogo = ({ className = "", forceLight = false }: { className?: string, forceLight?: boolean }) => {
     const textClass = forceLight ? 'text-slate-900' : 'text-slate-900 dark:text-white';
 
     return (
-        <div className={`flex items-center gap-1 select-none ${className}`} aria-label="Fonzkart">
-            {/* F / Smartphone - Always Smartphone SVG */}
-            <div className="relative w-8 h-12 flex items-center justify-center mr-0.5 z-10">
-                <SmartphoneSVG forceLight={forceLight} />
-            </div>
+        <div className={`inline-flex items-center gap-1 sm:gap-1.5 select-none ${className}`} aria-label="Fonzkart">
+            {/* Smartphone 'F' Logo */}
+            <SmartphoneFLogo />
 
-            {/* O N Z K A */}
-            <div className="flex items-center tracking-tighter">
-                <span className={`font-black text-4xl tracking-tight transition-colors duration-300 ${textClass}`}>ONZKA</span>
-            </div>
+            {/* ONZ */}
+            <span className={`font-black text-3xl sm:text-4xl tracking-tight font-heading ${textClass}`}>
+                ONZ
+            </span>
 
-            {/* R / Rupee - Always Rupee Note SVG */}
-            <div className="relative w-9 h-14 flex items-center justify-center mx-1 z-10">
-                <div className="w-full h-full scale-[1.05]">
-                    <RupeeNoteSVG forceLight={forceLight} />
-                </div>
-            </div>
+            {/* KA */}
+            <span className={`font-black text-3xl sm:text-4xl tracking-tight font-heading ${textClass}`}>
+                KA
+            </span>
+
+            {/* Rupee '₹' Symbol (Vibrant Green R replacement) */}
+            <motion.span
+                animate={{ scale: [1, 1.08, 1], opacity: [0.9, 1, 0.9] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                className="font-black text-3xl sm:text-4xl text-emerald-500 font-heading mx-0.5 inline-block"
+            >
+                ₹
+            </motion.span>
 
             {/* T */}
-            <div className="flex items-center tracking-tighter">
-                <span className={`font-black text-4xl transition-colors duration-300 ${textClass}`}>T</span>
-            </div>
+            <span className={`font-black text-3xl sm:text-4xl tracking-tight font-heading ${textClass}`}>
+                T
+            </span>
         </div>
     );
 };
+
 export default HeroLogo;
+
