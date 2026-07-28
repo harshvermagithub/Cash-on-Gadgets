@@ -196,20 +196,20 @@ export const MultiGadgetComposition = ({
 }: MultiGadgetCompositionProps) => {
     return (
         <div className={`relative w-[60px] h-[36px] flex items-center justify-center select-none ${className}`}>
-            {/* 1. Center: Main Smartphone (Green Screen with F Logo) */}
+            {/* 1. Center: Main Smartphone (Green Screen with F Logo) - Moved UP & Enlarged by 6% */}
             <motion.div
-                animate={{ y: [0, -1, 0] }}
+                animate={{ y: [-3, -4, -3] }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                className="z-30 relative w-[13px] h-[25px] drop-shadow-md"
+                className="z-30 relative w-[13.8px] h-[26.5px] drop-shadow-md scale-[1.06] -top-[3px]"
             >
                 <PhoneIcon className="w-full h-full" />
             </motion.div>
 
-            {/* 2. Left: Laptop (Indigo Screen) - Tucked inside left basket wall */}
+            {/* 2. Left: Laptop (Indigo Screen) - Shifted rightward inside cart basket wall */}
             <motion.div
                 animate={{ y: [0, 1, 0] }}
                 transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
-                className="absolute left-[2px] bottom-[1px] z-20 w-[22px] h-[15px] drop-shadow-sm"
+                className="absolute left-[6px] bottom-[1px] z-20 w-[22px] h-[15px] drop-shadow-sm"
             >
                 <LaptopIcon className="w-full h-full" />
             </motion.div>
