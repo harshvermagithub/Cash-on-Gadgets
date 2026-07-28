@@ -11,40 +11,40 @@ export const DynamicLogo = ({ className = "" }: { className?: string }) => {
     useEffect(() => {
         const interval = setInterval(() => {
             setAnimationPhase((prev) => (prev === 'cart' ? 'fonzkart' : 'cart'));
-        }, 5500); // 5.5s per cycle phase
+        }, 5000); // 5s per cycle phase
         return () => clearInterval(interval);
     }, []);
 
     return (
-        <div className={`relative flex items-center justify-center min-h-[95px] min-w-[320px] overflow-hidden select-none ${className}`} aria-label="Fonzkart">
-            <AnimatePresence mode="popLayout" initial={false}>
+        <div className={`relative flex items-center justify-center min-h-[95px] w-full max-w-[460px] mx-auto overflow-hidden select-none ${className}`} aria-label="Fonzkart">
+            <AnimatePresence mode="wait">
                 {animationPhase === 'cart' ? (
-                    /* PHASE 1: CART HOLDS IN CENTER (100% OPACITY), THEN GLIDES RIGHT WITH FULL OPACITY UNTIL VERY END */
+                    /* PHASE 1: CART HOLDS IN CENTER (100% OPACITY), GLIDES RIGHT AT FULL OPACITY, AND FADES OUT COMPLETELY BEFORE THE BORDER */
                     <motion.div
                         key="cart-phase"
                         className="flex items-center justify-center"
-                        initial={{ x: 0, opacity: 1 }}
+                        initial={{ x: 0, opacity: 0 }}
                         animate={{
-                            x: [0, 0, 160], // Holds centered for ~3.5s, then glides to the right
-                            opacity: [1, 1, 1, 0] // 100% opaque during movement, fades only at very end
+                            x: [0, 0, 110, 130], // Holds centered for ~3s, then glides to the right
+                            opacity: [1, 1, 1, 0] // Stays 100% opaque during transit, completely disappears BEFORE border
                         }}
-                        exit={{ x: 180, opacity: 0 }}
+                        exit={{ opacity: 0 }}
                         transition={{
-                            duration: 4.8,
-                            times: [0, 0.7, 0.95, 1],
+                            duration: 4.5,
+                            times: [0, 0.65, 0.88, 1],
                             ease: 'easeInOut'
                         }}
                     >
                         <FCartLogo size={100} animate={true} />
                     </motion.div>
                 ) : (
-                    /* PHASE 2: OFFICIAL FONZKART LOGO APPEARS (SMARTPHONE 'F' + ONZKA + GREEN RUPEE '₹' + T) INSTANTLY */
+                    /* PHASE 2: WORDMARK APPEARS & DISAPPEARS DIRECTLY FROM THE CENTER */
                     <motion.div
                         key="fonzkart-wordmark"
-                        initial={{ opacity: 0, scale: 0.94, x: -15 }}
-                        animate={{ opacity: 1, scale: 1, x: 0 }}
-                        exit={{ opacity: 0, scale: 0.94, x: 15 }}
-                        transition={{ duration: 0.5, ease: 'easeOut' }}
+                        initial={{ opacity: 0, scale: 0.92 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.92 }}
+                        transition={{ duration: 0.6, ease: 'easeInOut' }}
                         className="flex items-center justify-center py-2"
                     >
                         <HeroLogo forceLight={false} />
@@ -56,4 +56,5 @@ export const DynamicLogo = ({ className = "" }: { className?: string }) => {
 };
 
 export default DynamicLogo;
+
 

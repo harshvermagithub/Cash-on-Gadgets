@@ -43,8 +43,8 @@ const SmartphoneFLogo = () => (
                 </mask>
             </defs>
 
-            {/* Black F Overlay */}
-            <rect
+            {/* Black F Overlay with Blinking Animation */}
+            <motion.rect
                 x="-8"
                 y="-6"
                 width="48"
@@ -52,6 +52,12 @@ const SmartphoneFLogo = () => (
                 fill="black"
                 mask="url(#heroFMask)"
                 clipPath="url(#heroScreenClip)"
+                animate={{ opacity: [1, 0, 1, 0.1, 1, 1, 0.2, 1] }}
+                transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    times: [0, 0.1, 0.2, 0.3, 0.4, 0.8, 0.9, 1]
+                }}
             />
 
             {/* Top Speaker Notch */}
