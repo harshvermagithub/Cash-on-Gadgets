@@ -6,32 +6,34 @@ import Image from 'next/image';
 
 // --- Compact Device SVG Icons for Logo Use ---
 
-/** Smartphone icon — the primary/largest device */
+/** Smartphone icon — HD Vector White F Logo matching user screenshot */
 export const PhoneIcon = ({ className = '' }: { className?: string }) => (
-    <div className={`relative inline-block ${className}`}>
-        <svg viewBox="0 0 32 60" className="w-full h-full drop-shadow-md" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="1" y="1" width="30" height="58" rx="4.5" className="fill-[#0f172a] dark:fill-black stroke-slate-600 dark:stroke-white/30" strokeWidth="1.5" />
-            <rect x="2.5" y="2.5" width="27" height="55" rx="3" fill="#10B981" />
-            {/* Notch */}
-            <rect x="10" y="3" width="12" height="3" rx="1.5" className="fill-black dark:fill-white/80" />
-            {/* Screen shine */}
-            <path d="M2.5 2.5H29.5V20L2.5 35V2.5Z" fill="white" fillOpacity="0.1" />
-        </svg>
+    <svg viewBox="0 0 32 60" className={`drop-shadow-md ${className}`} fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Outer Dark Phone Frame */}
+        <rect x="1" y="1" width="30" height="58" rx="4.5" className="fill-[#18181b] dark:fill-black stroke-slate-700 dark:stroke-white/30" strokeWidth="1.5" />
+        
+        {/* Vibrant Emerald Green Screen */}
+        <rect x="2.5" y="2.5" width="27" height="55" rx="3" fill="#10B981" />
+        
+        {/* Speaker Notch */}
+        <rect x="10" y="3.5" width="12" height="2.5" rx="1.2" className="fill-black dark:fill-white/80" />
+        
+        {/* Screen Shine */}
+        <path d="M2.5 2.5H29.5V20L2.5 35V2.5Z" fill="white" fillOpacity="0.1" />
 
-        {/* Pure White F Logo Overlay — Exact match to screenshot */}
-        <div className="absolute inset-0 flex items-center justify-center p-[4px] pointer-events-none">
-            <div className="relative w-[78%] h-[78%] flex items-center justify-center overflow-hidden">
-                <Image
-                    src="/logo_final_v3.png"
-                    alt="FonzKart F Logo"
-                    fill
-                    className="object-contain brightness-0 invert"
-                    priority
-                />
-            </div>
-        </div>
-    </div>
-);/** Laptop icon */
+        {/* Pure White F Logo HD Vector — 100% Crisp & Mobile Compatible */}
+        <g fill="#FFFFFF">
+            {/* Top Bar Swoosh */}
+            <path d="M 9.5 14 C 9.5 14 13.5 8.5 21 8 C 26.5 8 27.5 13 26 14.5 C 24 18 19 20 14.5 21 C 11.5 21.5 9.5 22.5 9.5 24 Z" />
+            {/* Middle Bar Swoosh */}
+            <path d="M 9.5 25.5 C 11 22.5 16.5 21 21.5 21 C 25.5 21 26 24.5 24 26.5 C 21 28.5 16 30 12.5 31 C 10 31.5 9.5 33.5 9.5 35 Z" />
+            {/* Bottom Stem */}
+            <path d="M 9.5 36.5 C 12 34 16 33.5 18 33.5 C 18 41 15 45.5 9.5 46.5 Z" />
+        </g>
+    </svg>
+);
+
+/** Laptop icon */
 export const LaptopIcon = ({ className = '' }: { className?: string }) => (
     <svg viewBox="0 0 48 34" className={`drop-shadow-md ${className}`} fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Screen lid */}
@@ -44,29 +46,27 @@ export const LaptopIcon = ({ className = '' }: { className?: string }) => (
         <rect x="9" y="15" width="20" height="2" rx="1" fill="white" opacity="0.25" />
         {/* Screen shine */}
         <path d="M6 3H42V14L6 22V3Z" fill="white" fillOpacity="0.12" />
-        {/* Keyboard base */}
-        <path d="M0 27H48L46 33H2L0 27Z" className="fill-slate-300 dark:fill-slate-600 stroke-slate-400 dark:stroke-slate-500" strokeWidth="0.5" />
-        {/* Trackpad */}
+        {/* Base keyboard hinge */}
+        <path d="M1 28C1 27.4 1.4 27 2 27H46C46.6 27 47 27.4 47 28V31C47 32.1 46.1 33 45 33H3C1.9 33 1 32.1 1 31V28Z" className="fill-slate-300 dark:fill-slate-400 stroke-slate-500 dark:stroke-slate-500" strokeWidth="1" />
+        {/* Trackpad notch */}
         <rect x="18" y="29" width="12" height="2.5" rx="1" className="fill-slate-400 dark:fill-slate-500" />
     </svg>
 );
 
-/** Television / Smart TV icon */
+/** Television / Smart TV icon — Stand removed & border refined */
 export const TvIcon = ({ className = '' }: { className?: string }) => (
-    <svg viewBox="0 0 52 38" className={`drop-shadow-md ${className}`} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 52 30" className={`drop-shadow-md ${className}`} fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* TV body */}
-        <rect x="1" y="1" width="50" height="30" rx="2" className="fill-[#0f172a] dark:fill-black stroke-slate-600 dark:stroke-white/30" strokeWidth="1.5" />
+        <rect x="1" y="1" width="50" height="28" rx="2" className="fill-[#0f172a] dark:fill-black stroke-slate-600 dark:stroke-white/30" strokeWidth="1.5" />
         {/* Screen - Vivid Blue */}
-        <rect x="3" y="3" width="46" height="26" rx="1" fill="#0284C7" opacity="0.95" />
+        <rect x="3" y="3" width="46" height="24" rx="1" fill="#0284C7" opacity="0.95" />
         {/* Content blocks / Streaming cards */}
-        <rect x="6" y="6" width="12" height="9" rx="1" fill="#EF4444" opacity="0.9" />
-        <rect x="20" y="6" width="12" height="9" rx="1" fill="#F59E0B" opacity="0.9" />
-        <rect x="34" y="6" width="12" height="9" rx="1" fill="#6366F1" opacity="0.9" />
-        <rect x="6" y="18" width="40" height="4" rx="1" fill="white" opacity="0.3" />
+        <rect x="6" y="5" width="12" height="8" rx="1" fill="#EF4444" opacity="0.9" />
+        <rect x="20" y="5" width="12" height="8" rx="1" fill="#F59E0B" opacity="0.9" />
+        <rect x="34" y="5" width="12" height="8" rx="1" fill="#6366F1" opacity="0.9" />
+        <rect x="6" y="16" width="40" height="4" rx="1" fill="white" opacity="0.3" />
         {/* Screen shine */}
-        <path d="M3 3H49V16L3 26V3Z" fill="white" fillOpacity="0.1" />
-        {/* Stand */}
-        <path d="M20 31L26 37L32 31" className="stroke-slate-400 dark:stroke-slate-500" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        <path d="M3 3H49V14L3 24V3Z" fill="white" fillOpacity="0.1" />
     </svg>
 );
 
@@ -182,7 +182,7 @@ interface MultiGadgetCompositionProps {
  * Renders all 5 gadget icons simultaneously in a compact, non-overlapping cluster
  * designed to sit DEEP INSIDE the shopping cart basket without sticking out left, right, or top:
  * - Phone: Center anchor (green screen with F logo)
- * - Smart TV: Right side (vivid blue screen, larger than laptop)
+ * - Smart TV: Right side (vivid blue screen, bottom aligned with laptop)
  * - Laptop: Left side (indigo screen + keyboard base)
  * - Camera: Top-left tucked (cyan lens)
  * - Smartwatch: Top-right tucked (OLED watch + orange ring)
@@ -192,7 +192,7 @@ export const MultiGadgetComposition = ({
 }: MultiGadgetCompositionProps) => {
     return (
         <div className={`relative w-full h-full flex items-center justify-center select-none ${className}`}>
-            {/* 1. Center: Main Smartphone (Green Screen with F Logo) */}
+            {/* 1. Center: Main Smartphone (Green Screen with White F Logo) */}
             <motion.div
                 animate={{ y: [-2, -4, -2] }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
@@ -210,11 +210,11 @@ export const MultiGadgetComposition = ({
                 <LaptopIcon className="w-full h-full" />
             </motion.div>
 
-            {/* 3. Right: Smart TV (Vivid Blue Screen) - Bottom Right Basket Floor */}
+            {/* 3. Right: Smart TV (Vivid Blue Screen, Stand Removed) - Horizontally Aligned with Laptop Bottom */}
             <motion.div
                 animate={{ y: [0, -1, 0] }}
                 transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
-                className="absolute right-[4%] bottom-[0%] z-20 w-[46%] h-[50%] drop-shadow-sm"
+                className="absolute right-[4%] bottom-[2%] z-20 w-[46%] h-[44%] drop-shadow-sm"
             >
                 <TvIcon className="w-full h-full" />
             </motion.div>
@@ -239,7 +239,3 @@ export const MultiGadgetComposition = ({
         </div>
     );
 };
-
-
-
-
