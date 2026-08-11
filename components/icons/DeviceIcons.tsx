@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ICON_BASE64 } from './LogoConstants';
 
 // --- Compact Device SVG Icons for Logo Use ---
 
@@ -23,7 +24,7 @@ export const PhoneIcon = ({ className = '' }: { className?: string }) => (
         <div className="absolute inset-0 flex items-center justify-center p-[6%] pointer-events-none">
             <div className="relative w-[85%] h-[90%] overflow-hidden rounded-[3px]">
                 <img
-                    src="/icon.png"
+                    src={ICON_BASE64}
                     alt="FonzKart Phone Screen Logo"
                     className="object-cover w-full h-full"
                 />

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ICON_BASE64 } from './icons/LogoConstants';
 
 /** Vector Smartphone — 1:1 Exact HD Replica of User Target Image 2 using original icon.png */
 const SmartphoneFLogo = () => (
@@ -21,7 +22,7 @@ const SmartphoneFLogo = () => (
         <div className="absolute inset-0 flex items-center justify-center p-[6%] pointer-events-none">
             <div className="relative w-[85%] h-[90%] overflow-hidden rounded-[3px]">
                 <img
-                    src="/icon.png"
+                    src={ICON_BASE64}
                     alt="FonzKart Phone Screen Logo"
                     className="object-cover w-full h-full"
                 />

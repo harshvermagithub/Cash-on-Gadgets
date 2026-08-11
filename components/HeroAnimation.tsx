@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Banknote, ArrowRight, ArrowDown } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { ICON_BASE64 } from './icons/LogoConstants'
 
 // --- SVGs Definitions (Same as before) ---
 const IPhoneSVG = ({ color }: { color: string }) => (
@@ -14,7 +15,7 @@ const IPhoneSVG = ({ color }: { color: string }) => (
         </svg>
         <div className="absolute top-[6px] left-[6px] right-[6px] bottom-[6px] overflow-hidden rounded-[12px] pointer-events-none">
             <img
-                src="/icon.png"
+                src={ICON_BASE64}
                 alt="FonzKart Phone Screen Logo"
                 className="object-cover w-full h-full"
             />
@@ -31,7 +32,7 @@ const SamsungSVG = ({ color }: { color: string }) => (
         </svg>
         <div className="absolute top-[4px] left-[4px] right-[4px] bottom-[4px] overflow-hidden rounded-[4px] pointer-events-none">
             <img
-                src="/icon.png"
+                src={ICON_BASE64}
                 alt="FonzKart Phone Screen Logo"
                 className="object-cover w-full h-full"
             />
@@ -48,7 +49,7 @@ const PixelSVG = ({ color }: { color: string }) => (
         </svg>
         <div className="absolute top-[6px] left-[6px] right-[6px] bottom-[6px] overflow-hidden rounded-[8px] pointer-events-none">
             <img
-                src="/icon.png"
+                src={ICON_BASE64}
                 alt="FonzKart Phone Screen Logo"
                 className="object-cover w-full h-full"
             />

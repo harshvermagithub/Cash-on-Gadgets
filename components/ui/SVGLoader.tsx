@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { HeroLogo } from "@/components/HeroLogo";
+import { LOGO_FINAL_V3_BASE64 } from "@/components/icons/LogoConstants";
 
 const SmartphoneLoaderSVG = () => (
     <div className="relative w-12 h-20 md:w-16 md:h-24">
@@ -26,7 +27,7 @@ const SmartphoneLoaderSVG = () => (
         {/* F Logo on Screen (Black F on white screen) */}
         <div className="absolute top-[8%] left-[12%] w-[76%] h-[85%] z-20 flex items-center justify-center opacity-90">
             <img
-                src="/logo_final_v3.png"
+                src={LOGO_FINAL_V3_BASE64}
                 alt="F"
                 className="object-contain p-1 w-full h-full"
             />
