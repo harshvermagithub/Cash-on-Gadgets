@@ -239,10 +239,10 @@ const generateHTML = (theme) => `<!DOCTYPE html>
                             <rect x="3" y="3" width="26" height="54" rx="3.2" fill="#35aa67" />
                             <g clip-path="url(#phone-screen-clip)">
                                 <image
-                                    x="3.25"
-                                    y="17.25"
-                                    width="25.5"
-                                    height="25.5"
+                                    x="-1"
+                                    y="13"
+                                    width="34"
+                                    height="34"
                                     href="${ICON_BASE64}"
                                     preserveAspectRatio="xMidYMid meet"
                                 />
@@ -271,10 +271,10 @@ const generateHTML = (theme) => `<!DOCTYPE html>
                     <rect x="3" y="3" width="26" height="54" rx="3.2" fill="#35aa67" />
                     <g clip-path="url(#logo-phone-clip)">
                         <image
-                            x="3.25"
-                            y="17.25"
-                            width="25.5"
-                            height="25.5"
+                            x="-1"
+                            y="13"
+                            width="34"
+                            height="34"
                             href="${ICON_BASE64}"
                             preserveAspectRatio="xMidYMid meet"
                         />
