@@ -8,34 +8,45 @@ import { useState, useEffect } from 'react'
 const IPhoneSVG = ({ color }: { color: string }) => (
     <svg viewBox="0 0 100 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
         <rect x="2" y="2" width="96" height="196" rx="16" fill="#1e293b" stroke="#334155" strokeWidth="1.5" />
-        <rect x="6" y="6" width="88" height="188" rx="12" fill={color} />
+        <rect x="6" y="6" width="88" height="188" rx="12" fill="#10B981" />
         <rect x="30" y="8" width="40" height="12" rx="6" fill="#000" />
-        <rect x="8" y="8" width="45" height="45" rx="12" fill="transparent" stroke="rgba(0,0,0,0.1)" strokeWidth="1" />
-        <circle cx="20" cy="20" r="6" fill="#000" />
-        <circle cx="40" cy="30" r="6" fill="#000" />
-        <circle cx="20" cy="40" r="6" fill="#000" />
+
+        {/* Pure White F Logo HD Vector */}
+        <g fill="#FFFFFF">
+            <path d="M 28 32 C 28 32 40 10 74 10 C 92 10 94 28 88 32 C 80 44 62 52 44 54 C 34 56 28 62 28 66 Z" />
+            <path d="M 28 70 C 34 60 54 56 76 56 C 88 56 90 68 82 74 C 70 80 50 84 36 88 C 30 90 28 96 28 100 Z" />
+            <path d="M 28 104 C 36 96 48 94 56 94 C 56 120 44 136 28 138 Z" />
+        </g>
     </svg>
 )
 
 const SamsungSVG = ({ color }: { color: string }) => (
     <svg viewBox="0 0 100 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
-        <rect x="2" y="2" width="96" height="196" rx="2" fill="#0f172a" stroke="#334155" strokeWidth="1.5" />
-        <rect x="4" y="4" width="92" height="192" rx="1" fill={color} />
+        <rect x="2" y="2" width="96" height="196" rx="6" fill="#0f172a" stroke="#334155" strokeWidth="1.5" />
+        <rect x="4" y="4" width="92" height="192" rx="4" fill="#10B981" />
         <circle cx="50" cy="12" r="3" fill="#000" />
-        <circle cx="20" cy="20" r="7" fill="#000" stroke="#334155" strokeWidth="1" />
-        <circle cx="20" cy="40" r="7" fill="#000" stroke="#334155" strokeWidth="1" />
-        <circle cx="20" cy="60" r="7" fill="#000" stroke="#334155" strokeWidth="1" />
-        <circle cx="40" cy="30" r="5" fill="#000" stroke="#334155" strokeWidth="1" />
+
+        {/* Pure White F Logo HD Vector */}
+        <g fill="#FFFFFF">
+            <path d="M 28 32 C 28 32 40 10 74 10 C 92 10 94 28 88 32 C 80 44 62 52 44 54 C 34 56 28 62 28 66 Z" />
+            <path d="M 28 70 C 34 60 54 56 76 56 C 88 56 90 68 82 74 C 70 80 50 84 36 88 C 30 90 28 96 28 100 Z" />
+            <path d="M 28 104 C 36 96 48 94 56 94 C 56 120 44 136 28 138 Z" />
+        </g>
     </svg>
 )
 
 const PixelSVG = ({ color }: { color: string }) => (
     <svg viewBox="0 0 100 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
         <rect x="2" y="2" width="96" height="196" rx="10" fill="#1e293b" stroke="#334155" strokeWidth="1.5" />
-        <rect x="6" y="6" width="88" height="188" rx="8" fill={color} />
-        <rect x="2" y="30" width="96" height="25" rx="4" fill="#000" />
-        <rect x="15" y="35" width="20" height="15" rx="7" fill="#1e293b" />
-        <circle cx="50" cy="42" r="6" fill="#1e293b" />
+        <rect x="6" y="6" width="88" height="188" rx="8" fill="#10B981" />
+        <circle cx="50" cy="14" r="3" fill="#000" />
+
+        {/* Pure White F Logo HD Vector */}
+        <g fill="#FFFFFF">
+            <path d="M 28 32 C 28 32 40 10 74 10 C 92 10 94 28 88 32 C 80 44 62 52 44 54 C 34 56 28 62 28 66 Z" />
+            <path d="M 28 70 C 34 60 54 56 76 56 C 88 56 90 68 82 74 C 70 80 50 84 36 88 C 30 90 28 96 28 100 Z" />
+            <path d="M 28 104 C 36 96 48 94 56 94 C 56 120 44 136 28 138 Z" />
+        </g>
     </svg>
 )
 
