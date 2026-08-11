@@ -10,16 +10,70 @@ const IPhoneSVG = ({ color }: { color: string }) => (
     <div className="relative w-full h-full">
         <svg viewBox="0 0 100 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
             <rect x="2" y="2" width="96" height="196" rx="16" fill="#1e293b" stroke="#334155" strokeWidth="1.5" />
-            <rect x="6" y="6" width="88" height="188" rx="12" fill="#10B981" />
+            <rect x="6" y="6" width="88" height="188" rx="12" fill="#0f172a" />
             <rect x="30" y="8" width="40" height="12" rx="6" fill="#000" />
         </svg>
-        <div className="absolute inset-0 flex items-center justify-center p-[20%] pointer-events-none">
-            <div className="relative w-[75%] h-[75%]">
-                <img
-                    src={LOGO_FINAL_V3_BASE64}
-                    alt="FonzKart F Logo"
-                    className="object-contain brightness-0 invert w-full h-full"
-                />
+        <div className="absolute top-[6.5px] left-[6.5px] right-[6.5px] bottom-[6.5px] overflow-hidden rounded-[12px] bg-slate-950 flex flex-col select-none pointer-events-none">
+            {/* Status Bar */}
+            <div className="h-3.5 w-full bg-slate-900 flex justify-between items-center px-3 pt-0.5 text-[6.5px] text-slate-400 font-medium">
+                <span>9:41</span>
+                <div className="flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full bg-slate-400" />
+                    <div className="w-2.5 h-1 border border-slate-400 rounded-sm" />
+                </div>
+            </div>
+            
+            {/* Header App Bar */}
+            <div className="h-7 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-3 shrink-0">
+                <span className="text-[8px] font-black text-green-500 tracking-tighter">FONZKART</span>
+                <div className="w-3 h-3 rounded-full bg-slate-800 flex items-center justify-center">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                </div>
+            </div>
+            
+            {/* Screen Content */}
+            <div className="flex-1 p-2 flex flex-col gap-1.5 overflow-hidden">
+                {/* Search Bar */}
+                <div className="h-4.5 w-full bg-slate-900 border border-slate-800 rounded px-1.5 flex items-center justify-between text-[6px] text-slate-500 shrink-0">
+                    <span>Search gadgets...</span>
+                    <span>🔍</span>
+                </div>
+                
+                {/* Brand Emerald Banner */}
+                <div className="h-12 w-full rounded bg-[#10B981] p-1.5 relative flex items-center justify-between overflow-hidden shadow-inner shrink-0">
+                    <div className="flex flex-col justify-center">
+                        <span className="text-[7.5px] font-bold text-white leading-tight">Instant Cash</span>
+                        <span className="text-[5.5px] text-white/80">Sell in 3 Hrs</span>
+                    </div>
+                    <div className="relative w-7 h-7 flex items-center justify-center">
+                        <img
+                            src={LOGO_FINAL_V3_BASE64}
+                            alt="F"
+                            className="w-full h-full object-contain brightness-0 invert"
+                        />
+                    </div>
+                </div>
+                
+                {/* Gadget Categories Grid */}
+                <div className="grid grid-cols-2 gap-1.5 shrink-0">
+                    <div className="bg-slate-900 border border-slate-800 rounded p-1 flex flex-col gap-0.5 items-center justify-center">
+                        <span className="text-[10px]">📱</span>
+                        <span className="text-[5px] text-slate-300 font-bold">Sell Phone</span>
+                        <span className="text-[4px] text-green-400 font-semibold">Best Price</span>
+                    </div>
+                    <div className="bg-slate-900 border border-slate-800 rounded p-1 flex flex-col gap-0.5 items-center justify-center">
+                        <span className="text-[10px]">💻</span>
+                        <span className="text-[5px] text-slate-300 font-bold">Sell Laptop</span>
+                        <span className="text-[4px] text-green-400 font-semibold">Instant Pay</span>
+                    </div>
+                </div>
+            </div>
+            
+            {/* Bottom Nav Tab Bar */}
+            <div className="h-7 bg-slate-900 border-t border-slate-800 flex justify-around items-center shrink-0">
+                <span className="text-[7px] text-green-500">🏠</span>
+                <span className="text-[7px] text-slate-500">💰</span>
+                <span className="text-[7px] text-slate-500">👤</span>
             </div>
         </div>
     </div>
@@ -29,16 +83,70 @@ const SamsungSVG = ({ color }: { color: string }) => (
     <div className="relative w-full h-full">
         <svg viewBox="0 0 100 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
             <rect x="2" y="2" width="96" height="196" rx="6" fill="#0f172a" stroke="#334155" strokeWidth="1.5" />
-            <rect x="4" y="4" width="92" height="192" rx="4" fill="#10B981" />
+            <rect x="4" y="4" width="92" height="192" rx="4" fill="#0f172a" />
             <circle cx="50" cy="12" r="3" fill="#000" />
         </svg>
-        <div className="absolute inset-0 flex items-center justify-center p-[20%] pointer-events-none">
-            <div className="relative w-[75%] h-[75%]">
-                <img
-                    src={LOGO_FINAL_V3_BASE64}
-                    alt="FonzKart F Logo"
-                    className="object-contain brightness-0 invert w-full h-full"
-                />
+        <div className="absolute top-[4.5px] left-[4.5px] right-[4.5px] bottom-[4.5px] overflow-hidden rounded-[4px] bg-slate-950 flex flex-col select-none pointer-events-none">
+            {/* Status Bar */}
+            <div className="h-3.5 w-full bg-slate-900 flex justify-between items-center px-3 pt-0.5 text-[6.5px] text-slate-400 font-medium">
+                <span>9:41</span>
+                <div className="flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full bg-slate-400" />
+                    <div className="w-2.5 h-1 border border-slate-400 rounded-sm" />
+                </div>
+            </div>
+            
+            {/* Header App Bar */}
+            <div className="h-7 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-3 shrink-0">
+                <span className="text-[8px] font-black text-green-500 tracking-tighter">FONZKART</span>
+                <div className="w-3 h-3 rounded-full bg-slate-800 flex items-center justify-center">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                </div>
+            </div>
+            
+            {/* Screen Content */}
+            <div className="flex-1 p-2 flex flex-col gap-1.5 overflow-hidden">
+                {/* Search Bar */}
+                <div className="h-4.5 w-full bg-slate-900 border border-slate-800 rounded px-1.5 flex items-center justify-between text-[6px] text-slate-500 shrink-0">
+                    <span>Search gadgets...</span>
+                    <span>🔍</span>
+                </div>
+                
+                {/* Brand Emerald Banner */}
+                <div className="h-12 w-full rounded bg-[#10B981] p-1.5 relative flex items-center justify-between overflow-hidden shadow-inner shrink-0">
+                    <div className="flex flex-col justify-center">
+                        <span className="text-[7.5px] font-bold text-white leading-tight">Instant Cash</span>
+                        <span className="text-[5.5px] text-white/80">Sell in 3 Hrs</span>
+                    </div>
+                    <div className="relative w-7 h-7 flex items-center justify-center">
+                        <img
+                            src={LOGO_FINAL_V3_BASE64}
+                            alt="F"
+                            className="w-full h-full object-contain brightness-0 invert"
+                        />
+                    </div>
+                </div>
+                
+                {/* Gadget Categories Grid */}
+                <div className="grid grid-cols-2 gap-1.5 shrink-0">
+                    <div className="bg-slate-900 border border-slate-800 rounded p-1 flex flex-col gap-0.5 items-center justify-center">
+                        <span className="text-[10px]">📱</span>
+                        <span className="text-[5px] text-slate-300 font-bold">Sell Phone</span>
+                        <span className="text-[4px] text-green-400 font-semibold">Best Price</span>
+                    </div>
+                    <div className="bg-slate-900 border border-slate-800 rounded p-1 flex flex-col gap-0.5 items-center justify-center">
+                        <span className="text-[10px]">💻</span>
+                        <span className="text-[5px] text-slate-300 font-bold">Sell Laptop</span>
+                        <span className="text-[4px] text-green-400 font-semibold">Instant Pay</span>
+                    </div>
+                </div>
+            </div>
+            
+            {/* Bottom Nav Tab Bar */}
+            <div className="h-7 bg-slate-900 border-t border-slate-800 flex justify-around items-center shrink-0">
+                <span className="text-[7px] text-green-500">🏠</span>
+                <span className="text-[7px] text-slate-500">💰</span>
+                <span className="text-[7px] text-slate-500">👤</span>
             </div>
         </div>
     </div>
@@ -48,16 +156,70 @@ const PixelSVG = ({ color }: { color: string }) => (
     <div className="relative w-full h-full">
         <svg viewBox="0 0 100 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
             <rect x="2" y="2" width="96" height="196" rx="10" fill="#1e293b" stroke="#334155" strokeWidth="1.5" />
-            <rect x="6" y="6" width="88" height="188" rx="8" fill="#10B981" />
+            <rect x="6" y="6" width="88" height="188" rx="8" fill="#0f172a" />
             <circle cx="50" cy="14" r="3" fill="#000" />
         </svg>
-        <div className="absolute inset-0 flex items-center justify-center p-[20%] pointer-events-none">
-            <div className="relative w-[75%] h-[75%]">
-                <img
-                    src={LOGO_FINAL_V3_BASE64}
-                    alt="FonzKart F Logo"
-                    className="object-contain brightness-0 invert w-full h-full"
-                />
+        <div className="absolute top-[6.5px] left-[6.5px] right-[6.5px] bottom-[6.5px] overflow-hidden rounded-[8px] bg-slate-950 flex flex-col select-none pointer-events-none">
+            {/* Status Bar */}
+            <div className="h-3.5 w-full bg-slate-900 flex justify-between items-center px-3 pt-0.5 text-[6.5px] text-slate-400 font-medium">
+                <span>9:41</span>
+                <div className="flex items-center gap-1">
+                    <span className="w-1 h-1 rounded-full bg-slate-400" />
+                    <div className="w-2.5 h-1 border border-slate-400 rounded-sm" />
+                </div>
+            </div>
+            
+            {/* Header App Bar */}
+            <div className="h-7 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-3 shrink-0">
+                <span className="text-[8px] font-black text-green-500 tracking-tighter">FONZKART</span>
+                <div className="w-3 h-3 rounded-full bg-slate-800 flex items-center justify-center">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                </div>
+            </div>
+            
+            {/* Screen Content */}
+            <div className="flex-1 p-2 flex flex-col gap-1.5 overflow-hidden">
+                {/* Search Bar */}
+                <div className="h-4.5 w-full bg-slate-900 border border-slate-800 rounded px-1.5 flex items-center justify-between text-[6px] text-slate-500 shrink-0">
+                    <span>Search gadgets...</span>
+                    <span>🔍</span>
+                </div>
+                
+                {/* Brand Emerald Banner */}
+                <div className="h-12 w-full rounded bg-[#10B981] p-1.5 relative flex items-center justify-between overflow-hidden shadow-inner shrink-0">
+                    <div className="flex flex-col justify-center">
+                        <span className="text-[7.5px] font-bold text-white leading-tight">Instant Cash</span>
+                        <span className="text-[5.5px] text-white/80">Sell in 3 Hrs</span>
+                    </div>
+                    <div className="relative w-7 h-7 flex items-center justify-center">
+                        <img
+                            src={LOGO_FINAL_V3_BASE64}
+                            alt="F"
+                            className="w-full h-full object-contain brightness-0 invert"
+                        />
+                    </div>
+                </div>
+                
+                {/* Gadget Categories Grid */}
+                <div className="grid grid-cols-2 gap-1.5 shrink-0">
+                    <div className="bg-slate-900 border border-slate-800 rounded p-1 flex flex-col gap-0.5 items-center justify-center">
+                        <span className="text-[10px]">📱</span>
+                        <span className="text-[5px] text-slate-300 font-bold">Sell Phone</span>
+                        <span className="text-[4px] text-green-400 font-semibold">Best Price</span>
+                    </div>
+                    <div className="bg-slate-900 border border-slate-800 rounded p-1 flex flex-col gap-0.5 items-center justify-center">
+                        <span className="text-[10px]">💻</span>
+                        <span className="text-[5px] text-slate-300 font-bold">Sell Laptop</span>
+                        <span className="text-[4px] text-green-400 font-semibold">Instant Pay</span>
+                    </div>
+                </div>
+            </div>
+            
+            {/* Bottom Nav Tab Bar */}
+            <div className="h-7 bg-slate-900 border-t border-slate-800 flex justify-around items-center shrink-0">
+                <span className="text-[7px] text-green-500">🏠</span>
+                <span className="text-[7px] text-slate-500">💰</span>
+                <span className="text-[7px] text-slate-500">👤</span>
             </div>
         </div>
     </div>
