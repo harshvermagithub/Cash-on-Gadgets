@@ -91,9 +91,9 @@ export default function Footer() {
                                 </Link>
                             </li>
 
-                            <li className="flex items-center gap-3 pt-1">
-                                <MapPin className="h-5 w-5 text-primary shrink-0" />
-                                <span>Bengaluru, Karnataka, India</span>
+                            <li className="flex items-start gap-3 pt-1">
+                                <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                                <span className="leading-relaxed">#69 8th cross Hegde Nagar, SRK Nagar Post, Bangalore - 560077</span>
                             </li>
                         </ul>
                     </div>
@@ -102,7 +102,7 @@ export default function Footer() {
 
                 <div className="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-sm text-muted-foreground text-foreground">
-                        © {new Date().getFullYear()} Fonzkart. All rights reserved.
+                        © {new Date().getFullYear()} NR Waste Management Private Limited (Fonzkart). All rights reserved.
                     </p>
                     <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground justify-center md:justify-end">
                         <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
