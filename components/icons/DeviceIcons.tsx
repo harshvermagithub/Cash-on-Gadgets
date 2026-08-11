@@ -17,15 +17,15 @@ export const PhoneIcon = ({ className = '' }: { className?: string }) => (
             <rect x="2.2" y="2.2" width="27.6" height="55.6" rx="4" fill="#000000" />
             
             {/* Green screen background inside bezel */}
-            <rect x="3" y="3" width="26" height="54" rx="3.2" fill="#35aa67" />
+            <rect x="3" y="3" width="26" height="54" rx="3.2" fill="#159c4f" />
 
             {/* Embedded image directly inside SVG to prevent any overflow/alignment issues */}
             <g clipPath="url(#phone-screen-clip)">
                 <image
-                    x="-6"
-                    y="8"
-                    width="44"
-                    height="44"
+                    x="6"
+                    y="20"
+                    width="20"
+                    height="20"
                     href={ICON_BASE64}
                     preserveAspectRatio="xMidYMid meet"
                 />

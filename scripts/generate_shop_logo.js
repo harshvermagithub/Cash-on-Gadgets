@@ -126,7 +126,7 @@ const generateHTML = (theme) => `<!DOCTYPE html>
         }
         
         .rupee-symbol {
-            color: #35aa67;
+            color: #159c4f;
             margin: 0 4px;
         }
         
@@ -236,13 +236,13 @@ const generateHTML = (theme) => `<!DOCTYPE html>
                         <svg viewBox="0 0 32 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
                             <rect x="1" y="1" width="30" height="58" rx="5" fill="#1c1917" stroke="#27272a" stroke-width="1.8" />
                             <rect x="2.2" y="2.2" width="27.6" height="55.6" rx="4" fill="#000000" />
-                            <rect x="3" y="3" width="26" height="54" rx="3.2" fill="#35aa67" />
+                            <rect x="3" y="3" width="26" height="54" rx="3.2" fill="#159c4f" />
                             <g clip-path="url(#phone-screen-clip)">
                                 <image
-                                    x="-6"
-                                    y="8"
-                                    width="44"
-                                    height="44"
+                                    x="6"
+                                    y="20"
+                                    width="20"
+                                    height="20"
                                     href="${ICON_BASE64}"
                                     preserveAspectRatio="xMidYMid meet"
                                 />
@@ -268,13 +268,13 @@ const generateHTML = (theme) => `<!DOCTYPE html>
                 <svg viewBox="0 0 32 60" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
                     <rect x="1" y="1" width="30" height="58" rx="5" fill="#1c1917" stroke="#27272a" stroke-width="1.8" />
                     <rect x="2.2" y="2.2" width="27.6" height="55.6" rx="4" fill="#000000" />
-                    <rect x="3" y="3" width="26" height="54" rx="3.2" fill="#35aa67" />
+                    <rect x="3" y="3" width="26" height="54" rx="3.2" fill="#159c4f" />
                     <g clip-path="url(#logo-phone-clip)">
                         <image
-                            x="-6"
-                            y="8"
-                            width="44"
-                            height="44"
+                            x="6"
+                            y="20"
+                            width="20"
+                            height="20"
                             href="${ICON_BASE64}"
                             preserveAspectRatio="xMidYMid meet"
                         />
