@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Banknote, ArrowRight, ArrowDown } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { ICON_BASE64 } from './icons/LogoConstants'
+import { ICON_BASE64, LOGO_FINAL_V3_BASE64 } from './icons/LogoConstants'
 
 // --- SVGs Definitions (Same as before) ---
 const IPhoneSVG = ({ color }: { color: string }) => (
