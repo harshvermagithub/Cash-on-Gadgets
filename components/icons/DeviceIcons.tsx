@@ -6,28 +6,33 @@ import Image from 'next/image';
 
 // --- Compact Device SVG Icons for Logo Use ---
 
-/** Smartphone icon — 1:1 Exact HD Replica of User Target Image 2 */
+/** Smartphone icon — 1:1 Exact HD Replica of User Target Image 2 using original icon.png */
 export const PhoneIcon = ({ className = '' }: { className?: string }) => (
-    <svg viewBox="0 0 32 60" className={`drop-shadow-md ${className}`} fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Outer Dark Charcoal Frame */}
-        <rect x="1" y="1" width="30" height="58" rx="5" className="fill-[#1c1917] dark:fill-black stroke-[#27272a] dark:stroke-white/30" strokeWidth="1.8" />
-        
-        {/* Inner Black Bezel */}
-        <rect x="2.2" y="2.2" width="27.6" height="55.6" rx="4" fill="#000000" />
-        
-        {/* Vibrant Emerald Green Screen */}
-        <rect x="3" y="3" width="26" height="54" rx="3.2" fill="#10B981" />
+    <div className={`relative flex items-center justify-center shrink-0 ${className}`}>
+        <svg viewBox="0 0 32 60" className="w-full h-full drop-shadow-md" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Outer Dark Charcoal Frame */}
+            <rect x="1" y="1" width="30" height="58" rx="5" className="fill-[#1c1917] dark:fill-black stroke-[#27272a] dark:stroke-white/30" strokeWidth="1.8" />
+            
+            {/* Inner Black Bezel */}
+            <rect x="2.2" y="2.2" width="27.6" height="55.6" rx="4" fill="#000000" />
+            
+            {/* Transparent placeholder for positioning the image inside bezel */}
+            <rect x="3" y="3" width="26" height="54" rx="3.2" fill="transparent" />
+        </svg>
 
-        {/* Pure White F Logo 1:1 Vector Replica matching Image 2 */}
-        <g fill="#FFFFFF">
-            {/* Top Swoosh pointing top-right */}
-            <path d="M 8.5 10 C 8.5 10 12 3.5 22.5 3 C 28 3 28.5 8.5 26.5 9.5 C 24 13 18.5 15.5 14 16 C 11 16.5 8.5 18 8.5 19.5 Z" />
-            {/* Middle Swoosh pointing right */}
-            <path d="M 8.5 21 C 10.5 18 16 16.5 23 16.5 C 27 16.5 27.5 20 25 22 C 21.5 23.5 16 25 12 26 C 9.5 26.5 8.5 28.5 8.5 30 Z" />
-            {/* Bottom Leaf Stem */}
-            <path d="M 8.5 31 C 11 28.5 15 28 17.5 28 C 17.5 36 14 41 8.5 42 Z" />
-        </g>
-    </svg>
+        {/* 1-to-1 Exact F Logo Image Overlay using icon.png */}
+        <div className="absolute inset-0 flex items-center justify-center p-[6%] pointer-events-none">
+            <div className="relative w-[85%] h-[90%] overflow-hidden rounded-[3px]">
+                <Image
+                    src="/icon.png"
+                    alt="FonzKart Phone Screen Logo"
+                    fill
+                    className="object-cover"
+                    priority
+                />
+            </div>
+        </div>
+    </div>
 );
 
 /** Laptop icon */
