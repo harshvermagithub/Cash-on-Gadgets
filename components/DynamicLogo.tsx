@@ -17,7 +17,7 @@ export const DynamicLogo = ({ className = "" }: { className?: string }) => {
 
     return (
         <div
-            className={`relative flex items-center justify-center min-h-[95px] w-full max-w-[460px] mx-auto overflow-hidden select-none ${className}`}
+            className={`relative flex items-center justify-center min-h-[110px] w-full max-w-[500px] mx-auto overflow-hidden select-none ${className}`}
             aria-label="Fonzkart"
         >
             <AnimatePresence mode="wait">
@@ -28,7 +28,7 @@ export const DynamicLogo = ({ className = "" }: { className?: string }) => {
                         className="flex items-center justify-center"
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{
-                            x: [0, 0, 90, 110], // Holds centered for ~3s, then glides to the right
+                            x: [0, 0, 100, 125], // Holds centered for ~3s, then glides to the right
                             opacity: [1, 1, 1, 0] // 100% opaque during movement, fades to 0 before border
                         }}
                         exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.25 } }}
@@ -38,7 +38,7 @@ export const DynamicLogo = ({ className = "" }: { className?: string }) => {
                             ease: 'easeInOut'
                         }}
                     >
-                        <FCartLogo size={100} animate={true} />
+                        <FCartLogo size={120} animate={true} />
                     </motion.div>
                 ) : (
                     /* PHASE 2: WORDMARK APPEARS IN CENTER, HOLDS, THEN DISAPPEARS COMPLETELY (<0.5s GAP BEFORE CART) */

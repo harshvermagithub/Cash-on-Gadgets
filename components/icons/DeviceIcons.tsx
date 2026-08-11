@@ -10,22 +10,22 @@ import Image from 'next/image';
 export const PhoneIcon = ({ className = '' }: { className?: string }) => (
     <div className={`relative inline-block ${className}`}>
         <svg viewBox="0 0 32 60" className="w-full h-full drop-shadow-md" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="1" y="1" width="30" height="58" rx="4" className="fill-[#0f172a] dark:fill-black stroke-slate-600 dark:stroke-white/30" strokeWidth="1.5" />
-            <rect x="2.5" y="2.5" width="27" height="55" rx="2.5" fill="#10B981" />
+            <rect x="1" y="1" width="30" height="58" rx="4.5" className="fill-[#0f172a] dark:fill-black stroke-slate-600 dark:stroke-white/30" strokeWidth="1.5" />
+            <rect x="2.5" y="2.5" width="27" height="55" rx="3" fill="#10B981" />
             {/* Notch */}
             <rect x="10" y="3" width="12" height="3" rx="1.5" className="fill-black dark:fill-white/80" />
             {/* Screen shine */}
             <path d="M2.5 2.5H29.5V20L2.5 35V2.5Z" fill="white" fillOpacity="0.1" />
         </svg>
 
-        {/* F Logo Image Overlay — 100% Mobile & WebKit Compatible */}
+        {/* Pure White F Logo Overlay — Exact match to screenshot */}
         <div className="absolute inset-0 flex items-center justify-center p-[4px] pointer-events-none">
             <div className="relative w-[78%] h-[78%] flex items-center justify-center overflow-hidden">
                 <Image
                     src="/logo_final_v3.png"
                     alt="FonzKart F Logo"
                     fill
-                    className="object-contain"
+                    className="object-contain brightness-0 invert"
                     priority
                 />
             </div>
