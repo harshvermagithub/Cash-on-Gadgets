@@ -6,29 +6,26 @@ import Image from 'next/image';
 
 // --- Compact Device SVG Icons for Logo Use ---
 
-/** Smartphone icon — HD Vector White F Logo matching user screenshot */
+/** Smartphone icon — 1:1 Exact HD Replica of User Target Image 2 */
 export const PhoneIcon = ({ className = '' }: { className?: string }) => (
     <svg viewBox="0 0 32 60" className={`drop-shadow-md ${className}`} fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Outer Dark Phone Frame */}
-        <rect x="1" y="1" width="30" height="58" rx="4.5" className="fill-[#18181b] dark:fill-black stroke-slate-700 dark:stroke-white/30" strokeWidth="1.5" />
+        {/* Outer Dark Charcoal Frame */}
+        <rect x="1" y="1" width="30" height="58" rx="5" className="fill-[#1c1917] dark:fill-black stroke-[#27272a] dark:stroke-white/30" strokeWidth="1.8" />
+        
+        {/* Inner Black Bezel */}
+        <rect x="2.2" y="2.2" width="27.6" height="55.6" rx="4" fill="#000000" />
         
         {/* Vibrant Emerald Green Screen */}
-        <rect x="2.5" y="2.5" width="27" height="55" rx="3" fill="#10B981" />
-        
-        {/* Speaker Notch */}
-        <rect x="10" y="3.5" width="12" height="2.5" rx="1.2" className="fill-black dark:fill-white/80" />
-        
-        {/* Screen Shine */}
-        <path d="M2.5 2.5H29.5V20L2.5 35V2.5Z" fill="white" fillOpacity="0.1" />
+        <rect x="3" y="3" width="26" height="54" rx="3.2" fill="#10B981" />
 
-        {/* Pure White F Logo HD Vector — 100% Crisp & Mobile Compatible */}
+        {/* Pure White F Logo 1:1 Vector Replica matching Image 2 */}
         <g fill="#FFFFFF">
-            {/* Top Bar Swoosh */}
-            <path d="M 9.5 14 C 9.5 14 13.5 8.5 21 8 C 26.5 8 27.5 13 26 14.5 C 24 18 19 20 14.5 21 C 11.5 21.5 9.5 22.5 9.5 24 Z" />
-            {/* Middle Bar Swoosh */}
-            <path d="M 9.5 25.5 C 11 22.5 16.5 21 21.5 21 C 25.5 21 26 24.5 24 26.5 C 21 28.5 16 30 12.5 31 C 10 31.5 9.5 33.5 9.5 35 Z" />
-            {/* Bottom Stem */}
-            <path d="M 9.5 36.5 C 12 34 16 33.5 18 33.5 C 18 41 15 45.5 9.5 46.5 Z" />
+            {/* Top Swoosh pointing top-right */}
+            <path d="M 8.5 12 C 8.5 12 12.5 7 19.5 7 C 24.5 7 25 12 23.5 13 C 21 17 16.5 19 12.5 20 C 10 20.5 8.5 22 8.5 23.5 Z" />
+            {/* Middle Swoosh pointing right */}
+            <path d="M 8.5 25 C 10.5 22 15 20.5 20 20.5 C 23.5 20.5 24 23.5 22 25 C 19 27 14.5 28.5 11.5 29.5 C 9.5 30 8.5 31.5 8.5 33 Z" />
+            {/* Bottom Leaf Stem */}
+            <path d="M 8.5 34.5 C 10.5 32.5 14 32 16 32 C 16 39 13.5 43.5 8.5 44.5 Z" />
         </g>
     </svg>
 );
