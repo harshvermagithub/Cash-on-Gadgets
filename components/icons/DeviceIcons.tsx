@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 
 // --- Compact Device SVG Icons for Logo Use ---
 
@@ -23,12 +22,10 @@ export const PhoneIcon = ({ className = '' }: { className?: string }) => (
         {/* 1-to-1 Exact F Logo Image Overlay using icon.png */}
         <div className="absolute inset-0 flex items-center justify-center p-[6%] pointer-events-none">
             <div className="relative w-[85%] h-[90%] overflow-hidden rounded-[3px]">
-                <Image
+                <img
                     src="/icon.png"
                     alt="FonzKart Phone Screen Logo"
-                    fill
-                    className="object-cover"
-                    priority
+                    className="object-cover w-full h-full"
                 />
             </div>
         </div>

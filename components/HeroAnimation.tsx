@@ -3,7 +3,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Banknote, ArrowRight, ArrowDown } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 
 // --- SVGs Definitions (Same as before) ---
 const IPhoneSVG = ({ color }: { color: string }) => (
@@ -14,12 +13,10 @@ const IPhoneSVG = ({ color }: { color: string }) => (
             <rect x="30" y="8" width="40" height="12" rx="6" fill="#000" />
         </svg>
         <div className="absolute top-[6px] left-[6px] right-[6px] bottom-[6px] overflow-hidden rounded-[12px] pointer-events-none">
-            <Image
+            <img
                 src="/icon.png"
                 alt="FonzKart Phone Screen Logo"
-                fill
-                className="object-cover"
-                priority
+                className="object-cover w-full h-full"
             />
         </div>
     </div>
@@ -33,12 +30,10 @@ const SamsungSVG = ({ color }: { color: string }) => (
             <circle cx="50" cy="12" r="3" fill="#000" />
         </svg>
         <div className="absolute top-[4px] left-[4px] right-[4px] bottom-[4px] overflow-hidden rounded-[4px] pointer-events-none">
-            <Image
+            <img
                 src="/icon.png"
                 alt="FonzKart Phone Screen Logo"
-                fill
-                className="object-cover"
-                priority
+                className="object-cover w-full h-full"
             />
         </div>
     </div>
@@ -52,12 +47,10 @@ const PixelSVG = ({ color }: { color: string }) => (
             <circle cx="50" cy="14" r="3" fill="#000" />
         </svg>
         <div className="absolute top-[6px] left-[6px] right-[6px] bottom-[6px] overflow-hidden rounded-[8px] pointer-events-none">
-            <Image
+            <img
                 src="/icon.png"
                 alt="FonzKart Phone Screen Logo"
-                fill
-                className="object-cover"
-                priority
+                className="object-cover w-full h-full"
             />
         </div>
     </div>
