@@ -14,19 +14,17 @@ const SmartphoneFLogo = () => (
             {/* Inner Black Bezel */}
             <rect x="2.2" y="2.2" width="27.6" height="55.6" rx="4" fill="#000000" />
 
-            {/* Transparent placeholder for positioning the image inside bezel */}
-            <rect x="3" y="3" width="26" height="54" rx="3.2" fill="transparent" />
+            {/* Green screen background inside bezel */}
+            <rect x="3" y="3" width="26" height="54" rx="3.2" fill="#35aa67" />
         </svg>
 
         {/* 1-to-1 Exact F Logo Image Overlay using icon.png */}
-        <div className="absolute inset-0 flex items-center justify-center p-[6%] pointer-events-none">
-            <div className="relative w-[85%] h-[90%] overflow-hidden rounded-[3px]">
-                <img
-                    src={ICON_BASE64}
-                    alt="FonzKart Phone Screen Logo"
-                    className="object-cover w-full h-full"
-                />
-            </div>
+        <div className="absolute top-[5%] left-[9.375%] right-[9.375%] bottom-[5%] overflow-hidden rounded-[3.2px] bg-[#35aa67] flex items-center justify-center pointer-events-none">
+            <img
+                src={ICON_BASE64}
+                alt="FonzKart Phone Screen Logo"
+                className="object-contain w-[140%] h-[140%] scale-150"
+            />
         </div>
     </div>
 );

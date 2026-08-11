@@ -10,14 +10,14 @@ const IPhoneSVG = ({ color }: { color: string }) => (
     <div className="relative w-full h-full">
         <svg viewBox="0 0 100 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
             <rect x="2" y="2" width="96" height="196" rx="16" fill="#1e293b" stroke="#334155" strokeWidth="1.5" />
-            <rect x="6" y="6" width="88" height="188" rx="12" fill="transparent" />
+            <rect x="6" y="6" width="88" height="188" rx="12" fill="#35aa67" />
             <rect x="30" y="8" width="40" height="12" rx="6" fill="#000" />
         </svg>
-        <div className="absolute top-[6px] left-[6px] right-[6px] bottom-[6px] overflow-hidden rounded-[12px] pointer-events-none">
+        <div className="absolute top-[6px] left-[6px] right-[6px] bottom-[6px] overflow-hidden rounded-[12px] bg-[#35aa67] flex items-center justify-center pointer-events-none">
             <img
                 src={ICON_BASE64}
                 alt="FonzKart Phone Screen Logo"
-                className="object-cover w-full h-full"
+                className="object-contain w-[140%] h-[140%] scale-150"
             />
         </div>
     </div>
@@ -27,14 +27,14 @@ const SamsungSVG = ({ color }: { color: string }) => (
     <div className="relative w-full h-full">
         <svg viewBox="0 0 100 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
             <rect x="2" y="2" width="96" height="196" rx="6" fill="#0f172a" stroke="#334155" strokeWidth="1.5" />
-            <rect x="4" y="4" width="92" height="192" rx="4" fill="transparent" />
+            <rect x="4" y="4" width="92" height="192" rx="4" fill="#35aa67" />
             <circle cx="50" cy="12" r="3" fill="#000" />
         </svg>
-        <div className="absolute top-[4px] left-[4px] right-[4px] bottom-[4px] overflow-hidden rounded-[4px] pointer-events-none">
+        <div className="absolute top-[4px] left-[4px] right-[4px] bottom-[4px] overflow-hidden rounded-[4px] bg-[#35aa67] flex items-center justify-center pointer-events-none">
             <img
                 src={ICON_BASE64}
                 alt="FonzKart Phone Screen Logo"
-                className="object-cover w-full h-full"
+                className="object-contain w-[140%] h-[140%] scale-150"
             />
         </div>
     </div>
@@ -44,14 +44,14 @@ const PixelSVG = ({ color }: { color: string }) => (
     <div className="relative w-full h-full">
         <svg viewBox="0 0 100 200" className="w-full h-full drop-shadow-2xl" xmlns="http://www.w3.org/2000/svg">
             <rect x="2" y="2" width="96" height="196" rx="10" fill="#1e293b" stroke="#334155" strokeWidth="1.5" />
-            <rect x="6" y="6" width="88" height="188" rx="8" fill="transparent" />
+            <rect x="6" y="6" width="88" height="188" rx="8" fill="#35aa67" />
             <circle cx="50" cy="14" r="3" fill="#000" />
         </svg>
-        <div className="absolute top-[6px] left-[6px] right-[6px] bottom-[6px] overflow-hidden rounded-[8px] pointer-events-none">
+        <div className="absolute top-[6px] left-[6px] right-[6px] bottom-[6px] overflow-hidden rounded-[8px] bg-[#35aa67] flex items-center justify-center pointer-events-none">
             <img
                 src={ICON_BASE64}
                 alt="FonzKart Phone Screen Logo"
-                className="object-cover w-full h-full"
+                className="object-contain w-[140%] h-[140%] scale-150"
             />
         </div>
     </div>
