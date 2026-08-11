@@ -18,16 +18,26 @@ export const PhoneIcon = ({ className = '' }: { className?: string }) => (
             
             {/* Green screen background inside bezel */}
             <rect x="3" y="3" width="26" height="54" rx="3.2" fill="#35aa67" />
-        </svg>
 
-        {/* 1-to-1 Exact F Logo Image Overlay using icon.png */}
-        <div className="absolute top-[5%] left-[9.375%] right-[9.375%] bottom-[5%] overflow-hidden rounded-[3.2px] bg-[#35aa67] flex items-center justify-center pointer-events-none">
-            <img
-                src={ICON_BASE64}
-                alt="FonzKart Phone Screen Logo"
-                className="object-contain w-[140%] h-[140%] scale-150"
-            />
-        </div>
+            {/* Embedded image directly inside SVG to prevent any overflow/alignment issues */}
+            <g clipPath="url(#phone-screen-clip)">
+                <image
+                    x="5"
+                    y="19"
+                    width="22"
+                    height="22"
+                    href={ICON_BASE64}
+                    preserveAspectRatio="xMidYMid meet"
+                />
+            </g>
+
+            {/* Clip path definition to ensure image corners are rounded to match the screen rx */}
+            <defs>
+                <clipPath id="phone-screen-clip">
+                    <rect x="3" y="3" width="26" height="54" rx="3.2" />
+                </clipPath>
+            </defs>
+        </svg>
     </div>
 );
 
