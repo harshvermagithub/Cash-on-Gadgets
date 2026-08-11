@@ -20,10 +20,10 @@ const SmartphoneFLogo = () => (
             {/* Embedded image directly inside SVG to prevent any overflow/alignment issues */}
             <g clipPath="url(#logo-phone-clip)">
                 <image
-                    x="5"
-                    y="19"
-                    width="22"
-                    height="22"
+                    x="3.25"
+                    y="17.25"
+                    width="25.5"
+                    height="25.5"
                     href={ICON_BASE64}
                     preserveAspectRatio="xMidYMid meet"
                 />

@@ -16,19 +16,45 @@ export const PhoneIcon = ({ className = '' }: { className?: string }) => (
             {/* Inner Black Bezel */}
             <rect x="2.2" y="2.2" width="27.6" height="55.6" rx="4" fill="#000000" />
             
-            {/* Green screen background inside bezel */}
-            <rect x="3" y="3" width="26" height="54" rx="3.2" fill="#35aa67" />
-
-            {/* Embedded image directly inside SVG to prevent any overflow/alignment issues */}
+            {/* Phone Screen Area (Clipped by bezel mask) */}
             <g clipPath="url(#phone-screen-clip)">
+                {/* Dark Mode Screen Background */}
+                <rect x="3" y="3" width="26" height="54" fill="#0f172a" />
+                
+                {/* Header Bar */}
+                <rect x="3" y="3" width="26" height="8" fill="#1e293b" />
+                <rect x="5" y="5" width="22" height="4" rx="1" fill="#334155" />
+                
+                {/* Brand Green App Banner */}
+                <rect x="5" y="13" width="22" height="15" rx="1.5" fill="#35aa67" />
+                
+                {/* Embedded White F Logo inside the green App Banner */}
                 <image
-                    x="5"
-                    y="19"
-                    width="22"
-                    height="22"
+                    x="11"
+                    y="15.5"
+                    width="10"
+                    height="10"
                     href={ICON_BASE64}
                     preserveAspectRatio="xMidYMid meet"
                 />
+                
+                {/* Simulated product cards row */}
+                {/* Card 1 */}
+                <rect x="5" y="30" width="10" height="13" rx="1" fill="#1e293b" />
+                <rect x="6.5" y="31.5" width="7" height="5" rx="0.5" fill="#334155" />
+                <rect x="6.5" y="38" width="5" height="1" rx="0.5" fill="#22c55e" />
+                <rect x="6.5" y="40" width="7" height="0.8" rx="0.4" fill="#475569" />
+                
+                {/* Card 2 */}
+                <rect x="17" y="30" width="10" height="13" rx="1" fill="#1e293b" />
+                <rect x="18.5" y="31.5" width="7" height="5" rx="0.5" fill="#334155" />
+                <rect x="18.5" y="38" width="5" height="1" rx="0.5" fill="#22c55e" />
+                <rect x="18.5" y="40" width="7" height="0.8" rx="0.4" fill="#475569" />
+                
+                {/* Bottom Navigation / Actions Bar */}
+                <rect x="3" y="45" width="26" height="12" fill="#1e293b" />
+                <rect x="5" y="48" width="22" height="6" rx="1" fill="#35aa67" />
+                <rect x="10" y="50.5" width="12" height="1" rx="0.5" fill="#ffffff" opacity="0.9" />
             </g>
 
             {/* Clip path definition to ensure image corners are rounded to match the screen rx */}
