@@ -40,7 +40,7 @@ const IPhoneSVG = ({ color }: { color: string }) => (
                 </div>
                 
                 {/* Brand Emerald Banner */}
-                <div className="h-12 w-full rounded bg-[#10B981] p-1.5 relative flex items-center justify-between overflow-hidden shadow-inner shrink-0">
+                <div className="h-12 w-full rounded bg-[#35aa67] p-1.5 relative flex items-center justify-between overflow-hidden shadow-inner shrink-0">
                     <div className="flex flex-col justify-center">
                         <span className="text-[7.5px] font-bold text-white leading-tight">Instant Cash</span>
                         <span className="text-[5.5px] text-white/80">Sell in 3 Hrs</span>
@@ -113,7 +113,7 @@ const SamsungSVG = ({ color }: { color: string }) => (
                 </div>
                 
                 {/* Brand Emerald Banner */}
-                <div className="h-12 w-full rounded bg-[#10B981] p-1.5 relative flex items-center justify-between overflow-hidden shadow-inner shrink-0">
+                <div className="h-12 w-full rounded bg-[#35aa67] p-1.5 relative flex items-center justify-between overflow-hidden shadow-inner shrink-0">
                     <div className="flex flex-col justify-center">
                         <span className="text-[7.5px] font-bold text-white leading-tight">Instant Cash</span>
                         <span className="text-[5.5px] text-white/80">Sell in 3 Hrs</span>
@@ -186,7 +186,7 @@ const PixelSVG = ({ color }: { color: string }) => (
                 </div>
                 
                 {/* Brand Emerald Banner */}
-                <div className="h-12 w-full rounded bg-[#10B981] p-1.5 relative flex items-center justify-between overflow-hidden shadow-inner shrink-0">
+                <div className="h-12 w-full rounded bg-[#35aa67] p-1.5 relative flex items-center justify-between overflow-hidden shadow-inner shrink-0">
                     <div className="flex flex-col justify-center">
                         <span className="text-[7.5px] font-bold text-white leading-tight">Instant Cash</span>
                         <span className="text-[5.5px] text-white/80">Sell in 3 Hrs</span>
