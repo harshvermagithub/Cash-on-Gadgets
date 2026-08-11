@@ -22,10 +22,10 @@ export const PhoneIcon = ({ className = '' }: { className?: string }) => (
             {/* Embedded image directly inside SVG to prevent any overflow/alignment issues */}
             <g clipPath="url(#phone-screen-clip)">
                 <image
-                    x="-1"
-                    y="13"
-                    width="34"
-                    height="34"
+                    x="-6"
+                    y="8"
+                    width="44"
+                    height="44"
                     href={ICON_BASE64}
                     preserveAspectRatio="xMidYMid meet"
                 />
