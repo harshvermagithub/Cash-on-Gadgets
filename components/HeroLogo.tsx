@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 /** Vector Smartphone — 1:1 Exact HD Replica of User Target Image 2 */
 const SmartphoneFLogo = () => (
-    <div className="relative w-9 sm:w-11 h-12 sm:h-15 flex items-center justify-center shrink-0 drop-shadow-md">
+    <div className="relative w-7 sm:w-9 h-10 sm:h-12 flex items-center justify-center shrink-0 drop-shadow-md">
         <svg viewBox="0 0 32 60" fill="none" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
             {/* Outer Dark Charcoal Frame */}
             <rect x="1" y="1" width="30" height="58" rx="5" className="fill-[#1c1917] dark:fill-black stroke-[#27272a] dark:stroke-white/30" strokeWidth="1.8" />
