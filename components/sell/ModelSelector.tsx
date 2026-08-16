@@ -6,7 +6,7 @@ import { ArrowLeft, Search, X } from "lucide-react";
 import Image from "next/image";
 import { Model } from '@/lib/store';
 import { fetchModels } from '@/actions/catalog';
-import { deduplicateModels } from '@/lib/catalog2026';
+import { deduplicateModels, resolveModelImage } from '@/lib/catalog2026';
 import SVGLoader from "@/components/ui/SVGLoader";
 
 interface ModelSelectorProps {
@@ -25,41 +25,30 @@ const EXCLUDED_MODELS = new Set([
 ]);
 
 // Helper Component for Image Fallback
-const ModelImage = ({ src, alt, priority = false, scale = 1 }: { src: string, alt: string, priority?: boolean, scale?: number }) => {
-    const [error, setError] = useState(false);
+const ModelImage = ({ src, alt, brandId = '', priority = false, scale = 1 }: { src: string, alt: string, brandId?: string, priority?: boolean, scale?: number }) => {
+    const [imgSrc, setImgSrc] = useState(() => resolveModelImage(brandId, alt, src));
 
-    const cleanSrc = useMemo(() => src ? src.split('?')[0] : '', [src]);
+    useEffect(() => {
+        setImgSrc(resolveModelImage(brandId, alt, src));
+    }, [src, brandId, alt]);
 
-    // Validate URL format before rendering Next.js Image to prevent "Invalid URL" crash
-    const isValid = useMemo(() => {
-        if (!cleanSrc) return false;
-        try {
-            if (cleanSrc.startsWith('/') || cleanSrc.startsWith('data:')) return true;
-            new URL(cleanSrc); // Check if valid absolute URL
-            return true;
-        } catch {
-            return false;
+    const handleError = () => {
+        const fallback = resolveModelImage(brandId, alt);
+        if (imgSrc !== fallback) {
+            setImgSrc(fallback);
         }
-    }, [cleanSrc]);
-
-    if (!isValid || error) {
-        return (
-            <div className="w-full h-full flex items-center justify-center bg-gray-50 rounded-lg">
-                <span className="text-2xl font-bold text-gray-200">{alt.substring(0, 1)}</span>
-            </div>
-        );
-    }
+    };
 
     return (
         <Image
-            src={cleanSrc}
+            src={imgSrc}
             alt={alt}
             fill
             priority={priority}
             className="object-contain p-1 transition-transform duration-300"
             style={{ transform: `scale(${scale})` }}
             sizes="(max-width: 768px) 50vw, 25vw"
-            onError={() => setError(true)}
+            onError={handleError}
             unoptimized
         />
     );
@@ -701,6 +690,7 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                                 <ModelImage
                                     src={model.img}
                                     alt={model.name}
+                                    brandId={model.brandId || brandId}
                                     priority={index < 8}
                                     scale={
                                         model.name.includes('iPhone')

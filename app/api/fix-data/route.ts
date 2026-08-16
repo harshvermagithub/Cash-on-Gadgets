@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { randomUUID } from 'crypto';
-import { getCanonicalModelKey } from '@/lib/catalog2026';
+import { getCanonicalModelKey, resolveModelImage } from '@/lib/catalog2026';
 
 // Apple iPhone Data
 const IPHONE_DATA = [
@@ -294,6 +294,20 @@ export async function GET(req: Request) {
                     await prisma.variant.deleteMany({ where: { modelId: dup.id } }).catch(() => {});
                     await prisma.model.delete({ where: { id: dup.id } }).catch(() => {});
                 }
+            }
+        }
+
+        // 4. Update all remaining models to ensure their images are high-res device photos
+        log += `\n--- Updating Model Images to High-Res Device Photos ---\n`;
+        const finalModels = await prisma.model.findMany();
+        for (const m of finalModels) {
+            const resolvedImg = resolveModelImage(m.brandId, m.name, m.img);
+            if (resolvedImg && resolvedImg !== m.img) {
+                await prisma.model.update({
+                    where: { id: m.id },
+                    data: { img: resolvedImg }
+                });
+                log += `Updated image for "${m.name}" -> ${resolvedImg}\n`;
             }
         }
 

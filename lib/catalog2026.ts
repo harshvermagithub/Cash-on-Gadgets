@@ -16,7 +16,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'galaxy-s26-ultra-5g',
         brandId: 'samsung',
         name: 'Galaxy S26 Ultra 5G',
-        img: '/models/samsung/Samsung_Galaxy_S25_Ultra.png',
+        img: '/models/samsung/s26_ultra.jpg',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -723,9 +723,58 @@ export function getCanonicalModelKey(name: string): string {
         .trim();
 }
 
-export function deduplicateModels<T extends { name: string; priority?: number; img?: string }>(models: T[]): T[] {
+export const BRAND_DEFAULT_IMAGES: Record<string, string> = {
+    samsung: '/models/samsung/Samsung_Galaxy_S25_Ultra.png',
+    xiaomi: '/models/xiaomi/Xiaomi_15.png',
+    realme: '/models/realme/Realme_GT_7_Pro_5G.png',
+    poco: '/models/poco/Poco_F7.png',
+    vivo: '/models/vivo/Vivo_X300_Pro.png',
+    apple: 'https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-14.jpg',
+    oneplus: '/models/realme/Realme_GT_6.png',
+    iqoo: '/models/vivo/Vivo_X300_Pro.png',
+    oppo: '/models/realme/Realme_GT_6.png',
+    motorola: '/models/xiaomi/Xiaomi_15.png',
+    google: '/models/samsung/Samsung_Galaxy_S25_Ultra.png',
+};
+
+export function resolveModelImage(brandId: string, modelName: string, currentImg?: string): string {
+    const cleanBrand = (brandId || '').toLowerCase().trim();
+    const cleanName = (modelName || '').toLowerCase().trim();
+    const cKey = getCanonicalModelKey(modelName);
+
+    // 1. Check 2026 Catalog first for the most accurate dedicated product render
+    const catalogMatch = CATALOG_2026_MODELS.find(
+        m => m.name.toLowerCase().trim() === cleanName || getCanonicalModelKey(m.name) === cKey
+    );
+    if (catalogMatch && catalogMatch.img) {
+        return catalogMatch.img;
+    }
+
+    // 2. If currentImg is a valid non-empty device photo (not SVG, not Wikimedia logo, not generic placeholder)
+    if (
+        currentImg &&
+        currentImg.trim().length > 0 &&
+        !currentImg.endsWith('.svg') &&
+        !currentImg.includes('.svg') &&
+        !currentImg.includes('wikimedia') &&
+        !currentImg.includes('Wikipedia') &&
+        !currentImg.includes('Logo') &&
+        !currentImg.includes('logo.png')
+    ) {
+        return currentImg;
+    }
+
+    // 3. Fallback to Brand default flagship device render so no model is ever blank
+    return BRAND_DEFAULT_IMAGES[cleanBrand] || '/models/samsung/Samsung_Galaxy_S25_Ultra.png';
+}
+
+export function deduplicateModels<T extends { name: string; priority?: number; img?: string; brandId?: string }>(models: T[]): T[] {
     const seen = new Map<string, T>();
-    for (const model of models) {
+    for (const rawModel of models) {
+        // Resolve img so it is guaranteed never empty or SVG
+        const resolvedImg = resolveModelImage(rawModel.brandId || '', rawModel.name, rawModel.img);
+        const model = { ...rawModel, img: resolvedImg };
+
         const key = getCanonicalModelKey(model.name);
         if (!key) {
             seen.set(model.name, model);
