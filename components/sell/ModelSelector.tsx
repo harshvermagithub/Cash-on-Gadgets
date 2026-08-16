@@ -212,6 +212,25 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 else uniqueSeries.add('Poco Other');
             }
 
+            // Smartphone - Vivo
+            else if (lowerName.includes('vivo')) {
+                if (lowerName.includes('vivo x') || lowerName.startsWith('x')) uniqueSeries.add('Vivo X Series');
+                else if (lowerName.includes('vivo v') || lowerName.startsWith('v')) uniqueSeries.add('Vivo V Series');
+                else if (lowerName.includes('vivo t') || lowerName.startsWith('t')) uniqueSeries.add('Vivo T Series');
+                else if (lowerName.includes('vivo y') || lowerName.startsWith('y')) uniqueSeries.add('Vivo Y Series');
+                else if (lowerName.includes('vivo s') || lowerName.startsWith('s')) uniqueSeries.add('Vivo S Series');
+                else uniqueSeries.add('Vivo Other');
+            }
+
+            // Smartphone - Realme
+            else if (lowerName.includes('realme')) {
+                if (lowerName.includes('gt')) uniqueSeries.add('Realme GT Series');
+                else if (lowerName.includes('narzo')) uniqueSeries.add('Realme Narzo Series');
+                else if (lowerName.includes('realme c') || lowerName.includes(' c')) uniqueSeries.add('Realme C Series');
+                else if (lowerName.match(/realme\s+\d+/i)) uniqueSeries.add('Realme Number Series');
+                else uniqueSeries.add('Realme Other');
+            }
+
             // Smartphone - iQOO
             else if (lowerName.includes('iqoo')) {
                 if (lowerName.includes('neo')) uniqueSeries.add('iQOO Neo Series');
@@ -253,21 +272,20 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
             }
 
             // Custom Sort for iPhones
-            // Air -> Numbers Desc -> X -> SE
             if (a === 'Air Series') return -1;
             if (b === 'Air Series') return 1;
 
             const numA = parseInt(a);
             const numB = parseInt(b);
 
-            if (!isNaN(numA) && !isNaN(numB)) return numB - numA; // Descending
-            if (!isNaN(numA)) return -1; // Numbers first
+            if (!isNaN(numA) && !isNaN(numB)) return numB - numA;
+            if (!isNaN(numA)) return -1;
             if (!isNaN(numB)) return 1;
 
-            if (a === 'X Series') return -1; // X after numbers
+            if (a === 'X Series') return -1;
             if (b === 'X Series') return 1;
 
-            if (a === 'SE Series') return -1; // SE after X ? Or X after SE? usually X is better?
+            if (a === 'SE Series') return -1;
             if (b === 'SE Series') return 1;
 
             // Apple Watch sorting
@@ -287,7 +305,7 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                     if (!isNaN(numA) && !isNaN(numB)) return numB - numA;
                 }
 
-                if (a.includes('SE') && !b.includes('SE')) return 1; // SE lower than Series
+                if (a.includes('SE') && !b.includes('SE')) return 1;
                 if (!a.includes('SE') && b.includes('SE')) return -1;
             }
 
@@ -311,10 +329,6 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 // iPhone filters
                 if (activeSeries === 'Air Series') return name.includes('air');
                 if (activeSeries.includes('Series') && !isNaN(parseInt(activeSeries))) {
-                    // "17 Series" -> check if contains "17"
-                    // Be careful: "17" vs "17 Pro". Both contain 17.
-                    // But "iPhone 1" shouldn't match "iPhone 13". 
-                    // Regex boundary?
                     const num = parseInt(activeSeries);
                     return name.match(new RegExp(`iphone\\s+${num}\\b`, 'i'));
                 }
@@ -348,7 +362,7 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 if (activeSeries === 'Moto Tab') return name.includes('moto tab') || name.includes('motorola tab');
                 if (activeSeries === 'Nokia T Series') return name.includes('nokia t');
 
-                // Other Series
+                // Samsung Series
                 if (activeSeries === 'S Series') return m.name.includes('Galaxy S');
                 if (activeSeries === 'A Series') return m.name.includes('Galaxy A');
                 if (activeSeries === 'M Series') return m.name.includes('Galaxy M');
@@ -370,6 +384,21 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 if (activeSeries === 'Poco C Series') return name.includes('poco c');
                 if (activeSeries === 'Poco Other') return name.includes('poco') && !name.includes('poco f') && !name.includes('poco m') && !name.includes('poco x') && !name.includes('poco c') && !name.includes('poco pad');
 
+                // Vivo Filters
+                if (activeSeries === 'Vivo X Series') return name.includes('vivo x') || name.startsWith('x');
+                if (activeSeries === 'Vivo V Series') return name.includes('vivo v') || name.startsWith('v');
+                if (activeSeries === 'Vivo T Series') return name.includes('vivo t') || name.startsWith('t');
+                if (activeSeries === 'Vivo Y Series') return name.includes('vivo y') || name.startsWith('y');
+                if (activeSeries === 'Vivo S Series') return name.includes('vivo s') || name.startsWith('s');
+                if (activeSeries === 'Vivo Other') return name.includes('vivo') && !name.includes('vivo x') && !name.includes('vivo v') && !name.includes('vivo t') && !name.includes('vivo y') && !name.includes('vivo s');
+
+                // Realme Filters
+                if (activeSeries === 'Realme GT Series') return name.includes('gt');
+                if (activeSeries === 'Realme Narzo Series') return name.includes('narzo');
+                if (activeSeries === 'Realme C Series') return name.includes('realme c') || name.includes(' c');
+                if (activeSeries === 'Realme Number Series') return !!name.match(/realme\s+\d+/i);
+                if (activeSeries === 'Realme Other') return name.includes('realme') && !name.includes('gt') && !name.includes('narzo') && !name.includes('realme c') && !name.match(/realme\s+\d+/i);
+
                 // iQOO Filters
                 if (activeSeries === 'iQOO Neo Series') return name.includes('iqoo neo');
                 if (activeSeries === 'iQOO Z Series') return name.includes('iqoo z');
@@ -385,15 +414,16 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 }
                 if (activeSeries === 'Watch Series') return name.includes('apple watch') && !name.includes('series') && !name.includes('ultra') && !name.includes('se');
                 
-                // If it's a known series but doesn't match any branch, default to false if activeSeries is set
-                // to avoid showing all models when a specific series is selected.
-                // However, if it's a completely unknown series string, default to true.
                 return false; 
             }
 
             return true;
         }).sort((a, b) => {
-            // Priority-based sorting for catalog (latest models first)
+            // First check priority from database/catalog (e.g. priority 10 comes before priority 100)
+            const pDiff = (a.priority ?? 100) - (b.priority ?? 100);
+            if (pDiff !== 0) return pDiff;
+
+            // Score-based sorting (latest models first within the same priority)
             const getScore = (name: string) => {
                 let score = 0;
                 const lower = name.toLowerCase();
@@ -404,7 +434,7 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                     score = 2000 + (parseInt(iphoneMatch[1]) * 10);
                     if (lower.includes('pro max')) score += 5;
                     else if (lower.includes('pro')) score += 4;
-                    else if (lower.includes('plus')) score += 3;
+                    else if (lower.includes('plus') || lower.includes('+')) score += 3;
                     return score;
                 }
 
@@ -440,8 +470,21 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 if (sMatch && !lower.includes('tab')) {
                     score = 1600 + (parseInt(sMatch[1]) * 10);
                     if (lower.includes('ultra')) score += 5;
-                    else if (lower.includes('plus')) score += 4;
+                    else if (lower.includes('plus') || lower.includes('+')) score += 4;
                     else if (lower.includes('fe')) score -= 2;
+                    return score;
+                }
+
+                // Samsung Galaxy Z Fold / Flip score
+                if (lower.includes('fold')) {
+                    const foldMatch = lower.match(/fold\s*(\d+)/i);
+                    score = 1700 + (foldMatch ? parseInt(foldMatch[1]) * 10 : 0);
+                    if (lower.includes('ultra')) score += 5;
+                    return score;
+                }
+                if (lower.includes('flip')) {
+                    const flipMatch = lower.match(/flip\s*(\d+)/i);
+                    score = 1650 + (flipMatch ? parseInt(flipMatch[1]) * 10 : 0);
                     return score;
                 }
 
@@ -450,6 +493,82 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 if (aMatch && !lower.includes('tab')) {
                     score = 1300 + (parseInt(aMatch[1]) * 10);
                     return score;
+                }
+
+                // Samsung Galaxy F / M series score
+                const fmMatch = lower.match(/(?:galaxy\s+|^)([fm])(\d+)/i);
+                if (fmMatch) {
+                    score = 1200 + (parseInt(fmMatch[2]) * 10);
+                    return score;
+                }
+
+                // Vivo X / V / T / Y / S series score
+                if (lower.includes('vivo')) {
+                    const vxMatch = lower.match(/x(\d+)/i);
+                    if (vxMatch) {
+                        score = 1800 + parseInt(vxMatch[1]);
+                        if (lower.includes('ultra')) score += 5;
+                        else if (lower.includes('pro')) score += 4;
+                        return score;
+                    }
+                    const vvMatch = lower.match(/v(\d+)/i);
+                    if (vvMatch) {
+                        score = 1600 + parseInt(vvMatch[1]);
+                        if (lower.includes('pro')) score += 4;
+                        return score;
+                    }
+                    const vtMatch = lower.match(/t(\d+)/i);
+                    if (vtMatch) {
+                        score = 1400 + parseInt(vtMatch[1]);
+                        return score;
+                    }
+                    const vyMatch = lower.match(/y(\d+)/i);
+                    if (vyMatch) {
+                        score = 1200 + parseInt(vyMatch[1]);
+                        return score;
+                    }
+                }
+
+                // POCO F / X / M / C series score
+                if (lower.includes('poco')) {
+                    const pfMatch = lower.match(/poco\s+([fxmc])(\d+)/i);
+                    if (pfMatch) {
+                        const letter = pfMatch[1].toUpperCase();
+                        const num = parseInt(pfMatch[2]);
+                        const base = letter === 'F' ? 1700 : letter === 'X' ? 1500 : letter === 'M' ? 1300 : 1100;
+                        score = base + num * 10;
+                        if (lower.includes('pro')) score += 5;
+                        if (lower.includes('gt')) score += 4;
+                        return score;
+                    }
+                }
+
+                // Redmi Note series score
+                if (lower.includes('redmi note') || lower.includes('note')) {
+                    const rMatch = lower.match(/note\s+(\d+)/i);
+                    if (rMatch) {
+                        score = 1500 + parseInt(rMatch[1]) * 10;
+                        if (lower.includes('pro+') || lower.includes('pro plus')) score += 5;
+                        else if (lower.includes('pro')) score += 4;
+                        return score;
+                    }
+                }
+
+                // Realme GT / Number / Narzo score
+                if (lower.includes('realme')) {
+                    if (lower.includes('gt')) {
+                        const gtMatch = lower.match(/gt\s*(\d+)/i) || lower.match(/neo\s*(\d+)/i);
+                        score = 1700 + (gtMatch ? parseInt(gtMatch[1]) * 10 : 0);
+                        if (lower.includes('pro')) score += 5;
+                        return score;
+                    }
+                    const rNumMatch = lower.match(/realme\s+(\d+)/i);
+                    if (rNumMatch) {
+                        score = 1500 + parseInt(rNumMatch[1]) * 10;
+                        if (lower.includes('pro+') || lower.includes('pro plus')) score += 5;
+                        else if (lower.includes('pro')) score += 4;
+                        return score;
+                    }
                 }
 
                 // Pixel score
@@ -465,13 +584,6 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 if (oneplusMatch) {
                     score = 1400 + (parseInt(oneplusMatch[1]) * 10);
                     if (lower.includes('pro')) score += 5;
-                    return score;
-                }
-
-                // General Year-based score (e.g. "Model 2026")
-                const yearMatch = lower.match(/(202[456])/);
-                if (yearMatch) {
-                    score = 1000 + (parseInt(yearMatch[1]) - 2020) * 100;
                     return score;
                 }
                 

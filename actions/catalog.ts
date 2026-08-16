@@ -25,20 +25,49 @@ export async function findVariantByName(deviceName: string) {
     const match = deviceName.match(/(.+)\s\((.+)\)/);
     if (!match) return null;
 
-    const name = match[1];
-    const variant = match[2];
+    const name = match[1].trim();
+    const variant = match[2].trim();
 
-    const { prisma } = await import('@/lib/db');
-    const found = await prisma.variant.findFirst({
-        where: {
-            name: variant,
-            model: {
-                name: name
+    try {
+        const { prisma } = await import('@/lib/db');
+        const found = await prisma.variant.findFirst({
+            where: {
+                name: { equals: variant, mode: 'insensitive' },
+                model: {
+                    name: { equals: name, mode: 'insensitive' }
+                }
+            },
+            include: {
+                model: true
             }
-        },
-        include: {
-            model: true
+        });
+        if (found) return found;
+    } catch (e) {
+        console.error("findVariantByName DB error:", e);
+    }
+
+    // Fallback to 2026 catalog
+    const { CATALOG_2026_MODELS } = await import('@/lib/catalog2026');
+    const targetModel = CATALOG_2026_MODELS.find(m => m.name.toLowerCase().trim() === name.toLowerCase().trim());
+    if (targetModel) {
+        const targetVariant = targetModel.variants.find(v => v.name.toLowerCase().trim() === variant.toLowerCase().trim());
+        if (targetVariant) {
+            return {
+                id: targetVariant.id,
+                modelId: targetModel.id,
+                name: targetVariant.name,
+                basePrice: targetVariant.basePrice,
+                model: {
+                    id: targetModel.id,
+                    brandId: targetModel.brandId,
+                    name: targetModel.name,
+                    img: targetModel.img,
+                    category: targetModel.category,
+                    priority: targetModel.priority
+                }
+            } as any;
         }
-    });
-    return found;
+    }
+
+    return null;
 }

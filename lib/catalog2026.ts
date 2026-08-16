@@ -1,0 +1,711 @@
+export interface CatalogModel2026 {
+    id: string;
+    brandId: string;
+    name: string;
+    img: string;
+    category: string;
+    priority: number;
+    variants: { id: string; name: string; basePrice: number }[];
+}
+
+export const CATALOG_2026_MODELS: CatalogModel2026[] = [
+    // -------------------------------------------------------------
+    // Samsung (9 Models)
+    // -------------------------------------------------------------
+    {
+        id: 'galaxy-s26-ultra-5g',
+        brandId: 'samsung',
+        name: 'Galaxy S26 Ultra 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'galaxy-s26-ultra-5g-12-256', name: '12GB + 256GB', basePrice: 78540 },
+            { id: 'galaxy-s26-ultra-5g-16-512', name: '16GB + 512GB', basePrice: 82500 },
+        ]
+    },
+    {
+        id: 'galaxy-s26-plus-5g',
+        brandId: 'samsung',
+        name: 'Galaxy S26+ 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'galaxy-s26-plus-5g-12-256', name: '12GB + 256GB', basePrice: 56100 },
+            { id: 'galaxy-s26-plus-5g-12-512', name: '12GB + 512GB', basePrice: 59000 },
+        ]
+    },
+    {
+        id: 'galaxy-s26-5g',
+        brandId: 'samsung',
+        name: 'Galaxy S26 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'galaxy-s26-5g-12-128', name: '12GB + 128GB', basePrice: 44880 },
+            { id: 'galaxy-s26-5g-12-256', name: '12GB + 256GB', basePrice: 47000 },
+        ]
+    },
+    {
+        id: 'galaxy-z-fold-8-ultra',
+        brandId: 'samsung',
+        name: 'Galaxy Z Fold 8 Ultra',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'galaxy-z-fold-8-ultra-16-512', name: '16GB + 512GB', basePrice: 100980 },
+            { id: 'galaxy-z-fold-8-ultra-16-1tb', name: '16GB + 1TB', basePrice: 108000 },
+        ]
+    },
+    {
+        id: 'galaxy-z-fold-8',
+        brandId: 'samsung',
+        name: 'Galaxy Z Fold 8',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'galaxy-z-fold-8-12-256', name: '12GB + 256GB', basePrice: 89760 },
+            { id: 'galaxy-z-fold-8-12-512', name: '12GB + 512GB', basePrice: 94000 },
+        ]
+    },
+    {
+        id: 'galaxy-z-flip-8',
+        brandId: 'samsung',
+        name: 'Galaxy Z Flip 8',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'galaxy-z-flip-8-12-256', name: '12GB + 256GB', basePrice: 56100 },
+            { id: 'galaxy-z-flip-8-12-512', name: '12GB + 512GB', basePrice: 59000 },
+        ]
+    },
+    {
+        id: 'galaxy-f70-pro-5g',
+        brandId: 'samsung',
+        name: 'Galaxy F70 Pro 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'galaxy-f70-pro-5g-8-128', name: '8GB + 128GB', basePrice: 14025 },
+            { id: 'galaxy-f70-pro-5g-8-256', name: '8GB + 256GB', basePrice: 15500 },
+        ]
+    },
+    {
+        id: 'galaxy-m47-5g',
+        brandId: 'samsung',
+        name: 'Galaxy M47 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'galaxy-m47-5g-6-128', name: '6GB + 128GB', basePrice: 11220 },
+            { id: 'galaxy-m47-5g-8-128', name: '8GB + 128GB', basePrice: 12000 },
+        ]
+    },
+    {
+        id: 'galaxy-a86-5g',
+        brandId: 'samsung',
+        name: 'Galaxy A86 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'galaxy-a86-5g-8-128', name: '8GB + 128GB', basePrice: 22440 },
+            { id: 'galaxy-a86-5g-8-256', name: '8GB + 256GB', basePrice: 24000 },
+        ]
+    },
+
+    // -------------------------------------------------------------
+    // Redmi (Xiaomi) (8 Models)
+    // -------------------------------------------------------------
+    {
+        id: 'redmi-turbo-5',
+        brandId: 'xiaomi',
+        name: 'Redmi Turbo 5',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'redmi-turbo-5-8-256', name: '8GB + 256GB', basePrice: 23562 },
+            { id: 'redmi-turbo-5-12-256', name: '12GB + 256GB', basePrice: 25000 },
+        ]
+    },
+    {
+        id: 'redmi-note-15-pro-plus-5g',
+        brandId: 'xiaomi',
+        name: 'Redmi Note 15 Pro+ 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'redmi-note-15-pro-plus-5g-8-256', name: '8GB + 256GB', basePrice: 22440 },
+            { id: 'redmi-note-15-pro-plus-5g-12-512', name: '12GB + 512GB', basePrice: 24000 },
+        ]
+    },
+    {
+        id: 'redmi-note-15-pro-5g',
+        brandId: 'xiaomi',
+        name: 'Redmi Note 15 Pro 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'redmi-note-15-pro-5g-8-128', name: '8GB + 128GB', basePrice: 19635 },
+            { id: 'redmi-note-15-pro-5g-8-256', name: '8GB + 256GB', basePrice: 21000 },
+        ]
+    },
+    {
+        id: 'redmi-note-15-5g',
+        brandId: 'xiaomi',
+        name: 'Redmi Note 15 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'redmi-note-15-5g-6-128', name: '6GB + 128GB', basePrice: 15147 },
+            { id: 'redmi-note-15-5g-8-256', name: '8GB + 256GB', basePrice: 16500 },
+        ]
+    },
+    {
+        id: 'redmi-note-15-se-5g',
+        brandId: 'xiaomi',
+        name: 'Redmi Note 15 SE 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'redmi-note-15-se-5g-6-128', name: '6GB + 128GB', basePrice: 14586 },
+            { id: 'redmi-note-15-se-5g-8-128', name: '8GB + 128GB', basePrice: 15500 },
+        ]
+    },
+    {
+        id: 'redmi-note-17-5g',
+        brandId: 'xiaomi',
+        name: 'Redmi Note 17 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'redmi-note-17-5g-8-128', name: '8GB + 128GB', basePrice: 17391 },
+            { id: 'redmi-note-17-5g-8-256', name: '8GB + 256GB', basePrice: 18500 },
+        ]
+    },
+    {
+        id: 'redmi-15c-5g',
+        brandId: 'xiaomi',
+        name: 'Redmi 15C 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'redmi-15c-5g-6-128', name: '6GB + 128GB', basePrice: 10378 },
+            { id: 'redmi-15c-5g-8-128', name: '8GB + 128GB', basePrice: 11000 },
+        ]
+    },
+    {
+        id: 'redmi-15a-5g',
+        brandId: 'xiaomi',
+        name: 'Redmi 15A 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'redmi-15a-5g-4-128', name: '4GB + 128GB', basePrice: 8592 },
+            { id: 'redmi-15a-5g-6-128', name: '6GB + 128GB', basePrice: 9200 },
+        ]
+    },
+
+    // -------------------------------------------------------------
+    // Realme (9 Models)
+    // -------------------------------------------------------------
+    {
+        id: 'realme-gt6-pro-5g',
+        brandId: 'realme',
+        name: 'Realme GT6 Pro 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'realme-gt6-pro-5g-12-256', name: '12GB + 256GB', basePrice: 33660 },
+            { id: 'realme-gt6-pro-5g-16-512', name: '16GB + 512GB', basePrice: 36000 },
+        ]
+    },
+    {
+        id: 'realme-gt6-5g',
+        brandId: 'realme',
+        name: 'Realme GT6 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'realme-gt6-5g-8-256', name: '8GB + 256GB', basePrice: 23001 },
+            { id: 'realme-gt6-5g-12-256', name: '12GB + 256GB', basePrice: 25000 },
+        ]
+    },
+    {
+        id: 'realme-gt-neo-8-5g',
+        brandId: 'realme',
+        name: 'Realme GT Neo 8 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'realme-gt-neo-8-5g-8-256', name: '8GB + 256GB', basePrice: 20196 },
+            { id: 'realme-gt-neo-8-5g-12-256', name: '12GB + 256GB', basePrice: 21500 },
+        ]
+    },
+    {
+        id: 'realme-14-pro-plus-5g',
+        brandId: 'realme',
+        name: 'Realme 14 Pro+ 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'realme-14-pro-plus-5g-8-256', name: '8GB + 256GB', basePrice: 18513 },
+            { id: 'realme-14-pro-plus-5g-12-256', name: '12GB + 256GB', basePrice: 19500 },
+        ]
+    },
+    {
+        id: 'realme-14-pro-5g',
+        brandId: 'realme',
+        name: 'Realme 14 Pro 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'realme-14-pro-5g-8-128', name: '8GB + 128GB', basePrice: 15708 },
+            { id: 'realme-14-pro-5g-8-256', name: '8GB + 256GB', basePrice: 16800 },
+        ]
+    },
+    {
+        id: 'realme-14-5g',
+        brandId: 'realme',
+        name: 'Realme 14 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'realme-14-5g-6-128', name: '6GB + 128GB', basePrice: 11220 },
+            { id: 'realme-14-5g-8-128', name: '8GB + 128GB', basePrice: 12000 },
+        ]
+    },
+    {
+        id: 'realme-narzo-80-pro',
+        brandId: 'realme',
+        name: 'Realme Narzo 80 Pro',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'realme-narzo-80-pro-8-128', name: '8GB + 128GB', basePrice: 12903 },
+            { id: 'realme-narzo-80-pro-8-256', name: '8GB + 256GB', basePrice: 14000 },
+        ]
+    },
+    {
+        id: 'realme-narzo-80x-5g',
+        brandId: 'realme',
+        name: 'Realme Narzo 80x 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'realme-narzo-80x-5g-6-128', name: '6GB + 128GB', basePrice: 8976 },
+            { id: 'realme-narzo-80x-5g-8-128', name: '8GB + 128GB', basePrice: 9500 },
+        ]
+    },
+    {
+        id: 'realme-c75-5g',
+        brandId: 'realme',
+        name: 'Realme C75 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'realme-c75-5g-4-128', name: '4GB + 128GB', basePrice: 7293 },
+            { id: 'realme-c75-5g-6-128', name: '6GB + 128GB', basePrice: 7900 },
+        ]
+    },
+
+    // -------------------------------------------------------------
+    // POCO (10 Models)
+    // -------------------------------------------------------------
+    {
+        id: 'poco-f8-pro-5g',
+        brandId: 'poco',
+        name: 'POCO F8 Pro 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'poco-f8-pro-5g-12-256', name: '12GB + 256GB', basePrice: 25245 },
+            { id: 'poco-f8-pro-5g-16-512', name: '16GB + 512GB', basePrice: 27500 },
+        ]
+    },
+    {
+        id: 'poco-f8-5g',
+        brandId: 'poco',
+        name: 'POCO F8 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'poco-f8-5g-8-256', name: '8GB + 256GB', basePrice: 19635 },
+            { id: 'poco-f8-5g-12-256', name: '12GB + 256GB', basePrice: 21000 },
+        ]
+    },
+    {
+        id: 'poco-f8-gt-5g',
+        brandId: 'poco',
+        name: 'POCO F8 GT 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'poco-f8-gt-5g-8-256', name: '8GB + 256GB', basePrice: 22440 },
+            { id: 'poco-f8-gt-5g-12-256', name: '12GB + 256GB', basePrice: 24000 },
+        ]
+    },
+    {
+        id: 'poco-x8-pro-5g',
+        brandId: 'poco',
+        name: 'POCO X8 Pro 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'poco-x8-pro-5g-8-256', name: '8GB + 256GB', basePrice: 16269 },
+            { id: 'poco-x8-pro-5g-12-256', name: '12GB + 256GB', basePrice: 17500 },
+        ]
+    },
+    {
+        id: 'poco-x8-5g',
+        brandId: 'poco',
+        name: 'POCO X8 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'poco-x8-5g-8-128', name: '8GB + 128GB', basePrice: 12342 },
+            { id: 'poco-x8-5g-8-256', name: '8GB + 256GB', basePrice: 13500 },
+        ]
+    },
+    {
+        id: 'poco-x8-neo-5g',
+        brandId: 'poco',
+        name: 'POCO X8 Neo 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'poco-x8-neo-5g-6-128', name: '6GB + 128GB', basePrice: 10098 },
+            { id: 'poco-x8-neo-5g-8-256', name: '8GB + 256GB', basePrice: 11000 },
+        ]
+    },
+    {
+        id: 'poco-m8-pro-5g',
+        brandId: 'poco',
+        name: 'POCO M8 Pro 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'poco-m8-pro-5g-6-128', name: '6GB + 128GB', basePrice: 8415 },
+            { id: 'poco-m8-pro-5g-8-128', name: '8GB + 128GB', basePrice: 9000 },
+        ]
+    },
+    {
+        id: 'poco-m8-5g',
+        brandId: 'poco',
+        name: 'POCO M8 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'poco-m8-5g-4-128', name: '4GB + 128GB', basePrice: 6732 },
+            { id: 'poco-m8-5g-6-128', name: '6GB + 128GB', basePrice: 7200 },
+        ]
+    },
+    {
+        id: 'poco-c8-5g',
+        brandId: 'poco',
+        name: 'POCO C8 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'poco-c8-5g-4-128', name: '4GB + 128GB', basePrice: 5610 },
+            { id: 'poco-c8-5g-6-128', name: '6GB + 128GB', basePrice: 6000 },
+        ]
+    },
+    {
+        id: 'poco-c8-plus',
+        brandId: 'poco',
+        name: 'POCO C8 Plus',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'poco-c8-plus-4-64', name: '4GB + 64GB', basePrice: 5049 },
+            { id: 'poco-c8-plus-4-128', name: '4GB + 128GB', basePrice: 5500 },
+        ]
+    },
+
+    // -------------------------------------------------------------
+    // Vivo (20 Models)
+    // -------------------------------------------------------------
+    {
+        id: 'vivo-x300-ultra',
+        brandId: 'vivo',
+        name: 'Vivo X300 Ultra',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-x300-ultra-12-256', name: '12GB + 256GB', basePrice: 56100 },
+            { id: 'vivo-x300-ultra-16-512', name: '16GB + 512GB', basePrice: 60000 },
+        ]
+    },
+    {
+        id: 'vivo-x300-pro-5g',
+        brandId: 'vivo',
+        name: 'Vivo X300 Pro 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-x300-pro-5g-12-256', name: '12GB + 256GB', basePrice: 44880 },
+            { id: 'vivo-x300-pro-5g-12-512', name: '12GB + 512GB', basePrice: 48000 },
+        ]
+    },
+    {
+        id: 'vivo-x300-5g',
+        brandId: 'vivo',
+        name: 'Vivo X300 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-x300-5g-8-256', name: '8GB + 256GB', basePrice: 36465 },
+            { id: 'vivo-x300-5g-12-256', name: '12GB + 256GB', basePrice: 39000 },
+        ]
+    },
+    {
+        id: 'vivo-x300-fe-5g',
+        brandId: 'vivo',
+        name: 'Vivo X300 FE 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-x300-fe-5g-8-256', name: '8GB + 256GB', basePrice: 28050 },
+            { id: 'vivo-x300-fe-5g-12-256', name: '12GB + 256GB', basePrice: 30000 },
+        ]
+    },
+    {
+        id: 'vivo-x200t',
+        brandId: 'vivo',
+        name: 'Vivo X200T',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-x200t-8-128', name: '8GB + 128GB', basePrice: 25245 },
+            { id: 'vivo-x200t-8-256', name: '8GB + 256GB', basePrice: 27000 },
+        ]
+    },
+    {
+        id: 'vivo-x200-pro',
+        brandId: 'vivo',
+        name: 'Vivo X200 Pro',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-x200-pro-12-256', name: '12GB + 256GB', basePrice: 39270 },
+            { id: 'vivo-x200-pro-12-512', name: '12GB + 512GB', basePrice: 42000 },
+        ]
+    },
+    {
+        id: 'vivo-v70-5g',
+        brandId: 'vivo',
+        name: 'Vivo V70 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-v70-5g-8-128', name: '8GB + 128GB', basePrice: 21879 },
+            { id: 'vivo-v70-5g-8-256', name: '8GB + 256GB', basePrice: 23500 },
+        ]
+    },
+    {
+        id: 'vivo-v70-elite',
+        brandId: 'vivo',
+        name: 'Vivo V70 Elite',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-v70-elite-8-128', name: '8GB + 128GB', basePrice: 19635 },
+            { id: 'vivo-v70-elite-8-256', name: '8GB + 256GB', basePrice: 21000 },
+        ]
+    },
+    {
+        id: 'vivo-v70-fe',
+        brandId: 'vivo',
+        name: 'Vivo V70 FE',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-v70-fe-8-128', name: '8GB + 128GB', basePrice: 16830 },
+            { id: 'vivo-v70-fe-8-256', name: '8GB + 256GB', basePrice: 18000 },
+        ]
+    },
+    {
+        id: 'vivo-v60-5g',
+        brandId: 'vivo',
+        name: 'Vivo V60 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-v60-5g-8-128', name: '8GB + 128GB', basePrice: 17952 },
+            { id: 'vivo-v60-5g-8-256', name: '8GB + 256GB', basePrice: 19000 },
+        ]
+    },
+    {
+        id: 'vivo-v60e-5g',
+        brandId: 'vivo',
+        name: 'Vivo V60e 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-v60e-5g-8-128', name: '8GB + 128GB', basePrice: 14586 },
+            { id: 'vivo-v60e-5g-8-256', name: '8GB + 256GB', basePrice: 15500 },
+        ]
+    },
+    {
+        id: 'vivo-t5-pro',
+        brandId: 'vivo',
+        name: 'Vivo T5 Pro',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-t5-pro-8-128', name: '8GB + 128GB', basePrice: 14025 },
+            { id: 'vivo-t5-pro-8-256', name: '8GB + 256GB', basePrice: 15000 },
+        ]
+    },
+    {
+        id: 'vivo-t5x-5g',
+        brandId: 'vivo',
+        name: 'Vivo T5x 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-t5x-5g-6-128', name: '6GB + 128GB', basePrice: 9537 },
+            { id: 'vivo-t5x-5g-8-128', name: '8GB + 128GB', basePrice: 10000 },
+        ]
+    },
+    {
+        id: 'vivo-t5-lite-5g',
+        brandId: 'vivo',
+        name: 'Vivo T5 Lite 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-t5-lite-5g-4-128', name: '4GB + 128GB', basePrice: 7854 },
+            { id: 'vivo-t5-lite-5g-6-128', name: '6GB + 128GB', basePrice: 8500 },
+        ]
+    },
+    {
+        id: 'vivo-t4-5g-ultra',
+        brandId: 'vivo',
+        name: 'Vivo T4 5G / Ultra',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-t4-5g-ultra-6-128', name: '6GB + 128GB', basePrice: 11220 },
+            { id: 'vivo-t4-5g-ultra-8-128', name: '8GB + 128GB', basePrice: 12000 },
+        ]
+    },
+    {
+        id: 'vivo-s2-5g',
+        brandId: 'vivo',
+        name: 'Vivo S2 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-s2-5g-8-256', name: '8GB + 256GB', basePrice: 18513 },
+            { id: 'vivo-s2-5g-12-256', name: '12GB + 256GB', basePrice: 19800 },
+        ]
+    },
+    {
+        id: 'vivo-s50-mini',
+        brandId: 'vivo',
+        name: 'Vivo S50 / Mini',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-s50-mini-8-128', name: '8GB + 128GB', basePrice: 15708 },
+            { id: 'vivo-s50-mini-8-256', name: '8GB + 256GB', basePrice: 16800 },
+        ]
+    },
+    {
+        id: 'vivo-y600-pro',
+        brandId: 'vivo',
+        name: 'Vivo Y600 Pro',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-y600-pro-8-128', name: '8GB + 128GB', basePrice: 12342 },
+            { id: 'vivo-y600-pro-8-256', name: '8GB + 256GB', basePrice: 13500 },
+        ]
+    },
+    {
+        id: 'vivo-y500-pro',
+        brandId: 'vivo',
+        name: 'Vivo Y500 Pro',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-y500-pro-6-128', name: '6GB + 128GB', basePrice: 10098 },
+            { id: 'vivo-y500-pro-8-128', name: '8GB + 128GB', basePrice: 11000 },
+        ]
+    },
+    {
+        id: 'vivo-y500-5g',
+        brandId: 'vivo',
+        name: 'Vivo Y500 5G',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-y500-5g-6-128', name: '6GB + 128GB', basePrice: 8415 },
+            { id: 'vivo-y500-5g-8-128', name: '8GB + 128GB', basePrice: 9000 },
+        ]
+    }
+];
+
+export function get2026ModelsForBrand(brandId?: string, category?: string) {
+    return CATALOG_2026_MODELS.filter(m => {
+        if (brandId && m.brandId !== brandId) return false;
+        if (category && category !== 'smartphone' && category !== 'mobile') return false;
+        return true;
+    });
+}
