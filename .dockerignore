@@ -34,3 +34,16 @@ tmp_*.ts
 *.yml
 !docker-compose.yml
 !mailserver_compose.yml
+
+# Temp logo design and pricing preview assets
+public/shop_logo_*
+public/cart_preview_page_*
+public/loader_preview_*
+public/full_cart_composition_preview_*
+public/fonzkart_resale_prices_preview.png
+public/icon_base64.txt
+public/icon_cropped.png
+public/logo_final_v3_base64.txt
+public/phone_current_logo.png
+public/phone_target_logo.png
+scripts/crop_logo.py
