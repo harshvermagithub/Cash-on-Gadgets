@@ -16,7 +16,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'galaxy-s26-ultra-5g',
         brandId: 'samsung',
         name: 'Galaxy S26 Ultra 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        img: '/models/samsung/Samsung_Galaxy_S25_Ultra.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -28,7 +28,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'galaxy-s26-plus-5g',
         brandId: 'samsung',
         name: 'Galaxy S26+ 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        img: '/models/samsung/Samsung_Galaxy_S25_Plus.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -40,7 +40,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'galaxy-s26-5g',
         brandId: 'samsung',
         name: 'Galaxy S26 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        img: '/models/samsung/Samsung_Galaxy_S25.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -52,7 +52,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'galaxy-z-fold-8-ultra',
         brandId: 'samsung',
         name: 'Galaxy Z Fold 8 Ultra',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        img: '/models/samsung/Samsung_Galaxy_Z_Fold_7.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -64,7 +64,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'galaxy-z-fold-8',
         brandId: 'samsung',
         name: 'Galaxy Z Fold 8',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        img: '/models/samsung/Samsung_Galaxy_Z_Fold_6.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -76,7 +76,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'galaxy-z-flip-8',
         brandId: 'samsung',
         name: 'Galaxy Z Flip 8',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        img: '/models/samsung/Samsung_Galaxy_Z_Flip_7.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -88,7 +88,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'galaxy-f70-pro-5g',
         brandId: 'samsung',
         name: 'Galaxy F70 Pro 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        img: '/models/samsung/Samsung_Galaxy_F56_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -100,7 +100,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'galaxy-m47-5g',
         brandId: 'samsung',
         name: 'Galaxy M47 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        img: '/models/samsung/Samsung_Galaxy_M56_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -112,7 +112,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'galaxy-a86-5g',
         brandId: 'samsung',
         name: 'Galaxy A86 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+        img: '/models/samsung/Samsung_Galaxy_A56_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -128,7 +128,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'redmi-turbo-5',
         brandId: 'xiaomi',
         name: 'Redmi Turbo 5',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        img: '/models/xiaomi/Xiaomi_15.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -140,7 +140,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'redmi-note-15-pro-plus-5g',
         brandId: 'xiaomi',
         name: 'Redmi Note 15 Pro+ 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        img: '/models/xiaomi/Redmi_Note_15_Pro_Plus_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -152,7 +152,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'redmi-note-15-pro-5g',
         brandId: 'xiaomi',
         name: 'Redmi Note 15 Pro 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        img: '/models/xiaomi/Redmi_Note_15_Pro_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -164,7 +164,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'redmi-note-15-5g',
         brandId: 'xiaomi',
         name: 'Redmi Note 15 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        img: '/models/xiaomi/Redmi_Note_15_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -176,7 +176,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'redmi-note-15-se-5g',
         brandId: 'xiaomi',
         name: 'Redmi Note 15 SE 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        img: '/models/xiaomi/Redmi_Note_14_SE_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -188,7 +188,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'redmi-note-17-5g',
         brandId: 'xiaomi',
         name: 'Redmi Note 17 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        img: '/models/xiaomi/Redmi_Note_14_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -200,7 +200,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'redmi-15c-5g',
         brandId: 'xiaomi',
         name: 'Redmi 15C 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        img: '/models/xiaomi/Redmi_15C_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -212,7 +212,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'redmi-15a-5g',
         brandId: 'xiaomi',
         name: 'Redmi 15A 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_%282021-%29.svg',
+        img: '/models/xiaomi/Redmi_15_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -228,7 +228,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'realme-gt6-pro-5g',
         brandId: 'realme',
         name: 'Realme GT6 Pro 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        img: '/models/realme/Realme_GT_7_Pro_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -240,7 +240,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'realme-gt6-5g',
         brandId: 'realme',
         name: 'Realme GT6 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        img: '/models/realme/Realme_GT_6.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -252,7 +252,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'realme-gt-neo-8-5g',
         brandId: 'realme',
         name: 'Realme GT Neo 8 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        img: '/models/realme/REALME_GT_NEO_3_150W.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -264,7 +264,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'realme-14-pro-plus-5g',
         brandId: 'realme',
         name: 'Realme 14 Pro+ 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        img: '/models/realme/Realme_14_Pro_Plus_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -276,7 +276,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'realme-14-pro-5g',
         brandId: 'realme',
         name: 'Realme 14 Pro 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        img: '/models/realme/Realme_14_Pro_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -288,7 +288,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'realme-14-5g',
         brandId: 'realme',
         name: 'Realme 14 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        img: '/models/realme/Realme_14X_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -300,7 +300,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'realme-narzo-80-pro',
         brandId: 'realme',
         name: 'Realme Narzo 80 Pro',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        img: '/models/realme/Realme_Narzo_80_Pro_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -312,7 +312,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'realme-narzo-80x-5g',
         brandId: 'realme',
         name: 'Realme Narzo 80x 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        img: '/models/realme/Realme_Narzo_80X_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -324,7 +324,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'realme-c75-5g',
         brandId: 'realme',
         name: 'Realme C75 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Realme-realme-_logo_box_RGB_01.svg',
+        img: '/models/realme/Realme_C75_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -340,7 +340,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'poco-f8-pro-5g',
         brandId: 'poco',
         name: 'POCO F8 Pro 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        img: '/models/poco/Poco_F7.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -352,7 +352,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'poco-f8-5g',
         brandId: 'poco',
         name: 'POCO F8 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        img: '/models/poco/Poco_F6_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -364,7 +364,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'poco-f8-gt-5g',
         brandId: 'poco',
         name: 'POCO F8 GT 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        img: '/models/poco/POCO_F3_GT.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -376,7 +376,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'poco-x8-pro-5g',
         brandId: 'poco',
         name: 'POCO X8 Pro 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        img: '/models/poco/Poco_X7_Pro_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -388,7 +388,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'poco-x8-5g',
         brandId: 'poco',
         name: 'POCO X8 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        img: '/models/poco/Poco_X7_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -400,7 +400,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'poco-x8-neo-5g',
         brandId: 'poco',
         name: 'POCO X8 Neo 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        img: '/models/poco/Poco_X6_Neo.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -412,7 +412,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'poco-m8-pro-5g',
         brandId: 'poco',
         name: 'POCO M8 Pro 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        img: '/models/poco/Poco_M7_Pro_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -424,7 +424,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'poco-m8-5g',
         brandId: 'poco',
         name: 'POCO M8 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        img: '/models/poco/Poco_M8_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -436,7 +436,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'poco-c8-5g',
         brandId: 'poco',
         name: 'POCO C8 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        img: '/models/poco/Poco_C75_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -448,7 +448,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'poco-c8-plus',
         brandId: 'poco',
         name: 'POCO C8 Plus',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Poco_Logo.svg',
+        img: '/models/poco/POCO_C85.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -464,7 +464,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-x300-ultra',
         brandId: 'vivo',
         name: 'Vivo X300 Ultra',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_X300_Pro.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -476,7 +476,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-x300-pro-5g',
         brandId: 'vivo',
         name: 'Vivo X300 Pro 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_X300_Pro.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -488,7 +488,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-x300-5g',
         brandId: 'vivo',
         name: 'Vivo X300 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_X300.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -500,7 +500,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-x300-fe-5g',
         brandId: 'vivo',
         name: 'Vivo X300 FE 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_X200_FE.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -512,7 +512,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-x200t',
         brandId: 'vivo',
         name: 'Vivo X200T',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_X200T.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -524,7 +524,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-x200-pro',
         brandId: 'vivo',
         name: 'Vivo X200 Pro',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_X200_Pro_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -536,7 +536,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-v70-5g',
         brandId: 'vivo',
         name: 'Vivo V70 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_V60_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -548,7 +548,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-v70-elite',
         brandId: 'vivo',
         name: 'Vivo V70 Elite',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_V60_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -560,7 +560,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-v70-fe',
         brandId: 'vivo',
         name: 'Vivo V70 FE',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_V50_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -572,7 +572,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-v60-5g',
         brandId: 'vivo',
         name: 'Vivo V60 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_V60_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -584,7 +584,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-v60e-5g',
         brandId: 'vivo',
         name: 'Vivo V60e 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_V60e.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -596,7 +596,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-t5-pro',
         brandId: 'vivo',
         name: 'Vivo T5 Pro',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_T4_Pro_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -608,7 +608,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-t5x-5g',
         brandId: 'vivo',
         name: 'Vivo T5x 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_T4x_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -620,7 +620,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-t5-lite-5g',
         brandId: 'vivo',
         name: 'Vivo T5 Lite 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_T4_Lite_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -632,7 +632,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-t4-5g-ultra',
         brandId: 'vivo',
         name: 'Vivo T4 5G / Ultra',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_T4_Ultra.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -644,7 +644,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-s2-5g',
         brandId: 'vivo',
         name: 'Vivo S2 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_S1_Pro.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -656,7 +656,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-s50-mini',
         brandId: 'vivo',
         name: 'Vivo S50 / Mini',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_S1.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -668,7 +668,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-y600-pro',
         brandId: 'vivo',
         name: 'Vivo Y600 Pro',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_Y400_Pro_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -680,7 +680,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-y500-pro',
         brandId: 'vivo',
         name: 'Vivo Y500 Pro',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_Y400_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
@@ -692,7 +692,7 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         id: 'vivo-y500-5g',
         brandId: 'vivo',
         name: 'Vivo Y500 5G',
-        img: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/Vivo_logo_2019.svg',
+        img: '/models/vivo/Vivo_Y300_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [

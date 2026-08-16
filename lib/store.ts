@@ -493,6 +493,16 @@ export const db = {
             })();
         }
 
+        // Map any existing DB models to their high-res 2026 product images if matching
+        const catalogMap = new Map(CATALOG_2026_MODELS.map(m => [m.name.toLowerCase().trim(), m.img]));
+        const updatedDbModels = dbModels.map(m => {
+            const catalogImg = catalogMap.get(m.name.toLowerCase().trim());
+            if (catalogImg && (!m.img || m.img.endsWith('.svg') || m.img.includes('wikimedia') || m.img.includes('Logo'))) {
+                return { ...m, img: catalogImg };
+            }
+            return m;
+        });
+
         // Merge missing 2026 models directly into results
         const combined = [
             ...missing2026.map(m => ({
@@ -503,7 +513,7 @@ export const db = {
                 category: m.category,
                 priority: m.priority
             })),
-            ...dbModels
+            ...updatedDbModels
         ];
 
         return combined.sort((a, b) => {
