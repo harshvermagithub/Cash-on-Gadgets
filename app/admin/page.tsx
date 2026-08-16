@@ -3,6 +3,7 @@ import { Layers, Smartphone, Tag, ShoppingCart, PlusCircle, Monitor, Headphones,
 import Link from 'next/link';
 import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
+import Sync2026Models from "@/components/admin/Sync2026Models";
 
 export const dynamic = 'force-dynamic';
 
@@ -64,6 +65,8 @@ export default async function AdminDashboard() {
                     </div>
                 </div>
             </div>
+
+            <Sync2026Models />
 
             <div className="space-y-4">
                 <h2 className="text-xl font-bold">Quick Actions</h2>
