@@ -709,3 +709,46 @@ export function get2026ModelsForBrand(brandId?: string, category?: string) {
         return true;
     });
 }
+
+export function getCanonicalModelKey(name: string): string {
+    if (!name) return '';
+    return name
+        .toLowerCase()
+        .replace(/\b5g\b/gi, '')
+        .replace(/\b4g\b/gi, '')
+        .replace(/\b3g\b/gi, '')
+        .replace(/\+/g, 'plus')
+        .replace(/\b(samsung|galaxy|vivo|xiaomi|redmi|realme|poco|apple|iphone|oppo|oneplus|iqoo|motorola|google|pixel)\b/gi, '')
+        .replace(/[^a-z0-9]/gi, '')
+        .trim();
+}
+
+export function deduplicateModels<T extends { name: string; priority?: number; img?: string }>(models: T[]): T[] {
+    const seen = new Map<string, T>();
+    for (const model of models) {
+        const key = getCanonicalModelKey(model.name);
+        if (!key) {
+            seen.set(model.name, model);
+            continue;
+        }
+
+        const existing = seen.get(key);
+        if (!existing) {
+            seen.set(key, model);
+        } else {
+            // Keep the one with higher priority (lower priority number, e.g. 10 < 100)
+            const pExisting = existing.priority ?? 100;
+            const pModel = model.priority ?? 100;
+
+            if (pModel < pExisting) {
+                seen.set(key, model);
+            } else if (pModel === pExisting) {
+                // If same priority, prefer the name containing '5G' or more descriptive name
+                if (model.name.toLowerCase().includes('5g') && !existing.name.toLowerCase().includes('5g')) {
+                    seen.set(key, model);
+                }
+            }
+        }
+    }
+    return Array.from(seen.values());
+}

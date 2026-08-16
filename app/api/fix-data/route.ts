@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { randomUUID } from 'crypto';
+import { getCanonicalModelKey } from '@/lib/catalog2026';
 
 // Apple iPhone Data
 const IPHONE_DATA = [
@@ -200,13 +201,10 @@ export async function GET(req: Request) {
                 });
             }
 
-            // 1. Find or Create Model
-            let model = await prisma.model.findFirst({
-                where: {
-                    brandId: item.brandId,
-                    name: { equals: item.name, mode: 'insensitive' }
-                }
-            });
+            // 1. Find existing model by exact name or matching canonical key
+            const targetCanonicalKey = getCanonicalModelKey(item.name);
+            const allBrandModels = await prisma.model.findMany({ where: { brandId: item.brandId } });
+            let model = allBrandModels.find(m => getCanonicalModelKey(m.name) === targetCanonicalKey) || null;
 
             if (!model) {
                 log += `Creating Model: ${item.name} (Priority: ${item.priority})\n`;
@@ -221,14 +219,16 @@ export async function GET(req: Request) {
                     }
                 });
             } else {
-                // Keep priority on top
-                if (model.priority !== item.priority) {
-                    await prisma.model.update({
-                        where: { id: model.id },
-                        data: { priority: item.priority }
-                    });
-                    log += `Updated priority for ${item.name} to ${item.priority}\n`;
-                }
+                // Update model name, image, and priority to canonical 2026 definition
+                await prisma.model.update({
+                    where: { id: model.id },
+                    data: {
+                        name: item.name,
+                        img: item.logo,
+                        priority: item.priority
+                    }
+                });
+                log += `Updated canonical model definition for ${item.name}\n`;
             }
 
             // 2. Find or Create Variants
@@ -259,6 +259,40 @@ export async function GET(req: Request) {
                         }
                     });
                     log += `Created ${item.name} ${vName} at ${v.price}\n`;
+                }
+            }
+        }
+
+        // 3. Database-wide Deduplication Cleanup
+        log += `\n--- Cleaning Up Duplicate Models in Database ---\n`;
+        const allDbModels = await prisma.model.findMany();
+        const modelsByBrandAndKey = new Map<string, typeof allDbModels>();
+
+        for (const m of allDbModels) {
+            const compositeKey = `${m.brandId}:${getCanonicalModelKey(m.name)}`;
+            if (!modelsByBrandAndKey.has(compositeKey)) {
+                modelsByBrandAndKey.set(compositeKey, []);
+            }
+            modelsByBrandAndKey.get(compositeKey)!.push(m);
+        }
+
+        for (const [key, duplicateList] of modelsByBrandAndKey.entries()) {
+            if (duplicateList.length > 1) {
+                duplicateList.sort((a, b) => {
+                    const pDiff = (a.priority ?? 100) - (b.priority ?? 100);
+                    if (pDiff !== 0) return pDiff;
+                    if (a.name.toLowerCase().includes('5g') && !b.name.toLowerCase().includes('5g')) return -1;
+                    if (!a.name.toLowerCase().includes('5g') && b.name.toLowerCase().includes('5g')) return 1;
+                    return 0;
+                });
+
+                const primary = duplicateList[0];
+                const duplicatesToDelete = duplicateList.slice(1);
+
+                for (const dup of duplicatesToDelete) {
+                    log += `Deleting duplicate model: "${dup.name}" (ID: ${dup.id}) in favor of primary: "${primary.name}"\n`;
+                    await prisma.variant.deleteMany({ where: { modelId: dup.id } }).catch(() => {});
+                    await prisma.model.delete({ where: { id: dup.id } }).catch(() => {});
                 }
             }
         }

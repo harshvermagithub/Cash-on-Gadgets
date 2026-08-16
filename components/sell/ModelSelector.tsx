@@ -6,6 +6,7 @@ import { ArrowLeft, Search, X } from "lucide-react";
 import Image from "next/image";
 import { Model } from '@/lib/store';
 import { fetchModels } from '@/actions/catalog';
+import { deduplicateModels } from '@/lib/catalog2026';
 import SVGLoader from "@/components/ui/SVGLoader";
 
 interface ModelSelectorProps {
@@ -317,7 +318,7 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
 
     // Filter Models
     const filteredModels = useMemo(() => {
-        return models.filter(m => {
+        const filtered = models.filter(m => {
             if (!m.name) return false;
             const matchesSearch = m.name.toLowerCase().includes(searchTerm.toLowerCase());
 
@@ -362,20 +363,33 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 if (activeSeries === 'Moto Tab') return name.includes('moto tab') || name.includes('motorola tab');
                 if (activeSeries === 'Nokia T Series') return name.includes('nokia t');
 
-                // Samsung Series
-                if (activeSeries === 'S Series') return m.name.includes('Galaxy S');
-                if (activeSeries === 'A Series') return m.name.includes('Galaxy A');
-                if (activeSeries === 'M Series') return m.name.includes('Galaxy M');
-                if (activeSeries === 'F Series') return m.name.includes('Galaxy F');
-                if (activeSeries === 'Z Fold Series') return m.name.includes('Fold');
-                if (activeSeries === 'Z Flip Series') return m.name.includes('Flip');
-                if (activeSeries === 'Z Series') return m.name.includes('Galaxy Z');
-                if (activeSeries === 'Note Series') return m.name.includes('Galaxy Note');
+                // Galaxy Z Series (Fold & Flip)
+                if (activeSeries === 'Galaxy Z Series') return name.includes('galaxy z') || name.includes('fold') || name.includes('flip');
 
-                if (activeSeries === 'Redmi Note') return m.name.includes('Redmi Note');
-                if (activeSeries === 'Pixel Series') return m.name.includes('Pixel');
-                if (activeSeries === 'Nord Series') return m.name.includes('Nord');
-                if (activeSeries === 'Reno Series') return m.name.includes('Reno');
+                // Galaxy S Series
+                if (activeSeries === 'Galaxy S Series') return (name.includes('galaxy s') || name.startsWith('s')) && !name.includes('tab');
+
+                // Galaxy A Series
+                if (activeSeries === 'Galaxy A Series') return (name.includes('galaxy a') || name.startsWith('a')) && !name.includes('tab');
+
+                // Galaxy M Series
+                if (activeSeries === 'Galaxy M Series') return name.includes('galaxy m') || name.startsWith('m');
+
+                // Galaxy F Series
+                if (activeSeries === 'Galaxy F Series') return name.includes('galaxy f') || name.startsWith('f');
+
+                // Other Galaxy (Note, Core, On, etc)
+                if (activeSeries === 'Other Galaxy') {
+                    const isOther = !name.includes('galaxy s') && !name.includes('galaxy a') && !name.includes('galaxy m') && !name.includes('galaxy f') && !name.includes('galaxy z') && !name.includes('tab') && !name.includes('fold') && !name.includes('flip');
+                    return isOther;
+                }
+
+                // Xiaomi / Redmi Filters
+                if (activeSeries === 'Xiaomi Flagship / Number') return name.includes('xiaomi') && !name.includes('pad') && !name.includes('note') && !name.includes('redmi');
+                if (activeSeries === 'Redmi Note Series') return name.includes('redmi note') || name.includes('note');
+                if (activeSeries === 'Redmi Number Series') return (name.includes('redmi') && !name.includes('note') && !name.includes('pad') && !name.includes('turbo')) || name.startsWith('redmi 1') || name.startsWith('redmi 2');
+                if (activeSeries === 'Redmi Turbo Series') return name.includes('turbo');
+                if (activeSeries === 'Xiaomi / Redmi Other') return (name.includes('xiaomi') || name.includes('redmi') || name.includes('mi')) && !name.includes('note') && !name.includes('pad') && !name.includes('turbo');
 
                 // Poco Filters
                 if (activeSeries === 'Poco F Series') return name.includes('poco f');
@@ -418,7 +432,11 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
             }
 
             return true;
-        }).sort((a, b) => {
+        });
+
+        const dedupedList = deduplicateModels(filtered);
+
+        return dedupedList.sort((a, b) => {
             // First check priority from database/catalog (e.g. priority 10 comes before priority 100)
             const pDiff = (a.priority ?? 100) - (b.priority ?? 100);
             if (pDiff !== 0) return pDiff;

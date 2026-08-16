@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/db';
 import { Rider as PrismaRider, Brand as PrismaBrand, Model as PrismaModel, Variant as PrismaVariant, Order as PrismaOrder } from '@prisma/client';
-import { CATALOG_2026_MODELS, get2026ModelsForBrand } from '@/lib/catalog2026';
+import { CATALOG_2026_MODELS, get2026ModelsForBrand, deduplicateModels, getCanonicalModelKey } from '@/lib/catalog2026';
 
 // Re-export interfaces for app compatibility, though Prisma types are preferred
 export interface User {
@@ -442,8 +442,8 @@ export const db = {
 
         // Get 2026 catalog models for this brand/category
         const models2026 = get2026ModelsForBrand(brandId, category);
-        const existingNames = new Set(dbModels.map(m => m.name.toLowerCase().trim()));
-        const missing2026 = models2026.filter(m => !existingNames.has(m.name.toLowerCase().trim()));
+        const existingCanonicalKeys = new Set(dbModels.map(m => getCanonicalModelKey(m.name)));
+        const missing2026 = models2026.filter(m => !existingCanonicalKeys.has(getCanonicalModelKey(m.name)));
 
         // Background auto-seeding to persist missing 2026 models into PostgreSQL
         if (missing2026.length > 0) {
@@ -494,18 +494,18 @@ export const db = {
         }
 
         // Map any existing DB models to their high-res 2026 product images if matching
-        const catalogMap = new Map(CATALOG_2026_MODELS.map(m => [m.name.toLowerCase().trim(), m.img]));
+        const catalogMap = new Map(CATALOG_2026_MODELS.map(m => [getCanonicalModelKey(m.name), m.img]));
         const updatedDbModels = dbModels.map(m => {
-            const catalogImg = catalogMap.get(m.name.toLowerCase().trim());
+            const catalogImg = catalogMap.get(getCanonicalModelKey(m.name));
             if (catalogImg && (!m.img || m.img.endsWith('.svg') || m.img.includes('wikimedia') || m.img.includes('Logo'))) {
                 return { ...m, img: catalogImg };
             }
             return m;
         });
 
-        // Merge missing 2026 models directly into results
+        // Merge 2026 models directly into results
         const combined = [
-            ...missing2026.map(m => ({
+            ...models2026.map(m => ({
                 id: m.id,
                 brandId: m.brandId,
                 name: m.name,
@@ -516,7 +516,10 @@ export const db = {
             ...updatedDbModels
         ];
 
-        return combined.sort((a, b) => {
+        // Deduplicate so duplicate variants like "Vivo X300 Pro" and "Vivo X300 Pro 5G" never appear twice
+        const deduplicated = deduplicateModels(combined);
+
+        return deduplicated.sort((a, b) => {
             const pDiff = (a.priority ?? 100) - (b.priority ?? 100);
             if (pDiff !== 0) return pDiff;
             return a.name.localeCompare(b.name);
@@ -548,11 +551,10 @@ export const db = {
             priority: m.priority
         }));
 
-        const existingNames = new Set(dbResults.map(m => m.name.toLowerCase().trim()));
-        const uniqueCatalogResults = catalogResults.filter(m => !existingNames.has(m.name.toLowerCase().trim()));
+        const combined = [...catalogResults, ...dbResults];
+        const deduplicated = deduplicateModels(combined);
 
-        const combined = [...uniqueCatalogResults, ...dbResults];
-        return combined.sort((a, b) => {
+        return deduplicated.sort((a, b) => {
             const pDiff = (a.priority ?? 100) - (b.priority ?? 100);
             if (pDiff !== 0) return pDiff;
             return a.name.localeCompare(b.name);

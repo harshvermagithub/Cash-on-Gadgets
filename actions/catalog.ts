@@ -47,10 +47,16 @@ export async function findVariantByName(deviceName: string) {
     }
 
     // Fallback to 2026 catalog
-    const { CATALOG_2026_MODELS } = await import('@/lib/catalog2026');
-    const targetModel = CATALOG_2026_MODELS.find(m => m.name.toLowerCase().trim() === name.toLowerCase().trim());
+    const { CATALOG_2026_MODELS, getCanonicalModelKey } = await import('@/lib/catalog2026');
+    const targetModel = CATALOG_2026_MODELS.find(m => 
+        m.name.toLowerCase().trim() === name.toLowerCase().trim() ||
+        getCanonicalModelKey(m.name) === getCanonicalModelKey(name)
+    );
     if (targetModel) {
-        const targetVariant = targetModel.variants.find(v => v.name.toLowerCase().trim() === variant.toLowerCase().trim());
+        const targetVariant = targetModel.variants.find(v => 
+            v.name.toLowerCase().trim() === variant.toLowerCase().trim() ||
+            v.name.toLowerCase().replace(/[^a-z0-9]/g, '') === variant.toLowerCase().replace(/[^a-z0-9]/g, '')
+        );
         if (targetVariant) {
             return {
                 id: targetVariant.id,
