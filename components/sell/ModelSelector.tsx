@@ -190,8 +190,14 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
 
             else if (name.includes('Redmi Note')) uniqueSeries.add('Redmi Note');
             else if (name.includes('Pixel')) uniqueSeries.add('Pixel Series');
-            else if (name.includes('Nord')) uniqueSeries.add('Nord Series');
             else if (name.includes('Reno')) uniqueSeries.add('Reno Series');
+
+            // Smartphone - OnePlus
+            else if (lowerName.includes('oneplus')) {
+                if (lowerName.includes('nord') || lowerName.includes(' n6') || lowerName.includes('ce')) uniqueSeries.add('OnePlus Nord Series');
+                else if (lowerName.match(/oneplus\s+\d+/i)) uniqueSeries.add('OnePlus Number Series');
+                else uniqueSeries.add('OnePlus Other');
+            }
 
             // Smartphone - Poco
             else if (lowerName.includes('poco')) {
@@ -386,6 +392,11 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 if (activeSeries === 'Poco X Series') return name.includes('poco x');
                 if (activeSeries === 'Poco C Series') return name.includes('poco c');
                 if (activeSeries === 'Poco Other') return name.includes('poco') && !name.includes('poco f') && !name.includes('poco m') && !name.includes('poco x') && !name.includes('poco c') && !name.includes('poco pad');
+
+                // OnePlus Filters
+                if (activeSeries === 'OnePlus Nord Series') return name.includes('nord') || name.includes(' n6') || name.includes('ce');
+                if (activeSeries === 'OnePlus Number Series') return !!name.match(/oneplus\s+\d+/i) && !name.includes('nord');
+                if (activeSeries === 'OnePlus Other') return name.includes('oneplus') && !name.includes('nord') && !name.match(/oneplus\s+\d+/i) && !name.includes(' n6') && !name.includes('ce');
 
                 // Vivo Filters
                 if (activeSeries === 'Vivo X Series') return name.includes('vivo x') || name.startsWith('x');
@@ -589,8 +600,15 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 // OnePlus score
                 const oneplusMatch = lower.match(/oneplus\s+(\d+)/);
                 if (oneplusMatch) {
-                    score = 1400 + (parseInt(oneplusMatch[1]) * 10);
+                    score = 1600 + (parseInt(oneplusMatch[1]) * 10);
                     if (lower.includes('pro')) score += 5;
+                    else if (lower.includes('r')) score += 4;
+                    return score;
+                }
+                if (lower.includes('nord') || lower.includes('ce') || lower.includes('n6')) {
+                    score = 1500;
+                    const nordNum = lower.match(/ce\s*(\d+)/i) || lower.match(/nord\s+(\d+)/i) || lower.match(/n(\d+)/i);
+                    if (nordNum) score += parseInt(nordNum[1]) * 10;
                     return score;
                 }
                 

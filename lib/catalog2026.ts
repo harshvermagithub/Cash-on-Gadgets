@@ -458,7 +458,61 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
     },
 
     // -------------------------------------------------------------
-    // Vivo (20 Models)
+    // OnePlus (4 Models)
+    // -------------------------------------------------------------
+    {
+        id: 'oneplus-n6',
+        brandId: 'oneplus',
+        name: 'OnePlus N6',
+        img: '/models/oneplus/OnePlus_Nord_N20_SE.png',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'oneplus-n6-4-128', name: '4GB + 128GB', basePrice: 16000 },
+            { id: 'oneplus-n6-6-256', name: '6GB + 256GB', basePrice: 17300 },
+        ]
+    },
+    {
+        id: 'oneplus-nord-ce-6-5g',
+        brandId: 'oneplus',
+        name: 'OnePlus Nord CE 6 5G',
+        img: '/models/oneplus/OnePlus_Nord_CE_5_5G.png',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'oneplus-nord-ce-6-5g-6-128', name: '6GB + 128GB', basePrice: 18400 },
+            { id: 'oneplus-nord-ce-6-5g-8-128', name: '8GB + 128GB', basePrice: 19000 },
+            { id: 'oneplus-nord-ce-6-5g-12-256', name: '12GB + 256GB', basePrice: 19500 },
+        ]
+    },
+    {
+        id: 'oneplus-nord-ce-6-lite',
+        brandId: 'oneplus',
+        name: 'OnePlus Nord CE 6 Lite',
+        img: '/models/oneplus/OnePlus_Nord_CE4_Lite_5G.png',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'oneplus-nord-ce-6-lite-6-128', name: '6GB + 128GB', basePrice: 16700 },
+            { id: 'oneplus-nord-ce-6-lite-8-128', name: '8GB + 128GB', basePrice: 18600 },
+            { id: 'oneplus-nord-ce-6-lite-8-256', name: '8GB + 256GB', basePrice: 20100 },
+        ]
+    },
+    {
+        id: 'oneplus-15r',
+        brandId: 'oneplus',
+        name: 'OnePlus 15R',
+        img: '/models/oneplus/Oneplus_15R.png',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'oneplus-15r-12-256', name: '12GB + 256GB', basePrice: 35600 },
+            { id: 'oneplus-15r-16-512', name: '16GB + 512GB', basePrice: 37500 },
+        ]
+    },
+
+    // -------------------------------------------------------------
+    // Vivo (26 Models)
     // -------------------------------------------------------------
     {
         id: 'vivo-x300-ultra',
@@ -480,8 +534,8 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         category: 'smartphone',
         priority: 10,
         variants: [
-            { id: 'vivo-x300-pro-5g-12-256', name: '12GB + 256GB', basePrice: 44880 },
-            { id: 'vivo-x300-pro-5g-12-512', name: '12GB + 512GB', basePrice: 48000 },
+            { id: 'vivo-x300-pro-5g-12-256', name: '12GB + 256GB', basePrice: 48000 },
+            { id: 'vivo-x300-pro-5g-16-512', name: '16GB + 512GB', basePrice: 63600 },
         ]
     },
     {
@@ -504,8 +558,32 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         category: 'smartphone',
         priority: 10,
         variants: [
-            { id: 'vivo-x300-fe-5g-8-256', name: '8GB + 256GB', basePrice: 28050 },
-            { id: 'vivo-x300-fe-5g-12-256', name: '12GB + 256GB', basePrice: 30000 },
+            { id: 'vivo-x300-fe-5g-12-256', name: '12GB + 256GB', basePrice: 49800 },
+            { id: 'vivo-x300-fe-5g-12-512', name: '12GB + 512GB', basePrice: 54800 },
+        ]
+    },
+    {
+        id: 'vivo-x300-fe-ultra',
+        brandId: 'vivo',
+        name: 'Vivo X300 FE Ultra',
+        img: '/models/vivo/Vivo_X300_Pro.png',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-x300-fe-ultra-16-512', name: '16GB + 512GB', basePrice: 80000 },
+        ]
+    },
+    {
+        id: 'vivo-x800',
+        brandId: 'vivo',
+        name: 'Vivo X800',
+        img: '/models/vivo/Vivo_X300_Pro.png',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-x800-12-256', name: '12GB + 256GB', basePrice: 46800 },
+            { id: 'vivo-x800-12-512', name: '12GB + 512GB', basePrice: 47400 },
+            { id: 'vivo-x800-16-512', name: '16GB + 512GB', basePrice: 50000 },
         ]
     },
     {
@@ -516,8 +594,8 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         category: 'smartphone',
         priority: 10,
         variants: [
-            { id: 'vivo-x200t-8-128', name: '8GB + 128GB', basePrice: 25245 },
-            { id: 'vivo-x200t-8-256', name: '8GB + 256GB', basePrice: 27000 },
+            { id: 'vivo-x200t-12-256', name: '12GB + 256GB', basePrice: 38100 },
+            { id: 'vivo-x200t-12-512', name: '12GB + 512GB', basePrice: 42200 },
         ]
     },
     {
@@ -540,8 +618,8 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         category: 'smartphone',
         priority: 10,
         variants: [
-            { id: 'vivo-v70-5g-8-128', name: '8GB + 128GB', basePrice: 21879 },
-            { id: 'vivo-v70-5g-8-256', name: '8GB + 256GB', basePrice: 23500 },
+            { id: 'vivo-v70-5g-8-256', name: '8GB + 256GB', basePrice: 33200 },
+            { id: 'vivo-v70-5g-12-256', name: '12GB + 256GB', basePrice: 36000 },
         ]
     },
     {
@@ -552,8 +630,9 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         category: 'smartphone',
         priority: 10,
         variants: [
-            { id: 'vivo-v70-elite-8-128', name: '8GB + 128GB', basePrice: 19635 },
-            { id: 'vivo-v70-elite-8-256', name: '8GB + 256GB', basePrice: 21000 },
+            { id: 'vivo-v70-elite-8-256', name: '8GB + 256GB', basePrice: 36000 },
+            { id: 'vivo-v70-elite-12-256', name: '12GB + 256GB', basePrice: 39100 },
+            { id: 'vivo-v70-elite-12-512', name: '12GB + 512GB', basePrice: 41700 },
         ]
     },
     {
@@ -564,8 +643,9 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         category: 'smartphone',
         priority: 10,
         variants: [
-            { id: 'vivo-v70-fe-8-128', name: '8GB + 128GB', basePrice: 16830 },
-            { id: 'vivo-v70-fe-8-256', name: '8GB + 256GB', basePrice: 18000 },
+            { id: 'vivo-v70-fe-8-128', name: '8GB + 128GB', basePrice: 24500 },
+            { id: 'vivo-v70-fe-8-256', name: '8GB + 256GB', basePrice: 26800 },
+            { id: 'vivo-v70-fe-12-256', name: '12GB + 256GB', basePrice: 30100 },
         ]
     },
     {
@@ -593,15 +673,15 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         ]
     },
     {
-        id: 'vivo-t5-pro',
+        id: 'vivo-t50-pro-5g',
         brandId: 'vivo',
-        name: 'Vivo T5 Pro',
+        name: 'Vivo T50 Pro 5G',
         img: '/models/vivo/Vivo_T4_Pro_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
-            { id: 'vivo-t5-pro-8-128', name: '8GB + 128GB', basePrice: 14025 },
-            { id: 'vivo-t5-pro-8-256', name: '8GB + 256GB', basePrice: 15000 },
+            { id: 'vivo-t50-pro-5g-8-128', name: '8GB + 128GB', basePrice: 14025 },
+            { id: 'vivo-t50-pro-5g-8-256', name: '8GB + 256GB', basePrice: 15000 },
         ]
     },
     {
@@ -612,8 +692,9 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         category: 'smartphone',
         priority: 10,
         variants: [
-            { id: 'vivo-t5x-5g-6-128', name: '6GB + 128GB', basePrice: 9537 },
-            { id: 'vivo-t5x-5g-8-128', name: '8GB + 128GB', basePrice: 10000 },
+            { id: 'vivo-t5x-5g-6-128', name: '6GB + 128GB', basePrice: 15300 },
+            { id: 'vivo-t5x-5g-8-128', name: '8GB + 128GB', basePrice: 18200 },
+            { id: 'vivo-t5x-5g-8-256', name: '8GB + 256GB', basePrice: 19000 },
         ]
     },
     {
@@ -629,15 +710,15 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         ]
     },
     {
-        id: 'vivo-t4-5g-ultra',
+        id: 'vivo-t5e',
         brandId: 'vivo',
-        name: 'Vivo T4 5G / Ultra',
-        img: '/models/vivo/Vivo_T4_Ultra.png',
+        name: 'Vivo T5e',
+        img: '/models/vivo/Vivo_T4_5G.png',
         category: 'smartphone',
         priority: 10,
         variants: [
-            { id: 'vivo-t4-5g-ultra-6-128', name: '6GB + 128GB', basePrice: 11220 },
-            { id: 'vivo-t4-5g-ultra-8-128', name: '8GB + 128GB', basePrice: 12000 },
+            { id: 'vivo-t5e-6-128', name: '6GB + 128GB', basePrice: 11220 },
+            { id: 'vivo-t5e-8-128', name: '8GB + 128GB', basePrice: 12000 },
         ]
     },
     {
@@ -662,6 +743,54 @@ export const CATALOG_2026_MODELS: CatalogModel2026[] = [
         variants: [
             { id: 'vivo-s50-mini-8-128', name: '8GB + 128GB', basePrice: 15708 },
             { id: 'vivo-s50-mini-8-256', name: '8GB + 256GB', basePrice: 16800 },
+        ]
+    },
+    {
+        id: 'vivo-y51-pro-5g',
+        brandId: 'vivo',
+        name: 'Vivo Y51 Pro 5G',
+        img: '/models/vivo/Vivo_Y51A.png',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-y51-pro-5g-8-128', name: '8GB + 128GB', basePrice: 17700 },
+            { id: 'vivo-y51-pro-5g-8-256', name: '8GB + 256GB', basePrice: 20100 },
+        ]
+    },
+    {
+        id: 'vivo-y81-5g',
+        brandId: 'vivo',
+        name: 'Vivo Y81 5G',
+        img: '/models/vivo/Vivo_Y81.png',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-y81-5g-4-128', name: '4GB + 128GB', basePrice: 13500 },
+            { id: 'vivo-y81-5g-6-128', name: '6GB + 128GB', basePrice: 14400 },
+            { id: 'vivo-y81-5g-8-128', name: '8GB + 128GB', basePrice: 16100 },
+        ]
+    },
+    {
+        id: 'vivo-y11-5g',
+        brandId: 'vivo',
+        name: 'Vivo Y11 5G',
+        img: '/models/vivo/Vivo_Y11_2019.png',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-y11-5g-4-64', name: '4GB + 64GB', basePrice: 10100 },
+            { id: 'vivo-y11-5g-4-128', name: '4GB + 128GB', basePrice: 11600 },
+        ]
+    },
+    {
+        id: 'vivo-y05',
+        brandId: 'vivo',
+        name: 'Vivo Y05',
+        img: '/models/vivo/Vivo_Y01.png',
+        category: 'smartphone',
+        priority: 10,
+        variants: [
+            { id: 'vivo-y05-4-64', name: '4GB + 64GB', basePrice: 10000 },
         ]
     },
     {
@@ -730,7 +859,7 @@ export const BRAND_DEFAULT_IMAGES: Record<string, string> = {
     poco: '/models/poco/Poco_F7.png',
     vivo: '/models/vivo/Vivo_X300_Pro.png',
     apple: 'https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-14.jpg',
-    oneplus: '/models/realme/Realme_GT_6.png',
+    oneplus: '/models/oneplus/Oneplus_15R.png',
     iqoo: '/models/vivo/Vivo_X300_Pro.png',
     oppo: '/models/realme/Realme_GT_6.png',
     motorola: '/models/xiaomi/Xiaomi_15.png',
