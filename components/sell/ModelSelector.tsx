@@ -112,10 +112,13 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
     }, [brandId, category]);
 
     // Extract Series Logic
+    // Extract Series Logic
     const seriesList = useMemo(() => {
         const uniqueSeries = new Set<string>();
+        const bId = (brandId || '').toLowerCase().trim();
+
         models.forEach(m => {
-            const name = m.name;
+            const name = m.name || '';
             const lowerName = name.toLowerCase();
 
             // Tablet - Apple
@@ -124,135 +127,166 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 else if (lowerName.includes('air')) uniqueSeries.add('iPad Air');
                 else if (lowerName.includes('mini')) uniqueSeries.add('iPad mini');
                 else uniqueSeries.add('iPad (Standard)');
+                return;
             }
             // Tablet - Samsung
-            else if (lowerName.includes('galaxy tab')) {
+            if (lowerName.includes('galaxy tab') || (category === 'tablet' && (bId === 'samsung' || lowerName.includes('tab')))) {
                 if (lowerName.includes('tab s')) uniqueSeries.add('Galaxy Tab S');
                 else if (lowerName.includes('tab a')) uniqueSeries.add('Galaxy Tab A');
                 else uniqueSeries.add('Other Galaxy Tab');
+                return;
             }
             // Tablet - OnePlus
-            else if (lowerName.includes('oneplus pad')) {
+            if (lowerName.includes('oneplus pad') || (category === 'tablet' && bId === 'oneplus')) {
                 uniqueSeries.add('OnePlus Pad');
+                return;
             }
             // Tablet - Realme
-            else if (lowerName.includes('realme pad')) {
+            if (lowerName.includes('realme pad')) {
                 uniqueSeries.add('Realme Pad');
+                return;
             }
-            // Tablet - Xiaomi / Poco / etc
-            else if (lowerName.includes('xiaomi pad') || lowerName.includes('mi pad')) {
-                uniqueSeries.add('Xiaomi Pad');
-            }
-            else if (lowerName.includes('redmi pad')) {
-                uniqueSeries.add('Redmi Pad');
-            }
-            else if (lowerName.includes('oppo pad')) {
-                uniqueSeries.add('Oppo Pad');
-            }
-            else if (lowerName.includes('poco pad')) {
-                uniqueSeries.add('Poco Pad');
-            }
-            else if (lowerName.includes('lenovo tab')) {
-                uniqueSeries.add('Lenovo Tab');
-            }
-            else if (lowerName.includes('yoga tab')) {
-                uniqueSeries.add('Lenovo Yoga Tab');
-            }
-            else if (lowerName.includes('moto tab') || lowerName.includes('motorola tab')) {
-                uniqueSeries.add('Moto Tab');
-            }
-            else if (lowerName.includes('nokia t')) {
-                uniqueSeries.add('Nokia T Series');
-            }
-
-            // Smartphone - Samsung
-            else if (name.includes('Galaxy S')) uniqueSeries.add('S Series');
-            else if (name.includes('Galaxy A')) uniqueSeries.add('A Series');
-            else if (name.includes('Galaxy M')) uniqueSeries.add('M Series');
-            else if (name.includes('Galaxy F')) uniqueSeries.add('F Series');
-            else if (name.includes('Galaxy Z Fold') || name.includes('Fold')) uniqueSeries.add('Z Fold Series');
-            else if (name.includes('Galaxy Z Flip') || name.includes('Flip')) uniqueSeries.add('Z Flip Series');
-            // Fallback for generic Z if any (though usually Fold/Flip)
-            else if (name.includes('Galaxy Z')) uniqueSeries.add('Z Series');
-            else if (name.includes('Galaxy Note')) uniqueSeries.add('Note Series');
-
-            else if (name.toLowerCase().includes('iphone')) {
-                if (name.toLowerCase().includes('air')) uniqueSeries.add('Air Series');
-
-                const match = name.match(/iPhone\s+(\d+)/i);
-                if (match) {
-                    uniqueSeries.add(`${match[1]} Series`);
-                }
-
-                if (name.toLowerCase().includes('iphone x')) uniqueSeries.add('X Series');
-                if (name.toLowerCase().includes('se')) uniqueSeries.add('SE Series');
-            }
-
-            else if (name.includes('Redmi Note')) uniqueSeries.add('Redmi Note');
-            else if (name.includes('Pixel')) uniqueSeries.add('Pixel Series');
-            else if (name.includes('Reno')) uniqueSeries.add('Reno Series');
-
-            // Smartphone - OnePlus
-            else if (lowerName.includes('oneplus')) {
-                if (lowerName.includes('nord') || lowerName.includes(' n6') || lowerName.includes('ce')) uniqueSeries.add('OnePlus Nord Series');
-                else if (lowerName.match(/oneplus\s+\d+/i)) uniqueSeries.add('OnePlus Number Series');
-                else uniqueSeries.add('OnePlus Other');
-            }
-
-            // Smartphone - Poco
-            else if (lowerName.includes('poco')) {
-                if (lowerName.includes('poco f')) uniqueSeries.add('Poco F Series');
-                else if (lowerName.includes('poco m')) uniqueSeries.add('Poco M Series');
-                else if (lowerName.includes('poco x')) uniqueSeries.add('Poco X Series');
-                else if (lowerName.includes('poco c')) uniqueSeries.add('Poco C Series');
-                else uniqueSeries.add('Poco Other');
-            }
-
-            // Smartphone - Vivo
-            else if (lowerName.includes('vivo')) {
-                if (lowerName.includes('vivo x') || lowerName.startsWith('x')) uniqueSeries.add('Vivo X Series');
-                else if (lowerName.includes('vivo v') || lowerName.startsWith('v')) uniqueSeries.add('Vivo V Series');
-                else if (lowerName.includes('vivo t') || lowerName.startsWith('t')) uniqueSeries.add('Vivo T Series');
-                else if (lowerName.includes('vivo y') || lowerName.startsWith('y')) uniqueSeries.add('Vivo Y Series');
-                else if (lowerName.includes('vivo s') || lowerName.startsWith('s')) uniqueSeries.add('Vivo S Series');
-                else uniqueSeries.add('Vivo Other');
-            }
-
-            // Smartphone - Realme
-            else if (lowerName.includes('realme')) {
-                if (lowerName.includes('gt')) uniqueSeries.add('Realme GT Series');
-                else if (lowerName.includes('narzo')) uniqueSeries.add('Realme Narzo Series');
-                else if (lowerName.includes('realme c') || lowerName.includes(' c')) uniqueSeries.add('Realme C Series');
-                else if (lowerName.match(/realme\s+\d+/i)) uniqueSeries.add('Realme Number Series');
-                else uniqueSeries.add('Realme Other');
-            }
-
-            // Smartphone - iQOO
-            else if (lowerName.includes('iqoo')) {
-                if (lowerName.includes('neo')) uniqueSeries.add('iQOO Neo Series');
-                else if (lowerName.includes('z')) uniqueSeries.add('iQOO Z Series');
-                else {
-                    // Match iQOO followed by a number (e.g. iQOO 12)
-                    const iqooMatch = lowerName.match(/iqoo\s+(\d+)/);
-                    if (iqooMatch) {
-                        uniqueSeries.add('iQOO Number Series');
-                    } else {
-                        uniqueSeries.add('iQOO Other');
-                    }
-                }
-            }
+            // Tablet - Xiaomi / Poco / Lenovo / Moto / Nokia
+            if (lowerName.includes('xiaomi pad') || lowerName.includes('mi pad')) { uniqueSeries.add('Xiaomi Pad'); return; }
+            if (lowerName.includes('redmi pad')) { uniqueSeries.add('Redmi Pad'); return; }
+            if (lowerName.includes('oppo pad')) { uniqueSeries.add('Oppo Pad'); return; }
+            if (lowerName.includes('poco pad')) { uniqueSeries.add('Poco Pad'); return; }
+            if (lowerName.includes('lenovo tab')) { uniqueSeries.add('Lenovo Tab'); return; }
+            if (lowerName.includes('yoga tab')) { uniqueSeries.add('Lenovo Yoga Tab'); return; }
+            if (lowerName.includes('moto tab') || lowerName.includes('motorola tab')) { uniqueSeries.add('Moto Tab'); return; }
+            if (lowerName.includes('nokia t')) { uniqueSeries.add('Nokia T Series'); return; }
 
             // Smartwatch - Apple Watch
-            else if (lowerName.includes('apple') && (lowerName.includes('watch') || lowerName.includes('ultra') || lowerName.includes('series'))) {
+            if (lowerName.includes('apple') && (lowerName.includes('watch') || lowerName.includes('ultra') || lowerName.includes('series'))) {
                 if (lowerName.includes('ultra')) uniqueSeries.add('Watch Ultra');
                 else if (lowerName.includes('se')) uniqueSeries.add('Watch SE');
-                
                 const seriesMatch = name.match(/Series\s+(\d+)/i);
                 if (seriesMatch) {
                     uniqueSeries.add(`Series ${seriesMatch[1]}`);
                 } else if (!lowerName.includes('ultra') && !lowerName.includes('se')) {
                     uniqueSeries.add('Watch Series');
                 }
+                return;
+            }
+
+            // 1. Samsung
+            if (bId === 'samsung' || lowerName.includes('galaxy') || lowerName.includes('samsung')) {
+                if (lowerName.includes('galaxy s') || lowerName.includes(' s2') || lowerName.includes(' s1') || lowerName.startsWith('s2') || lowerName.startsWith('s1')) uniqueSeries.add('S Series');
+                else if (lowerName.includes('galaxy a') || lowerName.includes(' a') || lowerName.startsWith('a')) uniqueSeries.add('A Series');
+                else if (lowerName.includes('galaxy m') || lowerName.includes(' m') || lowerName.startsWith('m')) uniqueSeries.add('M Series');
+                else if (lowerName.includes('galaxy f') || lowerName.includes(' f') || lowerName.startsWith('f')) uniqueSeries.add('F Series');
+                else if (lowerName.includes('fold')) uniqueSeries.add('Z Fold Series');
+                else if (lowerName.includes('flip')) uniqueSeries.add('Z Flip Series');
+                else if (lowerName.includes('note')) uniqueSeries.add('Note Series');
+                else uniqueSeries.add('Other Galaxy');
+                return;
+            }
+
+            // 2. Apple
+            if (bId === 'apple' || lowerName.includes('iphone')) {
+                if (lowerName.includes('air')) uniqueSeries.add('Air Series');
+                const match = lowerName.match(/iphone\s+(\d+)/i) || lowerName.match(/^(\d+)\b/);
+                if (match) {
+                    uniqueSeries.add(`${match[1]} Series`);
+                }
+                if (lowerName.includes('iphone x') || lowerName.includes(' xr') || lowerName.includes(' xs') || lowerName === 'iphone x') uniqueSeries.add('X Series');
+                if (lowerName.includes('se')) uniqueSeries.add('SE Series');
+                return;
+            }
+
+            // 3. OnePlus
+            if (bId === 'oneplus' || lowerName.includes('oneplus')) {
+                if (lowerName.includes('nord') || lowerName.includes('ce') || lowerName.includes('n6') || lowerName.includes('n20') || lowerName.includes('n10') || lowerName.includes('n100') || lowerName.includes('n200') || lowerName.includes('n300')) {
+                    uniqueSeries.add('OnePlus Nord Series');
+                } else if (lowerName.includes('open') || lowerName.includes('fold')) {
+                    uniqueSeries.add('OnePlus Open Series');
+                } else if (lowerName.match(/oneplus\s+\d+/i) || lowerName.match(/\b\d+[rt]?\b/i) || lowerName.includes(' pro')) {
+                    uniqueSeries.add('OnePlus Number Series');
+                } else {
+                    uniqueSeries.add('OnePlus Other');
+                }
+                return;
+            }
+
+            // 4. Xiaomi / Redmi
+            if (bId === 'xiaomi' || bId === 'redmi' || lowerName.includes('xiaomi') || lowerName.includes('redmi') || lowerName.includes('mi ')) {
+                if (lowerName.includes('note')) uniqueSeries.add('Redmi Note Series');
+                else if (lowerName.includes('turbo')) uniqueSeries.add('Redmi Turbo Series');
+                else if (lowerName.includes('redmi k') || lowerName.includes(' k')) uniqueSeries.add('Redmi K Series');
+                else if (lowerName.includes('redmi a') || lowerName.includes(' a')) uniqueSeries.add('Redmi A Series');
+                else if (lowerName.includes('redmi')) uniqueSeries.add('Redmi Number Series');
+                else if (lowerName.includes('xiaomi') || lowerName.includes('mi ')) uniqueSeries.add('Xiaomi Number Series');
+                else uniqueSeries.add('Xiaomi / Redmi Other');
+                return;
+            }
+
+            // 5. Vivo
+            if (bId === 'vivo' || lowerName.includes('vivo')) {
+                if (lowerName.includes('vivo x') || lowerName.includes(' x') || lowerName.startsWith('x')) uniqueSeries.add('Vivo X Series');
+                else if (lowerName.includes('vivo v') || lowerName.includes(' v') || lowerName.startsWith('v')) uniqueSeries.add('Vivo V Series');
+                else if (lowerName.includes('vivo t') || lowerName.includes(' t') || lowerName.startsWith('t')) uniqueSeries.add('Vivo T Series');
+                else if (lowerName.includes('vivo y') || lowerName.includes(' y') || lowerName.startsWith('y')) uniqueSeries.add('Vivo Y Series');
+                else if (lowerName.includes('vivo s') || lowerName.includes(' s') || lowerName.startsWith('s')) uniqueSeries.add('Vivo S Series');
+                else uniqueSeries.add('Vivo Other');
+                return;
+            }
+
+            // 6. Realme
+            if (bId === 'realme' || lowerName.includes('realme')) {
+                if (lowerName.includes('gt')) uniqueSeries.add('Realme GT Series');
+                else if (lowerName.includes('narzo')) uniqueSeries.add('Realme Narzo Series');
+                else if (lowerName.includes('realme c') || lowerName.includes(' c') || lowerName.startsWith('c')) uniqueSeries.add('Realme C Series');
+                else if (lowerName.includes('realme p') || lowerName.includes(' p') || lowerName.startsWith('p')) uniqueSeries.add('Realme P Series');
+                else if (lowerName.match(/realme\s+\d+/i) || lowerName.match(/\b\d+\s*pro/i) || lowerName.match(/\b\d+\s*5g/i) || lowerName.match(/^1\d\b/)) uniqueSeries.add('Realme Number Series');
+                else uniqueSeries.add('Realme Other');
+                return;
+            }
+
+            // 7. Poco
+            if (bId === 'poco' || lowerName.includes('poco')) {
+                if (lowerName.includes('poco f') || lowerName.includes(' f') || lowerName.startsWith('f')) uniqueSeries.add('Poco F Series');
+                else if (lowerName.includes('poco x') || lowerName.includes(' x') || lowerName.startsWith('x')) uniqueSeries.add('Poco X Series');
+                else if (lowerName.includes('poco m') || lowerName.includes(' m') || lowerName.startsWith('m')) uniqueSeries.add('Poco M Series');
+                else if (lowerName.includes('poco c') || lowerName.includes(' c') || lowerName.startsWith('c')) uniqueSeries.add('Poco C Series');
+                else uniqueSeries.add('Poco Other');
+                return;
+            }
+
+            // 8. iQOO
+            if (bId === 'iqoo' || lowerName.includes('iqoo')) {
+                if (lowerName.includes('neo')) uniqueSeries.add('iQOO Neo Series');
+                else if (lowerName.includes(' z') || lowerName.startsWith('z')) uniqueSeries.add('iQOO Z Series');
+                else uniqueSeries.add('iQOO Number Series');
+                return;
+            }
+
+            // 9. Motorola
+            if (bId === 'motorola' || bId === 'moto' || lowerName.includes('moto')) {
+                if (lowerName.includes('edge')) uniqueSeries.add('Edge Series');
+                else if (lowerName.includes('razr')) uniqueSeries.add('Razr Series');
+                else if (lowerName.includes(' g') || lowerName.startsWith('g')) uniqueSeries.add('G Series');
+                else if (lowerName.includes(' e') || lowerName.startsWith('e')) uniqueSeries.add('E Series');
+                else uniqueSeries.add('Motorola Other');
+                return;
+            }
+
+            // 10. Oppo
+            if (bId === 'oppo' || lowerName.includes('oppo')) {
+                if (lowerName.includes('find')) uniqueSeries.add('Find Series');
+                else if (lowerName.includes('reno')) uniqueSeries.add('Reno Series');
+                else if (lowerName.includes(' f') || lowerName.startsWith('f')) uniqueSeries.add('F Series');
+                else if (lowerName.includes(' a') || lowerName.startsWith('a')) uniqueSeries.add('A Series');
+                else if (lowerName.includes(' k') || lowerName.startsWith('k')) uniqueSeries.add('K Series');
+                else uniqueSeries.add('Oppo Other');
+                return;
+            }
+
+            // 11. Google
+            if (bId === 'google' || lowerName.includes('pixel')) {
+                if (lowerName.includes('fold')) uniqueSeries.add('Pixel Fold');
+                else if (lowerName.match(/pixel\s+\d+a/i) || lowerName.match(/\b\d+a\b/i)) uniqueSeries.add('Pixel A Series');
+                else uniqueSeries.add('Pixel Number Series');
+                return;
             }
         });
 
@@ -265,6 +299,14 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
             if (a.includes('Galaxy Tab') && b.includes('Galaxy Tab')) {
                 const order = ['Galaxy Tab S', 'Galaxy Tab A', 'Other Galaxy Tab'];
                 return order.indexOf(a) - order.indexOf(b);
+            }
+
+            // Custom Sort for OnePlus
+            if (a.includes('OnePlus') && b.includes('OnePlus')) {
+                const opOrder = ['OnePlus Number Series', 'OnePlus Nord Series', 'OnePlus Open Series', 'OnePlus Other'];
+                const idxA = opOrder.indexOf(a);
+                const idxB = opOrder.indexOf(b);
+                if (idxA !== -1 && idxB !== -1) return idxA - idxB;
             }
 
             // Custom Sort for iPhones
@@ -309,7 +351,7 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
         });
 
         return list.length > 1 ? list : [];
-    }, [models]);
+    }, [models, brandId, category]);
 
     // Filter Models
     const filteredModels = useMemo(() => {
@@ -359,19 +401,23 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 if (activeSeries === 'Nokia T Series') return name.includes('nokia t');
 
                 // Galaxy Z Series (Fold & Flip)
-                if (activeSeries === 'Galaxy Z Series') return name.includes('galaxy z') || name.includes('fold') || name.includes('flip');
+                if (activeSeries === 'Galaxy Z Series' || activeSeries === 'Z Fold Series') return name.includes('fold');
+                if (activeSeries === 'Z Flip Series') return name.includes('flip');
 
                 // Galaxy S Series
-                if (activeSeries === 'Galaxy S Series') return (name.includes('galaxy s') || name.startsWith('s')) && !name.includes('tab');
+                if (activeSeries === 'S Series' || activeSeries === 'Galaxy S Series') return (name.includes('galaxy s') || name.includes(' s2') || name.includes(' s1') || name.startsWith('s2') || name.startsWith('s1')) && !name.includes('tab');
 
                 // Galaxy A Series
-                if (activeSeries === 'Galaxy A Series') return (name.includes('galaxy a') || name.startsWith('a')) && !name.includes('tab');
+                if (activeSeries === 'A Series' || activeSeries === 'Galaxy A Series') return (name.includes('galaxy a') || name.includes(' a') || name.startsWith('a')) && !name.includes('tab');
 
                 // Galaxy M Series
-                if (activeSeries === 'Galaxy M Series') return name.includes('galaxy m') || name.startsWith('m');
+                if (activeSeries === 'M Series' || activeSeries === 'Galaxy M Series') return name.includes('galaxy m') || name.includes(' m') || name.startsWith('m');
 
                 // Galaxy F Series
-                if (activeSeries === 'Galaxy F Series') return name.includes('galaxy f') || name.startsWith('f');
+                if (activeSeries === 'F Series' || activeSeries === 'Galaxy F Series') return name.includes('galaxy f') || name.includes(' f') || name.startsWith('f');
+
+                // Note Series
+                if (activeSeries === 'Note Series') return name.includes('note');
 
                 // Other Galaxy (Note, Core, On, etc)
                 if (activeSeries === 'Other Galaxy') {
@@ -380,44 +426,68 @@ export default function ModelSelector({ brandId, category, originalCategory, onS
                 }
 
                 // Xiaomi / Redmi Filters
-                if (activeSeries === 'Xiaomi Flagship / Number') return name.includes('xiaomi') && !name.includes('pad') && !name.includes('note') && !name.includes('redmi');
-                if (activeSeries === 'Redmi Note Series') return name.includes('redmi note') || name.includes('note');
-                if (activeSeries === 'Redmi Number Series') return (name.includes('redmi') && !name.includes('note') && !name.includes('pad') && !name.includes('turbo')) || name.startsWith('redmi 1') || name.startsWith('redmi 2');
+                if (activeSeries === 'Xiaomi Number Series') return (name.includes('xiaomi') || name.includes('mi ')) && !name.includes('pad') && !name.includes('note') && !name.includes('redmi');
+                if (activeSeries === 'Redmi Note Series' || activeSeries === 'Redmi Note') return name.includes('redmi note') || name.includes('note');
+                if (activeSeries === 'Redmi Number Series') return (name.includes('redmi') && !name.includes('note') && !name.includes('pad') && !name.includes('turbo') && !name.includes(' k') && !name.includes(' a')) || name.startsWith('redmi 1') || name.startsWith('redmi 2');
                 if (activeSeries === 'Redmi Turbo Series') return name.includes('turbo');
+                if (activeSeries === 'Redmi K Series') return name.includes(' k');
+                if (activeSeries === 'Redmi A Series') return name.includes(' a');
                 if (activeSeries === 'Xiaomi / Redmi Other') return (name.includes('xiaomi') || name.includes('redmi') || name.includes('mi')) && !name.includes('note') && !name.includes('pad') && !name.includes('turbo');
 
                 // Poco Filters
-                if (activeSeries === 'Poco F Series') return name.includes('poco f');
-                if (activeSeries === 'Poco M Series') return name.includes('poco m');
-                if (activeSeries === 'Poco X Series') return name.includes('poco x');
-                if (activeSeries === 'Poco C Series') return name.includes('poco c');
+                if (activeSeries === 'Poco F Series') return name.includes('poco f') || name.includes(' f') || name.startsWith('f');
+                if (activeSeries === 'Poco M Series') return name.includes('poco m') || name.includes(' m') || name.startsWith('m');
+                if (activeSeries === 'Poco X Series') return name.includes('poco x') || name.includes(' x') || name.startsWith('x');
+                if (activeSeries === 'Poco C Series') return name.includes('poco c') || name.includes(' c') || name.startsWith('c');
                 if (activeSeries === 'Poco Other') return name.includes('poco') && !name.includes('poco f') && !name.includes('poco m') && !name.includes('poco x') && !name.includes('poco c') && !name.includes('poco pad');
 
                 // OnePlus Filters
-                if (activeSeries === 'OnePlus Nord Series') return name.includes('nord') || name.includes(' n6') || name.includes('ce');
-                if (activeSeries === 'OnePlus Number Series') return !!name.match(/oneplus\s+\d+/i) && !name.includes('nord');
-                if (activeSeries === 'OnePlus Other') return name.includes('oneplus') && !name.includes('nord') && !name.match(/oneplus\s+\d+/i) && !name.includes(' n6') && !name.includes('ce');
+                if (activeSeries === 'OnePlus Nord Series') return name.includes('nord') || name.includes('ce') || name.includes('n6') || name.includes('n20') || name.includes('n10') || name.includes('n100') || name.includes('n200') || name.includes('n300');
+                if (activeSeries === 'OnePlus Number Series') return (name.match(/oneplus\s+\d+/i) || name.match(/\b\d+[rt]?\b/i) || name.includes(' pro')) && !name.includes('nord') && !name.includes('ce') && !name.includes('open') && !name.includes('pad');
+                if (activeSeries === 'OnePlus Open Series') return name.includes('open') || name.includes('fold');
+                if (activeSeries === 'OnePlus Other') return name.includes('oneplus') && !name.includes('nord') && !name.match(/oneplus\s+\d+/i) && !name.includes('ce');
 
                 // Vivo Filters
-                if (activeSeries === 'Vivo X Series') return name.includes('vivo x') || name.startsWith('x');
-                if (activeSeries === 'Vivo V Series') return name.includes('vivo v') || name.startsWith('v');
-                if (activeSeries === 'Vivo T Series') return name.includes('vivo t') || name.startsWith('t');
-                if (activeSeries === 'Vivo Y Series') return name.includes('vivo y') || name.startsWith('y');
-                if (activeSeries === 'Vivo S Series') return name.includes('vivo s') || name.startsWith('s');
+                if (activeSeries === 'Vivo X Series') return name.includes('vivo x') || name.includes(' x') || name.startsWith('x');
+                if (activeSeries === 'Vivo V Series') return name.includes('vivo v') || name.includes(' v') || name.startsWith('v');
+                if (activeSeries === 'Vivo T Series') return name.includes('vivo t') || name.includes(' t') || name.startsWith('t');
+                if (activeSeries === 'Vivo Y Series') return name.includes('vivo y') || name.includes(' y') || name.startsWith('y');
+                if (activeSeries === 'Vivo S Series') return name.includes('vivo s') || name.includes(' s') || name.startsWith('s');
                 if (activeSeries === 'Vivo Other') return name.includes('vivo') && !name.includes('vivo x') && !name.includes('vivo v') && !name.includes('vivo t') && !name.includes('vivo y') && !name.includes('vivo s');
 
                 // Realme Filters
                 if (activeSeries === 'Realme GT Series') return name.includes('gt');
                 if (activeSeries === 'Realme Narzo Series') return name.includes('narzo');
-                if (activeSeries === 'Realme C Series') return name.includes('realme c') || name.includes(' c');
-                if (activeSeries === 'Realme Number Series') return !!name.match(/realme\s+\d+/i);
+                if (activeSeries === 'Realme C Series') return name.includes('realme c') || name.includes(' c') || name.startsWith('c');
+                if (activeSeries === 'Realme P Series') return name.includes('realme p') || name.includes(' p') || name.startsWith('p');
+                if (activeSeries === 'Realme Number Series') return name.match(/realme\s+\d+/i) || name.match(/\b\d+\s*pro/i) || name.match(/\b\d+\s*5g/i) || name.match(/^1\d\b/);
                 if (activeSeries === 'Realme Other') return name.includes('realme') && !name.includes('gt') && !name.includes('narzo') && !name.includes('realme c') && !name.match(/realme\s+\d+/i);
 
                 // iQOO Filters
-                if (activeSeries === 'iQOO Neo Series') return name.includes('iqoo neo');
-                if (activeSeries === 'iQOO Z Series') return name.includes('iqoo z');
-                if (activeSeries === 'iQOO Number Series') return !!name.match(/iqoo\s+\d+/i);
-                if (activeSeries === 'iQOO Other') return name.includes('iqoo') && !name.includes('neo') && !name.includes('z') && !name.match(/iqoo\s+\d+/i);
+                if (activeSeries === 'iQOO Neo Series') return name.includes('neo');
+                if (activeSeries === 'iQOO Z Series') return name.includes(' z') || name.startsWith('z');
+                if (activeSeries === 'iQOO Number Series') return name.match(/iqoo\s+\d+/i) || (!name.includes('neo') && !name.includes(' z'));
+                if (activeSeries === 'iQOO Other') return name.includes('iqoo') && !name.includes('neo') && !name.includes(' z') && !name.match(/iqoo\s+\d+/i);
+
+                // Motorola Filters
+                if (activeSeries === 'Edge Series') return name.includes('edge');
+                if (activeSeries === 'Razr Series') return name.includes('razr');
+                if (activeSeries === 'G Series') return name.includes(' g') || name.startsWith('g');
+                if (activeSeries === 'E Series') return name.includes(' e') || name.startsWith('e');
+                if (activeSeries === 'Motorola Other') return !name.includes('edge') && !name.includes('razr') && !name.includes(' g') && !name.includes(' e');
+
+                // Oppo Filters
+                if (activeSeries === 'Find Series') return name.includes('find');
+                if (activeSeries === 'Reno Series') return name.includes('reno');
+                if (activeSeries === 'F Series') return name.includes(' f') || name.startsWith('f');
+                if (activeSeries === 'A Series') return name.includes(' a') || name.startsWith('a');
+                if (activeSeries === 'K Series') return name.includes(' k') || name.startsWith('k');
+                if (activeSeries === 'Oppo Other') return !name.includes('find') && !name.includes('reno') && !name.includes(' f') && !name.includes(' a') && !name.includes(' k');
+
+                // Google Filters
+                if (activeSeries === 'Pixel Fold') return name.includes('fold');
+                if (activeSeries === 'Pixel A Series') return name.match(/pixel\s+\d+a/i) || name.match(/\b\d+a\b/i);
+                if (activeSeries === 'Pixel Number Series') return name.includes('pixel') && !name.includes('fold') && !name.match(/pixel\s+\d+a/i) && !name.match(/\b\d+a\b/i);
 
                 // Apple Watch filters
                 if (activeSeries === 'Watch Ultra') return name.includes('ultra');
