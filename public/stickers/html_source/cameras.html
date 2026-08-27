@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sticker - CAMERAS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Outfit:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            width: 1200px;
+            height: 1500px;
+            font-family: 'Outfit', 'Montserrat', sans-serif;
+            background: radial-gradient(circle at 50% 45%, #064e3b 0%, #031e17 40%, #020b08 75%, #010403 100%);
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            -webkit-print-color-adjust: exact;
+        }
+
+        /* Ambient Glow */
+        .ambient-glow {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 950px;
+            height: 850px;
+            background: radial-gradient(circle, rgba(34,197,94,0.4) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .sticker-wrapper {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        /* Centered Device Container */
+        .device-container {
+            width: 1200px;
+            height: 820px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* White Chip */
+        .white-chip {
+            background: #ffffff;
+            color: #0f172a;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 42px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 22px 85px;
+            border-radius: 50px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.6), 0 0 35px rgba(255,255,255,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #f8fafc;
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-glow"></div>
+
+    <div class="sticker-wrapper">
+        <div class="device-container">
+            
+<svg viewBox="0 0 1200 800" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <filter id="camera-glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="25" stdDeviation="30" flood-color="#22c55e" flood-opacity="0.45"/>
+        </filter>
+        <filter id="camera-back-shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000000" flood-opacity="0.75"/>
+        </filter>
+    </defs>
+
+    <!-- LEFT CAMERA (BEHIND, SYMMETRICAL AT X=350) -->
+    <g transform="translate(350, 360) rotate(-6.5) scale(0.85)" filter="url(#camera-back-shadow)" opacity="0.88">
+        
+<g id="c-left">
+    <!-- Pentaprism Top -->
+    <polygon points="-80,-140 -30,-190 70,-190 120,-140" fill="#0f172a" stroke="#475569" stroke-width="4"/>
+    <rect x="-10" y="-202" width="60" height="15" rx="4" fill="#475569"/>
+
+    <rect x="-190" y="-160" width="65" height="30" rx="7" fill="#64748b" stroke="#334155" stroke-width="2.5"/>
+    <rect x="175" y="-155" width="55" height="24" rx="7" fill="#ef4444"/>
+
+    <!-- Camera Body -->
+    <rect x="-240" y="-140" width="480" height="340" rx="42" fill="#0f172a" stroke="#334155" stroke-width="4" />
+
+    <!-- Knurled Grip -->
+    <rect x="-225" y="-120" width="85" height="300" rx="20" fill="#1e293b"/>
+    <line x1="-210" y1="-75" x2="-155" y2="-75" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="-35" x2="-155" y2="-35" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="5" x2="-155" y2="5" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="45" x2="-155" y2="45" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="85" x2="-155" y2="85" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="125" x2="-155" y2="125" stroke="#334155" stroke-width="4"/>
+
+    <!-- Big Pro Lens -->
+    <circle cx="35" cy="35" r="145" fill="#1e293b" stroke="#64748b" stroke-width="6"/>
+    <circle cx="35" cy="35" r="130" stroke="#ef4444" stroke-width="5" fill="none"/>
+    <circle cx="35" cy="35" r="110" fill="#030712" stroke="#475569" stroke-width="4"/>
+    <circle cx="35" cy="35" r="85" fill="#064e3b" fill-opacity="0.8"/>
+    <circle cx="35" cy="35" r="55" fill="#0ea5e9" fill-opacity="0.85"/>
+    <circle cx="15" cy="10" r="24" fill="#ffffff" fill-opacity="0.45"/>
+
+    <circle cx="190" cy="-70" r="14" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+
+    <g transform="translate(130, 115)">
+        <rect width="95" height="42" rx="10" fill="#0f172a" stroke="#22c55e" stroke-width="2.5"/>
+        <text x="47.5" y="27" font-family="'Montserrat', sans-serif" font-weight="900" font-size="15" fill="#4ade80" text-anchor="middle">4K PRO</text>
+    </g>
+</g>
+
+    </g>
+
+    <!-- RIGHT CAMERA (BEHIND, SYMMETRICAL AT X=850) -->
+    <g transform="translate(850, 360) rotate(6.5) scale(0.85)" filter="url(#camera-back-shadow)" opacity="0.88">
+        
+<g id="c-right">
+    <!-- Pentaprism Top -->
+    <polygon points="-80,-140 -30,-190 70,-190 120,-140" fill="#0f172a" stroke="#475569" stroke-width="4"/>
+    <rect x="-10" y="-202" width="60" height="15" rx="4" fill="#475569"/>
+
+    <rect x="-190" y="-160" width="65" height="30" rx="7" fill="#64748b" stroke="#334155" stroke-width="2.5"/>
+    <rect x="175" y="-155" width="55" height="24" rx="7" fill="#ef4444"/>
+
+    <!-- Camera Body -->
+    <rect x="-240" y="-140" width="480" height="340" rx="42" fill="#0f172a" stroke="#334155" stroke-width="4" />
+
+    <!-- Knurled Grip -->
+    <rect x="-225" y="-120" width="85" height="300" rx="20" fill="#1e293b"/>
+    <line x1="-210" y1="-75" x2="-155" y2="-75" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="-35" x2="-155" y2="-35" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="5" x2="-155" y2="5" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="45" x2="-155" y2="45" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="85" x2="-155" y2="85" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="125" x2="-155" y2="125" stroke="#334155" stroke-width="4"/>
+
+    <!-- Big Pro Lens -->
+    <circle cx="35" cy="35" r="145" fill="#1e293b" stroke="#64748b" stroke-width="6"/>
+    <circle cx="35" cy="35" r="130" stroke="#ef4444" stroke-width="5" fill="none"/>
+    <circle cx="35" cy="35" r="110" fill="#030712" stroke="#475569" stroke-width="4"/>
+    <circle cx="35" cy="35" r="85" fill="#064e3b" fill-opacity="0.8"/>
+    <circle cx="35" cy="35" r="55" fill="#0ea5e9" fill-opacity="0.85"/>
+    <circle cx="15" cy="10" r="24" fill="#ffffff" fill-opacity="0.45"/>
+
+    <circle cx="190" cy="-70" r="14" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+
+    <g transform="translate(130, 115)">
+        <rect width="95" height="42" rx="10" fill="#0f172a" stroke="#22c55e" stroke-width="2.5"/>
+        <text x="47.5" y="27" font-family="'Montserrat', sans-serif" font-weight="900" font-size="15" fill="#4ade80" text-anchor="middle">4K PRO</text>
+    </g>
+</g>
+
+    </g>
+
+    <!-- CENTER MAIN CAMERA (FRONT, EXACT CENTER AT X=600) -->
+    <g transform="translate(600, 420)">
+        
+<g id="c-main">
+    <!-- Pentaprism Top -->
+    <polygon points="-80,-140 -30,-190 70,-190 120,-140" fill="#0f172a" stroke="#22c55e" stroke-width="6"/>
+    <rect x="-10" y="-202" width="60" height="15" rx="4" fill="#475569"/>
+
+    <rect x="-190" y="-160" width="65" height="30" rx="7" fill="#64748b" stroke="#334155" stroke-width="2.5"/>
+    <rect x="175" y="-155" width="55" height="24" rx="7" fill="#ef4444"/>
+
+    <!-- Camera Body -->
+    <rect x="-240" y="-140" width="480" height="340" rx="42" fill="#0f172a" stroke="#22c55e" stroke-width="6" filter="url(#camera-glow)"/>
+
+    <!-- Knurled Grip -->
+    <rect x="-225" y="-120" width="85" height="300" rx="20" fill="#1e293b"/>
+    <line x1="-210" y1="-75" x2="-155" y2="-75" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="-35" x2="-155" y2="-35" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="5" x2="-155" y2="5" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="45" x2="-155" y2="45" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="85" x2="-155" y2="85" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="125" x2="-155" y2="125" stroke="#334155" stroke-width="4"/>
+
+    <!-- Big Pro Lens -->
+    <circle cx="35" cy="35" r="145" fill="#1e293b" stroke="#64748b" stroke-width="6"/>
+    <circle cx="35" cy="35" r="130" stroke="#ef4444" stroke-width="5" fill="none"/>
+    <circle cx="35" cy="35" r="110" fill="#030712" stroke="#22c55e" stroke-width="4"/>
+    <circle cx="35" cy="35" r="85" fill="#064e3b" fill-opacity="0.8"/>
+    <circle cx="35" cy="35" r="55" fill="#0ea5e9" fill-opacity="0.85"/>
+    <circle cx="15" cy="10" r="24" fill="#ffffff" fill-opacity="0.45"/>
+
+    <circle cx="190" cy="-70" r="14" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+
+    <g transform="translate(130, 115)">
+        <rect width="95" height="42" rx="10" fill="#0f172a" stroke="#22c55e" stroke-width="2.5"/>
+        <text x="47.5" y="27" font-family="'Montserrat', sans-serif" font-weight="900" font-size="15" fill="#4ade80" text-anchor="middle">4K PRO</text>
+    </g>
+</g>
+
+    </g>
+</svg>
+
+        </div>
+        <div class="white-chip">
+            CAMERAS
+        </div>
+    </div>
+</body>
+</html>

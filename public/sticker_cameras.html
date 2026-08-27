@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page { size: 1200px 1500px; margin: 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 1200px; height: 1500px; overflow: hidden; background: #000000; }
+        svg { display: block; width: 1200px; height: 1500px; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Outfit:wght@800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+<svg viewBox="0 0 1200 1500" width="1200" height="1500" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        
+        <!-- Dark Gradient -->
+        <radialGradient id="dark-bg-grad" cx="50%" cy="45%" r="65%">
+            <stop offset="0%" stop-color="#064e3b"/>
+            <stop offset="40%" stop-color="#031e17"/>
+            <stop offset="75%" stop-color="#020b08"/>
+            <stop offset="100%" stop-color="#010403"/>
+        </radialGradient>
+        <radialGradient id="ambient-radial-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#22c55e" stop-opacity="0.35"/>
+            <stop offset="50%" stop-color="#15803d" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+        </radialGradient>
+        
+
+        <linearGradient id="phone-screen-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#064e3b"/>
+            <stop offset="35%" stop-color="#042f2e"/>
+            <stop offset="70%" stop-color="#0f172a"/>
+            <stop offset="100%" stop-color="#020617"/>
+        </linearGradient>
+        <linearGradient id="screen-wave-1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#22c55e" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.2"/>
+        </linearGradient>
+        <linearGradient id="screen-wave-2" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#a855f7" stop-opacity="0.3"/>
+        </linearGradient>
+        <linearGradient id="laptop-screen-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0f172a"/>
+            <stop offset="40%" stop-color="#022c22"/>
+            <stop offset="100%" stop-color="#042f2e"/>
+        </linearGradient>
+        <linearGradient id="laptop-base-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#334155"/>
+            <stop offset="40%" stop-color="#1e293b"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+        </linearGradient>
+        <linearGradient id="tab-bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#022c22"/>
+            <stop offset="40%" stop-color="#042f2e"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+        </linearGradient>
+    </defs>
+
+    <!-- 1. BACKGROUND -->
+    <rect width="1200" height="1500" fill="url(#dark-bg-grad)"/>
+
+    <!-- 2. AMBIENT GLOW -->
+    <circle cx="600" cy="650" r="500" fill="url(#ambient-radial-glow)"/>
+
+    <!-- 3. DEVICES -->
+    
+<g transform="translate(0, 180)">
+    <g transform="translate(350, 360) rotate(-6.5) scale(0.85)" opacity="0.88">
+        
+<g id="c-left-d">
+    <polygon points="-80,-140 -30,-190 70,-190 120,-140" fill="#0f172a" stroke="#475569" stroke-width="4"/>
+    <rect x="-10" y="-202" width="60" height="15" rx="4" fill="#475569"/>
+
+    <rect x="-190" y="-160" width="65" height="30" rx="7" fill="#64748b" stroke="#334155" stroke-width="2.5"/>
+    <rect x="175" y="-155" width="55" height="24" rx="7" fill="#ef4444"/>
+
+    <rect x="-240" y="-140" width="480" height="340" rx="42" fill="#0f172a" stroke="#334155" stroke-width="4"/>
+
+    <rect x="-225" y="-120" width="85" height="300" rx="20" fill="#1e293b"/>
+    <line x1="-210" y1="-75" x2="-155" y2="-75" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="-35" x2="-155" y2="-35" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="5" x2="-155" y2="5" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="45" x2="-155" y2="45" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="85" x2="-155" y2="85" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="125" x2="-155" y2="125" stroke="#334155" stroke-width="4"/>
+
+    <circle cx="35" cy="35" r="145" fill="#1e293b" stroke="#64748b" stroke-width="6"/>
+    <circle cx="35" cy="35" r="130" stroke="#ef4444" stroke-width="5" fill="none"/>
+    <circle cx="35" cy="35" r="110" fill="#030712" stroke="#475569" stroke-width="4"/>
+    <circle cx="35" cy="35" r="85" fill="#064e3b" fill-opacity="0.8"/>
+    <circle cx="35" cy="35" r="55" fill="#0ea5e9" fill-opacity="0.85"/>
+    <circle cx="15" cy="10" r="24" fill="#ffffff" fill-opacity="0.45"/>
+
+    <circle cx="190" cy="-70" r="14" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+
+    <g transform="translate(130, 115)">
+        <rect width="95" height="42" rx="10" fill="#0f172a" stroke="#22c55e" stroke-width="2.5"/>
+        <text x="47.5" y="27" font-family="'Montserrat', sans-serif" font-weight="900" font-size="15" fill="#4ade80" text-anchor="middle">4K PRO</text>
+    </g>
+</g>
+
+    </g>
+    <g transform="translate(850, 360) rotate(6.5) scale(0.85)" opacity="0.88">
+        
+<g id="c-right-d">
+    <polygon points="-80,-140 -30,-190 70,-190 120,-140" fill="#0f172a" stroke="#475569" stroke-width="4"/>
+    <rect x="-10" y="-202" width="60" height="15" rx="4" fill="#475569"/>
+
+    <rect x="-190" y="-160" width="65" height="30" rx="7" fill="#64748b" stroke="#334155" stroke-width="2.5"/>
+    <rect x="175" y="-155" width="55" height="24" rx="7" fill="#ef4444"/>
+
+    <rect x="-240" y="-140" width="480" height="340" rx="42" fill="#0f172a" stroke="#334155" stroke-width="4"/>
+
+    <rect x="-225" y="-120" width="85" height="300" rx="20" fill="#1e293b"/>
+    <line x1="-210" y1="-75" x2="-155" y2="-75" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="-35" x2="-155" y2="-35" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="5" x2="-155" y2="5" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="45" x2="-155" y2="45" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="85" x2="-155" y2="85" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="125" x2="-155" y2="125" stroke="#334155" stroke-width="4"/>
+
+    <circle cx="35" cy="35" r="145" fill="#1e293b" stroke="#64748b" stroke-width="6"/>
+    <circle cx="35" cy="35" r="130" stroke="#ef4444" stroke-width="5" fill="none"/>
+    <circle cx="35" cy="35" r="110" fill="#030712" stroke="#475569" stroke-width="4"/>
+    <circle cx="35" cy="35" r="85" fill="#064e3b" fill-opacity="0.8"/>
+    <circle cx="35" cy="35" r="55" fill="#0ea5e9" fill-opacity="0.85"/>
+    <circle cx="15" cy="10" r="24" fill="#ffffff" fill-opacity="0.45"/>
+
+    <circle cx="190" cy="-70" r="14" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+
+    <g transform="translate(130, 115)">
+        <rect width="95" height="42" rx="10" fill="#0f172a" stroke="#22c55e" stroke-width="2.5"/>
+        <text x="47.5" y="27" font-family="'Montserrat', sans-serif" font-weight="900" font-size="15" fill="#4ade80" text-anchor="middle">4K PRO</text>
+    </g>
+</g>
+
+    </g>
+    <g transform="translate(600, 420)">
+        
+<g id="c-main-d">
+    <polygon points="-80,-140 -30,-190 70,-190 120,-140" fill="#0f172a" stroke="#22c55e" stroke-width="6"/>
+    <rect x="-10" y="-202" width="60" height="15" rx="4" fill="#475569"/>
+
+    <rect x="-190" y="-160" width="65" height="30" rx="7" fill="#64748b" stroke="#334155" stroke-width="2.5"/>
+    <rect x="175" y="-155" width="55" height="24" rx="7" fill="#ef4444"/>
+
+    <rect x="-240" y="-140" width="480" height="340" rx="42" fill="#0f172a" stroke="#22c55e" stroke-width="6"/>
+
+    <rect x="-225" y="-120" width="85" height="300" rx="20" fill="#1e293b"/>
+    <line x1="-210" y1="-75" x2="-155" y2="-75" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="-35" x2="-155" y2="-35" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="5" x2="-155" y2="5" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="45" x2="-155" y2="45" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="85" x2="-155" y2="85" stroke="#334155" stroke-width="4"/>
+    <line x1="-210" y1="125" x2="-155" y2="125" stroke="#334155" stroke-width="4"/>
+
+    <circle cx="35" cy="35" r="145" fill="#1e293b" stroke="#64748b" stroke-width="6"/>
+    <circle cx="35" cy="35" r="130" stroke="#ef4444" stroke-width="5" fill="none"/>
+    <circle cx="35" cy="35" r="110" fill="#030712" stroke="#22c55e" stroke-width="4"/>
+    <circle cx="35" cy="35" r="85" fill="#064e3b" fill-opacity="0.8"/>
+    <circle cx="35" cy="35" r="55" fill="#0ea5e9" fill-opacity="0.85"/>
+    <circle cx="15" cy="10" r="24" fill="#ffffff" fill-opacity="0.45"/>
+
+    <circle cx="190" cy="-70" r="14" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+
+    <g transform="translate(130, 115)">
+        <rect width="95" height="42" rx="10" fill="#0f172a" stroke="#22c55e" stroke-width="2.5"/>
+        <text x="47.5" y="27" font-family="'Montserrat', sans-serif" font-weight="900" font-size="15" fill="#4ade80" text-anchor="middle">4K PRO</text>
+    </g>
+</g>
+
+    </g>
+</g>
+
+
+    <!-- 4. PURE VECTOR CHIP (CLEAN ROUNDED PILL, 0 RECTANGULAR BOX ARTIFACTS) -->
+    <g transform="translate(600, 1260)">
+        
+        <!-- Dark Edition: Crisp White Pill on Green Background (Zero Box Artifacts) -->
+        <rect x="-180" y="-46" width="360" height="92" rx="46" fill="#ffffff" stroke="#f8fafc" stroke-width="2"/>
+        <text x="0" y="14" font-family="'Montserrat', sans-serif" font-weight="900" font-size="40" fill="#0f172a" text-anchor="middle" letter-spacing="6">CAMERAS</text>
+        
+    </g>
+</svg>
+    
+</body>
+</html>
