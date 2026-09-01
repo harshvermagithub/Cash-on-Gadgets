@@ -602,7 +602,7 @@ export default function CategorySelector({ onSelect }: CategorySelectorProps) {
                         </div>
 
                         {/* Graphic */}
-                        <div className="absolute bottom-4 right-4 md:bottom-2 md:right-2 w-40 h-32 md:w-64 md:h-48 transform group-hover:scale-110 transition-transform duration-500 ease-out origin-bottom-right z-10">
+                        <div className="absolute bottom-3 right-3 md:bottom-2 md:right-2 w-48 h-38 md:w-72 md:h-54 transform group-hover:scale-110 transition-transform duration-500 ease-out origin-bottom-right z-10">
                             {cat.component}
                         </div>
                     </motion.button>
