@@ -487,7 +487,7 @@ const categories = [
     {
         id: 'tablet',
         name: 'Tablets',
-        subtext: 'Get up to ₹40,000',
+        subtext: 'Instant cash for your tablet',
         component: <TabletGraphic />,
         bgColors: 'bg-purple-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-purple-900 dark:text-purple-100'
@@ -527,7 +527,7 @@ const categories = [
     {
         id: 'console',
         name: 'Consoles',
-        subtext: 'Get up to ₹24,000',
+        subtext: 'Instant cash for your console',
         component: <ConsoleGraphic />,
         bgColors: 'bg-indigo-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-indigo-900 dark:text-indigo-100'
