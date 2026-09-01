@@ -207,8 +207,8 @@ const WatchGraphic = () => (
                     style={{ transformOrigin: '32px 52px' }}
                 />
 
-                {/* Logo Badge inside watch face (shifted left for optical balance) */}
-                <g transform="translate(29, 52)">
+                {/* Logo Badge inside watch face (optically balanced slightly right) */}
+                <g transform="translate(31, 52)">
                     <CartLogoBadge width={18} />
                 </g>
             </g>
