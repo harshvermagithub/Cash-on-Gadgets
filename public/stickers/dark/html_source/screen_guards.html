@@ -39,18 +39,6 @@
             <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
         </radialGradient>
 
-        <linearGradient id="tv-screen-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#022c22"/>
-            <stop offset="50%" stop-color="#0f172a"/>
-            <stop offset="100%" stop-color="#020617"/>
-        </linearGradient>
-
-        <linearGradient id="desktop-screen-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#0f172a"/>
-            <stop offset="50%" stop-color="#022c22"/>
-            <stop offset="100%" stop-color="#020617"/>
-        </linearGradient>
-
         <linearGradient id="screen-guard-phone-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#022c22"/>
             <stop offset="50%" stop-color="#0f172a"/>
@@ -67,12 +55,12 @@
     <rect width="1200" height="1500" fill="url(#dark-bg-grad)"/>
 
     <!-- 2. AMBIENT GLOW -->
-    <circle cx="600" cy="650" r="500" fill="url(#ambient-radial-glow)"/>
+    <circle cx="600" cy="630" r="500" fill="url(#ambient-radial-glow)"/>
 
     <!-- 3. DEVICES -->
     
-<g transform="translate(0, 200)">
-    <g transform="translate(340, 420) rotate(-8) scale(0.82)" opacity="0.85">
+<g transform="translate(0, 180)">
+    <g transform="translate(340, 420) rotate(-8) scale(0.80)" opacity="0.85">
         
 <g id="sg-left-d">
     <g transform="translate(-140, -140)">
@@ -114,7 +102,7 @@
 </g>
 
     </g>
-    <g transform="translate(860, 420) rotate(8) scale(0.82)" opacity="0.85">
+    <g transform="translate(860, 420) rotate(8) scale(0.80)" opacity="0.85">
         
 <g id="sg-right-d">
     <g transform="translate(-140, -140)">
@@ -156,7 +144,7 @@
 </g>
 
     </g>
-    <g transform="translate(600, 390)">
+    <g transform="translate(600, 390) scale(0.96)">
         
 <g id="sg-main-d">
     <g transform="translate(-140, -140)">
@@ -217,15 +205,26 @@
 </g>
 
 
-    <!-- 4. PURE VECTOR CHIP -->
-    <g transform="translate(600, 1260)">
+    <!-- 4. DUAL CHIPS: UNBREAKABLE (ABOVE) + SCREEN GUARD (BELOW) -->
+    
+    <!-- TOP CHIP: UNBREAKABLE -->
+    <g transform="translate(600, 1160)">
         
-        <!-- Dark Edition: Crisp White Pill on Green Background -->
+        <!-- Dark Edition: Glowing Emerald Unbreakable Chip -->
+        <rect x="-160" y="-30" width="320" height="60" rx="30" fill="#047857" stroke="#34d399" stroke-width="2.5"/>
+        <text x="0" y="9" font-family="'Montserrat', sans-serif" font-weight="900" font-size="26" fill="#ffffff" text-anchor="middle" letter-spacing="5">UNBREAKABLE</text>
+        
+    </g>
+
+    <!-- BOTTOM CHIP: SCREEN GUARD -->
+    <g transform="translate(600, 1270)">
+        
+        <!-- Dark Edition: Crisp White Pill -->
         <rect x="-240" y="-46" width="480" height="92" rx="46" fill="#ffffff" stroke="#f8fafc" stroke-width="2"/>
         <text x="0" y="14" font-family="'Montserrat', sans-serif" font-weight="900" font-size="40" fill="#0f172a" text-anchor="middle" letter-spacing="6">SCREEN GUARD</text>
         
     </g>
 </svg>
-    
+
 </body>
 </html>
