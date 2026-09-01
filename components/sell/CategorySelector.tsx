@@ -142,8 +142,8 @@ const TabletGraphic = () => (
                     <circle cx="19" cy="44" r="4" className="fill-blue-400" />
                     <rect x="13" y="54" width="12" height="3" rx="1.5" className="fill-emerald-400" />
 
-                    {/* Logo in Corner (Top-Right of screen) */}
-                    <g transform="translate(100, 20)">
+                    {/* Logo in Corner (Top-Right of screen, shifted up & right) */}
+                    <g transform="translate(105, 16)">
                         <CartLogoBadge width={22} />
                     </g>
                 </g>
@@ -207,8 +207,8 @@ const WatchGraphic = () => (
                     style={{ transformOrigin: '32px 52px' }}
                 />
 
-                {/* Logo Badge inside watch face */}
-                <g transform="translate(32, 52)">
+                {/* Logo Badge inside watch face (shifted left for optical balance) */}
+                <g transform="translate(29, 52)">
                     <CartLogoBadge width={18} />
                 </g>
             </g>
@@ -496,8 +496,8 @@ const EarbudsGraphic = () => (
                     <circle cx="5.5" cy="6" r="2" className="fill-slate-900" />
                 </g>
 
-                {/* Logo Between Earbuds Above Case (Shifted Left for Optical Center) */}
-                <g transform="translate(29, 14)">
+                {/* Logo Between Earbuds Above Case (Optically Centered) */}
+                <g transform="translate(30.5, 14)">
                     <CartLogoBadge width={22} />
                 </g>
 
