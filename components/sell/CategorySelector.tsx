@@ -18,20 +18,49 @@ const CartLogoBadge = ({ width = 20 }: { width?: number }) => {
 
 const SmartphoneGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Left Tilted Phone */}
         <motion.g
-            animate={{ y: [0, -5, 0] }}
-            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ y: [0, -3, 0], rotate: [-16, -18, -16] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            style={{ transformOrigin: '40px 90px' }}
         >
-            {/* Background Angled Phone */}
-            <g transform="translate(118, 25) rotate(14)">
-                <rect x="0" y="0" width="52" height="104" rx="12" className="fill-slate-800/80 stroke-slate-600" strokeWidth="1.5" />
-                <rect x="3" y="3" width="46" height="98" rx="9" className="fill-blue-900/40" />
+            <g transform="translate(25, 26)">
+                <rect x="0" y="0" width="46" height="96" rx="11" className="fill-slate-800/90 stroke-slate-700" strokeWidth="1.5" />
+                <rect x="3" y="3" width="40" height="90" rx="8" className="fill-[#020617]" />
+                <circle cx="23" cy="48" r="16" className="fill-blue-600/30" />
+                <rect x="8" y="14" width="9" height="9" rx="2.5" className="fill-blue-400/80" />
+                <rect x="21" y="14" width="9" height="9" rx="2.5" className="fill-purple-400/80" />
+                <rect x="8" y="68" width="28" height="12" rx="3" className="fill-slate-800/80 stroke-slate-700/60" strokeWidth="0.8" />
+                <line x1="12" y1="74" x2="30" y2="74" className="stroke-cyan-400" strokeWidth="1.2" strokeLinecap="round" />
             </g>
+        </motion.g>
 
-            {/* Front Flagship Smartphone */}
-            <g transform="translate(48, 20) rotate(-6)">
-                <rect x="0" y="0" width="64" height="118" rx="14" className="fill-slate-900 stroke-slate-700" strokeWidth="2" />
-                <rect x="4" y="4" width="56" height="110" rx="11" className="fill-[#020617]" />
+        {/* Right Tilted Phone */}
+        <motion.g
+            animate={{ y: [0, -4, 0], rotate: [16, 18, 16] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            style={{ transformOrigin: '160px 90px' }}
+        >
+            <g transform="translate(130, 22)">
+                <rect x="0" y="0" width="48" height="98" rx="11" className="fill-slate-800/90 stroke-slate-700" strokeWidth="1.5" />
+                <rect x="3" y="3" width="42" height="92" rx="8" className="fill-[#020617]" />
+                <circle cx="24" cy="50" r="16" className="fill-emerald-600/30" />
+                <rect x="8" y="14" width="9" height="9" rx="2.5" className="fill-emerald-400/80" />
+                <rect x="21" y="14" width="9" height="9" rx="2.5" className="fill-amber-400/80" />
+                <rect x="8" y="70" width="28" height="12" rx="3" className="fill-slate-800/80 stroke-slate-700/60" strokeWidth="0.8" />
+                <circle cx="14" cy="76" r="2" className="fill-emerald-400" />
+                <line x1="19" y1="76" x2="31" y2="76" className="stroke-emerald-400" strokeWidth="1.2" strokeLinecap="round" />
+            </g>
+        </motion.g>
+
+        {/* Center Hero Flagship Smartphone */}
+        <motion.g
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
+        >
+            <g transform="translate(68, 12)">
+                <rect x="0" y="0" width="64" height="122" rx="15" className="fill-slate-900 stroke-slate-700 shadow-xl" strokeWidth="2" />
+                <rect x="4" y="4" width="56" height="114" rx="11" className="fill-[#020617]" />
 
                 {/* Dynamic Island */}
                 <rect x="22" y="7" width="20" height="5" rx="2.5" className="fill-black" />
@@ -39,14 +68,14 @@ const SmartphoneGraphic = () => (
                 {/* OLED Wallpaper Waves */}
                 <g clipPath="url(#phone-screen-clip)">
                     <clipPath id="phone-screen-clip">
-                        <rect x="4" y="4" width="56" height="110" rx="11" />
+                        <rect x="4" y="4" width="56" height="114" rx="11" />
                     </clipPath>
                     
                     <motion.circle cx="28" cy="65" r="32" className="fill-blue-600/30" animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 4, repeat: Infinity }} />
                     <motion.circle cx="38" cy="85" r="26" className="fill-emerald-500/25" animate={{ scale: [1.2, 1, 1.2] }} transition={{ duration: 4, repeat: Infinity }} />
 
                     {/* App Grid */}
-                    <g transform="translate(10, 20)">
+                    <g transform="translate(10, 18)">
                         <rect x="0" y="0" width="10" height="10" rx="3" className="fill-blue-500" />
                         <rect x="14" y="0" width="10" height="10" rx="3" className="fill-emerald-500" />
                         <rect x="28" y="0" width="10" height="10" rx="3" className="fill-amber-500" />
@@ -57,10 +86,10 @@ const SmartphoneGraphic = () => (
                         <CartLogoBadge width={26} />
                     </g>
 
-                    {/* Glowing Audio / Data Widget */}
-                    <rect x="10" y="68" width="44" height="26" rx="6" className="fill-slate-800/80 stroke-slate-700/60" strokeWidth="1" />
+                    {/* Glowing Audio / Activity Wave Widget */}
+                    <rect x="8" y="72" width="48" height="26" rx="6" className="fill-slate-800/80 stroke-slate-700/60" strokeWidth="1" />
                     <motion.path
-                        d="M 14 81 Q 22 73 32 81 T 50 81"
+                        d="M 12 85 Q 20 77 30 85 T 46 85"
                         className="stroke-emerald-400 fill-none" strokeWidth="2" strokeLinecap="round"
                         animate={{ pathLength: [0.2, 1, 0.2] }}
                         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -95,8 +124,8 @@ const TabletGraphic = () => (
                     </clipPath>
 
                     {/* Ambient Art Gradient */}
-                    <circle cx="70" cy="45" r="38" className="fill-purple-600/30" />
-                    <circle cx="95" cy="55" r="28" className="fill-pink-500/25" />
+                    <circle cx="60" cy="50" r="38" className="fill-purple-600/30" />
+                    <circle cx="90" cy="58" r="28" className="fill-pink-500/25" />
 
                     {/* Vector Wave Graph */}
                     <motion.path
@@ -113,9 +142,9 @@ const TabletGraphic = () => (
                     <circle cx="19" cy="44" r="4" className="fill-blue-400" />
                     <rect x="13" y="54" width="12" height="3" rx="1.5" className="fill-emerald-400" />
 
-                    {/* Embedded Logo Badge */}
-                    <g transform="translate(78, 48)">
-                        <CartLogoBadge width={28} />
+                    {/* Logo in Corner (Top-Right of screen) */}
+                    <g transform="translate(100, 20)">
+                        <CartLogoBadge width={22} />
                     </g>
                 </g>
 
