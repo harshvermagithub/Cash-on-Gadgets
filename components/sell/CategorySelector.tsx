@@ -470,7 +470,7 @@ const CameraGraphic = () => (
                 {/* Red Tally Lamp (Top-Left) */}
                 <circle cx="15" cy="24" r="4" className="fill-red-500" />
                 {/* Logo Badge in Corner of Camera Body (Top-Right) */}
-                <g transform="translate(88, 24)">
+                <g transform="translate(94, 24)">
                     <CartLogoBadge width={22} />
                 </g>
             </g>
