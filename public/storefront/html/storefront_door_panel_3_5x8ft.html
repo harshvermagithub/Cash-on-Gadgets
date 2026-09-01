@@ -29,45 +29,48 @@
 
     <rect x="20" y="20" width="660" height="1560" rx="32" fill="none" stroke="#007a55" stroke-width="3" stroke-opacity="0.2"/>
 
-    <!-- Header: Official Design System Logo -->
+    <!-- Header: Identical Fonzkart Brand Logo -->
     <g transform="translate(350, 115)">
         
-    <g transform="translate(-250, -35)">
-        <svg viewBox="0 0 380 70" width="500" height="92" overflow="visible">
+    <g transform="translate(-260, -60)">
+        <svg viewBox="0 0 520 120" width="520" height="120" overflow="visible">
             <defs>
-                <filter id="badge-glow" x="-10%" y="-20%" width="120%" height="140%">
-                    <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.15"/>
-                </filter>
+                <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
+                    .brand-dark { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 72px; fill: #0b132b; letter-spacing: -1px; }
+                    .brand-rupee { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 72px; fill: #00b074; }
+                </style>
+                <clipPath id="screen-clip">
+                    <rect x="4" y="4" width="50" height="92" rx="10" />
+                </clipPath>
             </defs>
-            
-            
-            <!-- Obsidian Glass Background Pill for White Logo -->
-            <rect x="-10" y="0" width="395" height="70" rx="35" fill="#090d16" stroke="#1e293b" stroke-width="1.8" filter="url(#badge-glow)" />
-            
 
-            <!-- Smartphone F Logo on Left -->
-            <g transform="translate(10, 7)">
-                <!-- Dark Smartphone Frame -->
-                <rect x="0" y="0" width="34" height="56" rx="6" fill="#1c1917" stroke="#334155" stroke-width="1.5" />
-                <rect x="2" y="2" width="30" height="52" rx="4.5" fill="#000000" />
-                <!-- Vibrant Green Screen -->
-                <rect x="3" y="3" width="28" height="50" rx="4" fill="#159c4f" />
-                <!-- Stylized White Leaf / F Icon -->
-                <g transform="translate(8, 10)">
-                    <path d="M 1 20 C 1 12 6 6 17 4 C 17 10 13 15 7 17 Z" fill="#ffffff" />
-                    <path d="M 1 27 C 1 20 6 15 15 13 C 15 18 11 22 6 24 Z" fill="#ffffff" />
-                    <path d="M 2 27 C 2 32 3 35 3 35 C 3 35 5 32 5 27 Z" fill="#ffffff" />
+            <!-- 1. Left Smartphone Frame (Dynamic Island + Emerald Screen + White Leaf F) -->
+            <g transform="translate(10, 10)">
+                <!-- Outer Chassis -->
+                <rect x="0" y="0" width="58" height="100" rx="14" fill="#0f172a" stroke="#1e293b" stroke-width="1.5" />
+                <!-- Green Screen Background -->
+                <rect x="4" y="4" width="50" height="92" rx="10" fill="#00b074" />
+                <!-- Dynamic Island Speaker/Pill -->
+                <rect x="20" y="8" width="18" height="5" rx="2.5" fill="#0f172a" />
+                
+                <!-- Inner Leaf Badge Box -->
+                <rect x="7" y="24" width="44" height="52" rx="4" fill="#009c64" opacity="0.3" />
+                
+                <!-- White Leaf F Icon -->
+                <g clip-path="url(#screen-clip)">
+                    <image x="9" y="26" width="40" height="48" href="data:image/png;base64,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" preserveAspectRatio="xMidYMid meet" />
                 </g>
             </g>
 
-            <!-- ONZ KA Text (White) -->
-            <text x="60" y="50" font-family="'Montserrat', sans-serif" font-weight="900" font-size="42" fill="#ffffff" letter-spacing="-0.5">ONZ KA</text>
+            <!-- 2. Text ONZ KA -->
+            <text x="94" y="88" class="brand-dark">ONZ KA</text>
 
-            <!-- Standalone Green Rupee Symbol (₹) -->
-            <text x="246" y="50" font-family="'Montserrat', sans-serif" font-weight="900" font-size="42" fill="#00d084">₹</text>
+            <!-- 3. Standalone Emerald Rupee Symbol ₹ -->
+            <text x="396" y="88" class="brand-rupee">₹</text>
 
-            <!-- T Text (White) -->
-            <text x="280" y="50" font-family="'Montserrat', sans-serif" font-weight="900" font-size="42" fill="#ffffff">T</text>
+            <!-- 4. Text T -->
+            <text x="458" y="88" class="brand-dark">T</text>
         </svg>
     </g>
     
