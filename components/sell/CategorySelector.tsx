@@ -222,49 +222,68 @@ const ConsoleGraphic = () => (
             animate={{ y: [0, -5, 0] }}
             transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
         >
-            {/* Standing Console Tower (Left) */}
-            <g transform="translate(18, 26)">
-                <path d="M 0 0 Q 5 45 0 92 H 24 Q 20 45 24 0 Z" className="fill-white stroke-slate-300" strokeWidth="1.5" />
-                <rect x="4" y="4" width="16" height="84" rx="2" className="fill-slate-900" />
-                <line x1="6" y1="10" x2="6" y2="80" className="stroke-cyan-400" strokeWidth="1.5" />
-                <rect x="15" y="40" width="2" height="30" rx="1" className="fill-slate-600" />
+            {/* Left Standing Console Tower */}
+            <g transform="translate(14, 22) rotate(-10)">
+                <path d="M 0 0 Q 4 42 0 84 H 18 Q 14 42 18 0 Z" className="fill-white stroke-slate-300" strokeWidth="1.2" />
+                <rect x="3" y="4" width="12" height="76" rx="2" className="fill-slate-900" />
+                <line x1="5" y1="10" x2="5" y2="72" className="stroke-cyan-400" strokeWidth="1.2" />
             </g>
 
-            {/* Wireless Gaming Gamepad (Centered & Balanced) */}
-            <g transform="translate(56, 36)">
-                {/* Controller Body */}
-                <path d="M 12 78 C 0 68 -6 32 4 14 C 12 0 34 -4 52 2 C 60 4 72 4 80 2 C 98 -4 120 0 128 14 C 138 32 132 68 120 78 C 106 88 92 64 78 50 C 72 44 60 44 54 50 C 40 64 26 88 12 78 Z" 
+            {/* Right Standing Console Tower */}
+            <g transform="translate(170, 22) rotate(10)">
+                <rect x="0" y="0" width="18" height="84" rx="4" className="fill-slate-900 stroke-slate-700" strokeWidth="1.5" />
+                <circle cx="9" cy="14" r="3.5" className="fill-emerald-500 stroke-emerald-300" strokeWidth="1" />
+                <line x1="4" y1="32" x2="14" y2="32" className="stroke-slate-600" strokeWidth="1.2" />
+                <line x1="4" y1="46" x2="14" y2="46" className="stroke-slate-600" strokeWidth="1.2" />
+            </g>
+
+            {/* Left Handheld Console */}
+            <g transform="translate(42, 36) rotate(-6)">
+                <rect x="0" y="0" width="34" height="52" rx="6" className="fill-slate-800 stroke-slate-600" strokeWidth="1.2" />
+                <rect x="3" y="10" width="28" height="32" rx="3" className="fill-[#020617]" />
+                <circle cx="17" cy="26" r="8" className="fill-blue-500/30" />
+            </g>
+
+            {/* Right Handheld Console */}
+            <g transform="translate(124, 36) rotate(6)">
+                <rect x="0" y="0" width="34" height="52" rx="6" className="fill-slate-800 stroke-slate-600" strokeWidth="1.2" />
+                <rect x="3" y="10" width="28" height="32" rx="3" className="fill-[#020617]" />
+                <circle cx="17" cy="26" r="8" className="fill-pink-500/30" />
+            </g>
+
+            {/* Center Wireless Gaming Gamepad */}
+            <g transform="translate(62, 38)">
+                <path d="M 8 56 C 0 48 -4 22 4 10 C 10 0 24 -2 36 2 C 42 4 50 4 56 2 C 68 -2 82 0 88 10 C 96 22 92 48 84 56 C 74 64 64 46 54 36 C 50 32 42 32 38 36 C 28 46 18 64 8 56 Z" 
                       className="fill-slate-900 stroke-slate-700" strokeWidth="2" strokeLinejoin="round" />
                 
                 {/* Center Touchpad with Logo */}
-                <rect x="49" y="4" width="34" height="22" rx="3" className="fill-slate-800 stroke-slate-600" strokeWidth="1" />
-                <g transform="translate(66, 15)">
-                    <CartLogoBadge width={18} />
+                <rect x="33" y="4" width="26" height="15" rx="2" className="fill-slate-800 stroke-slate-600" strokeWidth="0.8" />
+                <g transform="translate(46, 11)">
+                    <CartLogoBadge width={15} />
                 </g>
 
-                {/* D-Pad (Left, comfortably placed inside body) */}
-                <g transform="translate(26, 26)">
-                    <rect x="-3" y="-9" width="6" height="18" rx="1.5" className="fill-slate-700" />
-                    <rect x="-9" y="-3" width="18" height="6" rx="1.5" className="fill-slate-700" />
-                    <circle cx="0" cy="0" r="2.5" className="fill-slate-800" />
+                {/* D-Pad (Left) */}
+                <g transform="translate(20, 20)">
+                    <rect x="-2" y="-6" width="4" height="12" rx="1" className="fill-slate-700" />
+                    <rect x="-6" y="-2" width="12" height="4" rx="1" className="fill-slate-700" />
                 </g>
 
                 {/* Action Buttons (Right) */}
-                <g transform="translate(106, 26)">
-                    <circle cx="0" cy="-7" r="3" className="fill-emerald-500" />
-                    <circle cx="7" cy="0" r="3" className="fill-red-500" />
-                    <circle cx="0" cy="7" r="3" className="fill-blue-500" />
-                    <circle cx="-7" cy="0" r="3" className="fill-amber-500" />
+                <g transform="translate(72, 20)">
+                    <circle cx="0" cy="-4" r="2" className="fill-emerald-500" />
+                    <circle cx="4" cy="0" r="2" className="fill-red-500" />
+                    <circle cx="0" cy="4" r="2" className="fill-blue-500" />
+                    <circle cx="-4" cy="0" r="2" className="fill-amber-500" />
                 </g>
 
                 {/* Thumbsticks */}
-                <g transform="translate(45, 42)">
-                    <circle cx="0" cy="0" r="10" className="fill-slate-800 stroke-slate-600" strokeWidth="1.5" />
-                    <circle cx="0" cy="0" r="5" className="fill-slate-900" />
+                <g transform="translate(32, 30)">
+                    <circle cx="0" cy="0" r="7" className="fill-slate-800 stroke-slate-600" strokeWidth="1.2" />
+                    <circle cx="0" cy="0" r="3.5" className="fill-slate-900" />
                 </g>
-                <g transform="translate(87, 42)">
-                    <circle cx="0" cy="0" r="10" className="fill-slate-800 stroke-slate-600" strokeWidth="1.5" />
-                    <circle cx="0" cy="0" r="5" className="fill-slate-900" />
+                <g transform="translate(60, 30)">
+                    <circle cx="0" cy="0" r="7" className="fill-slate-800 stroke-slate-600" strokeWidth="1.2" />
+                    <circle cx="0" cy="0" r="3.5" className="fill-slate-900" />
                 </g>
             </g>
         </motion.g>
@@ -277,51 +296,63 @@ const TvGraphic = () => (
             animate={{ y: [0, -4, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         >
-            <g transform="translate(25, 20)">
+            {/* Left Angled TV */}
+            <g transform="translate(15, 34) rotate(-12)">
+                <path d="M 28 42 V 50 M 20 50 H 36" stroke="#475569" strokeWidth="2.5" strokeLinecap="round" />
+                <rect x="0" y="0" width="56" height="34" rx="2" className="fill-slate-900 stroke-slate-700" strokeWidth="1.5" />
+                <rect x="2" y="2" width="52" height="30" rx="1.5" className="fill-[#020617]" />
+                <circle cx="28" cy="17" r="10" className="fill-blue-500/30" />
+                <polygon points="25,14 33,17 25,20" className="fill-white" />
+            </g>
+
+            {/* Right Angled TV */}
+            <g transform="translate(130, 34) rotate(12)">
+                <path d="M 28 42 V 50 M 20 50 H 36" stroke="#475569" strokeWidth="2.5" strokeLinecap="round" />
+                <rect x="0" y="0" width="56" height="34" rx="2" className="fill-slate-900 stroke-slate-700" strokeWidth="1.5" />
+                <rect x="2" y="2" width="52" height="30" rx="1.5" className="fill-[#020617]" />
+                <circle cx="28" cy="17" r="10" className="fill-purple-500/30" />
+                <polygon points="25,14 33,17 25,20" className="fill-white" />
+            </g>
+
+            {/* Center Hero Cinema TV */}
+            <g transform="translate(48, 18)">
                 {/* Stand Base */}
-                <path d="M 45 96 L 95 96 L 105 106 H 35 Z" className="fill-slate-700" />
-                <rect x="66" y="80" width="8" height="16" className="fill-slate-600" />
+                <path d="M 35 72 L 69 72 L 75 80 H 29 Z" className="fill-slate-700" />
+                <rect x="49" y="60" width="6" height="12" className="fill-slate-600" />
 
                 {/* TV Frame */}
-                <rect x="0" y="0" width="140" height="82" rx="3" className="fill-slate-900 stroke-slate-700" strokeWidth="2" />
-                <rect x="3" y="3" width="134" height="76" rx="2" className="fill-[#020617]" />
+                <rect x="0" y="0" width="104" height="62" rx="3" className="fill-slate-900 stroke-slate-700" strokeWidth="2" />
+                <rect x="2.5" y="2.5" width="99" height="57" rx="2" className="fill-[#020617]" />
 
-                {/* 4K UI Feed */}
-                <g clipPath="url(#tv-screen-clip-web)">
-                    <clipPath id="tv-screen-clip-web">
-                        <rect x="3" y="3" width="134" height="76" rx="2" />
-                    </clipPath>
+                {/* Ambient Screen Light */}
+                <circle cx="52" cy="30" r="28" className="fill-emerald-500/20" />
 
-                    {/* Ambient Screen Light */}
-                    <circle cx="70" cy="40" r="40" className="fill-emerald-500/20" />
+                {/* Featured Video Row */}
+                <rect x="8" y="8" width="26" height="18" rx="2" className="fill-red-500/40 stroke-red-400" strokeWidth="0.6" />
+                <polygon points="19,17 23,19 19,21" className="fill-white" />
 
-                    {/* Featured Video Row */}
-                    <rect x="10" y="10" width="34" height="24" rx="2" className="fill-red-500/40 stroke-red-400" strokeWidth="0.8" />
-                    <polygon points="25,22 29,24.5 25,27" className="fill-white" />
-
-                    {/* Featured Logo Stream Channel */}
-                    <g transform="translate(67, 22)">
-                        <CartLogoBadge width={26} />
-                    </g>
-
-                    <rect x="90" y="10" width="34" height="24" rx="2" className="fill-emerald-500/40 stroke-emerald-400" strokeWidth="0.8" />
-
-                    {/* App Icons Row */}
-                    <rect x="10" y="42" width="18" height="10" rx="2" className="fill-slate-800" />
-                    <rect x="32" y="42" width="18" height="10" rx="2" className="fill-slate-800" />
-                    <rect x="54" y="42" width="18" height="10" rx="2" className="fill-slate-800" />
-                    <rect x="76" y="42" width="18" height="10" rx="2" className="fill-slate-800" />
-                    <rect x="98" y="42" width="18" height="10" rx="2" className="fill-slate-800" />
+                {/* Featured Logo Stream Channel */}
+                <g transform="translate(50, 18)">
+                    <CartLogoBadge width={22} />
                 </g>
 
-                {/* Smart Remote */}
-                <g transform="translate(148, 25) rotate(6)">
-                    <rect x="0" y="0" width="14" height="55" rx="6" className="fill-slate-900 stroke-slate-700" strokeWidth="1.5" />
-                    <circle cx="7" cy="8" r="2.5" className="fill-red-500" />
-                    <circle cx="7" cy="20" r="5" className="fill-slate-800 stroke-slate-600" strokeWidth="1" />
-                    <rect x="3" y="32" width="8" height="3" rx="1" className="fill-emerald-500" />
-                    <rect x="3" y="38" width="8" height="3" rx="1" className="fill-blue-500" />
-                </g>
+                <rect x="70" y="8" width="26" height="18" rx="2" className="fill-emerald-500/40 stroke-emerald-400" strokeWidth="0.6" />
+
+                {/* App Icons Row */}
+                <rect x="8" y="32" width="14" height="8" rx="1.5" className="fill-slate-800" />
+                <rect x="26" y="32" width="14" height="8" rx="1.5" className="fill-slate-800" />
+                <rect x="44" y="32" width="14" height="8" rx="1.5" className="fill-slate-800" />
+                <rect x="62" y="32" width="14" height="8" rx="1.5" className="fill-slate-800" />
+                <rect x="80" y="32" width="14" height="8" rx="1.5" className="fill-slate-800" />
+            </g>
+
+            {/* Smart Remote */}
+            <g transform="translate(172, 32) rotate(14)">
+                <rect x="0" y="0" width="12" height="46" rx="5" className="fill-slate-900 stroke-slate-700" strokeWidth="1.2" />
+                <circle cx="6" cy="6" r="2" className="fill-red-500" />
+                <circle cx="6" cy="16" r="4" className="fill-slate-800 stroke-slate-600" strokeWidth="0.8" />
+                <rect x="2.5" y="26" width="7" height="2.5" rx="1" className="fill-emerald-500" />
+                <rect x="2.5" y="31" width="7" height="2.5" rx="1" className="fill-blue-500" />
             </g>
         </motion.g>
     </svg>
@@ -413,43 +444,68 @@ const LaptopGraphic = () => (
 const DesktopGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
-            <g transform="translate(30, 24)">
+            {/* Left Angled Monitor */}
+            <g transform="translate(18, 38) rotate(-10)">
+                <path d="M 28 36 V 46 M 18 46 H 38" stroke="#475569" strokeWidth="2.5" strokeLinecap="round" />
+                <rect x="0" y="0" width="56" height="36" rx="3" className="fill-slate-900 stroke-slate-700" strokeWidth="1.2" />
+                <rect x="2" y="2" width="52" height="32" rx="1.5" className="fill-[#020617]" />
+                <circle cx="20" cy="18" r="9" className="fill-blue-600/30 stroke-blue-500/50" strokeWidth="1" />
+                <circle cx="20" cy="18" r="4" className="fill-blue-500" />
+                <line x1="20" y1="18" x2="44" y2="14" className="stroke-emerald-400" strokeWidth="1.2" />
+            </g>
+
+            {/* Right Background Monitor */}
+            <g transform="translate(126, 40) rotate(8)">
+                <path d="M 28 36 V 46 M 18 46 H 38" stroke="#475569" strokeWidth="2.5" strokeLinecap="round" />
+                <rect x="0" y="0" width="56" height="36" rx="3" className="fill-slate-900 stroke-slate-700" strokeWidth="1.2" />
+                <rect x="2" y="2" width="52" height="32" rx="1.5" className="fill-[#020617]" />
+                <circle cx="36" cy="18" r="9" className="stroke-emerald-400/60" strokeWidth="1" strokeDasharray="2 2" fill="none" />
+            </g>
+
+            {/* Center Hero Monitor with Green Border and Cart Logo inside Radar */}
+            <g transform="translate(52, 26)">
                 {/* Stand Neck & Base */}
-                <path d="M48 66 V82" stroke="#475569" strokeWidth="6" strokeLinecap="round" />
-                <path d="M30 82 H66" stroke="#475569" strokeWidth="5" strokeLinecap="round" />
+                <path d="M 44 50 V 62 M 32 62 H 56" stroke="#475569" strokeWidth="3" strokeLinecap="round" />
 
-                {/* Desktop Monitor Frame */}
-                <rect x="0" y="10" width="96" height="66" rx="5" className="fill-slate-900 stroke-slate-700" strokeWidth="2" />
-                
-                {/* Screen Content */}
-                <g clipPath="url(#desktop-screen-clip)">
-                    <clipPath id="desktop-screen-clip">
-                        <rect x="4" y="14" width="88" height="58" rx="2" />
-                    </clipPath>
-                    <rect x="4" y="14" width="88" height="58" rx="2" className="fill-[#020617]" />
+                {/* Monitor Frame with Emerald Green Border */}
+                <rect x="0" y="0" width="88" height="52" rx="4" className="fill-slate-900 stroke-emerald-500" strokeWidth="1.8" />
+                <rect x="2.5" y="2.5" width="83" height="47" rx="2" className="fill-[#020617]" />
 
-                    {/* Left Node: Blue Orbit & Center */}
-                    <circle cx="26" cy="43" r="14" className="fill-blue-950/60 stroke-blue-700/50" strokeWidth="1.5" />
-                    <motion.circle cx="26" cy="43" r="8" className="fill-blue-600" animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2.5, repeat: Infinity }} />
+                {/* Radar Grid & Node Line */}
+                <circle cx="25" cy="26" r="12" className="fill-blue-900/40 stroke-blue-600" strokeWidth="1.2" />
+                <circle cx="25" cy="26" r="6" className="fill-blue-500" />
+                <line x1="25" y1="26" x2="63" y2="20" className="stroke-emerald-400" strokeWidth="1.8" />
+                <circle cx="44" cy="23" r="2" className="fill-emerald-400" />
 
-                    {/* Connecting Green Data Line */}
-                    <line x1="26" y1="43" x2="68" y2="35" className="stroke-emerald-400" strokeWidth="2.5" />
-                    <motion.circle r="2.5" className="fill-emerald-300" animate={{ cx: [26, 68], cy: [43, 35], opacity: [0, 1, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} />
-
-                    {/* Right Node: Logo Badge inside Radar */}
-                    <g transform="translate(68, 35)">
-                        <CartLogoBadge width={24} />
-                    </g>
-                    <motion.circle cx="68" cy="35" r="16" className="stroke-emerald-400" strokeWidth="2" strokeDasharray="4 4" fill="none" animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: "linear" }} style={{ transformOrigin: '68px 35px' }} />
+                {/* Radar Outer Orbit with Logo */}
+                <motion.circle
+                    cx="63" cy="20" r="14"
+                    className="stroke-emerald-400" strokeWidth="1.2" strokeDasharray="3 3" fill="none"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                    style={{ transformOrigin: '63px 20px' }}
+                />
+                <g transform="translate(63, 20)">
+                    <CartLogoBadge width={18} />
                 </g>
+            </g>
 
-                {/* PC Tower */}
-                <g transform="translate(108, 14)">
-                    <rect x="0" y="0" width="30" height="74" rx="5" className="fill-slate-900 stroke-slate-700" strokeWidth="2" />
-                    <motion.circle cx="15" cy="18" r="5" className="fill-blue-500" stroke="#38bdf8" strokeWidth="1.5" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity }} />
-                    <rect x="8" y="32" width="14" height="2" rx="1" className="fill-slate-700" />
-                    <rect x="8" y="38" width="14" height="2" rx="1" className="fill-slate-700" />
-                </g>
+            {/* Right PC Tower 1 (Standing near center monitor with green border) */}
+            <g transform="translate(138, 28)">
+                <rect x="0" y="0" width="22" height="58" rx="3" className="fill-slate-900 stroke-emerald-500" strokeWidth="1.5" />
+                <circle cx="11" cy="14" r="4.5" className="fill-blue-500 stroke-cyan-400" strokeWidth="1" />
+                <line x1="6" y1="28" x2="16" y2="28" className="stroke-slate-600" strokeWidth="1" />
+                <line x1="6" y1="32" x2="16" y2="32" className="stroke-slate-600" strokeWidth="1" />
+                <line x1="6" y1="36" x2="16" y2="36" className="stroke-slate-600" strokeWidth="1" />
+                <circle cx="11" cy="48" r="1.5" className="fill-emerald-400" />
+            </g>
+
+            {/* Right PC Tower 2 (Far Right Standing Tower) */}
+            <g transform="translate(174, 40) rotate(6)">
+                <rect x="0" y="0" width="18" height="54" rx="3" className="fill-slate-900 stroke-slate-700" strokeWidth="1.2" />
+                <circle cx="9" cy="13" r="3.5" className="fill-blue-500 stroke-cyan-400" strokeWidth="0.8" />
+                <line x1="5" y1="26" x2="13" y2="26" className="stroke-slate-600" strokeWidth="0.8" />
+                <line x1="5" y1="30" x2="13" y2="30" className="stroke-slate-600" strokeWidth="0.8" />
             </g>
         </motion.g>
     </svg>
@@ -481,45 +537,60 @@ const CameraGraphic = () => (
 const EarbudsGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}>
-            {/* Left Matte Black Case */}
-            <g transform="translate(30, 48) rotate(-12)">
-                <rect x="0" y="0" width="34" height="28" rx="10" className="fill-slate-900 stroke-slate-700" strokeWidth="1.2" />
-                <path d="M 0 10 Q 17 14 34 10" stroke="#334155" strokeWidth="1" fill="none" />
-                <circle cx="17" cy="18" r="1.5" className="fill-cyan-400" />
+            {/* Left Matte Black Case with Both Buds */}
+            <g transform="translate(24, 48) rotate(-12)">
+                <g transform="translate(8, -12)">
+                    <rect x="-1.5" y="0" width="3" height="12" rx="1.5" className="fill-slate-800 stroke-slate-600" strokeWidth="0.8" />
+                    <circle cx="0" cy="0" r="3.5" className="fill-slate-800 stroke-slate-600" strokeWidth="0.8" />
+                </g>
+                <g transform="translate(22, -12)">
+                    <rect x="-1.5" y="0" width="3" height="12" rx="1.5" className="fill-slate-800 stroke-slate-600" strokeWidth="0.8" />
+                    <circle cx="0" cy="0" r="3.5" className="fill-slate-800 stroke-slate-600" strokeWidth="0.8" />
+                </g>
+                <rect x="0" y="0" width="30" height="24" rx="8" className="fill-slate-900 stroke-slate-700" strokeWidth="1.2" />
+                <path d="M 0 8 Q 15 12 30 8" stroke="#334155" strokeWidth="1" fill="none" />
+                <circle cx="15" cy="16" r="1.5" className="fill-cyan-400" />
             </g>
 
-            {/* Right Midnight Blue Case */}
-            <g transform="translate(138, 42) rotate(12)">
-                <rect x="0" y="0" width="34" height="28" rx="10" className="fill-slate-800 stroke-slate-600" strokeWidth="1.2" />
-                <path d="M 0 10 Q 17 14 34 10" stroke="#475569" strokeWidth="1" fill="none" />
-                <circle cx="17" cy="18" r="1.5" className="fill-emerald-400" />
+            {/* Right Midnight Blue Case with Both Buds */}
+            <g transform="translate(144, 42) rotate(12)">
+                <g transform="translate(8, -12)">
+                    <rect x="-1.5" y="0" width="3" height="12" rx="1.5" className="fill-slate-700 stroke-slate-500" strokeWidth="0.8" />
+                    <circle cx="0" cy="0" r="3.5" className="fill-slate-700 stroke-slate-500" strokeWidth="0.8" />
+                </g>
+                <g transform="translate(22, -12)">
+                    <rect x="-1.5" y="0" width="3" height="12" rx="1.5" className="fill-slate-700 stroke-slate-500" strokeWidth="0.8" />
+                    <circle cx="0" cy="0" r="3.5" className="fill-slate-700 stroke-slate-500" strokeWidth="0.8" />
+                </g>
+                <rect x="0" y="0" width="30" height="24" rx="8" className="fill-slate-800 stroke-slate-600" strokeWidth="1.2" />
+                <path d="M 0 8 Q 15 12 30 8" stroke="#475569" strokeWidth="1" fill="none" />
+                <circle cx="15" cy="16" r="1.5" className="fill-emerald-400" />
             </g>
 
-            {/* Center Hero White Case & Buds */}
-            <g transform="translate(74, 30)">
+            {/* Center Hero White Case with Both Buds & Centered Logo (Replaces green dot) */}
+            <g transform="translate(74, 28)">
                 {/* Left Earbud */}
-                <g transform="translate(10, 8)">
-                    <rect x="2" y="6" width="6" height="20" rx="3" className="fill-white stroke-slate-300 dark:stroke-slate-500" strokeWidth="1.2" />
-                    <circle cx="5" cy="6" r="6" className="fill-white stroke-slate-300 dark:stroke-slate-500" strokeWidth="1.2" />
-                    <circle cx="5" cy="6" r="2" className="fill-slate-900" />
+                <g transform="translate(12, 6)">
+                    <rect x="2" y="6" width="5" height="18" rx="2.5" className="fill-white stroke-slate-300 dark:stroke-slate-500" strokeWidth="1.2" />
+                    <circle cx="4.5" cy="6" r="5.5" className="fill-white stroke-slate-300 dark:stroke-slate-500" strokeWidth="1.2" />
+                    <circle cx="4.5" cy="6" r="2" className="fill-slate-900" />
                 </g>
 
                 {/* Right Earbud */}
-                <g transform="translate(36, 8)">
-                    <rect x="2" y="6" width="6" height="20" rx="3" className="fill-white stroke-slate-300 dark:stroke-slate-500" strokeWidth="1.2" />
-                    <circle cx="5" cy="6" r="6" className="fill-white stroke-slate-300 dark:stroke-slate-500" strokeWidth="1.2" />
-                    <circle cx="5" cy="6" r="2" className="fill-slate-900" />
+                <g transform="translate(36, 6)">
+                    <rect x="2" y="6" width="5" height="18" rx="2.5" className="fill-white stroke-slate-300 dark:stroke-slate-500" strokeWidth="1.2" />
+                    <circle cx="4.5" cy="6" r="5.5" className="fill-white stroke-slate-300 dark:stroke-slate-500" strokeWidth="1.2" />
+                    <circle cx="4.5" cy="6" r="2" className="fill-slate-900" />
                 </g>
 
-                {/* Logo Between Earbuds Above Case */}
-                <g transform="translate(26, 12)">
-                    <CartLogoBadge width={20} />
+                {/* Charging Case Body */}
+                <rect x="0" y="24" width="54" height="42" rx="14" className="fill-white dark:fill-slate-100 stroke-slate-300 dark:stroke-slate-400 shadow-lg" strokeWidth="1.8" />
+                <path d="M 0 38 Q 27 44 54 38" stroke="#e2e8f0" strokeWidth="1.2" fill="none" />
+                
+                {/* Logo Centered on Case Body (Replaces green dot) */}
+                <g transform="translate(27, 50)">
+                    <CartLogoBadge width={18} />
                 </g>
-
-                {/* Charging Case */}
-                <rect x="0" y="24" width="52" height="42" rx="16" className="fill-white dark:fill-slate-100 stroke-slate-300 dark:stroke-slate-400 shadow-lg" strokeWidth="1.8" />
-                <path d="M 0 38 Q 26 44 52 38" stroke="#e2e8f0" strokeWidth="1.2" fill="none" />
-                <motion.circle cx="26" cy="48" r="2" className="fill-emerald-500" animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }} transition={{ duration: 2, repeat: Infinity }} />
             </g>
         </motion.g>
     </svg>
