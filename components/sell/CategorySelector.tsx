@@ -7,12 +7,12 @@ interface CategorySelectorProps {
 }
 
 // --- Cart Logo Badge Helper ---
-const CartLogoBadge = ({ radius = 8, strokeColor = '#22c55e', strokeWidth = 1.5 }: { radius?: number; strokeColor?: string; strokeWidth?: number }) => (
-    <g>
-        <circle cx={0} cy={0} r={radius} fill="#ffffff" stroke={strokeColor} strokeWidth={strokeWidth} />
-        <image x={-radius * 0.9} y={-radius * 0.9} width={radius * 1.8} height={radius * 1.8} href="/cart.svg" preserveAspectRatio="xMidYMid meet" />
-    </g>
-);
+const CartLogoBadge = ({ width = 20 }: { width?: number }) => {
+    const height = Math.round(width * (579 / 713));
+    return (
+        <image x={-width / 2} y={-height / 2} width={width} height={height} href="/fonzkart_cart_exact_transparent.png" preserveAspectRatio="xMidYMid meet" />
+    );
+};
 
 // --- Animated SVG Components ---
 
@@ -54,7 +54,7 @@ const SmartphoneGraphic = () => (
 
                     {/* Embedded Logo Badge */}
                     <g transform="translate(32, 48)">
-                        <CartLogoBadge radius={11} strokeColor="#22c55e" strokeWidth={1.5} />
+                        <CartLogoBadge width={26} />
                     </g>
 
                     {/* Glowing Audio / Data Widget */}
@@ -115,7 +115,7 @@ const TabletGraphic = () => (
 
                     {/* Embedded Logo Badge */}
                     <g transform="translate(78, 48)">
-                        <CartLogoBadge radius={13} strokeColor="#c084fc" strokeWidth={1.8} />
+                        <CartLogoBadge width={28} />
                     </g>
                 </g>
 
@@ -180,7 +180,7 @@ const WatchGraphic = () => (
 
                 {/* Logo Badge inside watch face */}
                 <g transform="translate(32, 52)">
-                    <CartLogoBadge radius={9} strokeColor="#f97316" strokeWidth={1.5} />
+                    <CartLogoBadge width={18} />
                 </g>
             </g>
         </motion.g>
@@ -209,7 +209,7 @@ const ConsoleGraphic = () => (
                 {/* Center Touchpad with Logo */}
                 <rect x="18" y="-8" width="34" height="22" rx="3" className="fill-slate-800 stroke-slate-600" strokeWidth="1" />
                 <g transform="translate(35, 3)">
-                    <CartLogoBadge radius={7} strokeColor="#38bdf8" strokeWidth={1.2} />
+                    <CartLogoBadge width={16} />
                 </g>
 
                 {/* D-Pad */}
@@ -264,7 +264,7 @@ const TvGraphic = () => (
 
                     {/* Featured Logo Stream Channel */}
                     <g transform="translate(67, 22)">
-                        <CartLogoBadge radius={12} strokeColor="#10b981" strokeWidth={1.5} />
+                        <CartLogoBadge width={26} />
                     </g>
 
                     <rect x="90" y="10" width="34" height="24" rx="2" className="fill-emerald-500/40 stroke-emerald-400" strokeWidth="0.8" />
@@ -304,7 +304,7 @@ const RepairGraphic = () => (
                 {/* Internal Circuit Board Elements with Logo */}
                 <rect x="10" y="15" width="48" height="40" rx="4" className="fill-emerald-950/60 stroke-emerald-600/40" strokeWidth="1" />
                 <g transform="translate(34, 35)">
-                    <CartLogoBadge radius={10} strokeColor="#34d399" strokeWidth={1.5} />
+                    <CartLogoBadge width={22} />
                 </g>
 
                 {/* Diagnostic Scanning Laser Beam */}
@@ -364,8 +364,8 @@ const LaptopGraphic = () => (
                     <motion.rect x="30" y="52" width="48" height="4" rx="2" className="fill-purple-400" animate={{ width: [30, 48, 30] }} transition={{ duration: 4.5, repeat: Infinity, delay: 0.9 }} />
 
                     {/* Logo Badge in IDE Editor */}
-                    <g transform="translate(98, 44)">
-                        <CartLogoBadge radius={12} strokeColor="#06b6d4" strokeWidth={1.5} />
+                    <g transform="translate(96, 44)">
+                        <CartLogoBadge width={24} />
                     </g>
                 </g>
             </g>
@@ -401,7 +401,7 @@ const DesktopGraphic = () => (
 
                     {/* Right Node: Logo Badge inside Radar */}
                     <g transform="translate(68, 35)">
-                        <CartLogoBadge radius={11} strokeColor="#22c55e" strokeWidth={1.5} />
+                        <CartLogoBadge width={24} />
                     </g>
                     <motion.circle cx="68" cy="35" r="16" className="stroke-emerald-400" strokeWidth="2" strokeDasharray="4 4" fill="none" animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: "linear" }} style={{ transformOrigin: '68px 35px' }} />
                 </g>
@@ -424,12 +424,18 @@ const CameraGraphic = () => (
             <g transform="translate(45, 40)">
                 <rect x="0" y="10" width="110" height="70" rx="8" className="fill-slate-800 stroke-slate-600" strokeWidth="2" />
                 <rect x="20" y="0" width="30" height="10" rx="2" className="fill-slate-700 stroke-slate-500" strokeWidth="2" />
+                {/* Optical concentric lens */}
                 <circle cx="55" cy="45" r="25" className="fill-slate-900 stroke-slate-500" strokeWidth="4" />
-                {/* Logo Badge in camera lens */}
-                <g transform="translate(55, 45)">
-                    <CartLogoBadge radius={11} strokeColor="#2563eb" strokeWidth={1.5} />
+                <circle cx="55" cy="45" r="16" className="fill-black stroke-slate-700" strokeWidth="1.5" />
+                <circle cx="55" cy="45" r="10" className="fill-slate-900 stroke-blue-600" strokeWidth="1.2" />
+                <circle cx="55" cy="45" r="5" className="fill-black" />
+                <circle cx="50" cy="40" r="4" className="fill-white/30" />
+                {/* Red Tally Lamp (Top-Left) */}
+                <circle cx="15" cy="24" r="4" className="fill-red-500" />
+                {/* Logo Badge in Corner of Camera Body (Top-Right) */}
+                <g transform="translate(88, 24)">
+                    <CartLogoBadge width={22} />
                 </g>
-                <circle cx="15" cy="25" r="4" className="fill-red-500" />
             </g>
         </motion.g>
     </svg>
@@ -457,7 +463,7 @@ const EarbudsGraphic = () => (
                 <rect x="0" y="24" width="64" height="48" rx="18" className="fill-white dark:fill-slate-100 stroke-slate-300 dark:stroke-slate-400 shadow-lg" strokeWidth="2" />
                 <path d="M 0 40 Q 32 46 64 40" stroke="#e2e8f0" strokeWidth="1.5" fill="none" />
                 <g transform="translate(32, 50)">
-                    <CartLogoBadge radius={9} strokeColor="#22c55e" strokeWidth={1.3} />
+                    <CartLogoBadge width={22} />
                 </g>
             </g>
         </motion.g>
@@ -492,7 +498,7 @@ const ScreenGuardGraphic = () => (
                 <rect x="0" y="0" width="56" height="100" rx="14" className="fill-slate-900 stroke-slate-700" strokeWidth="2.5" />
                 <rect x="4" y="4" width="48" height="92" rx="10" className="fill-[#020617]" />
                 <g transform="translate(28, 50)">
-                    <CartLogoBadge radius={11} strokeColor="#38bdf8" strokeWidth={1.5} />
+                    <CartLogoBadge width={26} />
                 </g>
             </g>
         </motion.g>
