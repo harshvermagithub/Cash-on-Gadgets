@@ -194,32 +194,34 @@ const ConsoleGraphic = () => (
             transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
         >
             {/* Standing Console Tower (Left) */}
-            <g transform="translate(30, 24)">
+            <g transform="translate(18, 26)">
                 <path d="M 0 0 Q 5 45 0 92 H 24 Q 20 45 24 0 Z" className="fill-white stroke-slate-300" strokeWidth="1.5" />
                 <rect x="4" y="4" width="16" height="84" rx="2" className="fill-slate-900" />
                 <line x1="6" y1="10" x2="6" y2="80" className="stroke-cyan-400" strokeWidth="1.5" />
                 <rect x="15" y="40" width="2" height="30" rx="1" className="fill-slate-600" />
             </g>
 
-            {/* Wireless Gaming Gamepad (Right) */}
-            <g transform="translate(75, 45)">
-                <path d="M 0 15 C 8 -10 32 -15 55 -15 C 78 -15 102 -10 110 15 C 118 40 128 75 105 88 C 88 98 75 70 60 50 C 48 44 22 44 10 50 C -5 70 -18 98 -35 88 C -58 75 -48 40 -40 15 Z" 
-                      className="fill-slate-900 stroke-slate-700" strokeWidth="2" />
+            {/* Wireless Gaming Gamepad (Centered & Balanced) */}
+            <g transform="translate(56, 36)">
+                {/* Controller Body */}
+                <path d="M 12 78 C 0 68 -6 32 4 14 C 12 0 34 -4 52 2 C 60 4 72 4 80 2 C 98 -4 120 0 128 14 C 138 32 132 68 120 78 C 106 88 92 64 78 50 C 72 44 60 44 54 50 C 40 64 26 88 12 78 Z" 
+                      className="fill-slate-900 stroke-slate-700" strokeWidth="2" strokeLinejoin="round" />
                 
                 {/* Center Touchpad with Logo */}
-                <rect x="18" y="-8" width="34" height="22" rx="3" className="fill-slate-800 stroke-slate-600" strokeWidth="1" />
-                <g transform="translate(35, 3)">
-                    <CartLogoBadge width={16} />
+                <rect x="49" y="4" width="34" height="22" rx="3" className="fill-slate-800 stroke-slate-600" strokeWidth="1" />
+                <g transform="translate(66, 15)">
+                    <CartLogoBadge width={18} />
                 </g>
 
-                {/* D-Pad */}
-                <g transform="translate(-15, 18)">
+                {/* D-Pad (Left, comfortably placed inside body) */}
+                <g transform="translate(26, 26)">
                     <rect x="-3" y="-9" width="6" height="18" rx="1.5" className="fill-slate-700" />
                     <rect x="-9" y="-3" width="18" height="6" rx="1.5" className="fill-slate-700" />
+                    <circle cx="0" cy="0" r="2.5" className="fill-slate-800" />
                 </g>
 
-                {/* Action Buttons */}
-                <g transform="translate(85, 18)">
+                {/* Action Buttons (Right) */}
+                <g transform="translate(106, 26)">
                     <circle cx="0" cy="-7" r="3" className="fill-emerald-500" />
                     <circle cx="7" cy="0" r="3" className="fill-red-500" />
                     <circle cx="0" cy="7" r="3" className="fill-blue-500" />
@@ -227,8 +229,14 @@ const ConsoleGraphic = () => (
                 </g>
 
                 {/* Thumbsticks */}
-                <circle cx="8" cy="40" r="9" className="fill-slate-800 stroke-slate-600" strokeWidth="1.5" />
-                <circle cx="62" cy="40" r="9" className="fill-slate-800 stroke-slate-600" strokeWidth="1.5" />
+                <g transform="translate(45, 42)">
+                    <circle cx="0" cy="0" r="10" className="fill-slate-800 stroke-slate-600" strokeWidth="1.5" />
+                    <circle cx="0" cy="0" r="5" className="fill-slate-900" />
+                </g>
+                <g transform="translate(87, 42)">
+                    <circle cx="0" cy="0" r="10" className="fill-slate-800 stroke-slate-600" strokeWidth="1.5" />
+                    <circle cx="0" cy="0" r="5" className="fill-slate-900" />
+                </g>
             </g>
         </motion.g>
     </svg>
@@ -444,27 +452,30 @@ const CameraGraphic = () => (
 const EarbudsGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}>
-            <g transform="translate(68, 38)">
+            <g transform="translate(68, 32)">
                 {/* Left Earbud */}
-                <g transform="translate(14, 8)">
-                    <rect x="2" y="6" width="7" height="20" rx="3.5" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
-                    <circle cx="5.5" cy="6" r="6" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
+                <g transform="translate(14, 10)">
+                    <rect x="2" y="6" width="7" height="22" rx="3.5" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
+                    <circle cx="5.5" cy="6" r="6.5" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
                     <circle cx="5.5" cy="6" r="2" className="fill-slate-900" />
                 </g>
 
                 {/* Right Earbud */}
-                <g transform="translate(37, 8)">
-                    <rect x="2" y="6" width="7" height="20" rx="3.5" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
-                    <circle cx="5.5" cy="6" r="6" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
+                <g transform="translate(43, 10)">
+                    <rect x="2" y="6" width="7" height="22" rx="3.5" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
+                    <circle cx="5.5" cy="6" r="6.5" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
                     <circle cx="5.5" cy="6" r="2" className="fill-slate-900" />
                 </g>
 
-                {/* Charging Case with Logo */}
-                <rect x="0" y="24" width="64" height="48" rx="18" className="fill-white dark:fill-slate-100 stroke-slate-300 dark:stroke-slate-400 shadow-lg" strokeWidth="2" />
-                <path d="M 0 40 Q 32 46 64 40" stroke="#e2e8f0" strokeWidth="1.5" fill="none" />
-                <g transform="translate(32, 50)">
+                {/* Logo Between Earbuds Above Case */}
+                <g transform="translate(32, 14)">
                     <CartLogoBadge width={22} />
                 </g>
+
+                {/* Charging Case */}
+                <rect x="0" y="26" width="64" height="48" rx="18" className="fill-white dark:fill-slate-100 stroke-slate-300 dark:stroke-slate-400 shadow-lg" strokeWidth="2" />
+                <path d="M 0 42 Q 32 48 64 42" stroke="#e2e8f0" strokeWidth="1.5" fill="none" />
+                <motion.circle cx="32" cy="52" r="2.5" className="fill-emerald-500" animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }} transition={{ duration: 2, repeat: Infinity }} />
             </g>
         </motion.g>
     </svg>
