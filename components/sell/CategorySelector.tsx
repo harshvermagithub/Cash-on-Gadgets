@@ -345,30 +345,42 @@ const LaptopGraphic = () => (
 
 const DesktopGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <motion.g animate={{ y: [0, -3, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}>
-            <g transform="translate(30, 20)">
-                <rect x="10" y="10" width="100" height="70" rx="4" className="fill-slate-900 stroke-slate-600" strokeWidth="2" />
-                <g clipPath="url(#desktop-clip)">
-                    <clipPath id="desktop-clip"><rect x="14" y="14" width="92" height="62" rx="2" /></clipPath>
-                    <rect x="14" y="14" width="92" height="62" rx="2" className="fill-black" />
+        <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
+            <g transform="translate(30, 24)">
+                {/* Stand Neck & Base */}
+                <path d="M48 66 V82" stroke="#475569" strokeWidth="6" strokeLinecap="round" />
+                <path d="M30 82 H66" stroke="#475569" strokeWidth="5" strokeLinecap="round" />
 
-                    {/* Futuristic Data Nodes */}
-                    <motion.circle cx="30" cy="45" r="15" className="stroke-blue-500/30" strokeWidth="2" fill="none" animate={{ scale: [0.8, 1.2, 0.8], rotate: [0, 180, 360] }} transition={{ duration: 4, repeat: Infinity, ease: "linear" }} />
-                    <motion.circle cx="30" cy="45" r="8" className="fill-blue-500/60" animate={{ scale: [1, 1.5, 1] }} transition={{ duration: 2, repeat: Infinity }} />
+                {/* Desktop Monitor Frame */}
+                <rect x="0" y="10" width="96" height="66" rx="5" className="fill-slate-900 stroke-slate-700" strokeWidth="2" />
+                
+                {/* Screen Content */}
+                <g clipPath="url(#desktop-screen-clip)">
+                    <clipPath id="desktop-screen-clip">
+                        <rect x="4" y="14" width="88" height="58" rx="2" />
+                    </clipPath>
+                    <rect x="4" y="14" width="88" height="58" rx="2" className="fill-[#020617]" />
 
-                    <motion.circle cx="75" cy="35" r="20" className="stroke-teal-500/30" strokeWidth="2" strokeDasharray="5 5" fill="none" animate={{ rotate: [-360, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "linear" }} />
-                    <motion.circle cx="75" cy="35" r="10" className="fill-teal-500/60" animate={{ scale: [1, 1.3, 1] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }} />
+                    {/* Left Node: Blue Orbit & Center */}
+                    <circle cx="26" cy="43" r="14" className="fill-blue-950/60 stroke-blue-700/50" strokeWidth="1.5" />
+                    <motion.circle cx="26" cy="43" r="8" className="fill-blue-600" animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 2.5, repeat: Infinity }} />
 
-                    <line x1="30" y1="45" x2="75" y2="35" className="stroke-green-400/30" strokeWidth="2" />
+                    {/* Connecting Green Data Line */}
+                    <line x1="26" y1="43" x2="68" y2="35" className="stroke-emerald-400" strokeWidth="2.5" />
+                    <motion.circle r="2.5" className="fill-emerald-300" animate={{ cx: [26, 68], cy: [43, 35], opacity: [0, 1, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} />
 
-                    {/* Animated packets traveling across the line */}
-                    <motion.circle r="2" className="fill-green-400" animate={{ cx: [30, 75], cy: [45, 35], opacity: [0, 1, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }} />
-                    <motion.circle r="2" className="fill-emerald-300" animate={{ cx: [75, 30], cy: [35, 45], opacity: [0, 1, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "linear", delay: 0.75 }} />
+                    {/* Right Node: Green Radar Circle with Dashed Orbit */}
+                    <circle cx="68" cy="35" r="15" className="fill-teal-700/80" />
+                    <motion.circle cx="68" cy="35" r="19" className="stroke-emerald-400" strokeWidth="2" strokeDasharray="4 4" fill="none" animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: "linear" }} style={{ transformOrigin: '68px 35px' }} />
                 </g>
-                <path d="M50 80 V100" className="stroke-slate-500" strokeWidth="8" />
-                <path d="M30 100 H90" className="stroke-slate-500" strokeWidth="6" strokeLinecap="round" />
-                <rect x="120" y="20" width="30" height="80" rx="3" className="fill-slate-800 stroke-slate-600" strokeWidth="2" />
-                <circle cx="135" cy="35" r="5" className="fill-blue-500/80" />
+
+                {/* PC Tower */}
+                <g transform="translate(108, 14)">
+                    <rect x="0" y="0" width="30" height="74" rx="5" className="fill-slate-900 stroke-slate-700" strokeWidth="2" />
+                    <motion.circle cx="15" cy="18" r="5" className="fill-blue-500" stroke="#38bdf8" strokeWidth="1.5" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity }} />
+                    <rect x="8" y="32" width="14" height="2" rx="1" className="fill-slate-700" />
+                    <rect x="8" y="38" width="14" height="2" rx="1" className="fill-slate-700" />
+                </g>
             </g>
         </motion.g>
     </svg>
@@ -391,26 +403,30 @@ const CameraGraphic = () => (
 
 const EarbudsGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
-            <g transform="translate(60, 40)">
-                {/* Case */}
-                <rect x="15" y="30" width="50" height="40" rx="15" className="fill-white dark:fill-slate-200 stroke-slate-300" strokeWidth="2" />
-                <path d="M15 45 Q40 55 65 45" className="stroke-slate-200" strokeWidth="1.5" fill="none" />
-                <circle cx="40" cy="55" r="2.5" className="fill-green-500" />
-
+        <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}>
+            <g transform="translate(68, 38)">
                 {/* Left Earbud */}
-                <g transform="translate(22, 12)">
-                    <rect x="0" y="5" width="6" height="15" rx="3" className="fill-white dark:fill-slate-100 stroke-slate-300" strokeWidth="1.5" />
-                    <circle cx="3" cy="5" r="6" className="fill-white dark:fill-slate-100 stroke-slate-300" strokeWidth="1.5" />
-                    <circle cx="5" cy="5" r="2" className="fill-slate-900" />
+                <g transform="translate(14, 8)">
+                    <rect x="2" y="6" width="7" height="20" rx="3.5" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
+                    <circle cx="5.5" cy="6" r="6" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
+                    <circle cx="5.5" cy="6" r="2" className="fill-slate-900" />
                 </g>
 
                 {/* Right Earbud */}
-                <g transform="translate(42, 12)">
-                    <rect x="6" y="5" width="6" height="15" rx="3" className="fill-white dark:fill-slate-100 stroke-slate-300" strokeWidth="1.5" />
-                    <circle cx="9" cy="5" r="6" className="fill-white dark:fill-slate-100 stroke-slate-300" strokeWidth="1.5" />
-                    <circle cx="7" cy="5" r="2" className="fill-slate-900" />
+                <g transform="translate(37, 8)">
+                    <rect x="2" y="6" width="7" height="20" rx="3.5" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
+                    <circle cx="5.5" cy="6" r="6" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
+                    <circle cx="5.5" cy="6" r="2" className="fill-slate-900" />
                 </g>
+
+                {/* Charging Case */}
+                <rect x="0" y="24" width="64" height="48" rx="18" className="fill-white dark:fill-slate-100 stroke-slate-300 dark:stroke-slate-400 shadow-lg" strokeWidth="2" />
+                
+                {/* Case Lid Opening Line */}
+                <path d="M 0 40 Q 32 46 64 40" stroke="#e2e8f0" strokeWidth="1.5" fill="none" />
+
+                {/* Green Indicator LED */}
+                <motion.circle cx="32" cy="50" r="2.8" className="fill-emerald-500" animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }} transition={{ duration: 2, repeat: Infinity }} />
             </g>
         </motion.g>
     </svg>
@@ -418,24 +434,32 @@ const EarbudsGraphic = () => (
 
 const ScreenGuardGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <motion.g animate={{ y: [0, -5, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
-            {/* Base Phone */}
-            <g transform="translate(70, 30)">
-                <rect x="0" y="0" width="60" height="110" rx="10" className="fill-slate-800 stroke-slate-600" strokeWidth="2" />
-                <rect x="4" y="4" width="52" height="102" rx="6" className="fill-black" />
-            </g>
-            {/* Screen Guard Hovering Above */}
+        <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
+            {/* Screen Guard (Left, Hovering) */}
             <motion.g
-                transform="translate(75, 15)"
-                animate={{ y: [0, 10, 0] }}
+                transform="translate(42, 20)"
+                animate={{ y: [0, 4, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
-                <rect x="0" y="0" width="50" height="100" rx="4" className="fill-cyan-500/30 stroke-cyan-400" strokeWidth="2" />
-                <path d="M0 0 L50 100" className="stroke-white/40" strokeWidth="20" />
+                <rect x="0" y="0" width="48" height="96" rx="8" className="fill-cyan-400/40 stroke-cyan-400" strokeWidth="2" />
+                
+                {/* Diagonal Glass Reflection Beam */}
+                <g clipPath="url(#guard-clip)">
+                    <clipPath id="guard-clip">
+                        <rect x="0" y="0" width="48" height="96" rx="8" />
+                    </clipPath>
+                    <path d="M 0 0 L 22 0 L 48 96 L 26 96 Z" fill="#ffffff" fillOpacity="0.45" />
+                </g>
             </motion.g>
-            {/* Sparkles indicating Unbreakable / Toughness */}
-            <motion.circle cx="140" cy="40" r="3" className="fill-cyan-300" animate={{ opacity: [0, 1, 0] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} />
-            <motion.circle cx="60" cy="110" r="2" className="fill-cyan-300" animate={{ opacity: [0, 1, 0] }} transition={{ duration: 1.5, repeat: Infinity, delay: 1 }} />
+
+            {/* Alignment Dot */}
+            <motion.circle cx="98" cy="85" r="2.5" className="fill-cyan-400" animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }} transition={{ duration: 2, repeat: Infinity }} />
+
+            {/* Base Smartphone (Right) */}
+            <g transform="translate(108, 36)">
+                <rect x="0" y="0" width="56" height="100" rx="14" className="fill-slate-900 stroke-slate-700" strokeWidth="2.5" />
+                <rect x="4" y="4" width="48" height="92" rx="10" className="fill-[#000000]" />
+            </g>
         </motion.g>
     </svg>
 );
@@ -501,18 +525,18 @@ const categories = [
     {
         id: 'desktop',
         name: 'Desktops',
-        subtext: 'Turn your old PC into cash',
+        subtext: 'TURN YOUR OLD PC INTO CASH',
         component: <DesktopGraphic />,
-        bgColors: 'bg-teal-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
-        textColor: 'text-teal-900 dark:text-teal-100'
+        bgColors: 'bg-[#f0fdf4] dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
+        textColor: 'text-[#064e3b] dark:text-emerald-300'
     },
     {
         id: 'earbuds',
         name: 'Earbuds',
-        subtext: 'Instant quote and fast money',
+        subtext: 'INSTANT QUOTE AND FAST MONEY',
         component: <EarbudsGraphic />,
-        bgColors: 'bg-fuchsia-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
-        textColor: 'text-fuchsia-900 dark:text-fuchsia-100'
+        bgColors: 'bg-[#fdf4ff] dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
+        textColor: 'text-[#701a75] dark:text-fuchsia-300'
     },
     {
         id: 'repair',
@@ -525,10 +549,10 @@ const categories = [
     {
         id: 'unbreakable-screenguard',
         name: 'Screen Guard',
-        subtext: 'Unbreakable • 3-Hr Doorstep',
+        subtext: 'UNBREAKABLE • 3-HR DOORSTEP',
         component: <ScreenGuardGraphic />,
-        bgColors: 'bg-cyan-50 dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
-        textColor: 'text-cyan-900 dark:text-cyan-100'
+        bgColors: 'bg-[#f0fdfa] dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
+        textColor: 'text-[#083344] dark:text-cyan-300'
     },
 ];
 
