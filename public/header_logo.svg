@@ -1,26 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 80">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 70" width="360" height="70">
   <defs>
     <style>
-      .text { font-family: Arial, sans-serif; font-weight: 900; fill: #ffffff; font-size: 48px; }
-      .icon-bg { fill: #10B981; rx: 6; }
-      .icon-text { font-family: Arial, sans-serif; font-weight: 900; fill: #ffffff; font-size: 40px; text-anchor: middle; }
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&amp;display=swap');
+      .logo-text { font-family: 'Montserrat', sans-serif; font-weight: 900; fill: #ffffff; font-size: 42px; letter-spacing: -0.5px; }
+      .logo-rupee { font-family: 'Montserrat', sans-serif; font-weight: 900; fill: #00d084; font-size: 42px; }
     </style>
   </defs>
   
-  <!-- Background for visibility (optional, remove if transparent needed) -->
-  <!-- <rect width="100%" height="100%" fill="#111" /> -->
+  <!-- Smartphone F Logo on Left -->
+  <g transform="translate(4, 0)">
+    <!-- Dark Smartphone Frame -->
+    <rect x="10" y="7" width="34" height="56" rx="6" fill="#1c1917" stroke="#334155" stroke-width="1.5" />
+    <rect x="12" y="9" width="30" height="52" rx="4.5" fill="#000000" />
+    <!-- Vibrant Green Screen -->
+    <rect x="13" y="10" width="28" height="50" rx="4" fill="#159c4f" />
+    <!-- Stylized White Leaf / F Icon -->
+    <g transform="translate(18, 17)">
+      <!-- Top Leaf Wave -->
+      <path d="M 1 20 C 1 12 6 6 17 4 C 17 10 13 15 7 17 Z" fill="#ffffff" />
+      <!-- Middle Leaf Wave -->
+      <path d="M 1 27 C 1 20 6 15 15 13 C 15 18 11 22 6 24 Z" fill="#ffffff" />
+      <!-- Stem -->
+      <path d="M 2 27 C 2 32 3 35 3 35 C 3 35 5 32 5 27 Z" fill="#ffffff" />
+    </g>
+  </g>
 
-  <!-- F Icon (Phone shape) -->
-  <rect x="10" y="10" width="40" height="60" class="icon-bg" />
-  <text x="30" y="55" class="icon-text">F</text>
-  
-  <!-- Text ONZKA -->
-  <text x="60" y="55" class="text">ONZKA</text>
-  
-  <!-- Rupee Icon (Phone shape) -->
-  <rect x="240" y="10" width="40" height="60" class="icon-bg" />
-  <text x="260" y="55" class="icon-text">₹</text>
-  
-  <!-- Text T -->
-  <text x="290" y="55" class="text">T</text>
+  <!-- ONZ KA Text (White) -->
+  <text x="64" y="50" class="logo-text">ONZ KA</text>
+
+  <!-- Standalone Green Rupee Symbol (₹) -->
+  <text x="248" y="50" class="logo-rupee">₹</text>
+
+  <!-- T Text (White) -->
+  <text x="282" y="50" class="logo-text">T</text>
 </svg>
