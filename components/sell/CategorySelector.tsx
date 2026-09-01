@@ -481,30 +481,45 @@ const CameraGraphic = () => (
 const EarbudsGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}>
-            <g transform="translate(68, 32)">
+            {/* Left Matte Black Case */}
+            <g transform="translate(30, 48) rotate(-12)">
+                <rect x="0" y="0" width="34" height="28" rx="10" className="fill-slate-900 stroke-slate-700" strokeWidth="1.2" />
+                <path d="M 0 10 Q 17 14 34 10" stroke="#334155" strokeWidth="1" fill="none" />
+                <circle cx="17" cy="18" r="1.5" className="fill-cyan-400" />
+            </g>
+
+            {/* Right Midnight Blue Case */}
+            <g transform="translate(138, 42) rotate(12)">
+                <rect x="0" y="0" width="34" height="28" rx="10" className="fill-slate-800 stroke-slate-600" strokeWidth="1.2" />
+                <path d="M 0 10 Q 17 14 34 10" stroke="#475569" strokeWidth="1" fill="none" />
+                <circle cx="17" cy="18" r="1.5" className="fill-emerald-400" />
+            </g>
+
+            {/* Center Hero White Case & Buds */}
+            <g transform="translate(74, 30)">
                 {/* Left Earbud */}
-                <g transform="translate(14, 10)">
-                    <rect x="2" y="6" width="7" height="22" rx="3.5" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
-                    <circle cx="5.5" cy="6" r="6.5" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
-                    <circle cx="5.5" cy="6" r="2" className="fill-slate-900" />
+                <g transform="translate(10, 8)">
+                    <rect x="2" y="6" width="6" height="20" rx="3" className="fill-white stroke-slate-300 dark:stroke-slate-500" strokeWidth="1.2" />
+                    <circle cx="5" cy="6" r="6" className="fill-white stroke-slate-300 dark:stroke-slate-500" strokeWidth="1.2" />
+                    <circle cx="5" cy="6" r="2" className="fill-slate-900" />
                 </g>
 
                 {/* Right Earbud */}
-                <g transform="translate(43, 10)">
-                    <rect x="2" y="6" width="7" height="22" rx="3.5" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
-                    <circle cx="5.5" cy="6" r="6.5" className="fill-white stroke-slate-300 dark:stroke-slate-600" strokeWidth="1.5" />
-                    <circle cx="5.5" cy="6" r="2" className="fill-slate-900" />
+                <g transform="translate(36, 8)">
+                    <rect x="2" y="6" width="6" height="20" rx="3" className="fill-white stroke-slate-300 dark:stroke-slate-500" strokeWidth="1.2" />
+                    <circle cx="5" cy="6" r="6" className="fill-white stroke-slate-300 dark:stroke-slate-500" strokeWidth="1.2" />
+                    <circle cx="5" cy="6" r="2" className="fill-slate-900" />
                 </g>
 
-                {/* Logo Between Earbuds Above Case (Optically Centered) */}
-                <g transform="translate(30.5, 14)">
-                    <CartLogoBadge width={22} />
+                {/* Logo Between Earbuds Above Case */}
+                <g transform="translate(26, 12)">
+                    <CartLogoBadge width={20} />
                 </g>
 
                 {/* Charging Case */}
-                <rect x="0" y="26" width="64" height="48" rx="18" className="fill-white dark:fill-slate-100 stroke-slate-300 dark:stroke-slate-400 shadow-lg" strokeWidth="2" />
-                <path d="M 0 42 Q 32 48 64 42" stroke="#e2e8f0" strokeWidth="1.5" fill="none" />
-                <motion.circle cx="32" cy="52" r="2.5" className="fill-emerald-500" animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }} transition={{ duration: 2, repeat: Infinity }} />
+                <rect x="0" y="24" width="52" height="42" rx="16" className="fill-white dark:fill-slate-100 stroke-slate-300 dark:stroke-slate-400 shadow-lg" strokeWidth="1.8" />
+                <path d="M 0 38 Q 26 44 52 38" stroke="#e2e8f0" strokeWidth="1.2" fill="none" />
+                <motion.circle cx="26" cy="48" r="2" className="fill-emerald-500" animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }} transition={{ duration: 2, repeat: Infinity }} />
             </g>
         </motion.g>
     </svg>
@@ -513,32 +528,46 @@ const EarbudsGraphic = () => (
 const ScreenGuardGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
-            {/* Screen Guard (Left, Hovering) */}
-            <motion.g
-                transform="translate(42, 20)"
-                animate={{ y: [0, 4, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            >
-                <rect x="0" y="0" width="48" height="96" rx="8" className="fill-cyan-400/40 stroke-cyan-400" strokeWidth="2" />
+            {/* Left Phone with 9H Protector */}
+            <g transform="translate(30, 28) rotate(-16)">
+                <rect x="0" y="0" width="38" height="78" rx="8" className="fill-slate-900 stroke-slate-700" strokeWidth="1.2" />
+                <rect x="2" y="2" width="34" height="74" rx="6" className="fill-[#020617]" />
+                <rect x="2" y="2" width="34" height="74" rx="6" className="fill-cyan-500/20 stroke-cyan-400" strokeWidth="0.8" />
+                <circle cx="19" cy="38" r="8" className="fill-cyan-600" />
+                <text x="19" y="41" textAnchor="middle" fill="#ffffff" fontSize="6" fontWeight="bold">9H</text>
+            </g>
+
+            {/* Right Phone with 9H Protector */}
+            <g transform="translate(132, 20) rotate(16)">
+                <rect x="0" y="0" width="38" height="78" rx="8" className="fill-slate-900 stroke-slate-700" strokeWidth="1.2" />
+                <rect x="2" y="2" width="34" height="74" rx="6" className="fill-[#020617]" />
+                <rect x="2" y="2" width="34" height="74" rx="6" className="fill-emerald-500/20 stroke-emerald-400" strokeWidth="0.8" />
+                <circle cx="19" cy="38" r="8" className="fill-emerald-600" />
+                <text x="19" y="41" textAnchor="middle" fill="#ffffff" fontSize="6" fontWeight="bold">9H</text>
+            </g>
+
+            {/* Center Hero Phone with Screen Guard & Logo */}
+            <g transform="translate(76, 14)">
+                <rect x="0" y="0" width="48" height="96" rx="11" className="fill-slate-900 stroke-emerald-500" strokeWidth="2" />
+                <rect x="3" y="3" width="42" height="90" rx="9" className="fill-[#020617]" />
                 
-                {/* Diagonal Glass Reflection Beam */}
-                <g clipPath="url(#guard-clip)">
-                    <clipPath id="guard-clip">
-                        <rect x="0" y="0" width="48" height="96" rx="8" />
-                    </clipPath>
-                    <path d="M 0 0 L 22 0 L 48 96 L 26 96 Z" fill="#ffffff" fillOpacity="0.45" />
-                </g>
-            </motion.g>
-
-            {/* Alignment Dot */}
-            <motion.circle cx="98" cy="85" r="2.5" className="fill-cyan-400" animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }} transition={{ duration: 2, repeat: Infinity }} />
-
-            {/* Base Smartphone (Right with Logo inside screen) */}
-            <g transform="translate(108, 36)">
-                <rect x="0" y="0" width="56" height="100" rx="14" className="fill-slate-900 stroke-slate-700" strokeWidth="2.5" />
-                <rect x="4" y="4" width="48" height="92" rx="10" className="fill-[#020617]" />
-                <g transform="translate(28, 50)">
-                    <CartLogoBadge width={26} />
+                {/* Dynamic Island */}
+                <rect x="16" y="6" width="16" height="4" rx="2" className="fill-black" />
+                
+                {/* Screen Glow */}
+                <circle cx="24" cy="48" r="20" className="fill-emerald-600/30" />
+                
+                {/* Hovering Screen Guard Layer */}
+                <motion.rect
+                    x="2" y="2" width="44" height="92" rx="8"
+                    className="fill-cyan-400/25 stroke-cyan-400" strokeWidth="1.2"
+                    animate={{ y: [0, -3, 0] }}
+                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                />
+                
+                {/* Logo inside phone */}
+                <g transform="translate(24, 38)">
+                    <CartLogoBadge width={22} />
                 </g>
             </g>
         </motion.g>
