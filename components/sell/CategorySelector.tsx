@@ -467,8 +467,8 @@ const EarbudsGraphic = () => (
                     <circle cx="5.5" cy="6" r="2" className="fill-slate-900" />
                 </g>
 
-                {/* Logo Between Earbuds Above Case */}
-                <g transform="translate(32, 14)">
+                {/* Logo Between Earbuds Above Case (Shifted Left for Optical Center) */}
+                <g transform="translate(29, 14)">
                     <CartLogoBadge width={22} />
                 </g>
 
