@@ -14,7 +14,6 @@
     
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="1200" height="1500">
     <defs>
-        <!-- Dark Theme Background Gradient -->
         <linearGradient id="dark-bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#022c22"/>
             <stop offset="35%" stop-color="#064e3b"/>
@@ -22,14 +21,12 @@
             <stop offset="100%" stop-color="#00140e"/>
         </linearGradient>
 
-        <!-- Light Theme Studio White Background -->
         <linearGradient id="light-bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#ffffff"/>
             <stop offset="50%" stop-color="#f8fafc"/>
             <stop offset="100%" stop-color="#f1f5f9"/>
         </linearGradient>
 
-        <!-- Ambient Glows -->
         <radialGradient id="ambient-radial-glow" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stop-color="#10b981" stop-opacity="0.30"/>
             <stop offset="60%" stop-color="#059669" stop-opacity="0.10"/>
@@ -41,6 +38,12 @@
             <stop offset="60%" stop-color="#d1fae5" stop-opacity="0.25"/>
             <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
         </radialGradient>
+
+        <linearGradient id="tv-screen-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#022c22"/>
+            <stop offset="50%" stop-color="#0f172a"/>
+            <stop offset="100%" stop-color="#020617"/>
+        </linearGradient>
 
         <linearGradient id="desktop-screen-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#0f172a"/>
@@ -72,44 +75,27 @@
     <g transform="translate(360, 420) rotate(-10) scale(0.82)" opacity="0.88">
         
 <g id="eb-left-l">
-    <!-- Audio Wave Halo -->
     <circle cx="0" cy="-20" r="180" fill="rgba(34,197,94,0.12)"/>
     <circle cx="0" cy="-20" r="230" fill="none" stroke="#047857" stroke-width="2" stroke-dasharray="10 14" opacity="0.4"/>
 
-    <!-- Left Earbud (Standing) -->
     <g transform="translate(-75, -130)">
-        <!-- Stem -->
         <rect x="-14" y="0" width="28" height="120" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
-        <!-- Acoustic Head -->
         <circle cx="0" cy="0" r="32" fill="#ffffff" stroke="#cbd5e1" stroke-width="3.5"/>
-        <!-- Speaker Mesh -->
         <circle cx="0" cy="0" r="14" fill="#0f172a"/>
-        <!-- Charging Contact Base -->
         <rect x="-10" y="112" width="20" height="6" rx="3" fill="#94a3b8"/>
     </g>
 
-    <!-- Right Earbud (Standing) -->
     <g transform="translate(75, -130)">
-        <!-- Stem -->
         <rect x="-14" y="0" width="28" height="120" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
-        <!-- Acoustic Head -->
         <circle cx="0" cy="0" r="32" fill="#ffffff" stroke="#cbd5e1" stroke-width="3.5"/>
-        <!-- Speaker Mesh -->
         <circle cx="0" cy="0" r="14" fill="#0f172a"/>
-        <!-- Charging Contact Base -->
         <rect x="-10" y="112" width="20" height="6" rx="3" fill="#94a3b8"/>
     </g>
 
-    <!-- Charging Case Body -->
     <rect x="-170" y="-30" width="340" height="250" rx="100" fill="#ffffff" stroke="#cbd5e1" stroke-width="4"/>
-    
-    <!-- Lid Opening Seam -->
     <path d="M -170 50 Q 0 85 170 50" stroke="#cbd5e1" stroke-width="3.5" fill="none"/>
-
-    <!-- Green Indicator LED Dot -->
     <circle cx="0" cy="110" r="9" fill="#22c55e" stroke="#86efac" stroke-width="2.5"/>
 
-    <!-- Center Cart Badge -->
     
 </g>
 
@@ -117,44 +103,27 @@
     <g transform="translate(840, 420) rotate(10) scale(0.82)" opacity="0.88">
         
 <g id="eb-right-l">
-    <!-- Audio Wave Halo -->
     <circle cx="0" cy="-20" r="180" fill="rgba(34,197,94,0.12)"/>
     <circle cx="0" cy="-20" r="230" fill="none" stroke="#047857" stroke-width="2" stroke-dasharray="10 14" opacity="0.4"/>
 
-    <!-- Left Earbud (Standing) -->
     <g transform="translate(-75, -130)">
-        <!-- Stem -->
         <rect x="-14" y="0" width="28" height="120" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
-        <!-- Acoustic Head -->
         <circle cx="0" cy="0" r="32" fill="#ffffff" stroke="#cbd5e1" stroke-width="3.5"/>
-        <!-- Speaker Mesh -->
         <circle cx="0" cy="0" r="14" fill="#0f172a"/>
-        <!-- Charging Contact Base -->
         <rect x="-10" y="112" width="20" height="6" rx="3" fill="#94a3b8"/>
     </g>
 
-    <!-- Right Earbud (Standing) -->
     <g transform="translate(75, -130)">
-        <!-- Stem -->
         <rect x="-14" y="0" width="28" height="120" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
-        <!-- Acoustic Head -->
         <circle cx="0" cy="0" r="32" fill="#ffffff" stroke="#cbd5e1" stroke-width="3.5"/>
-        <!-- Speaker Mesh -->
         <circle cx="0" cy="0" r="14" fill="#0f172a"/>
-        <!-- Charging Contact Base -->
         <rect x="-10" y="112" width="20" height="6" rx="3" fill="#94a3b8"/>
     </g>
 
-    <!-- Charging Case Body -->
     <rect x="-170" y="-30" width="340" height="250" rx="100" fill="#ffffff" stroke="#cbd5e1" stroke-width="4"/>
-    
-    <!-- Lid Opening Seam -->
     <path d="M -170 50 Q 0 85 170 50" stroke="#cbd5e1" stroke-width="3.5" fill="none"/>
-
-    <!-- Green Indicator LED Dot -->
     <circle cx="0" cy="110" r="9" fill="#22c55e" stroke="#86efac" stroke-width="2.5"/>
 
-    <!-- Center Cart Badge -->
     
 </g>
 
@@ -162,44 +131,27 @@
     <g transform="translate(600, 390)">
         
 <g id="eb-main-l">
-    <!-- Audio Wave Halo -->
     <circle cx="0" cy="-20" r="180" fill="rgba(34,197,94,0.12)"/>
     <circle cx="0" cy="-20" r="230" fill="none" stroke="#047857" stroke-width="2" stroke-dasharray="10 14" opacity="0.4"/>
 
-    <!-- Left Earbud (Standing) -->
     <g transform="translate(-75, -130)">
-        <!-- Stem -->
         <rect x="-14" y="0" width="28" height="120" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
-        <!-- Acoustic Head -->
         <circle cx="0" cy="0" r="32" fill="#ffffff" stroke="#cbd5e1" stroke-width="3.5"/>
-        <!-- Speaker Mesh -->
         <circle cx="0" cy="0" r="14" fill="#0f172a"/>
-        <!-- Charging Contact Base -->
         <rect x="-10" y="112" width="20" height="6" rx="3" fill="#94a3b8"/>
     </g>
 
-    <!-- Right Earbud (Standing) -->
     <g transform="translate(75, -130)">
-        <!-- Stem -->
         <rect x="-14" y="0" width="28" height="120" rx="14" fill="#ffffff" stroke="#cbd5e1" stroke-width="3"/>
-        <!-- Acoustic Head -->
         <circle cx="0" cy="0" r="32" fill="#ffffff" stroke="#cbd5e1" stroke-width="3.5"/>
-        <!-- Speaker Mesh -->
         <circle cx="0" cy="0" r="14" fill="#0f172a"/>
-        <!-- Charging Contact Base -->
         <rect x="-10" y="112" width="20" height="6" rx="3" fill="#94a3b8"/>
     </g>
 
-    <!-- Charging Case Body -->
     <rect x="-170" y="-30" width="340" height="250" rx="100" fill="#ffffff" stroke="#22c55e" stroke-width="6"/>
-    
-    <!-- Lid Opening Seam -->
     <path d="M -170 50 Q 0 85 170 50" stroke="#cbd5e1" stroke-width="3.5" fill="none"/>
-
-    <!-- Green Indicator LED Dot -->
     <circle cx="0" cy="110" r="9" fill="#22c55e" stroke="#86efac" stroke-width="2.5"/>
 
-    <!-- Center Cart Badge -->
     
     <g transform="translate(0, 20)">
         

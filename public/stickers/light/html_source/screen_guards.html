@@ -14,7 +14,6 @@
     
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="1200" height="1500">
     <defs>
-        <!-- Dark Theme Background Gradient -->
         <linearGradient id="dark-bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#022c22"/>
             <stop offset="35%" stop-color="#064e3b"/>
@@ -22,14 +21,12 @@
             <stop offset="100%" stop-color="#00140e"/>
         </linearGradient>
 
-        <!-- Light Theme Studio White Background -->
         <linearGradient id="light-bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#ffffff"/>
             <stop offset="50%" stop-color="#f8fafc"/>
             <stop offset="100%" stop-color="#f1f5f9"/>
         </linearGradient>
 
-        <!-- Ambient Glows -->
         <radialGradient id="ambient-radial-glow" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stop-color="#10b981" stop-opacity="0.30"/>
             <stop offset="60%" stop-color="#059669" stop-opacity="0.10"/>
@@ -41,6 +38,12 @@
             <stop offset="60%" stop-color="#d1fae5" stop-opacity="0.25"/>
             <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
         </radialGradient>
+
+        <linearGradient id="tv-screen-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#022c22"/>
+            <stop offset="50%" stop-color="#0f172a"/>
+            <stop offset="100%" stop-color="#020617"/>
+        </linearGradient>
 
         <linearGradient id="desktop-screen-grad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#0f172a"/>
@@ -72,46 +75,30 @@
     <g transform="translate(340, 420) rotate(-8) scale(0.82)" opacity="0.85">
         
 <g id="sg-left-l">
-    <!-- Floating Tempered Glass Screen Guard (Left) -->
     <g transform="translate(-140, -140)">
-        <!-- Glass Sheet -->
         <rect x="-95" y="-180" width="190" height="380" rx="32" fill="rgba(56,189,248,0.35)" stroke="#0ea5e9" stroke-width="5"/>
-        
-        <!-- Diagonal High-Gloss Reflection Glare -->
         <g clip-path="url(#sg-left-l-glass-clip)">
             <rect x="-95" y="-180" width="190" height="380" rx="32"/>
             <path d="M -95 -180 L 10 -180 L 95 200 L -10 200 Z" fill="#ffffff" fill-opacity="0.45"/>
         </g>
-
-        <!-- Dynamic Island Cutout on Glass -->
         <rect x="-30" y="-165" width="60" height="15" rx="7.5" fill="none" stroke="#0ea5e9" stroke-width="2.5"/>
-
-        <!-- Toughness 9H Badge -->
         <g transform="translate(0, 40)">
             <circle cx="0" cy="0" r="28" fill="#0284c7" stroke="#38bdf8" stroke-width="2.5"/>
             <text x="0" y="8" font-family="'Montserrat', sans-serif" font-weight="900" font-size="16" fill="#ffffff" text-anchor="middle">9H</text>
         </g>
     </g>
 
-    <!-- Precision Alignment Laser Dot -->
     <circle cx="45" cy="60" r="8" fill="#38bdf8" stroke="#ffffff" stroke-width="2.5"/>
 
-    <!-- Smartphone (Right) -->
     <g transform="translate(100, -30)">
         <rect x="-105" y="-205" width="210" height="410" rx="36" fill="#0f172a" stroke="#334155" stroke-width="3.5"/>
         <rect x="-97" y="-197" width="194" height="394" rx="30" fill="#000000"/>
         
-        <!-- Screen Content -->
         <g clip-path="url(#sg-left-l-phone-clip)">
             <rect x="-91" y="-191" width="182" height="382" rx="24" fill="url(#screen-guard-phone-grad)"/>
-
-            <!-- Wallpaper Waves -->
             <path d="M -91 20 Q 0 -60 91 20 L 91 191 L -91 191 Z" fill="url(#screen-wave-1)" opacity="0.6"/>
-
-            <!-- Dynamic Island -->
             <rect x="-32" y="-180" width="64" height="16" rx="8" fill="#000000"/>
 
-            <!-- Cart Badge Center Screen -->
             
         </g>
     </g>
@@ -130,46 +117,30 @@
     <g transform="translate(860, 420) rotate(8) scale(0.82)" opacity="0.85">
         
 <g id="sg-right-l">
-    <!-- Floating Tempered Glass Screen Guard (Left) -->
     <g transform="translate(-140, -140)">
-        <!-- Glass Sheet -->
         <rect x="-95" y="-180" width="190" height="380" rx="32" fill="rgba(56,189,248,0.35)" stroke="#0ea5e9" stroke-width="5"/>
-        
-        <!-- Diagonal High-Gloss Reflection Glare -->
         <g clip-path="url(#sg-right-l-glass-clip)">
             <rect x="-95" y="-180" width="190" height="380" rx="32"/>
             <path d="M -95 -180 L 10 -180 L 95 200 L -10 200 Z" fill="#ffffff" fill-opacity="0.45"/>
         </g>
-
-        <!-- Dynamic Island Cutout on Glass -->
         <rect x="-30" y="-165" width="60" height="15" rx="7.5" fill="none" stroke="#0ea5e9" stroke-width="2.5"/>
-
-        <!-- Toughness 9H Badge -->
         <g transform="translate(0, 40)">
             <circle cx="0" cy="0" r="28" fill="#0284c7" stroke="#38bdf8" stroke-width="2.5"/>
             <text x="0" y="8" font-family="'Montserrat', sans-serif" font-weight="900" font-size="16" fill="#ffffff" text-anchor="middle">9H</text>
         </g>
     </g>
 
-    <!-- Precision Alignment Laser Dot -->
     <circle cx="45" cy="60" r="8" fill="#38bdf8" stroke="#ffffff" stroke-width="2.5"/>
 
-    <!-- Smartphone (Right) -->
     <g transform="translate(100, -30)">
         <rect x="-105" y="-205" width="210" height="410" rx="36" fill="#0f172a" stroke="#334155" stroke-width="3.5"/>
         <rect x="-97" y="-197" width="194" height="394" rx="30" fill="#000000"/>
         
-        <!-- Screen Content -->
         <g clip-path="url(#sg-right-l-phone-clip)">
             <rect x="-91" y="-191" width="182" height="382" rx="24" fill="url(#screen-guard-phone-grad)"/>
-
-            <!-- Wallpaper Waves -->
             <path d="M -91 20 Q 0 -60 91 20 L 91 191 L -91 191 Z" fill="url(#screen-wave-1)" opacity="0.6"/>
-
-            <!-- Dynamic Island -->
             <rect x="-32" y="-180" width="64" height="16" rx="8" fill="#000000"/>
 
-            <!-- Cart Badge Center Screen -->
             
         </g>
     </g>
@@ -188,46 +159,30 @@
     <g transform="translate(600, 390)">
         
 <g id="sg-main-l">
-    <!-- Floating Tempered Glass Screen Guard (Left) -->
     <g transform="translate(-140, -140)">
-        <!-- Glass Sheet -->
         <rect x="-95" y="-180" width="190" height="380" rx="32" fill="rgba(56,189,248,0.35)" stroke="#0ea5e9" stroke-width="5"/>
-        
-        <!-- Diagonal High-Gloss Reflection Glare -->
         <g clip-path="url(#sg-main-l-glass-clip)">
             <rect x="-95" y="-180" width="190" height="380" rx="32"/>
             <path d="M -95 -180 L 10 -180 L 95 200 L -10 200 Z" fill="#ffffff" fill-opacity="0.45"/>
         </g>
-
-        <!-- Dynamic Island Cutout on Glass -->
         <rect x="-30" y="-165" width="60" height="15" rx="7.5" fill="none" stroke="#0ea5e9" stroke-width="2.5"/>
-
-        <!-- Toughness 9H Badge -->
         <g transform="translate(0, 40)">
             <circle cx="0" cy="0" r="28" fill="#0284c7" stroke="#38bdf8" stroke-width="2.5"/>
             <text x="0" y="8" font-family="'Montserrat', sans-serif" font-weight="900" font-size="16" fill="#ffffff" text-anchor="middle">9H</text>
         </g>
     </g>
 
-    <!-- Precision Alignment Laser Dot -->
     <circle cx="45" cy="60" r="8" fill="#38bdf8" stroke="#ffffff" stroke-width="2.5"/>
 
-    <!-- Smartphone (Right) -->
     <g transform="translate(100, -30)">
         <rect x="-105" y="-205" width="210" height="410" rx="36" fill="#0f172a" stroke="#22c55e" stroke-width="5"/>
         <rect x="-97" y="-197" width="194" height="394" rx="30" fill="#000000"/>
         
-        <!-- Screen Content -->
         <g clip-path="url(#sg-main-l-phone-clip)">
             <rect x="-91" y="-191" width="182" height="382" rx="24" fill="url(#screen-guard-phone-grad)"/>
-
-            <!-- Wallpaper Waves -->
             <path d="M -91 20 Q 0 -60 91 20 L 91 191 L -91 191 Z" fill="url(#screen-wave-1)" opacity="0.6"/>
-
-            <!-- Dynamic Island -->
             <rect x="-32" y="-180" width="64" height="16" rx="8" fill="#000000"/>
 
-            <!-- Cart Badge Center Screen -->
             
             <g transform="translate(0, -30)">
                 
