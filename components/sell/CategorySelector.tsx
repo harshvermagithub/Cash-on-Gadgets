@@ -6,6 +6,14 @@ interface CategorySelectorProps {
     onSelect: (category: string) => void;
 }
 
+// --- Cart Logo Badge Helper ---
+const CartLogoBadge = ({ radius = 8, strokeColor = '#22c55e', strokeWidth = 1.5 }: { radius?: number; strokeColor?: string; strokeWidth?: number }) => (
+    <g>
+        <circle cx={0} cy={0} r={radius} fill="#ffffff" stroke={strokeColor} strokeWidth={strokeWidth} />
+        <image x={-radius * 0.9} y={-radius * 0.9} width={radius * 1.8} height={radius * 1.8} href="/cart.svg" preserveAspectRatio="xMidYMid meet" />
+    </g>
+);
+
 // --- Animated SVG Components ---
 
 const SmartphoneGraphic = () => (
@@ -38,26 +46,25 @@ const SmartphoneGraphic = () => (
                     <motion.circle cx="38" cy="85" r="26" className="fill-emerald-500/25" animate={{ scale: [1.2, 1, 1.2] }} transition={{ duration: 4, repeat: Infinity }} />
 
                     {/* App Grid */}
-                    <g transform="translate(10, 22)">
+                    <g transform="translate(10, 20)">
                         <rect x="0" y="0" width="10" height="10" rx="3" className="fill-blue-500" />
                         <rect x="14" y="0" width="10" height="10" rx="3" className="fill-emerald-500" />
                         <rect x="28" y="0" width="10" height="10" rx="3" className="fill-amber-500" />
-                        <rect x="0" y="14" width="10" height="10" rx="3" className="fill-purple-500" />
-                        <rect x="14" y="14" width="10" height="10" rx="3" className="fill-rose-500" />
-                        <rect x="28" y="14" width="10" height="10" rx="3" className="fill-cyan-500" />
+                    </g>
+
+                    {/* Embedded Logo Badge */}
+                    <g transform="translate(32, 48)">
+                        <CartLogoBadge radius={11} strokeColor="#22c55e" strokeWidth={1.5} />
                     </g>
 
                     {/* Glowing Audio / Data Widget */}
-                    <rect x="10" y="58" width="44" height="34" rx="6" className="fill-slate-800/80 stroke-slate-700/60" strokeWidth="1" />
+                    <rect x="10" y="68" width="44" height="26" rx="6" className="fill-slate-800/80 stroke-slate-700/60" strokeWidth="1" />
                     <motion.path
-                        d="M 14 75 Q 22 65 32 75 T 50 75"
+                        d="M 14 81 Q 22 73 32 81 T 50 81"
                         className="stroke-emerald-400 fill-none" strokeWidth="2" strokeLinecap="round"
                         animate={{ pathLength: [0.2, 1, 0.2] }}
                         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     />
-                    <circle cx="22" cy="82" r="2" className="fill-emerald-400" />
-                    <circle cx="32" cy="82" r="2" className="fill-blue-400" />
-                    <circle cx="42" cy="82" r="2" className="fill-purple-400" />
                 </g>
             </g>
         </motion.g>
@@ -105,6 +112,11 @@ const TabletGraphic = () => (
                     <circle cx="19" cy="32" r="4" className="fill-pink-400" />
                     <circle cx="19" cy="44" r="4" className="fill-blue-400" />
                     <rect x="13" y="54" width="12" height="3" rx="1.5" className="fill-emerald-400" />
+
+                    {/* Embedded Logo Badge */}
+                    <g transform="translate(78, 48)">
+                        <CartLogoBadge radius={13} strokeColor="#c084fc" strokeWidth={1.8} />
+                    </g>
                 </g>
 
                 {/* Magnetic Stylus Pen (Hovering Top) */}
@@ -148,7 +160,6 @@ const WatchGraphic = () => (
                 {/* OLED Rings */}
                 <circle cx="32" cy="52" r="18" className="stroke-red-500/40" strokeWidth="3" fill="none" />
                 <circle cx="32" cy="52" r="14" className="stroke-emerald-500/40" strokeWidth="3" fill="none" />
-                <circle cx="32" cy="52" r="10" className="stroke-cyan-500/40" strokeWidth="3" fill="none" />
 
                 <motion.circle
                     cx="32" cy="52" r="18"
@@ -166,6 +177,11 @@ const WatchGraphic = () => (
                     transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
                     style={{ transformOrigin: '32px 52px' }}
                 />
+
+                {/* Logo Badge inside watch face */}
+                <g transform="translate(32, 52)">
+                    <CartLogoBadge radius={9} strokeColor="#f97316" strokeWidth={1.5} />
+                </g>
             </g>
         </motion.g>
     </svg>
@@ -190,9 +206,11 @@ const ConsoleGraphic = () => (
                 <path d="M 0 15 C 8 -10 32 -15 55 -15 C 78 -15 102 -10 110 15 C 118 40 128 75 105 88 C 88 98 75 70 60 50 C 48 44 22 44 10 50 C -5 70 -18 98 -35 88 C -58 75 -48 40 -40 15 Z" 
                       className="fill-slate-900 stroke-slate-700" strokeWidth="2" />
                 
-                {/* Center Touchpad */}
+                {/* Center Touchpad with Logo */}
                 <rect x="18" y="-8" width="34" height="22" rx="3" className="fill-slate-800 stroke-slate-600" strokeWidth="1" />
-                <line x1="22" y1="-5" x2="48" y2="-5" className="stroke-cyan-400" strokeWidth="1.5" />
+                <g transform="translate(35, 3)">
+                    <CartLogoBadge radius={7} strokeColor="#38bdf8" strokeWidth={1.2} />
+                </g>
 
                 {/* D-Pad */}
                 <g transform="translate(-15, 18)">
@@ -244,7 +262,11 @@ const TvGraphic = () => (
                     <rect x="10" y="10" width="34" height="24" rx="2" className="fill-red-500/40 stroke-red-400" strokeWidth="0.8" />
                     <polygon points="25,22 29,24.5 25,27" className="fill-white" />
 
-                    <rect x="50" y="10" width="34" height="24" rx="2" className="fill-blue-500/40 stroke-blue-400" strokeWidth="0.8" />
+                    {/* Featured Logo Stream Channel */}
+                    <g transform="translate(67, 22)">
+                        <CartLogoBadge radius={12} strokeColor="#10b981" strokeWidth={1.5} />
+                    </g>
+
                     <rect x="90" y="10" width="34" height="24" rx="2" className="fill-emerald-500/40 stroke-emerald-400" strokeWidth="0.8" />
 
                     {/* App Icons Row */}
@@ -279,10 +301,11 @@ const RepairGraphic = () => (
                 <rect x="0" y="0" width="68" height="110" rx="12" className="fill-slate-900 stroke-slate-700" strokeWidth="2" />
                 <rect x="4" y="4" width="60" height="102" rx="9" className="fill-[#020617]" />
                 
-                {/* Internal Circuit Board Elements */}
+                {/* Internal Circuit Board Elements with Logo */}
                 <rect x="10" y="15" width="48" height="40" rx="4" className="fill-emerald-950/60 stroke-emerald-600/40" strokeWidth="1" />
-                <circle cx="24" cy="30" r="5" className="fill-emerald-500/40" />
-                <path d="M 24 35 V 50 H 45" className="stroke-emerald-400" strokeWidth="1.5" strokeLinecap="round" />
+                <g transform="translate(34, 35)">
+                    <CartLogoBadge radius={10} strokeColor="#34d399" strokeWidth={1.5} />
+                </g>
 
                 {/* Diagnostic Scanning Laser Beam */}
                 <motion.line
@@ -335,18 +358,15 @@ const LaptopGraphic = () => (
                     <circle cx="40" cy="17" r="2" className="fill-emerald-500" />
 
                     {/* Code Syntax Lines */}
-                    <motion.rect x="30" y="28" width="45" height="4" rx="2" className="fill-emerald-400" animate={{ width: [20, 45, 20] }} transition={{ duration: 3, repeat: Infinity }} />
-                    <motion.rect x="30" y="36" width="65" height="4" rx="2" className="fill-cyan-400" animate={{ width: [35, 65, 35] }} transition={{ duration: 3.5, repeat: Infinity, delay: 0.3 }} />
-                    <motion.rect x="30" y="44" width="55" height="4" rx="2" className="fill-blue-400" animate={{ width: [25, 55, 25] }} transition={{ duration: 4, repeat: Infinity, delay: 0.6 }} />
-                    <motion.rect x="30" y="52" width="75" height="4" rx="2" className="fill-purple-400" animate={{ width: [40, 75, 40] }} transition={{ duration: 4.5, repeat: Infinity, delay: 0.9 }} />
+                    <motion.rect x="30" y="28" width="38" height="4" rx="2" className="fill-emerald-400" animate={{ width: [20, 38, 20] }} transition={{ duration: 3, repeat: Infinity }} />
+                    <motion.rect x="30" y="36" width="45" height="4" rx="2" className="fill-cyan-400" animate={{ width: [25, 45, 25] }} transition={{ duration: 3.5, repeat: Infinity, delay: 0.3 }} />
+                    <motion.rect x="30" y="44" width="40" height="4" rx="2" className="fill-blue-400" animate={{ width: [20, 40, 20] }} transition={{ duration: 4, repeat: Infinity, delay: 0.6 }} />
+                    <motion.rect x="30" y="52" width="48" height="4" rx="2" className="fill-purple-400" animate={{ width: [30, 48, 30] }} transition={{ duration: 4.5, repeat: Infinity, delay: 0.9 }} />
 
-                    {/* Glowing Scan Line */}
-                    <motion.line
-                        x1="22" y1="12" x2="122" y2="12"
-                        className="stroke-cyan-300/30" strokeWidth="15"
-                        animate={{ y: [0, 66, 0] }}
-                        transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-                    />
+                    {/* Logo Badge in IDE Editor */}
+                    <g transform="translate(98, 44)">
+                        <CartLogoBadge radius={12} strokeColor="#06b6d4" strokeWidth={1.5} />
+                    </g>
                 </g>
             </g>
         </motion.g>
@@ -379,9 +399,11 @@ const DesktopGraphic = () => (
                     <line x1="26" y1="43" x2="68" y2="35" className="stroke-emerald-400" strokeWidth="2.5" />
                     <motion.circle r="2.5" className="fill-emerald-300" animate={{ cx: [26, 68], cy: [43, 35], opacity: [0, 1, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} />
 
-                    {/* Right Node: Green Radar Circle with Dashed Orbit */}
-                    <circle cx="68" cy="35" r="15" className="fill-teal-700/80" />
-                    <motion.circle cx="68" cy="35" r="19" className="stroke-emerald-400" strokeWidth="2" strokeDasharray="4 4" fill="none" animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: "linear" }} style={{ transformOrigin: '68px 35px' }} />
+                    {/* Right Node: Logo Badge inside Radar */}
+                    <g transform="translate(68, 35)">
+                        <CartLogoBadge radius={11} strokeColor="#22c55e" strokeWidth={1.5} />
+                    </g>
+                    <motion.circle cx="68" cy="35" r="16" className="stroke-emerald-400" strokeWidth="2" strokeDasharray="4 4" fill="none" animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: "linear" }} style={{ transformOrigin: '68px 35px' }} />
                 </g>
 
                 {/* PC Tower */}
@@ -403,8 +425,10 @@ const CameraGraphic = () => (
                 <rect x="0" y="10" width="110" height="70" rx="8" className="fill-slate-800 stroke-slate-600" strokeWidth="2" />
                 <rect x="20" y="0" width="30" height="10" rx="2" className="fill-slate-700 stroke-slate-500" strokeWidth="2" />
                 <circle cx="55" cy="45" r="25" className="fill-slate-900 stroke-slate-500" strokeWidth="4" />
-                <circle cx="55" cy="45" r="15" className="fill-black" />
-                <circle cx="50" cy="40" r="4" className="fill-white/30" />
+                {/* Logo Badge in camera lens */}
+                <g transform="translate(55, 45)">
+                    <CartLogoBadge radius={11} strokeColor="#2563eb" strokeWidth={1.5} />
+                </g>
                 <circle cx="15" cy="25" r="4" className="fill-red-500" />
             </g>
         </motion.g>
@@ -429,14 +453,12 @@ const EarbudsGraphic = () => (
                     <circle cx="5.5" cy="6" r="2" className="fill-slate-900" />
                 </g>
 
-                {/* Charging Case */}
+                {/* Charging Case with Logo */}
                 <rect x="0" y="24" width="64" height="48" rx="18" className="fill-white dark:fill-slate-100 stroke-slate-300 dark:stroke-slate-400 shadow-lg" strokeWidth="2" />
-                
-                {/* Case Lid Opening Line */}
                 <path d="M 0 40 Q 32 46 64 40" stroke="#e2e8f0" strokeWidth="1.5" fill="none" />
-
-                {/* Green Indicator LED */}
-                <motion.circle cx="32" cy="50" r="2.8" className="fill-emerald-500" animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }} transition={{ duration: 2, repeat: Infinity }} />
+                <g transform="translate(32, 50)">
+                    <CartLogoBadge radius={9} strokeColor="#22c55e" strokeWidth={1.3} />
+                </g>
             </g>
         </motion.g>
     </svg>
@@ -465,10 +487,13 @@ const ScreenGuardGraphic = () => (
             {/* Alignment Dot */}
             <motion.circle cx="98" cy="85" r="2.5" className="fill-cyan-400" animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }} transition={{ duration: 2, repeat: Infinity }} />
 
-            {/* Base Smartphone (Right) */}
+            {/* Base Smartphone (Right with Logo inside screen) */}
             <g transform="translate(108, 36)">
                 <rect x="0" y="0" width="56" height="100" rx="14" className="fill-slate-900 stroke-slate-700" strokeWidth="2.5" />
-                <rect x="4" y="4" width="48" height="92" rx="10" className="fill-[#000000]" />
+                <rect x="4" y="4" width="48" height="92" rx="10" className="fill-[#020617]" />
+                <g transform="translate(28, 50)">
+                    <CartLogoBadge radius={11} strokeColor="#38bdf8" strokeWidth={1.5} />
+                </g>
             </g>
         </motion.g>
     </svg>
