@@ -2,7 +2,7 @@
         <html lang="en">
         <head>
             <meta charset="UTF-8">
-            <title>Variation 2: Executive 3D Gold Insignia & Medallion Edition</title>
+            <title>Variation 2: Executive Sovereign Medallion (Corporate Crest)</title>
             <style>
                 @page { size: 1200px 1680px; margin: 0; }
                 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,7 +23,7 @@
             <!-- Google Fonts -->
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,700;1,700&family=Cinzel:wght@500;600;700;800;900&family=Great+Vibes&family=Montserrat:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600;1,700&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Great+Vibes&family=Montserrat:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600;1,700&display=swap" rel="stylesheet">
         </head>
         <body>
             
@@ -77,12 +77,19 @@
             <stop offset="100%" stop-color="#ede4d0" />
         </radialGradient>
 
-        <!-- Marble Radial Sheen -->
-        <radialGradient id="marble-sheen" cx="50%" cy="35%" r="70%">
-            <stop offset="0%" stop-color="#ffffff" />
-            <stop offset="60%" stop-color="#faf8f4" />
-            <stop offset="100%" stop-color="#ede6d8" />
+        <!-- Dark Obsidian Eco-Tech Gradients -->
+        <radialGradient id="dark-tech-radial" cx="50%" cy="30%" r="75%">
+            <stop offset="0%" stop-color="#093826" />
+            <stop offset="45%" stop-color="#041a11" />
+            <stop offset="85%" stop-color="#020d08" />
+            <stop offset="100%" stop-color="#010604" />
         </radialGradient>
+
+        <linearGradient id="neon-eco-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#10b981" />
+            <stop offset="50%" stop-color="#34d399" />
+            <stop offset="100%" stop-color="#059669" />
+        </linearGradient>
 
         <!-- Lantern Candle Flame Glow -->
         <radialGradient id="lantern-glow" cx="50%" cy="50%" r="50%">
@@ -100,17 +107,16 @@
         <filter id="gold-shadow" x="-15%" y="-15%" width="130%" height="130%">
             <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#d4af37" flood-opacity="0.45" />
         </filter>
+        <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#10b981" flood-opacity="0.5" />
+        </filter>
     </defs>
     
             <rect width="1200" height="1680" fill="url(#parchment-glow)" />
             
-        <!-- Outer Gold Border -->
         <rect x="36" y="36" width="1128" height="1608" rx="8" fill="none" stroke="url(#gold-metallic)" stroke-width="2.5" />
-        <!-- Inner Gold Border -->
         <rect x="46" y="46" width="1108" height="1588" rx="6" fill="none" stroke="url(#gold-metallic)" stroke-width="1.2" />
         <rect x="52" y="52" width="1096" height="1576" rx="4" fill="none" stroke="#0a3a28" stroke-width="0.8" opacity="0.4" />
-
-        <!-- 4 Filigree Corner Ornaments -->
         
         <g transform="translate(46, 46) rotate(0)">
             <path d="M 0,0 C 25,0 45,6 60,18 C 72,28 80,42 85,60 C 88,48 95,32 108,22 C 88,20 68,14 48,0 Z" fill="url(#gold-metallic)" opacity="0.88" />
@@ -120,8 +126,6 @@
             <circle cx="28" cy="28" r="4" fill="url(#gold-metallic)" />
             <circle cx="58" cy="18" r="3" fill="url(#gold-metallic)" />
             <circle cx="18" cy="58" r="3" fill="url(#gold-metallic)" />
-            <circle cx="82" cy="14" r="2" fill="url(#gold-metallic)" />
-            <circle cx="14" cy="82" r="2" fill="url(#gold-metallic)" />
         </g>
         
         
@@ -133,8 +137,6 @@
             <circle cx="28" cy="28" r="4" fill="url(#gold-metallic)" />
             <circle cx="58" cy="18" r="3" fill="url(#gold-metallic)" />
             <circle cx="18" cy="58" r="3" fill="url(#gold-metallic)" />
-            <circle cx="82" cy="14" r="2" fill="url(#gold-metallic)" />
-            <circle cx="14" cy="82" r="2" fill="url(#gold-metallic)" />
         </g>
         
         
@@ -146,8 +148,6 @@
             <circle cx="28" cy="28" r="4" fill="url(#gold-metallic)" />
             <circle cx="58" cy="18" r="3" fill="url(#gold-metallic)" />
             <circle cx="18" cy="58" r="3" fill="url(#gold-metallic)" />
-            <circle cx="82" cy="14" r="2" fill="url(#gold-metallic)" />
-            <circle cx="14" cy="82" r="2" fill="url(#gold-metallic)" />
         </g>
         
         
@@ -159,47 +159,29 @@
             <circle cx="28" cy="28" r="4" fill="url(#gold-metallic)" />
             <circle cx="58" cy="18" r="3" fill="url(#gold-metallic)" />
             <circle cx="18" cy="58" r="3" fill="url(#gold-metallic)" />
-            <circle cx="82" cy="14" r="2" fill="url(#gold-metallic)" />
-            <circle cx="14" cy="82" r="2" fill="url(#gold-metallic)" />
         </g>
         
         
 
             
         <g transform="translate(120, 46) scale(1.12)">
-            <!-- Hanging Chain -->
             <line x1="0" y1="0" x2="0" y2="120" stroke="url(#gold-metallic)" stroke-width="2.5" stroke-dasharray="6,4" />
             <circle cx="0" cy="120" r="6" fill="none" stroke="url(#gold-metallic)" stroke-width="2.5" />
-            
-            <!-- Lantern Body -->
             <g transform="translate(0, 128)">
-                <!-- Outer Warm Amber Glow Halo -->
                 <circle cx="0" cy="55" r="75" fill="url(#lantern-glow)" />
-
-                <!-- Brass Dome Cap -->
                 <path d="M -12,0 L 12,0 L 18,12 L -18,12 Z" fill="url(#gold-metallic)" />
                 <path d="M -26,12 Q 0,-2 26,12 L 22,20 L -22,20 Z" fill="url(#gold-metallic)" />
                 <rect x="-24" y="20" width="48" height="5" rx="2" fill="url(#gold-linear-h)" />
-
-                <!-- Hexagonal Glass Body with Emerald Tint & Inner Flame -->
                 <path d="M -22,25 L 22,25 L 28,75 L 0,108 L -28,75 Z" fill="#062619" />
                 <ellipse cx="0" cy="62" rx="20" ry="32" fill="url(#lantern-glow)" />
-                
-                <!-- Inner Flame Candle -->
                 <path d="M 0,50 Q 5,65 0,72 Q -5,65 0,50 Z" fill="#ffffff" />
                 <path d="M 0,46 Q 7,63 0,74 Q -7,63 0,46 Z" fill="#fef08a" opacity="0.8" />
-
-                <!-- Metallic Frame Ribs / Arabesque Lattice -->
                 <path d="M -22,25 L 22,25 L 28,75 L 0,108 L -28,75 Z" fill="none" stroke="url(#gold-metallic)" stroke-width="3" />
                 <line x1="0" y1="25" x2="0" y2="108" stroke="url(#gold-metallic)" stroke-width="2" />
                 <line x1="-12" y1="25" x2="-14" y2="92" stroke="url(#gold-metallic)" stroke-width="1.6" />
                 <line x1="12" y1="25" x2="14" y2="92" stroke="url(#gold-metallic)" stroke-width="1.6" />
-                
-                <!-- Arched Filigree Cutouts on glass -->
                 <path d="M -18,48 Q 0,34 18,48" fill="none" stroke="url(#gold-metallic)" stroke-width="1.5" />
                 <path d="M -22,68 Q 0,52 22,68" fill="none" stroke="url(#gold-metallic)" stroke-width="1.5" />
-
-                <!-- Brass Base & Hanging Teardrop Pendant -->
                 <rect x="-20" y="73" width="40" height="5" rx="1.5" fill="url(#gold-metallic)" />
                 <path d="M -14,106 L 14,106 L 8,116 L -8,116 Z" fill="url(#gold-metallic)" />
                 <circle cx="0" cy="120" r="4.5" fill="url(#gold-metallic)" />
@@ -209,39 +191,23 @@
         
             
         <g transform="translate(1080, 46) scale(1.12)">
-            <!-- Hanging Chain -->
             <line x1="0" y1="0" x2="0" y2="120" stroke="url(#gold-metallic)" stroke-width="2.5" stroke-dasharray="6,4" />
             <circle cx="0" cy="120" r="6" fill="none" stroke="url(#gold-metallic)" stroke-width="2.5" />
-            
-            <!-- Lantern Body -->
             <g transform="translate(0, 128)">
-                <!-- Outer Warm Amber Glow Halo -->
                 <circle cx="0" cy="55" r="75" fill="url(#lantern-glow)" />
-
-                <!-- Brass Dome Cap -->
                 <path d="M -12,0 L 12,0 L 18,12 L -18,12 Z" fill="url(#gold-metallic)" />
                 <path d="M -26,12 Q 0,-2 26,12 L 22,20 L -22,20 Z" fill="url(#gold-metallic)" />
                 <rect x="-24" y="20" width="48" height="5" rx="2" fill="url(#gold-linear-h)" />
-
-                <!-- Hexagonal Glass Body with Emerald Tint & Inner Flame -->
                 <path d="M -22,25 L 22,25 L 28,75 L 0,108 L -28,75 Z" fill="#062619" />
                 <ellipse cx="0" cy="62" rx="20" ry="32" fill="url(#lantern-glow)" />
-                
-                <!-- Inner Flame Candle -->
                 <path d="M 0,50 Q 5,65 0,72 Q -5,65 0,50 Z" fill="#ffffff" />
                 <path d="M 0,46 Q 7,63 0,74 Q -7,63 0,46 Z" fill="#fef08a" opacity="0.8" />
-
-                <!-- Metallic Frame Ribs / Arabesque Lattice -->
                 <path d="M -22,25 L 22,25 L 28,75 L 0,108 L -28,75 Z" fill="none" stroke="url(#gold-metallic)" stroke-width="3" />
                 <line x1="0" y1="25" x2="0" y2="108" stroke="url(#gold-metallic)" stroke-width="2" />
                 <line x1="-12" y1="25" x2="-14" y2="92" stroke="url(#gold-metallic)" stroke-width="1.6" />
                 <line x1="12" y1="25" x2="14" y2="92" stroke="url(#gold-metallic)" stroke-width="1.6" />
-                
-                <!-- Arched Filigree Cutouts on glass -->
                 <path d="M -18,48 Q 0,34 18,48" fill="none" stroke="url(#gold-metallic)" stroke-width="1.5" />
                 <path d="M -22,68 Q 0,52 22,68" fill="none" stroke="url(#gold-metallic)" stroke-width="1.5" />
-
-                <!-- Brass Base & Hanging Teardrop Pendant -->
                 <rect x="-20" y="73" width="40" height="5" rx="1.5" fill="url(#gold-metallic)" />
                 <path d="M -14,106 L 14,106 L 8,116 L -8,116 Z" fill="url(#gold-metallic)" />
                 <circle cx="0" cy="120" r="4.5" fill="url(#gold-metallic)" />
@@ -250,16 +216,16 @@
         </g>
         
 
-            <!-- Top Centerpiece: Grand Moroccan Palace Portal with 3D NR Gold Medallion -->
+            <!-- Top Centerpiece: Grand Palace Portal with 3D NR Gold Medallion -->
             <g transform="translate(600, 46)">
                 <path d="M -180,215 L -180,120 C -180,25 -70,-8 0,-16 C 70,-8 180,25 180,120 L 180,215 Z" fill="url(#gold-metallic)" />
                 <path d="M -172,212 L -172,122 C -172,32 -66,0 0,-8 C 66,0 172,32 172,122 L 172,212 Z" fill="#082b20" />
-                <path d="M -166,210 L -166,125 C -166,38 -62,6 0,-2 C 62,6 166,38 166,125 L 166,210 Z" fill="url(#marble-sheen)" />
+                <path d="M -166,210 L -166,125 C -166,38 -62,6 0,-2 C 62,6 166,38 166,125 L 166,210 Z" fill="url(#parchment-glow)" />
 
-                <!-- Calligraphy Ribbon at Arch Crown -->
+                <!-- Top Ribbon -->
                 <g transform="translate(0, 30)">
-                    <rect x="-130" y="-16" width="260" height="32" rx="6" fill="url(#emerald-deep)" stroke="url(#gold-metallic)" stroke-width="1.2" />
-                    <text x="0" y="6" text-anchor="middle" font-family="'Amiri', 'Traditional Arabic', serif" font-weight="700" font-size="20" fill="url(#gold-metallic)">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</text>
+                    <rect x="-140" y="-16" width="280" height="32" rx="6" fill="url(#emerald-deep)" stroke="url(#gold-metallic)" stroke-width="1.2" />
+                    <text x="0" y="6" text-anchor="middle" font-family="'Cinzel', 'Montserrat', serif" font-weight="700" font-size="14" fill="url(#gold-metallic)" letter-spacing="3">OFFICIAL INAUGURATION</text>
                 </g>
 
                 <!-- Official 3D Gold Circular NR Medallion Embedded in Arch -->
@@ -303,13 +269,13 @@
                 </text>
 
                 <text x="0" y="150" font-family="'Playfair Display', serif" font-weight="500" font-size="22" fill="#1f362c">
-                    With the grace of Almighty, we cordially invite you to celebrate
+                    With great pleasure and pride, we cordially invite you to celebrate
                 </text>
                 <text x="0" y="184" font-family="'Playfair Display', serif" font-weight="700" font-size="24" fill="#072d20">
                     the grand opening of our new corporate facility.
                 </text>
                 <text x="0" y="220" font-family="'Playfair Display', serif" font-style="italic" font-size="21" fill="#364e43">
-                    Your esteemed presence and prayers will make this occasion memorable.
+                    Your esteemed presence will make this momentous occasion truly memorable.
                 </text>
             </g>
 
@@ -325,15 +291,11 @@
                 <circle cx="-7" cy="32" r="1.8" fill="url(#gold-metallic)" />
                 <circle cx="0" cy="32" r="1.8" fill="url(#gold-metallic)" />
                 <circle cx="7" cy="32" r="1.8" fill="url(#gold-metallic)" />
-                <circle cx="-7" cy="39" r="1.8" fill="url(#gold-metallic)" />
-                <circle cx="0" cy="39" r="1.8" fill="url(#gold-metallic)" />
-                <circle cx="7" cy="39" r="1.8" fill="url(#gold-metallic)" />
 
                 <text x="50" y="24" font-family="'Cinzel', 'Playfair Display', serif" font-weight="800" font-size="22" fill="#093826" letter-spacing="1.5">THURSDAY</text>
                 <text x="50" y="52" font-family="'Montserrat', 'Cinzel', sans-serif" font-weight="800" font-size="26" fill="#082d1f" letter-spacing="2">10/09/2026</text>
             </g>
 
-            <!-- Vertical Gold Divider 1 -->
             <line x1="490" y1="8" x2="490" y2="62" stroke="url(#gold-metallic)" stroke-width="2" stroke-linecap="round" />
 
             <!-- Column 2: TIME -->
@@ -346,7 +308,6 @@
                 <text x="50" y="52" font-family="'Montserrat', 'Cinzel', sans-serif" font-weight="800" font-size="23" fill="#082d1f" letter-spacing="1">5:30 PM ONWARDS</text>
             </g>
 
-            <!-- Vertical Gold Divider 2 -->
             <line x1="820" y1="8" x2="820" y2="62" stroke="url(#gold-metallic)" stroke-width="2" stroke-linecap="round" />
 
             <!-- Column 3: VENUE -->
@@ -361,17 +322,14 @@
         
             
         <g id="venue-address-block" transform="translate(600, 1030)">
-            <!-- Luxury Frame for Address -->
             <rect x="-380" y="-12" width="760" height="142" rx="14" fill="#ffffff" fill-opacity="0.65" stroke="url(#gold-metallic)" stroke-width="1.8" filter="url(#soft-shadow)" />
             
-            <!-- Map Pin Badge -->
             <g transform="translate(-315, 60)">
                 <circle cx="0" cy="0" r="30" fill="url(#emerald-deep)" stroke="url(#gold-metallic)" stroke-width="2.2" />
                 <path d="M 0,-15 C -8,-15 -14,-9 -14,-1 C -14,8 0,18 0,18 C 0,18 14,8 14,-1 C 14,-9 8,-15 0,-15 Z" fill="url(#gold-metallic)" />
                 <circle cx="0" cy="-2" r="5" fill="#092d21" />
             </g>
 
-            <!-- Address Text Lines -->
             <text x="-260" y="32" text-anchor="start" font-family="'Montserrat', 'Playfair Display', serif" font-weight="800" font-size="25" fill="#082b1f" letter-spacing="0.5">#69, 8th Cross Road, R.K. Hegde Nagar,</text>
             <text x="-260" y="68" text-anchor="start" font-family="'Montserrat', 'Playfair Display', serif" font-weight="600" font-size="23" fill="#0b3829" letter-spacing="0.5">Shivram Karanth Nagar Post,</text>
             <text x="-260" y="104" text-anchor="start" font-family="'Montserrat', 'Cinzel', sans-serif" font-weight="800" font-size="26" fill="#062318" letter-spacing="1">Bengaluru – 560 077</text>
@@ -381,75 +339,18 @@
         <g id="closing-block" transform="translate(600, 1265)">
             <text x="0" y="0" text-anchor="middle" font-family="'Great Vibes', 'Playfair Display', cursive" font-weight="400" font-size="44" fill="#0d4633" letter-spacing="1">We look forward to welcoming you.</text>
             <g transform="translate(0, 52)">
-                <line x1="-220" y1="-8" x2="-100" y2="-8" stroke="url(#gold-metallic)" stroke-width="2" />
-                <text x="0" y="0" text-anchor="middle" font-family="'Cinzel', 'Playfair Display', serif" font-weight="800" font-size="25" fill="url(#gold-linear-h)" letter-spacing="2.5">❧ Cordially Invited By: NR Family ❧</text>
-                <line x1="100" y1="-8" x2="220" y2="-8" stroke="url(#gold-metallic)" stroke-width="2" />
+                <line x1="-240" y1="-8" x2="-120" y2="-8" stroke="url(#gold-metallic)" stroke-width="2" />
+                <text x="0" y="0" text-anchor="middle" font-family="'Cinzel', 'Playfair Display', serif" font-weight="800" font-size="24" fill="url(#gold-linear-h)" letter-spacing="2">❧ With Best Compliments: NR Group & Team ❧</text>
+                <line x1="120" y1="-8" x2="240" y2="-8" stroke="url(#gold-metallic)" stroke-width="2" />
             </g>
         </g>
         
             
         <g id="footer-container">
-            <!-- Mosque Skyline Silhouette -->
-            
-        <g id="mosque-skyline" fill="#082b20" opacity="0.95">
-            <!-- Left Minarets & Domes -->
-            <g transform="translate(60, 1370)">
-                <rect x="0" y="50" width="16" height="85" />
-                <path d="M -3,50 L 19,50 L 16,42 L 0,42 Z" />
-                <rect x="2" y="24" width="12" height="18" />
-                <path d="M 0,24 L 16,24 L 8,6 L 0,24 Z" />
-                <line x1="8" y1="6" x2="8" y2="0" stroke="#082b20" stroke-width="2" />
-                <circle cx="8" cy="0" r="2" />
-            </g>
-            <g transform="translate(115, 1340)">
-                <rect x="0" y="60" width="18" height="110" />
-                <path d="M -4,60 L 22,60 L 18,50 L 0,50 Z" />
-                <rect x="2" y="28" width="14" height="22" />
-                <path d="M 0,28 L 18,28 L 9,8 L 0,28 Z" />
-                <line x1="9" y1="8" x2="9" y2="0" stroke="#082b20" stroke-width="2" />
-                <circle cx="9" cy="0" r="2" />
-            </g>
-            <g transform="translate(145, 1395)">
-                <path d="M 0,60 C 0,35 15,10 32,2 C 49,10 64,35 64,60 Z" />
-                <line x1="32" y1="2" x2="32" y2="-8" stroke="#082b20" stroke-width="2.5" />
-                <circle cx="32" cy="-8" r="2.5" />
-            </g>
-
-            <!-- Right Minarets & Grand Dome -->
-            <g transform="translate(860, 1370)">
-                <path d="M 0,85 C 0,48 24,12 55,3 C 86,12 110,48 110,85 Z" />
-                <line x1="55" y1="3" x2="55" y2="-12" stroke="#082b20" stroke-width="3" />
-                <circle cx="55" cy="-12" r="3.5" />
-            </g>
-            <g transform="translate(830, 1335)">
-                <rect x="0" y="65" width="18" height="115" />
-                <path d="M -4,65 L 22,65 L 18,54 L 0,54 Z" />
-                <rect x="2" y="30" width="14" height="24" />
-                <path d="M 0,30 L 18,30 L 9,8 L 0,30 Z" />
-                <line x1="9" y1="8" x2="9" y2="0" stroke="#082b20" stroke-width="2" />
-            </g>
-            <g transform="translate(1010, 1350)">
-                <rect x="0" y="55" width="16" height="100" />
-                <path d="M -3,55 L 19,55 L 16,46 L 0,46 Z" />
-                <rect x="2" y="26" width="12" height="20" />
-                <path d="M 0,26 L 16,26 L 8,6 L 0,26 Z" />
-                <line x1="8" y1="6" x2="8" y2="0" stroke="#082b20" stroke-width="2" />
-            </g>
-            <g transform="translate(1070, 1380)">
-                <rect x="0" y="45" width="14" height="75" />
-                <path d="M -2,45 L 16,45 L 14,38 L 0,38 Z" />
-                <rect x="1.5" y="20" width="11" height="18" />
-                <path d="M 0,20 L 14,20 L 7,5 L 0,20 Z" />
-            </g>
-        </g>
-        
-
             <!-- Glowing Gold Trim Ribbon -->
             <path d="M 46,1445 C 320,1410 540,1465 820,1415 C 960,1390 1060,1405 1154,1425 L 1154,1634 L 46,1634 Z" fill="url(#gold-metallic)" />
             <!-- Deep Emerald Wave Body -->
             <path d="M 46,1450 C 320,1415 540,1470 820,1420 C 960,1395 1060,1410 1154,1430 L 1154,1634 L 46,1634 Z" fill="url(#emerald-wave-grad)" />
-
-            <!-- Gold accent line inside wave -->
             <path d="M 46,1456 C 320,1421 540,1476 820,1426 C 960,1401 1060,1416 1154,1436" fill="none" stroke="url(#gold-linear-h)" stroke-width="1.8" opacity="0.75" />
 
             <!-- Left: Google Maps Location QR Code Box -->
@@ -464,14 +365,12 @@
 
             <!-- Right: WhatsApp & Contact Details -->
             <g transform="translate(690, 1480)">
-                <!-- Circular WhatsApp Icon with Gold Emboss -->
                 <circle cx="45" cy="50" r="36" fill="url(#gold-metallic)" />
                 <circle cx="45" cy="50" r="31" fill="#25D366" />
                 <path d="M 45,28 C 32.85,28 23,37.85 23,50 C 23,54.34 24.26,58.4 26.46,61.85 L 24,71 L 33.42,68.56 C 36.75,70.52 40.7,71.67 45,71.67 C 57.15,71.67 67,61.82 67,49.67 C 67,37.52 57.15,28 45,28 Z" fill="#ffffff" />
                 <path d="M 45,31.2 C 55.4,31.2 63.8,39.6 63.8,50 C 63.8,60.4 55.4,68.8 45,68.8 C 41.2,68.8 37.7,67.7 34.8,65.8 L 34.2,65.4 L 28.5,66.9 L 30,61.4 L 29.6,60.7 C 27.5,57.7 26.2,54 26.2,50 C 26.2,39.6 34.6,31.2 45,31.2 Z" fill="#25D366" />
                 <path d="M 40.2,39.5 C 39.6,38.2 39,38.1 38.4,38.1 C 37.9,38.1 37.3,38.1 36.7,38.1 C 36.1,38.1 35.1,38.3 34.3,39.2 C 33.5,40.1 31.2,42.3 31.2,46.7 C 31.2,51.1 34.4,55.3 34.9,55.9 C 35.3,56.5 41.2,65.6 50.1,69.5 C 57.5,72.7 59,71.4 60.6,71.2 C 62.2,71 65.7,69.1 66.4,67.1 C 67.1,65.1 67.1,63.4 66.9,63 C 66.7,62.6 66.1,62.4 65.2,62 C 64.3,61.6 59.9,59.4 59,59.1 C 58.1,58.8 57.5,58.6 56.9,59.5 C 56.3,60.4 54.5,62.6 54,63.2 C 53.5,63.8 53,63.8 52.1,63.4 C 51.2,63 48.3,62 44.8,58.9 C 42.1,56.5 40.3,53.5 39.8,52.6 C 39.3,51.7 39.7,51.2 40.2,50.8 C 40.6,50.4 41.1,49.8 41.6,49.2 C 42.1,48.6 42.2,48.2 42.5,47.6 C 42.8,47 42.7,46.5 42.4,46 C 42.1,45.5 40.4,41.2 40.2,39.5 Z" fill="#ffffff" />
 
-                <!-- Contact Labels -->
                 <text x="100" y="38" font-family="'Cinzel', 'Montserrat', serif" font-weight="700" font-size="16" fill="url(#gold-metallic)" letter-spacing="2">FOR MORE DETAILS</text>
                 <text x="100" y="74" font-family="'Montserrat', 'Cinzel', sans-serif" font-weight="800" font-size="30" fill="#ffffff" letter-spacing="1.5">+91 77609 53032</text>
             </g>
