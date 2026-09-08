@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NR Waste Management & FonzKart — Taj Mahal Invitation Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #04180f;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        .header { text-align: center; margin-bottom: 30px; }
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 36px;
+            color: #fef08a;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        p.subtitle {
+            color: #a7f3d0;
+            font-size: 17px;
+            letter-spacing: 1.5px;
+        }
+        .tab-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .tab-btn {
+            background: #063220;
+            color: #ffffff;
+            border: 2px solid #ca8a04;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tab-btn.active, .tab-btn:hover {
+            background: #d4af37;
+            color: #04180f;
+            border-color: #ffffff;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.4);
+        }
+        .preview-container {
+            width: 100%;
+            max-width: 1200px;
+            background: #020c08;
+            border-radius: 16px;
+            border: 2px solid #c59b27;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .actions-bar {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #064e3b;
+            color: #fef08a;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            border: 1px solid #10b981;
+            transition: 0.2s;
+        }
+        .action-link:hover {
+            background: #047857;
+            color: #ffffff;
+        }
+        iframe {
+            width: 1200px;
+            height: 1680px;
+            border: none;
+            border-radius: 10px;
+            background: #ffffff;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            transform-origin: top center;
+            transform: scale(0.75);
+            margin-bottom: -400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>NR WASTE MANAGEMENT PRIVATE LIMITED</h1>
+        <p class="subtitle">GRAND INAUGURAL INVITATION SUITE & FONZKART LAUNCH (TAJ MAHAL ARCHITECTURAL THEME)</p>
+    </div>
+
+    <div class="tab-bar">
+        <button class="tab-btn active" onclick="loadFrame('nr_waste_management_invite_1_taj_mahal_imperial.html', this)">Variation 1: Imperial Taj Mahal</button>
+        <button class="tab-btn" onclick="loadFrame('nr_waste_management_invite_2_taj_darwaza_arch.html', this)">Variation 2: Royal Darwaza Gateway</button>
+        <button class="tab-btn" onclick="loadFrame('nr_waste_management_invite_3_taj_mehtab_moonlight.html', this)">Variation 3: Mehtab Bagh Moonlight</button>
+        <button class="tab-btn" onclick="loadFrame('nr_waste_management_invite_4_taj_pietra_dura_minimalist.html', this)">Variation 4: Pietra Dura Marble Inlay</button>
+    </div>
+
+    <div class="preview-container">
+        <div class="actions-bar">
+            <a id="open-link" class="action-link" href="nr_waste_management_invite_1_taj_mahal_imperial.html" target="_blank">↗ Open Standalone HTML</a>
+            <a id="pdf-link" class="action-link" href="../vector_pdf/nr_waste_management_invite_1_taj_mahal_imperial.pdf" target="_blank">📄 Download Print PDF</a>
+            <a id="png-link" class="action-link" href="../print_ready_png/nr_waste_management_invite_1_taj_mahal_imperial_300dpi.png" target="_blank">🖼 Download 300 DPI PNG</a>
+        </div>
+        <iframe id="preview-frame" src="nr_waste_management_invite_1_taj_mahal_imperial.html"></iframe>
+    </div>
+
+    <script>
+        function loadFrame(url, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('preview-frame').src = url;
+            document.getElementById('open-link').href = url;
+            const base = url.replace('.html', '');
+            document.getElementById('pdf-link').href = '../vector_pdf/' + base + '.pdf';
+            document.getElementById('png-link').href = '../print_ready_png/' + base + '_300dpi.png';
+        }
+    </script>
+</body>
+</html>
