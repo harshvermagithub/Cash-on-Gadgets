@@ -15,8 +15,10 @@ import {
     VolumeX, 
     ShieldCheck, 
     ExternalLink, 
-    LayoutDashboard,
-    Radio
+    Radio,
+    Crown,
+    Sparkles,
+    CheckCircle2
 } from 'lucide-react';
 import { useNotifications } from '../NotificationProvider';
 import { logout } from '@/lib/session';
@@ -44,6 +46,7 @@ function AudioAlertToggle() {
 
 export function AdminHeader({ user }: { user?: { name: string; email: string; role: string } }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isPulsing, setIsPulsing] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
     // Close menu when clicking outside or pressing Escape
@@ -75,7 +78,7 @@ export function AdminHeader({ user }: { user?: { name: string; email: string; ro
             <div className="flex items-center gap-4 sm:gap-6 min-w-0 flex-1 max-w-2xl">
                 <Link 
                     href="/admin" 
-                    className="flex items-center gap-2 group transition-opacity hover:opacity-85 shrink-0"
+                    className="flex items-center gap-2.5 group transition-opacity hover:opacity-85 shrink-0"
                     title="Admin Workspace Dashboard"
                 >
                     <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-105 transition-transform shadow-xs">
@@ -108,32 +111,44 @@ export function AdminHeader({ user }: { user?: { name: string; email: string; ro
                 {/* Audio Alert Toggle */}
                 <AudioAlertToggle />
                 
-                {/* Test Alert Heartbeat Pulse Button */}
+                {/* Test Alert Heartbeat Pulse Test Button */}
                 <button 
                     type="button"
+                    disabled={isPulsing}
                     onClick={async () => {
-                        if (typeof Notification !== 'undefined') {
-                            if (Notification.permission === 'granted') {
-                                new window.Notification("Verification Signal Sent!", {
-                                    body: "Real-time sync test successful.",
-                                    icon: '/icon.png'
-                                });
-                                const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
-                                audio.play().catch(() => {});
+                        setIsPulsing(true);
+                        try {
+                            if (typeof Notification !== 'undefined') {
+                                if (Notification.permission === 'granted') {
+                                    new window.Notification("Verification Signal Sent!", {
+                                        body: "Real-time sync pulse test successful.",
+                                        icon: '/icon.png'
+                                    });
+                                }
                             }
+                            const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+                            audio.play().catch(() => {});
+                            const { createNotification } = await import('@/actions/notifications');
+                            await createNotification({
+                                title: "DB Heartbeat Pulse",
+                                message: "Synchronized with FonzKart server.",
+                                type: "info"
+                            });
+                        } catch (e) {
+                            console.error("Pulse test error:", e);
+                        } finally {
+                            setTimeout(() => setIsPulsing(false), 1200);
                         }
-                        const { createNotification } = await import('@/actions/notifications');
-                        await createNotification({
-                            title: "DB Heartbeat",
-                            message: "Synchronized.",
-                            type: "info"
-                        });
                     }}
-                    title="Send Real-time Test Signal / Heartbeat"
-                    className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-emerald-500/25 transition-all"
+                    title="Run Real-time Audio & Signal Pulse Test"
+                    className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border transition-all shadow-xs ${
+                        isPulsing 
+                            ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border-emerald-500 ring-2 ring-emerald-500/20'
+                            : 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/25'
+                    }`}
                 >
-                    <Radio className="w-3 h-3 text-emerald-500" />
-                    <span>Pulse</span>
+                    <Radio className={`w-3.5 h-3.5 text-emerald-500 ${isPulsing ? 'animate-ping' : ''}`} />
+                    <span>{isPulsing ? 'Pulsing...' : 'Pulse Test'}</span>
                 </button>
 
                 {/* Notification Bell */}
@@ -149,24 +164,32 @@ export function AdminHeader({ user }: { user?: { name: string; email: string; ro
                         aria-expanded={isMenuOpen}
                         aria-haspopup="true"
                         aria-label="Open Super Admin menu"
-                        className={`flex items-center gap-2 pl-1.5 pr-2.5 py-1 rounded-full border transition-all text-xs font-semibold outline-none ${
+                        className={`group flex items-center gap-2.5 pl-1.5 pr-3 py-1 rounded-2xl border transition-all text-xs font-semibold outline-none ${
                             isMenuOpen 
-                                ? 'bg-accent border-emerald-500/50 ring-2 ring-emerald-500/20 text-foreground' 
-                                : 'border-border/70 bg-card/80 hover:bg-accent text-foreground hover:border-border shadow-xs'
+                                ? 'bg-accent/80 border-emerald-500/60 ring-2 ring-emerald-500/20 shadow-md text-foreground' 
+                                : 'border-border/70 bg-card/60 hover:bg-accent/60 text-foreground hover:border-emerald-500/30 shadow-xs'
                         }`}
                     >
-                        <div className="h-7 w-7 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-black text-xs shadow-xs shrink-0">
-                            {userInitial}
+                        <div className="relative shrink-0">
+                            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-600 to-emerald-700 text-white flex items-center justify-center font-black text-xs shadow-xs ring-1 ring-white/20 group-hover:scale-105 transition-transform">
+                                {userInitial}
+                            </div>
+                            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-background shadow-xs" title="Live Admin Session" />
                         </div>
                         <div className="flex flex-col items-start leading-none gap-0.5 text-left">
-                            <span className="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
-                                {roleLabel}
-                            </span>
+                            <div className="flex items-center gap-1">
+                                <Crown className="w-3 h-3 text-amber-500 shrink-0" />
+                                <span className="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">
+                                    {roleLabel}
+                                </span>
+                            </div>
                             <span className="text-xs font-bold text-foreground max-w-[110px] sm:max-w-[130px] truncate">
-                                {user?.name || 'Account'}
+                                {user?.name || 'Super Admin'}
                             </span>
                         </div>
-                        <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground transition-transform duration-200 ml-0.5 ${isMenuOpen ? 'rotate-180' : ''}`} />
+                        <div className="w-5 h-5 rounded-full flex items-center justify-center text-muted-foreground group-hover:text-foreground transition-colors ml-0.5">
+                            <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isMenuOpen ? 'rotate-180 text-emerald-600 dark:text-emerald-400' : ''}`} />
+                        </div>
                     </button>
 
                     <AnimatePresence>
@@ -176,43 +199,53 @@ export function AdminHeader({ user }: { user?: { name: string; email: string; ro
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: 8, scale: 0.96 }}
                                 transition={{ duration: 0.15, ease: 'easeOut' }}
-                                className="absolute right-0 mt-2.5 w-72 rounded-2xl border border-border/80 bg-background/98 dark:bg-zinc-900/95 backdrop-blur-2xl shadow-2xl p-2 z-50 text-foreground overflow-hidden"
+                                className="absolute right-0 mt-2.5 w-80 rounded-2xl border border-border/80 bg-background/98 dark:bg-zinc-950/95 backdrop-blur-2xl shadow-2xl p-2.5 z-50 text-foreground overflow-hidden"
                             >
                                 {/* User Card Header */}
-                                <div className="p-3 border-b border-border/60 bg-muted/40 dark:bg-zinc-800/40 rounded-xl mb-1.5">
+                                <div className="p-3.5 border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-transparent dark:bg-zinc-900/50 rounded-xl mb-2">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-black text-sm shadow-xs shrink-0">
+                                        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-600 to-emerald-700 text-white flex items-center justify-center font-black text-base shadow-xs ring-1 ring-white/20 shrink-0">
                                             {userInitial}
                                         </div>
                                         <div className="min-w-0 flex-1">
-                                            <p className="text-xs font-bold text-foreground truncate">
-                                                {user?.name || 'Super Admin'}
-                                            </p>
+                                            <div className="flex items-center gap-1.5">
+                                                <p className="text-xs font-black text-foreground truncate">
+                                                    {user?.name || 'Super Admin'}
+                                                </p>
+                                                <Sparkles className="w-3 h-3 text-amber-500 shrink-0" />
+                                            </div>
                                             {user?.email && (
-                                                <p className="text-[11px] text-muted-foreground truncate">
+                                                <p className="text-[11px] text-muted-foreground truncate font-mono">
                                                     {user.email}
                                                 </p>
                                             )}
-                                            <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25">
-                                                {roleLabel}
-                                            </span>
+                                            <div className="flex items-center gap-1.5 mt-1.5">
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30">
+                                                    <Crown className="w-2.5 h-2.5 text-amber-500" />
+                                                    {roleLabel}
+                                                </span>
+                                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold text-muted-foreground bg-muted/60">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                                    Active
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Navigation & Shortcuts */}
-                                <div className="space-y-0.5 text-xs font-medium">
+                                <div className="space-y-1 text-xs font-medium">
                                     <Link 
                                         href="/" 
                                         target="_blank"
                                         onClick={() => setIsMenuOpen(false)}
-                                        className="flex items-center justify-between px-3 py-2 rounded-xl text-foreground hover:bg-emerald-500/10 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                                        className="flex items-center justify-between px-3 py-2 rounded-xl text-foreground hover:bg-emerald-500/10 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors group"
                                     >
                                         <div className="flex items-center gap-2.5">
                                             <ExternalLink className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                                            <span>View Live Website</span>
+                                            <span className="font-semibold">Live Storefront</span>
                                         </div>
-                                        <span className="text-[10px] text-muted-foreground uppercase">Store</span>
+                                        <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-muted text-muted-foreground group-hover:bg-emerald-500/15 group-hover:text-emerald-600">Store</span>
                                     </Link>
 
                                     <Link 
@@ -221,7 +254,7 @@ export function AdminHeader({ user }: { user?: { name: string; email: string; ro
                                         className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-foreground hover:bg-accent transition-colors"
                                     >
                                         <LayoutDashboard className="w-4 h-4 text-primary shrink-0" />
-                                        <span>Admin Dashboard</span>
+                                        <span className="font-semibold">Admin Dashboard</span>
                                     </Link>
 
                                     <Link 
@@ -230,7 +263,7 @@ export function AdminHeader({ user }: { user?: { name: string; email: string; ro
                                         className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-foreground hover:bg-accent transition-colors"
                                     >
                                         <User className="w-4 h-4 text-primary shrink-0" />
-                                        <span>My Profile</span>
+                                        <span className="font-semibold">My Profile & Security</span>
                                     </Link>
 
                                     <Link 
@@ -239,19 +272,22 @@ export function AdminHeader({ user }: { user?: { name: string; email: string; ro
                                         className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-foreground hover:bg-accent transition-colors"
                                     >
                                         <Settings className="w-4 h-4 text-primary shrink-0" />
-                                        <span>System Settings</span>
+                                        <span className="font-semibold">System Settings</span>
                                     </Link>
                                 </div>
 
                                 {/* Session Logout Form */}
-                                <div className="pt-1.5 border-t border-border/60 mt-1.5">
+                                <div className="pt-2 border-t border-border/60 mt-2">
                                     <form action={logout}>
                                         <button 
                                             type="submit"
-                                            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold text-destructive hover:bg-destructive/10 transition-colors"
+                                            className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-bold text-destructive hover:bg-destructive/10 transition-colors"
                                         >
-                                            <LogOut className="w-4 h-4 shrink-0" />
-                                            <span>Logout Session</span>
+                                            <div className="flex items-center gap-2.5">
+                                                <LogOut className="w-4 h-4 shrink-0" />
+                                                <span>Logout Session</span>
+                                            </div>
+                                            <span className="text-[10px] opacity-75 font-mono">Sign Out</span>
                                         </button>
                                     </form>
                                 </div>

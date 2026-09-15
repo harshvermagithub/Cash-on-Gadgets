@@ -28,6 +28,8 @@ import {
     Banknote
 } from 'lucide-react';
 
+import Image from 'next/image';
+
 const CATEGORIES = [
     { id: 'smartphone', label: 'Smartphones', icon: Smartphone },
     { id: 'tablet', label: 'Tablets', icon: Tablet },
@@ -134,20 +136,44 @@ export default function AdminSidebar({ role = 'SUPER_ADMIN' }: { role?: string }
                     </div>
                 </button>
 
-                <div className={`h-16 border-b border-border dark:border-white/10 shrink-0 flex items-center relative ${isMobileOpen ? 'justify-start px-6' : isDesktopCollapsed ? 'justify-center lg:px-0' : 'justify-center lg:justify-start lg:px-6'}`}>
-                    <Link href="/" className={`flex items-center gap-2 font-black text-xl text-foreground tracking-tighter overflow-hidden group`} title="Go to Website">
-                        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
-                            {/* Simplified Icon for Sidebar Top */}
-                            <Smartphone className="w-5 h-5" />
+                <div className={`h-16 border-b border-border/70 dark:border-white/10 shrink-0 flex items-center relative ${isMobileOpen ? 'justify-start px-5' : isDesktopCollapsed ? 'justify-center px-0' : 'justify-center lg:justify-start lg:px-5'}`}>
+                    <Link href="/" className="flex items-center gap-3 font-black text-xl text-foreground tracking-tight overflow-hidden group" title="Go to Website">
+                        <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/15 to-emerald-600/5 dark:from-emerald-500/20 dark:to-transparent border border-emerald-500/25 flex items-center justify-center p-1.5 shadow-xs group-hover:scale-105 group-hover:border-emerald-500/50 transition-all duration-200">
+                            {/* Official FonzKart Cart Logo */}
+                            <Image 
+                                src="/cart.svg" 
+                                alt="FonzKart Cart" 
+                                width={32} 
+                                height={32} 
+                                className="w-full h-full object-contain drop-shadow-xs group-hover:scale-110 transition-transform" 
+                                priority
+                            />
                         </div>
-                        <span className={`${isMobileOpen ? 'inline' : isDesktopCollapsed ? 'hidden' : 'hidden lg:inline'} whitespace-nowrap`}>Fonz<span className="text-primary font-black">kart</span></span>
+                        <div className={`${isMobileOpen ? 'flex' : isDesktopCollapsed ? 'hidden' : 'hidden lg:flex'} flex-col leading-none`}>
+                            <div className="flex items-center gap-1.5">
+                                <span className="font-black text-lg tracking-tight text-foreground">Fonz<span className="text-primary font-black">kart</span></span>
+                                <span className="px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-md border border-emerald-500/20">Admin</span>
+                            </div>
+                            <span className="text-[10px] font-semibold text-muted-foreground tracking-wider uppercase opacity-75 mt-0.5">Control Center</span>
+                        </div>
                     </Link>
                 </div>
 
-                <div className="px-4 pt-4 pb-2 border-b border-white/5 opacity-60">
-                     <p className={`${isMobileOpen ? 'block' : isDesktopCollapsed ? 'hidden' : 'hidden lg:block'} text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground`}>
-                        {dashboardTitle} Control
-                    </p>
+                <div className="px-4 py-2 border-b border-border/40 dark:border-white/5 bg-muted/20">
+                     <div className={`${isMobileOpen ? 'flex' : isDesktopCollapsed ? 'hidden' : 'hidden lg:flex'} items-center justify-between`}>
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+                            {dashboardTitle} Workspace
+                        </p>
+                        <span className="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            Live
+                        </span>
+                    </div>
+                    {isDesktopCollapsed && (
+                        <div className="flex justify-center py-0.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" title="System Live" />
+                        </div>
+                    )}
                 </div>
 
                 <nav className="flex-1 overflow-y-auto px-2 py-4 lg:p-4 space-y-1 scrollbar-hide">
