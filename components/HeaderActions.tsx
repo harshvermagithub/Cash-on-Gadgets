@@ -11,14 +11,10 @@ export default async function HeaderActions() {
 
 export function HeaderActionsSkeleton() {
     return (
-        <div className="flex items-center gap-3 opacity-60">
-            <div className="hidden lg:flex gap-3">
-                <div className="h-7 w-20 bg-muted/60 rounded-full animate-pulse" />
-                <div className="h-7 w-20 bg-muted/60 rounded-full animate-pulse" />
-                <div className="h-7 w-16 bg-muted/60 rounded-full animate-pulse" />
-            </div>
-            <div className="h-8 w-24 bg-muted/60 animate-pulse rounded-full" />
-            <div className="h-9 w-9 bg-muted/60 animate-pulse rounded-full" />
+        <div className="flex items-center gap-1.5 sm:gap-2 opacity-60">
+            <div className="h-7 w-14 sm:w-20 bg-muted/60 rounded-full animate-pulse" />
+            <div className="h-8 w-8 bg-muted/60 rounded-full animate-pulse" />
+            <div className="h-8 w-8 bg-muted/60 rounded-full animate-pulse" />
         </div>
     );
 }

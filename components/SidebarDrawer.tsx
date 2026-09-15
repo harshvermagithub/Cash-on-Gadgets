@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useSyncExternalStore } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -34,19 +35,23 @@ interface SidebarDrawerProps {
     isAdminUser?: boolean;
 }
 
+const emptySubscribe = () => () => {};
+
 export function SidebarDrawer({ isOpen, onClose, session, isAdminUser }: SidebarDrawerProps) {
     const pathname = usePathname();
-    const [prevPathname, setPrevPathname] = useState(pathname);
-    const drawerRef = useRef<HTMLDivElement>(null);
+    const mounted = useSyncExternalStore(
+        emptySubscribe,
+        () => true,
+        () => false
+    );
     const closeBtnRef = useRef<HTMLButtonElement>(null);
 
-    // Auto-close on route change during render
-    if (prevPathname !== pathname) {
-        setPrevPathname(pathname);
+    // Auto-close on route change
+    useEffect(() => {
         if (isOpen) {
             onClose();
         }
-    }
+    }, [pathname, isOpen, onClose]);
 
     // Handle ESC key and backdrop scroll lock
     useEffect(() => {
@@ -58,8 +63,7 @@ export function SidebarDrawer({ isOpen, onClose, session, isAdminUser }: Sidebar
             }
         };
 
-        // Focus close button on open
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             closeBtnRef.current?.focus();
         }, 100);
 
@@ -68,16 +72,17 @@ export function SidebarDrawer({ isOpen, onClose, session, isAdminUser }: Sidebar
         window.addEventListener('keydown', handleKeyDown);
 
         return () => {
+            clearTimeout(timer);
             document.body.style.overflow = originalOverflow;
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, [isOpen, onClose]);
 
-    if (!isOpen) return null;
+    if (!isOpen || !mounted) return null;
 
-    return (
+    const drawerContent = (
         <div
-            className="fixed inset-0 z-[100] flex justify-end"
+            className="fixed inset-0 z-[9999] flex justify-end"
             role="dialog"
             aria-modal="true"
             aria-label="Navigation Menu"
@@ -91,8 +96,8 @@ export function SidebarDrawer({ isOpen, onClose, session, isAdminUser }: Sidebar
 
             {/* Slide-out Drawer Panel */}
             <div
-                ref={drawerRef}
-                className="relative z-10 flex h-full w-full max-w-sm flex-col bg-background/95 backdrop-blur-2xl border-l border-border/60 shadow-2xl transition-transform duration-300 ease-out animate-in slide-in-from-right text-foreground overflow-y-auto"
+                className="relative z-10 flex h-full w-full max-w-sm flex-col bg-background/98 backdrop-blur-2xl border-l border-border/60 shadow-2xl transition-transform duration-300 ease-out animate-in slide-in-from-right text-foreground overflow-y-auto"
+                onClick={(e) => e.stopPropagation()}
             >
                 {/* Drawer Header */}
                 <div className="sticky top-0 z-20 flex items-center justify-between border-b border-border/40 bg-background/90 px-6 py-4 backdrop-blur-md">
@@ -168,7 +173,7 @@ export function SidebarDrawer({ isOpen, onClose, session, isAdminUser }: Sidebar
                                     Instant Quote
                                 </div>
                                 <div className="text-base font-bold">Sell Your Old Gadget</div>
-                                <div className="text-xs text-green-100/90">Free Doorstep Pickup & Spot Payment</div>
+                                <div className="text-xs text-green-100/90">Free Doorstep Pickup &amp; Spot Payment</div>
                             </div>
                             <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
                                 <ArrowRight className="h-4 w-4 text-white" />
@@ -356,6 +361,8 @@ export function SidebarDrawer({ isOpen, onClose, session, isAdminUser }: Sidebar
             </div>
         </div>
     );
+
+    return createPortal(drawerContent, document.body);
 }
 
 export default SidebarDrawer;
