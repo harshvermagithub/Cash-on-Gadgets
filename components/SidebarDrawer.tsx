@@ -45,11 +45,15 @@ export function SidebarDrawer({ isOpen, onClose, session, isAdminUser }: Sidebar
         () => false
     );
     const closeBtnRef = useRef<HTMLButtonElement>(null);
+    const pathnameRef = useRef(pathname);
 
-    // Auto-close on route change
+    // Auto-close ONLY when user navigates to a new page (pathname changes)
     useEffect(() => {
-        if (isOpen) {
-            onClose();
+        if (pathnameRef.current !== pathname) {
+            pathnameRef.current = pathname;
+            if (isOpen) {
+                onClose();
+            }
         }
     }, [pathname, isOpen, onClose]);
 
@@ -350,13 +354,31 @@ export function SidebarDrawer({ isOpen, onClose, session, isAdminUser }: Sidebar
                             <span className="leading-tight">#69 8th cross Hegde Nagar, SRK Nagar Post, Bangalore - 560077</span>
                         </div>
                     </div>
+                    {/* Dedicated Collapse Option at the very end of the opened frame */}
+                    <div className="pt-2">
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-accent hover:bg-accent/80 border border-border text-foreground font-bold text-xs uppercase tracking-wider transition-all duration-200 shadow-sm active:scale-98"
+                        >
+                            <X className="h-4 w-4 text-muted-foreground" />
+                            <span>Collapse Menu</span>
+                        </button>
+                    </div>
                 </div>
 
-                {/* Drawer Footer */}
-                <div className="border-t border-border/40 p-4 bg-background/90 text-center">
+                {/* Drawer Footer with Collapse Option */}
+                <div className="border-t border-border/40 p-4 bg-background/90 flex items-center justify-between">
                     <p className="text-[11px] text-muted-foreground">
-                        © {new Date().getFullYear()} NR Waste Management Pvt Ltd (FonzKart)
+                        © {new Date().getFullYear()} NR Waste Management Pvt Ltd
                     </p>
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="text-xs font-semibold text-primary hover:underline px-2 py-1 rounded-md hover:bg-primary/10 transition-colors"
+                    >
+                        Close [×]
+                    </button>
                 </div>
             </div>
         </div>

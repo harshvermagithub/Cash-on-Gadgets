@@ -16,7 +16,10 @@ import {
     Phone,
     Mail,
     Check,
-    Compass
+    Compass,
+    FileText,
+    Download,
+    Eye
 } from 'lucide-react';
 
 interface JobRole {
@@ -33,6 +36,9 @@ interface JobRole {
     responsibilities: string[];
     requirements: string[];
     perks: string[];
+    posterPdfUrl?: string;
+    posterPngUrl?: string;
+    posterPreviewUrl?: string;
 }
 
 const JOB_OPENINGS: JobRole[] = [
@@ -68,7 +74,10 @@ const JOB_OPENINGS: JobRole[] = [
             'Direct collaboration with founding and management teams',
             'Hands-on exposure to circular commerce & tech-enabled logistics',
             'Friendly office culture and supportive work environment'
-        ]
+        ],
+        posterPdfUrl: '/careers/posters/poster_accountant_hiring.pdf',
+        posterPngUrl: '/careers/posters/poster_accountant_hiring_300dpi.png',
+        posterPreviewUrl: '/careers/posters/poster_accountant_hiring_preview.png'
     },
     {
         id: 'field-executive',
@@ -102,7 +111,10 @@ const JOB_OPENINGS: JobRole[] = [
             'Exciting per-order pickup incentives and spot performance bonuses',
             'Fast-track promotion to Hub In-Charge / City Team Lead',
             'Flexible route dispatching powered by smart route-planning tools'
-        ]
+        ],
+        posterPdfUrl: '/careers/posters/poster_field_executive_hiring.pdf',
+        posterPngUrl: '/careers/posters/poster_field_executive_hiring_300dpi.png',
+        posterPreviewUrl: '/careers/posters/poster_field_executive_hiring_preview.png'
     }
 ];
 
@@ -471,6 +483,20 @@ ${formState.name || 'Applicant'}`;
                                             <span>Email CV to careers@</span>
                                         </a>
 
+                                        {/* Download Official Poster (PDF) */}
+                                        {job.posterPdfUrl && (
+                                            <a
+                                                href={job.posterPdfUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                download
+                                                className="w-full inline-flex items-center justify-center gap-2 rounded-2xl border border-primary/30 bg-primary/5 hover:bg-primary/10 text-primary font-semibold py-2.5 px-4 text-xs transition-colors"
+                                            >
+                                                <FileText className="h-3.5 w-3.5 shrink-0" />
+                                                <span>Official Poster (PDF)</span>
+                                            </a>
+                                        )}
+
                                         <p className="text-[11px] text-center text-muted-foreground mt-1">
                                             Immediate joining preferred in Bangalore.
                                         </p>
@@ -479,6 +505,144 @@ ${formState.name || 'Applicant'}`;
                             </div>
                         );
                     })}
+                </div>
+            </section>
+
+            {/* Official Recruitment Posters Showcase Section */}
+            <section className="container mx-auto px-4 md:px-6 py-12 max-w-6xl">
+                <div className="rounded-3xl border border-border/70 bg-gradient-to-br from-card via-card/90 to-accent/20 p-6 sm:p-10 shadow-sm space-y-8">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-border/60 pb-6">
+                        <div className="space-y-1">
+                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20">
+                                <Sparkles className="h-3.5 w-3.5" />
+                                Official Hiring Notices &amp; Flyers
+                            </div>
+                            <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+                                Official Recruitment Posters
+                            </h3>
+                            <p className="text-sm text-muted-foreground max-w-2xl">
+                                Issued by <strong>NR Waste Management Private Limited</strong> and <strong>FonzKart</strong>. Print-ready A4 PDFs and ultra-high-resolution 300 DPI graphics for digital sharing, notice boards, and candidate referral.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Poster 1: Accountant */}
+                        <div className="flex flex-col sm:flex-row gap-6 p-6 rounded-3xl bg-background/80 border border-border/80 shadow-sm hover:shadow-md transition-all">
+                            <div className="sm:w-44 shrink-0 rounded-2xl overflow-hidden border border-border shadow-xs bg-muted">
+                                <a
+                                    href="/careers/posters/poster_accountant_hiring_300dpi.png"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block group relative"
+                                >
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src="/careers/posters/poster_accountant_hiring_preview.png"
+                                        alt="Official Hiring Poster - Accountant & Operations Executive"
+                                        className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                                    />
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-semibold gap-1.5 transition-opacity">
+                                        <Eye className="h-4 w-4" />
+                                        <span>Preview</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div className="flex flex-col justify-between space-y-4 flex-1">
+                                <div className="space-y-2">
+                                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary">
+                                        Finance &amp; Admin
+                                    </span>
+                                    <h4 className="text-lg font-bold text-foreground">
+                                        Accountant &amp; Operations Executive
+                                    </h4>
+                                    <p className="text-xs text-muted-foreground leading-relaxed">
+                                        Office accounts, Tally Prime / Excel, FonzKart Admin Panel validation, rider cash &amp; UPI reconciliations.
+                                    </p>
+                                </div>
+                                <div className="space-y-2 pt-2">
+                                    <a
+                                        href="/careers/posters/poster_accountant_hiring.pdf"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        download="FonzKart_Accountant_Hiring_Poster.pdf"
+                                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground font-semibold py-2.5 px-4 text-xs hover:bg-primary/90 transition-colors shadow-xs"
+                                    >
+                                        <Download className="h-3.5 w-3.5" />
+                                        <span>Download Print PDF (1.6 MB)</span>
+                                    </a>
+                                    <a
+                                        href="/careers/posters/poster_accountant_hiring_300dpi.png"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        download="FonzKart_Accountant_Hiring_Poster_300DPI.png"
+                                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card hover:bg-accent text-foreground font-semibold py-2 px-4 text-xs transition-colors"
+                                    >
+                                        <FileText className="h-3.5 w-3.5 text-primary" />
+                                        <span>Download 300 DPI PNG</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Poster 2: Field Executive */}
+                        <div className="flex flex-col sm:flex-row gap-6 p-6 rounded-3xl bg-background/80 border border-border/80 shadow-sm hover:shadow-md transition-all">
+                            <div className="sm:w-44 shrink-0 rounded-2xl overflow-hidden border border-border shadow-xs bg-muted">
+                                <a
+                                    href="/careers/posters/poster_field_executive_hiring_300dpi.png"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block group relative"
+                                >
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src="/careers/posters/poster_field_executive_hiring_preview.png"
+                                        alt="Official Hiring Poster - Field Executive & Device Evaluation Specialist"
+                                        className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                                    />
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-semibold gap-1.5 transition-opacity">
+                                        <Eye className="h-4 w-4" />
+                                        <span>Preview</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div className="flex flex-col justify-between space-y-4 flex-1">
+                                <div className="space-y-2">
+                                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                                        Field Operations
+                                    </span>
+                                    <h4 className="text-lg font-bold text-foreground">
+                                        Field Executive / Evaluation Specialist
+                                    </h4>
+                                    <p className="text-xs text-muted-foreground leading-relaxed">
+                                        Doorstep gadget evaluations across Bangalore, instant customer digital payouts, route dispatching &amp; collection.
+                                    </p>
+                                </div>
+                                <div className="space-y-2 pt-2">
+                                    <a
+                                        href="/careers/posters/poster_field_executive_hiring.pdf"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        download="FonzKart_Field_Executive_Hiring_Poster.pdf"
+                                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-4 text-xs transition-colors shadow-xs"
+                                    >
+                                        <Download className="h-3.5 w-3.5" />
+                                        <span>Download Print PDF (1.6 MB)</span>
+                                    </a>
+                                    <a
+                                        href="/careers/posters/poster_field_executive_hiring_300dpi.png"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        download="FonzKart_Field_Executive_Hiring_Poster_300DPI.png"
+                                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card hover:bg-accent text-foreground font-semibold py-2 px-4 text-xs transition-colors"
+                                    >
+                                        <FileText className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                                        <span>Download 300 DPI PNG</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
