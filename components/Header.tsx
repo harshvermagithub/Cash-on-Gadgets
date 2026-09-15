@@ -6,13 +6,27 @@ import HeaderActions, { HeaderActionsSkeleton } from './HeaderActions';
 
 export default function Header() {
     return (
-        <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-white/5 backdrop-blur-md overflow-visible text-foreground">
-            <div className="container mx-auto flex h-16 items-start justify-between px-4 md:px-6 pt-3 overflow-visible">
-                <Link href="/" className="flex items-start gap-2 overflow-visible mt-2">
-                    <Logo className="w-auto h-full max-h-16 py-1 text-primary" />
+        <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 shadow-xs transition-colors duration-200">
+            {/* Accessible Skip Link */}
+            <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-xl focus:shadow-lg focus:outline-none"
+            >
+                Skip to main content
+            </a>
+
+            <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+                {/* Logo & Brand Link */}
+                <Link
+                    href="/"
+                    className="flex items-center gap-2 group transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl"
+                    aria-label="Fonzkart Home"
+                >
+                    <Logo className="w-auto h-11 sm:h-12 py-0.5 text-primary" />
                 </Link>
 
-                <div className="flex items-center gap-4">
+                {/* Right Utilities & Navigation Actions */}
+                <div className="flex items-center gap-2 sm:gap-3">
                     <ThemeToggle />
                     <Suspense fallback={<HeaderActionsSkeleton />}>
                         <HeaderActions />

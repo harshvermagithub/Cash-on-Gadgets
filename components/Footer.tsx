@@ -47,7 +47,14 @@ export default function Footer() {
                         <ul className="space-y-2 text-sm text-muted-foreground">
                             <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
                             <li><Link href="/how-it-works" className="hover:text-primary transition-colors">How it Works</Link></li>
-                            <li><Link href="/careers" className="hover:text-primary transition-colors">Careers</Link></li>
+                            <li>
+                                <Link href="/careers" className="inline-flex items-center gap-2 hover:text-primary transition-colors group">
+                                    <span>Careers</span>
+                                    <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 group-hover:bg-emerald-500/25 transition-colors">
+                                        Hiring
+                                    </span>
+                                </Link>
+                            </li>
                             <li><Link href="/contact" className="hover:text-primary transition-colors">Contact Us</Link></li>
                             <li><Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link></li>
                             <li><Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link></li>
