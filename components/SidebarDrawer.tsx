@@ -100,11 +100,11 @@ export function SidebarDrawer({ isOpen, onClose, session, isAdminUser }: Sidebar
 
             {/* Slide-out Drawer Panel */}
             <div
-                className="relative z-10 flex h-full w-full max-w-sm flex-col bg-background/98 backdrop-blur-2xl border-l border-border/60 shadow-2xl transition-transform duration-300 ease-out animate-in slide-in-from-right text-foreground overflow-y-auto"
+                className="relative z-10 flex h-full w-full max-w-sm flex-col bg-background/98 backdrop-blur-2xl border-l border-border/60 shadow-2xl transition-transform duration-300 ease-out animate-in slide-in-from-right text-foreground overflow-hidden"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Drawer Header */}
-                <div className="sticky top-0 z-20 flex items-center justify-between border-b border-border/40 bg-background/90 px-6 py-4 backdrop-blur-md">
+                <div className="shrink-0 z-20 flex items-center justify-between border-b border-border/40 bg-background/90 px-6 py-4 backdrop-blur-md">
                     <Link href="/" onClick={onClose} className="flex items-center gap-2" aria-label="Fonzkart Home">
                         <Logo className="h-9 w-auto" />
                     </Link>
@@ -119,8 +119,8 @@ export function SidebarDrawer({ isOpen, onClose, session, isAdminUser }: Sidebar
                     </button>
                 </div>
 
-                {/* Drawer Body Content */}
-                <div className="flex-1 px-6 py-6 space-y-7">
+                {/* Drawer Body Content - Scrollable */}
+                <div className="flex-1 px-6 py-6 space-y-7 overflow-y-auto overscroll-contain">
                     {/* User Quick Info */}
                     {session ? (
                         <div className="flex items-center justify-between p-3.5 rounded-2xl bg-accent/40 border border-border/40">
@@ -354,30 +354,21 @@ export function SidebarDrawer({ isOpen, onClose, session, isAdminUser }: Sidebar
                             <span className="leading-tight">#69 8th cross Hegde Nagar, SRK Nagar Post, Bangalore - 560077</span>
                         </div>
                     </div>
-                    {/* Dedicated Collapse Option at the very end of the opened frame */}
-                    <div className="pt-2">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-accent hover:bg-accent/80 border border-border text-foreground font-bold text-xs uppercase tracking-wider transition-all duration-200 shadow-sm active:scale-98"
-                        >
-                            <X className="h-4 w-4 text-muted-foreground" />
-                            <span>Collapse Menu</span>
-                        </button>
-                    </div>
                 </div>
 
-                {/* Drawer Footer with Collapse Option */}
-                <div className="border-t border-border/40 p-4 bg-background/90 flex items-center justify-between">
-                    <p className="text-[11px] text-muted-foreground">
-                        © {new Date().getFullYear()} NR Waste Management Pvt Ltd
+                {/* Sticky Drawer Footer */}
+                <div className="shrink-0 border-t border-border/60 p-4 bg-background/95 backdrop-blur-xl flex items-center justify-between shadow-xs">
+                    <p className="text-[11px] font-medium text-muted-foreground leading-tight max-w-[210px]">
+                        © {new Date().getFullYear()} NR Waste Management Private Limited
                     </p>
                     <button
                         type="button"
                         onClick={onClose}
-                        className="text-xs font-semibold text-primary hover:underline px-2 py-1 rounded-md hover:bg-primary/10 transition-colors"
+                        className="text-xs font-bold text-primary hover:underline px-2.5 py-1.5 rounded-lg hover:bg-primary/10 transition-colors flex items-center gap-1"
+                        aria-label="Close navigation menu"
                     >
-                        Close [×]
+                        <span>Close</span>
+                        <span className="text-sm font-light">×</span>
                     </button>
                 </div>
             </div>
