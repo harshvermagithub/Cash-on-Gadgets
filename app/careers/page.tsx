@@ -201,15 +201,17 @@ ${formState.name || 'Applicant'}`;
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/15 via-transparent to-transparent pointer-events-none" />
                 
                 <div className="container mx-auto px-4 md:px-6 relative z-10 max-w-5xl text-center space-y-6">
-                    {/* Badge */}
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 shadow-xs">
-                        <span className="relative flex h-2 w-2">
+                    {/* Badge / Chip */}
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 shadow-xs whitespace-nowrap max-w-full overflow-hidden">
+                        <span className="relative flex h-2 w-2 shrink-0">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                         </span>
-                        <span>We&apos;re Hiring in Bangalore</span>
-                        <span className="h-3 w-px bg-emerald-500/40" />
-                        <span>2 Open Positions</span>
+                        <span className="font-semibold text-foreground/90">Hiring in Bangalore</span>
+                        <span className="h-3.5 w-px bg-emerald-500/40 shrink-0" />
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-600 text-white dark:bg-emerald-500 dark:text-slate-950 font-black text-[11px] shrink-0 shadow-2xs">
+                            2 Open Roles
+                        </span>
                     </div>
 
                     {/* Headline */}

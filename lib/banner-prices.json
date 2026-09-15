@@ -1,0 +1,32 @@
+[
+  {
+    "id": "price-phones",
+    "categoryKey": "phones",
+    "categoryName": "Smartphones",
+    "displayPrice": "₹1,29,000+"
+  },
+  {
+    "id": "price-laptops",
+    "categoryKey": "laptops",
+    "categoryName": "Laptops",
+    "displayPrice": "₹1,49,000+"
+  },
+  {
+    "id": "price-tablets",
+    "categoryKey": "tablets",
+    "categoryName": "Tablets",
+    "displayPrice": "₹1,20,000+"
+  },
+  {
+    "id": "price-watches",
+    "categoryKey": "watches",
+    "categoryName": "Smartwatches",
+    "displayPrice": "₹65,000+"
+  },
+  {
+    "id": "price-cameras",
+    "categoryKey": "cameras",
+    "categoryName": "Cameras",
+    "displayPrice": "₹1,85,000+"
+  }
+]

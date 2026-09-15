@@ -483,41 +483,24 @@ export async function upsertEvaluationRule(data: { category: string, questionKey
     return { success: true };
 }
 
+import { fetchAllBannerPrices, saveBannerPriceItem } from '@/lib/banner-prices';
+
 // --- Device Display Prices ---
 
 export async function getDeviceDisplayPrices() {
     await requireAdmin();
-    const prices = await prisma.deviceDisplayPrice.findMany({
-        orderBy: { categoryName: 'asc' }
-    });
-    
-    if (prices.length === 0) {
-        const defaults = [
-            { categoryKey: 'phones', categoryName: 'Smartphones', displayPrice: '₹129k+' },
-            { categoryKey: 'tablets', categoryName: 'Tablets', displayPrice: '₹120k+' },
-            { categoryKey: 'laptops', categoryName: 'Laptops', displayPrice: '₹149k+' },
-            { categoryKey: 'watches', categoryName: 'Watches', displayPrice: '₹65k+' },
-            { categoryKey: 'cameras', categoryName: 'Cameras', displayPrice: '₹1.2L+' },
-        ];
-        
-        await prisma.deviceDisplayPrice.createMany({
-            data: defaults
-        });
-        
-        return await prisma.deviceDisplayPrice.findMany({
-            orderBy: { categoryName: 'asc' }
-        });
-    }
-    
-    return prices;
+    return await fetchAllBannerPrices();
 }
 
-export async function updateDeviceDisplayPrice(id: string, displayPrice: string) {
+export async function updateDeviceDisplayPrice(
+    id: string,
+    displayPrice: string,
+    categoryKey?: string,
+    categoryName?: string
+) {
     await requireAdmin();
-    await prisma.deviceDisplayPrice.update({
-        where: { id },
-        data: { displayPrice }
-    });
+    const result = await saveBannerPriceItem(id, displayPrice, categoryKey, categoryName);
     revalidatePath('/');
-    return { success: true };
+    revalidatePath('/admin/homepage');
+    return result;
 }

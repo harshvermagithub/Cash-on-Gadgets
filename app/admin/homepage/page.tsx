@@ -7,9 +7,7 @@ import CityOrderCard from '@/components/admin/CityOrderCard';
 export const dynamic = 'force-dynamic';
 
 export default async function HomepageModificationsPage() {
-    const bannerPrices = await prisma.deviceDisplayPrice.findMany({
-        orderBy: { categoryName: 'asc' }
-    });
+    const bannerPrices = await getDeviceDisplayPrices();
 
     const cities = await prisma.city.findMany({
         where: { isActive: true },
@@ -31,22 +29,32 @@ export default async function HomepageModificationsPage() {
                     <h1 className="text-3xl font-black tracking-tight tracking-[-0.04em]">Landing Page Modifications</h1>
                 </div>
                 <p className="text-muted-foreground text-sm font-medium">
-                    Adjust the public-facing homepage content, including hero prices and city prioritization.
+                    Adjust public-facing homepage content, including the FonzKart Pay hero wallet banner prices and city priority.
                 </p>
             </div>
 
             {/* Banner Prices Section */}
             <section className="space-y-6">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-emerald-500/10 text-emerald-500 rounded-lg">
-                        <Banknote className="w-5 h-5" />
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 bg-emerald-500/10 text-emerald-500 rounded-lg">
+                            <Banknote className="w-5 h-5" />
+                        </div>
+                        <div>
+                            <h2 className="text-xl font-black tracking-tight">Banner Offer Prices (FonzKart Pay Wallet)</h2>
+                            <p className="text-xs text-muted-foreground">
+                                These prices display live on the Home Screen animation in the green FonzKart Pay card.
+                            </p>
+                        </div>
                     </div>
-                    <h2 className="text-xl font-black tracking-tight">Banner Offer Prices</h2>
+                    <div className="text-[10px] font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full w-fit">
+                        Live on Homepage
+                    </div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {bannerPrices.map((price) => (
-                        <BannerPriceCard key={price.id} price={price} />
+                        <BannerPriceCard key={price.categoryKey || price.id} price={price} />
                     ))}
                 </div>
             </section>

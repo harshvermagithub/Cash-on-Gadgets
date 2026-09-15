@@ -4,158 +4,257 @@ import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NotificationBell } from './NotificationBell';
-import { Search, UserCircle, LogOut, User, Settings, ChevronDown, Activity, Volume2, VolumeX } from 'lucide-react';
+import { 
+    Search, 
+    LogOut, 
+    User, 
+    Settings, 
+    ChevronDown, 
+    Activity, 
+    Volume2, 
+    VolumeX, 
+    ShieldCheck, 
+    ExternalLink, 
+    LayoutDashboard,
+    Radio
+} from 'lucide-react';
 import { useNotifications } from '../NotificationProvider';
-import { Logo } from '../Logo';
 import { logout } from '@/lib/session';
+import { ThemeToggle } from '../theme-toggle';
 
 function AudioAlertToggle() {
     const { audioEnabled, setAudioEnabled } = useNotifications();
     return (
         <button 
+            type="button"
             onClick={() => setAudioEnabled(!audioEnabled)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border transition-all ${
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider border transition-all ${
                 audioEnabled 
-                    ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20 shadow-lg shadow-emerald-500/5' 
-                    : 'bg-slate-500/10 text-slate-500 border-slate-500/20'
+                    ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 shadow-xs' 
+                    : 'bg-muted/50 text-muted-foreground border-border/60 hover:bg-muted'
             }`}
+            title={audioEnabled ? 'Audio Alert Buzzer Active' : 'Audio Alert Buzzer Muted'}
         >
-            <Activity className={`w-3 h-3 ${audioEnabled ? 'animate-pulse' : ''}`} />
-            <span className="hidden xs:inline">{audioEnabled ? 'Buzzer Active' : 'Buzzer Muted'}</span>
-            <span className="xs:hidden">{audioEnabled ? 'ON' : 'OFF'}</span>
-            {audioEnabled ? <Volume2 className="w-3 h-3" /> : <VolumeX className="w-3 h-3" />}
+            <Activity className={`w-3.5 h-3.5 ${audioEnabled ? 'animate-pulse text-emerald-500' : ''}`} />
+            <span className="hidden sm:inline">{audioEnabled ? 'Buzzer On' : 'Buzzer Off'}</span>
+            {audioEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
         </button>
     );
 }
-
-import { ThemeToggle } from '../theme-toggle';
 
 export function AdminHeader({ user }: { user?: { name: string; email: string; role: string } }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
-    // Close menu when clicking outside
+    // Close menu when clicking outside or pressing Escape
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
                 setIsMenuOpen(false);
             }
         }
+        function handleKeyDown(e: KeyboardEvent) {
+            if (e.key === 'Escape') {
+                setIsMenuOpen(false);
+            }
+        }
         document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+        window.addEventListener("keydown", handleKeyDown);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            window.removeEventListener("keydown", handleKeyDown);
+        };
     }, []);
 
+    const userInitial = user?.name?.charAt(0).toUpperCase() || 'A';
+    const roleLabel = (user?.role || 'SUPER_ADMIN').replace(/_/g, ' ');
+
     return (
-        <header className="h-16 border-b border-white/10 bg-white/5 backdrop-blur-md sticky top-0 z-20 flex items-center justify-between px-4 md:px-8">
-            <div className="flex items-center gap-8 flex-1">
-                {/* Logo and Home Link */}
-                <Link href="/" className="flex items-center gap-2 group transition-opacity hover:opacity-80">
-                    <Logo className="h-10 w-auto text-primary" />
+        <header className="h-16 border-b border-border/70 bg-background/85 dark:bg-zinc-950/80 backdrop-blur-xl sticky top-0 z-20 flex items-center justify-between px-4 sm:px-6 lg:px-8">
+            {/* Left Area: Title / Context + Search Bar */}
+            <div className="flex items-center gap-4 sm:gap-6 min-w-0 flex-1 max-w-2xl">
+                <Link 
+                    href="/admin" 
+                    className="flex items-center gap-2 group transition-opacity hover:opacity-85 shrink-0"
+                    title="Admin Workspace Dashboard"
+                >
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-105 transition-transform shadow-xs">
+                        <ShieldCheck className="w-4 h-4" />
+                    </div>
                     <div className="hidden sm:flex flex-col leading-none">
-                        <span className="font-black text-xs tracking-tighter text-white">ADMIN</span>
-                        <span className="text-[10px] font-bold text-emerald-500 tracking-widest uppercase opacity-80">Workspace</span>
+                        <span className="font-black text-xs tracking-tight text-foreground">ADMIN WORKSPACE</span>
+                        <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase opacity-90">FonzKart Control</span>
                     </div>
                 </Link>
 
-                {/* Search Bar - Retained Design */}
-                <div className="max-w-md hidden md:block flex-1 ml-4 text-foreground">
+                {/* Search Bar */}
+                <div className="hidden md:block flex-1 max-w-md">
                     <div className="relative group">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-emerald-500 transition-colors" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground group-focus-within:text-emerald-500 transition-colors" />
                         <input 
                             type="text"
-                            placeholder="Search records..." 
-                            className="w-full pl-10 h-10 bg-white/5 border border-white/10 focus:border-emerald-500/50 outline-none transition-all rounded-xl text-sm text-foreground"
+                            placeholder="Search orders, inventory, customers..." 
+                            className="w-full pl-9 pr-3 h-9 bg-muted/40 hover:bg-muted/60 focus:bg-background border border-border/70 focus:border-emerald-500/50 outline-none transition-all rounded-xl text-xs text-foreground placeholder:text-muted-foreground"
                         />
                     </div>
                 </div>
             </div>
             
-            <div className="flex items-center gap-2 md:gap-4 ml-auto">
+            {/* Right Area: Spaced Utility Controls + Super Admin Pop-up */}
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                {/* Theme Toggle */}
                 <ThemeToggle />
                 
+                {/* Audio Alert Toggle */}
                 <AudioAlertToggle />
                 
-                {/* Test Alert Button */}
+                {/* Test Alert Heartbeat Pulse Button */}
                 <button 
-                  onClick={async () => {
-                    if (typeof Notification !== 'undefined') {
-                      if (Notification.permission === 'granted') {
-                        new window.Notification("Verification Signal Sent!", {
-                          body: "Real-time sync test successful.",
-                          icon: '/icon.png'
+                    type="button"
+                    onClick={async () => {
+                        if (typeof Notification !== 'undefined') {
+                            if (Notification.permission === 'granted') {
+                                new window.Notification("Verification Signal Sent!", {
+                                    body: "Real-time sync test successful.",
+                                    icon: '/icon.png'
+                                });
+                                const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+                                audio.play().catch(() => {});
+                            }
+                        }
+                        const { createNotification } = await import('@/actions/notifications');
+                        await createNotification({
+                            title: "DB Heartbeat",
+                            message: "Synchronized.",
+                            type: "info"
                         });
-                        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
-                        audio.play().catch(() => {});
-                      }
-                    }
-                    const { createNotification } = await import('@/actions/notifications');
-                    await createNotification({
-                        title: "DB Heartbeat",
-                        message: "Synchronized.",
-                        type: "info"
-                    });
-                  }}
-                  className="hidden xs:flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 rounded-lg text-[10px] font-black uppercase tracking-widest border border-emerald-500/20 transition-all"
+                    }}
+                    title="Send Real-time Test Signal / Heartbeat"
+                    className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-lg text-[10px] font-bold uppercase tracking-wider border border-emerald-500/25 transition-all"
                 >
-                  <span className="opacity-70">Pulse</span>
+                    <Radio className="w-3 h-3 text-emerald-500" />
+                    <span>Pulse</span>
                 </button>
 
                 {/* Notification Bell */}
                 <NotificationBell />
                 
-                <div className="h-8 w-px bg-white/10 mx-1" />
+                <div className="h-6 w-px bg-border/60 mx-0.5 sm:mx-1" />
                 
-                {/* Account Dropdown */}
+                {/* Super Admin / User Pop-up Menu */}
                 <div className="relative" ref={menuRef}>
                     <button 
+                        type="button"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className={`flex items-center gap-2 p-1 pr-2 rounded-full transition-all group outline-none ${isMenuOpen ? 'bg-white/10' : 'hover:bg-white/5'}`}
+                        aria-expanded={isMenuOpen}
+                        aria-haspopup="true"
+                        aria-label="Open Super Admin menu"
+                        className={`flex items-center gap-2 pl-1.5 pr-2.5 py-1 rounded-full border transition-all text-xs font-semibold outline-none ${
+                            isMenuOpen 
+                                ? 'bg-accent border-emerald-500/50 ring-2 ring-emerald-500/20 text-foreground' 
+                                : 'border-border/70 bg-card/80 hover:bg-accent text-foreground hover:border-border shadow-xs'
+                        }`}
                     >
-                        <div className="h-8 w-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20 ring-2 ring-white/10 group-hover:ring-emerald-500/50 transition-all">
-                            <UserCircle className="h-6 w-6" />
+                        <div className="h-7 w-7 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-black text-xs shadow-xs shrink-0">
+                            {userInitial}
                         </div>
-                        <div className="hidden lg:flex flex-col items-start leading-none gap-0.5">
-                             <span className="text-[10px] font-black text-white/50 uppercase tracking-tighter">{user?.role?.replace('_', ' ') || 'User'}</span>
-                             <span className="text-xs font-bold text-white max-w-[100px] truncate">{user?.name || 'Account'}</span>
+                        <div className="flex flex-col items-start leading-none gap-0.5 text-left">
+                            <span className="text-[9px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                                {roleLabel}
+                            </span>
+                            <span className="text-xs font-bold text-foreground max-w-[110px] sm:max-w-[130px] truncate">
+                                {user?.name || 'Account'}
+                            </span>
                         </div>
-                        <ChevronDown className={`w-3 h-3 text-muted-foreground transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground transition-transform duration-200 ml-0.5 ${isMenuOpen ? 'rotate-180' : ''}`} />
                     </button>
 
                     <AnimatePresence>
                         {isMenuOpen && (
                             <motion.div
-                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                initial={{ opacity: 0, y: 8, scale: 0.96 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                className="absolute right-0 mt-2 w-64 bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden py-2 backdrop-blur-xl z-50"
+                                exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                                transition={{ duration: 0.15, ease: 'easeOut' }}
+                                className="absolute right-0 mt-2.5 w-72 rounded-2xl border border-border/80 bg-background/98 dark:bg-zinc-900/95 backdrop-blur-2xl shadow-2xl p-2 z-50 text-foreground overflow-hidden"
                             >
-                                <div className="px-4 py-3 border-b border-white/5 mb-2">
-                                    <p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-1">Authenticated Account</p>
-                                    <p className="text-sm font-bold text-white truncate">{user?.name || 'Administrator'}</p>
-                                    <p className="text-[10px] text-white/40 truncate">{user?.email}</p>
+                                {/* User Card Header */}
+                                <div className="p-3 border-b border-border/60 bg-muted/40 dark:bg-zinc-800/40 rounded-xl mb-1.5">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center font-black text-sm shadow-xs shrink-0">
+                                            {userInitial}
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <p className="text-xs font-bold text-foreground truncate">
+                                                {user?.name || 'Super Admin'}
+                                            </p>
+                                            {user?.email && (
+                                                <p className="text-[11px] text-muted-foreground truncate">
+                                                    {user.email}
+                                                </p>
+                                            )}
+                                            <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25">
+                                                {roleLabel}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <Link href="/profile" className="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-400 hover:text-white hover:bg-white/5 transition-colors">
-                                    <User className="w-4 h-4 text-emerald-500" />
-                                    <span>My Profile</span>
-                                </Link>
-
-                                <Link href="/admin/settings" className="flex items-center gap-3 px-4 py-2.5 text-sm text-zinc-400 hover:text-white hover:bg-white/5 transition-colors">
-                                    <Settings className="w-4 h-4 text-emerald-500" />
-                                    <span>Settings</span>
-                                </Link>
-
-                                <div className="h-px bg-white/5 my-2" />
-
-                                <form action={logout}>
-                                    <button 
-                                        type="submit"
-                                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
+                                {/* Navigation & Shortcuts */}
+                                <div className="space-y-0.5 text-xs font-medium">
+                                    <Link 
+                                        href="/" 
+                                        target="_blank"
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="flex items-center justify-between px-3 py-2 rounded-xl text-foreground hover:bg-emerald-500/10 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
                                     >
-                                        <LogOut className="w-4 h-4" />
-                                        <span>Logout Session</span>
-                                    </button>
-                                </form>
+                                        <div className="flex items-center gap-2.5">
+                                            <ExternalLink className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                                            <span>View Live Website</span>
+                                        </div>
+                                        <span className="text-[10px] text-muted-foreground uppercase">Store</span>
+                                    </Link>
+
+                                    <Link 
+                                        href="/admin" 
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-foreground hover:bg-accent transition-colors"
+                                    >
+                                        <LayoutDashboard className="w-4 h-4 text-primary shrink-0" />
+                                        <span>Admin Dashboard</span>
+                                    </Link>
+
+                                    <Link 
+                                        href="/profile" 
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-foreground hover:bg-accent transition-colors"
+                                    >
+                                        <User className="w-4 h-4 text-primary shrink-0" />
+                                        <span>My Profile</span>
+                                    </Link>
+
+                                    <Link 
+                                        href="/admin/settings" 
+                                        onClick={() => setIsMenuOpen(false)}
+                                        className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-foreground hover:bg-accent transition-colors"
+                                    >
+                                        <Settings className="w-4 h-4 text-primary shrink-0" />
+                                        <span>System Settings</span>
+                                    </Link>
+                                </div>
+
+                                {/* Session Logout Form */}
+                                <div className="pt-1.5 border-t border-border/60 mt-1.5">
+                                    <form action={logout}>
+                                        <button 
+                                            type="submit"
+                                            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold text-destructive hover:bg-destructive/10 transition-colors"
+                                        >
+                                            <LogOut className="w-4 h-4 shrink-0" />
+                                            <span>Logout Session</span>
+                                        </button>
+                                    </form>
+                                </div>
                             </motion.div>
                         )}
                     </AnimatePresence>

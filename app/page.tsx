@@ -24,7 +24,8 @@ export default async function Home() {
         const activeCities = citiesObj.map(c => c.name);
 
         // Fetch display prices for the hero animation
-        const displayPrices = await prisma.deviceDisplayPrice.findMany();
+        const { fetchAllBannerPrices } = await import('@/lib/banner-prices');
+        const displayPrices = await fetchAllBannerPrices();
 
         return <HomeClient initialBrands={brands} activeCities={activeCities} displayPrices={displayPrices} />;
     } catch (error: any) {
