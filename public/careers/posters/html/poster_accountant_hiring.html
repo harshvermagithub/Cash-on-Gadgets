@@ -33,14 +33,11 @@
             overflow: hidden;
         }
 
-        /* Luxury Background Accents */
+        /* Pristine Luxury Background without Chromium PDF Raster Artifacts */
         .bg-pattern {
             position: absolute;
             inset: 0;
-            background: 
-                radial-gradient(circle at 12% 14%, rgba(16, 185, 129, 0.08) 0%, transparent 45%),
-                radial-gradient(circle at 88% 82%, rgba(217, 119, 6, 0.06) 0%, transparent 50%),
-                linear-gradient(180deg, #f8fafc 0%, #ffffff 28%, #ffffff 72%, #f0fdf4 100%);
+            background: #ffffff;
             z-index: 0;
         }
 
@@ -145,15 +142,16 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 7px 22px;
+            padding: 8px 24px;
             border-radius: 50px;
-            background: linear-gradient(135deg, #064e3b 0%, #047857 100%);
+            background: #064e3b;
             color: #ffffff;
             font-size: 13px;
             font-weight: 800;
             letter-spacing: 2.5px;
             text-transform: uppercase;
-            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.22);
+            border: 1.5px solid #059669;
+            box-shadow: none; /* No blurred shadow to prevent PDF square raster artifact */
             margin-bottom: 12px;
         }
 
@@ -166,10 +164,8 @@
             margin-bottom: 8px;
         }
 
-        .role-title span {
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .role-title .accent-text {
+            color: #059669; /* Direct solid vector color for 100% flawless PDF rendering without background rectangle */
         }
 
         .role-subtitle {
@@ -406,20 +402,20 @@
             line-height: 1.35;
         }
 
-        /* QR Code Card */
+        /* QR Code Card - Clean Borderless Design */
         .qr-card {
-            background: #ffffff;
-            border: 2px solid #e2e8f0;
-            border-radius: 20px;
-            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 4px 6px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            box-shadow: none;
             flex-shrink: 0;
-            width: 170px;
+            width: 156px;
         }
 
         .qr-card-title {
@@ -436,8 +432,9 @@
         .qr-img {
             width: 112px;
             height: 112px;
-            border-radius: 10px;
+            border-radius: 12px;
             display: block;
+            border: none;
         }
 
         .qr-subtext {
@@ -447,7 +444,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 5px;
             letter-spacing: 0.3px;
         }
     
@@ -480,7 +477,7 @@
         <!-- Main Hero Title -->
         <section class="hero-section">
             <div class="hiring-badge">★ We Are Hiring ★</div>
-            <h1 class="role-title">Accountant &amp; <span>Operations Executive</span></h1>
+            <h1 class="role-title">Accounts &amp; <span class="accent-text">Operations Executive</span></h1>
             <p class="role-subtitle">Lead Financial Bookkeeping, Order Audits &amp; FonzKart Admin Panel Operations</p>
         </section>
 
@@ -623,7 +620,9 @@
                     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="40" height="40" style="flex-shrink: 0; display: inline-block; vertical-align: middle;">
         <circle cx="24" cy="24" r="24" fill="#25D366"/>
-        <path fill="#FFFFFF" d="M34.5 13.5C31.7 10.7 28 9.2 24.1 9.2 15.9 9.2 9.3 15.8 9.3 24c0 2.6.7 5.2 2 7.4L9 39l7.8-2c2.2 1.2 4.7 1.8 7.3 1.8h.0c8.2 0 14.8-6.6 14.8-14.8 0-3.9-1.5-7.6-4.4-10.5zm-10.4 22.8c-2.2 0-4.4-.6-6.3-1.7l-.5-.3-4.6 1.2 1.2-4.5-.3-.5c-1.2-1.9-1.9-4.2-1.9-6.5 0-6.8 5.5-12.3 12.4-12.3 3.3 0 6.4 1.3 8.7 3.6 2.3 2.3 3.6 5.4 3.6 8.7 0 6.8-5.5 12.3-12.3 12.3zm6.7-9.2c-.4-.2-2.2-1.1-2.5-1.2-.3-.1-.6-.2-.8.2-.2.4-.9 1.2-1.1 1.4-.2.2-.4.3-.8.1-.4-.2-1.6-.6-3-1.9-1.1-1-1.9-2.2-2.1-2.6-.2-.4 0-.6.2-.8.2-.2.4-.4.5-.6.2-.2.2-.4.4-.6.1-.2.1-.4 0-.6s-.8-2-1.1-2.7c-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.7.1-1.1.5-.4.4-1.5 1.5-1.5 3.6s1.5 4.2 1.7 4.5c.2.3 3 4.6 7.3 6.4 1 .4 1.8.7 2.4.9 1 .3 2 .3 2.7.2.8-.1 2.5-1 2.8-2 .4-.9.4-1.8.3-2-.1-.2-.4-.3-.8-.5z"/>
+        <g transform="translate(10, 10) scale(1.75)">
+            <path fill="#FFFFFF" d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+        </g>
     </svg>
                     <div class="contact-numbers-block">
                         <span class="desk-subtitle">Official Recruitment Desk &amp; WhatsApp:</span>
@@ -667,16 +666,20 @@
                     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20" style="flex-shrink: 0; display: inline-block; vertical-align: middle;">
         <circle cx="24" cy="24" r="24" fill="#25D366"/>
-        <path fill="#FFFFFF" d="M34.5 13.5C31.7 10.7 28 9.2 24.1 9.2 15.9 9.2 9.3 15.8 9.3 24c0 2.6.7 5.2 2 7.4L9 39l7.8-2c2.2 1.2 4.7 1.8 7.3 1.8h.0c8.2 0 14.8-6.6 14.8-14.8 0-3.9-1.5-7.6-4.4-10.5zm-10.4 22.8c-2.2 0-4.4-.6-6.3-1.7l-.5-.3-4.6 1.2 1.2-4.5-.3-.5c-1.2-1.9-1.9-4.2-1.9-6.5 0-6.8 5.5-12.3 12.4-12.3 3.3 0 6.4 1.3 8.7 3.6 2.3 2.3 3.6 5.4 3.6 8.7 0 6.8-5.5 12.3-12.3 12.3zm6.7-9.2c-.4-.2-2.2-1.1-2.5-1.2-.3-.1-.6-.2-.8.2-.2.4-.9 1.2-1.1 1.4-.2.2-.4.3-.8.1-.4-.2-1.6-.6-3-1.9-1.1-1-1.9-2.2-2.1-2.6-.2-.4 0-.6.2-.8.2-.2.4-.4.5-.6.2-.2.2-.4.4-.6.1-.2.1-.4 0-.6s-.8-2-1.1-2.7c-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.7.1-1.1.5-.4.4-1.5 1.5-1.5 3.6s1.5 4.2 1.7 4.5c.2.3 3 4.6 7.3 6.4 1 .4 1.8.7 2.4.9 1 .3 2 .3 2.7.2.8-.1 2.5-1 2.8-2 .4-.9.4-1.8.3-2-.1-.2-.4-.3-.8-.5z"/>
+        <g transform="translate(10, 10) scale(1.75)">
+            <path fill="#FFFFFF" d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+        </g>
     </svg>
                     <span>Scan to Apply</span>
                 </div>
-                <img src="data:image/png;base64,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" alt="Scan QR code to apply on WhatsApp" class="qr-img">
+                <img src="data:image/png;base64,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" alt="Scan QR code to apply on WhatsApp" class="qr-img">
                 <div class="qr-subtext">
                     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="15" height="15" style="flex-shrink: 0; display: inline-block; vertical-align: middle;">
         <circle cx="24" cy="24" r="24" fill="#25D366"/>
-        <path fill="#FFFFFF" d="M34.5 13.5C31.7 10.7 28 9.2 24.1 9.2 15.9 9.2 9.3 15.8 9.3 24c0 2.6.7 5.2 2 7.4L9 39l7.8-2c2.2 1.2 4.7 1.8 7.3 1.8h.0c8.2 0 14.8-6.6 14.8-14.8 0-3.9-1.5-7.6-4.4-10.5zm-10.4 22.8c-2.2 0-4.4-.6-6.3-1.7l-.5-.3-4.6 1.2 1.2-4.5-.3-.5c-1.2-1.9-1.9-4.2-1.9-6.5 0-6.8 5.5-12.3 12.4-12.3 3.3 0 6.4 1.3 8.7 3.6 2.3 2.3 3.6 5.4 3.6 8.7 0 6.8-5.5 12.3-12.3 12.3zm6.7-9.2c-.4-.2-2.2-1.1-2.5-1.2-.3-.1-.6-.2-.8.2-.2.4-.9 1.2-1.1 1.4-.2.2-.4.3-.8.1-.4-.2-1.6-.6-3-1.9-1.1-1-1.9-2.2-2.1-2.6-.2-.4 0-.6.2-.8.2-.2.4-.4.5-.6.2-.2.2-.4.4-.6.1-.2.1-.4 0-.6s-.8-2-1.1-2.7c-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.7.1-1.1.5-.4.4-1.5 1.5-1.5 3.6s1.5 4.2 1.7 4.5c.2.3 3 4.6 7.3 6.4 1 .4 1.8.7 2.4.9 1 .3 2 .3 2.7.2.8-.1 2.5-1 2.8-2 .4-.9.4-1.8.3-2-.1-.2-.4-.3-.8-.5z"/>
+        <g transform="translate(10, 10) scale(1.75)">
+            <path fill="#FFFFFF" d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+        </g>
     </svg>
                     <span>+91 90603 36060</span>
                 </div>

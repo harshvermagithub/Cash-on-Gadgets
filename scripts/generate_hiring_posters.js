@@ -26,10 +26,10 @@ async function generatePosters() {
     // NR Logo with original pristine background preserved
     const nrLogoBase64 = getBase64Image('public/logos/nr/nr_logo_white_bg.png') || getBase64Image('public/logos/nr/nr_logo.png');
     const fonzkartLogoBase64 = getBase64Image('public/fonzkart_cart_brand_logo_transparent.png');
-    const riderImageBase64 = getBase64Image('public/fonzkart_rider_isolated.png');
+    const riderImageBase64 = getBase64Image('public/images/rider-scooter-v2-transparent.png') || getBase64Image('public/images/rider-scooter-v2.png');
 
     // Generate WhatsApp QR Codes
-    const accountantQrUrl = 'https://wa.me/919060336060?text=Hi%20FonzKart%20Hiring%20Team%2C%20I%20am%20applying%20for%20the%20Accountant%20%26%20Operations%20Executive%20position%20at%20Bangalore.%20Here%20are%20my%20details%3A';
+    const accountantQrUrl = 'https://wa.me/919060336060?text=Hi%20FonzKart%20Hiring%20Team%2C%20I%20am%20applying%20for%20the%20Accounts%20%26%20Operations%20Executive%20position%20at%20Bangalore.%20Here%20are%20my%20details%3A';
     const fieldExecQrUrl = 'https://wa.me/919060336060?text=Hi%20FonzKart%20Hiring%20Team%2C%20I%20am%20applying%20for%20the%20Field%20Executive%20position%20at%20Bangalore.%20Here%20are%20my%20details%3A';
 
     const accountantQrBase64 = await QRCode.toDataURL(accountantQrUrl, {
@@ -50,11 +50,13 @@ async function generatePosters() {
         }
     });
 
-    // Official Authentic WhatsApp Badge SVG with green circle and white speech bubble + handset
-    const whatsappOfficialBadgeSvg = (size = 36) => `
+    // Official Authentic WhatsApp Badge SVG: green circle (#25D366) with centered white speech bubble + phone handset
+    const whatsappOfficialBadgeSvg = (size = 38) => `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="${size}" height="${size}" style="flex-shrink: 0; display: inline-block; vertical-align: middle;">
         <circle cx="24" cy="24" r="24" fill="#25D366"/>
-        <path fill="#FFFFFF" d="M34.5 13.5C31.7 10.7 28 9.2 24.1 9.2 15.9 9.2 9.3 15.8 9.3 24c0 2.6.7 5.2 2 7.4L9 39l7.8-2c2.2 1.2 4.7 1.8 7.3 1.8h.0c8.2 0 14.8-6.6 14.8-14.8 0-3.9-1.5-7.6-4.4-10.5zm-10.4 22.8c-2.2 0-4.4-.6-6.3-1.7l-.5-.3-4.6 1.2 1.2-4.5-.3-.5c-1.2-1.9-1.9-4.2-1.9-6.5 0-6.8 5.5-12.3 12.4-12.3 3.3 0 6.4 1.3 8.7 3.6 2.3 2.3 3.6 5.4 3.6 8.7 0 6.8-5.5 12.3-12.3 12.3zm6.7-9.2c-.4-.2-2.2-1.1-2.5-1.2-.3-.1-.6-.2-.8.2-.2.4-.9 1.2-1.1 1.4-.2.2-.4.3-.8.1-.4-.2-1.6-.6-3-1.9-1.1-1-1.9-2.2-2.1-2.6-.2-.4 0-.6.2-.8.2-.2.4-.4.5-.6.2-.2.2-.4.4-.6.1-.2.1-.4 0-.6s-.8-2-1.1-2.7c-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.7.1-1.1.5-.4.4-1.5 1.5-1.5 3.6s1.5 4.2 1.7 4.5c.2.3 3 4.6 7.3 6.4 1 .4 1.8.7 2.4.9 1 .3 2 .3 2.7.2.8-.1 2.5-1 2.8-2 .4-.9.4-1.8.3-2-.1-.2-.4-.3-.8-.5z"/>
+        <g transform="translate(10, 10) scale(1.75)">
+            <path fill="#FFFFFF" d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+        </g>
     </svg>`;
 
     const phoneIconSvg = `
@@ -105,14 +107,11 @@ async function generatePosters() {
             overflow: hidden;
         }
 
-        /* Luxury Background Accents */
+        /* Pristine Luxury Background without Chromium PDF Raster Artifacts */
         .bg-pattern {
             position: absolute;
             inset: 0;
-            background: 
-                radial-gradient(circle at 12% 14%, rgba(16, 185, 129, 0.08) 0%, transparent 45%),
-                radial-gradient(circle at 88% 82%, rgba(217, 119, 6, 0.06) 0%, transparent 50%),
-                linear-gradient(180deg, #f8fafc 0%, #ffffff 28%, #ffffff 72%, #f0fdf4 100%);
+            background: #ffffff;
             z-index: 0;
         }
 
@@ -217,15 +216,16 @@ async function generatePosters() {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 7px 22px;
+            padding: 8px 24px;
             border-radius: 50px;
-            background: linear-gradient(135deg, #064e3b 0%, #047857 100%);
+            background: #064e3b;
             color: #ffffff;
             font-size: 13px;
             font-weight: 800;
             letter-spacing: 2.5px;
             text-transform: uppercase;
-            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.22);
+            border: 1.5px solid #059669;
+            box-shadow: none; /* No blurred shadow to prevent PDF square raster artifact */
             margin-bottom: 12px;
         }
 
@@ -238,10 +238,8 @@ async function generatePosters() {
             margin-bottom: 8px;
         }
 
-        .role-title span {
-            background: ${roleAccentGradient};
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .role-title .accent-text {
+            color: #059669; /* Direct solid vector color for 100% flawless PDF rendering without background rectangle */
         }
 
         .role-subtitle {
@@ -478,20 +476,20 @@ async function generatePosters() {
             line-height: 1.35;
         }
 
-        /* QR Code Card */
+        /* QR Code Card - Clean Borderless Design */
         .qr-card {
-            background: #ffffff;
-            border: 2px solid #e2e8f0;
-            border-radius: 20px;
-            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 4px 6px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+            box-shadow: none;
             flex-shrink: 0;
-            width: 170px;
+            width: 156px;
         }
 
         .qr-card-title {
@@ -508,8 +506,9 @@ async function generatePosters() {
         .qr-img {
             width: 112px;
             height: 112px;
-            border-radius: 10px;
+            border-radius: 12px;
             display: block;
+            border: none;
         }
 
         .qr-subtext {
@@ -519,7 +518,7 @@ async function generatePosters() {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 5px;
             letter-spacing: 0.3px;
         }
     `;
@@ -565,7 +564,7 @@ async function generatePosters() {
         <!-- Main Hero Title -->
         <section class="hero-section">
             <div class="hiring-badge">★ We Are Hiring ★</div>
-            <h1 class="role-title">Accountant &amp; <span>Operations Executive</span></h1>
+            <h1 class="role-title">Accounts &amp; <span class="accent-text">Operations Executive</span></h1>
             <p class="role-subtitle">Lead Financial Bookkeeping, Order Audits &amp; FonzKart Admin Panel Operations</p>
         </section>
 
@@ -753,7 +752,7 @@ async function generatePosters() {
         <!-- Main Hero Title -->
         <section class="hero-section">
             <div class="hiring-badge">★ Immediate Openings ★</div>
-            <h1 class="role-title">Field Executive / <span>Evaluation Specialist</span></h1>
+            <h1 class="role-title">Field Executive / <span class="accent-text">Evaluation Specialist</span></h1>
             <p class="role-subtitle">Conduct Smartphone Diagnostics &amp; Instant Doorstep Payouts Across Bangalore</p>
         </section>
 
@@ -844,11 +843,14 @@ async function generatePosters() {
             </div>
         </div>
 
-        <!-- High Earnings Callout -->
+        <!-- High Earnings Callout with 3D Rider Illustration -->
         <div class="special-callout">
-            <div class="callout-text">
-                <h4>Fixed Base Salary + Daily Fuel Allowance + High Per-Pickup Commission</h4>
-                <p>Earn high weekly incentives on every completed pickup! Fast-track promotions to Hub Lead &amp; City Supervisor.</p>
+            <div style="display: flex; align-items: center; gap: 18px;">
+                <img src="${riderImageBase64}" alt="FonzKart Field Executive" style="height: 64px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.35)); flex-shrink: 0;">
+                <div class="callout-text">
+                    <h4>Fixed Base Salary + Daily Fuel Allowance + High Per-Pickup Commission</h4>
+                    <p>Earn high weekly incentives on every completed pickup! Fast-track promotions to Hub Lead &amp; City Supervisor.</p>
+                </div>
             </div>
             <div class="callout-badge">Immediate Joining</div>
         </div>
