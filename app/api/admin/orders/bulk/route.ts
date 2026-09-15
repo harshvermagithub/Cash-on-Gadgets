@@ -47,6 +47,72 @@ export async function POST(request: Request) {
             return NextResponse.json({ success: true, count: ids.length });
         }
 
+        if (action === 'bulk_restore') {
+            const orders = await prisma.order.findMany({
+                where: { id: { in: ids } }
+            });
+
+            const updates = orders.map(async (order) => {
+                let answersObj: any = {};
+                if (order.answers && typeof order.answers === 'string') {
+                    try { answersObj = JSON.parse(order.answers); } catch { }
+                }
+
+                if (!answersObj.restoreLog) answersObj.restoreLog = [];
+                answersObj.restoreLog.push({ 
+                    date: new Date().toISOString(), 
+                    restoredBy: session.user.email || 'Admin', 
+                    previousStatus: order.status 
+                });
+
+                const restoredStatus = order.riderId ? 'assigned' : 'Pending Pickup';
+
+                return prisma.order.update({
+                    where: { id: order.id },
+                    data: {
+                        status: restoredStatus,
+                        answers: JSON.stringify(answersObj)
+                    }
+                });
+            });
+
+            await Promise.all(updates);
+            return NextResponse.json({ success: true, count: ids.length });
+        }
+
+        if (action === 'bulk_hub_handover') {
+            const targetStatus = body.hubStatus || 'handed_over';
+            const orders = await prisma.order.findMany({
+                where: { id: { in: ids } }
+            });
+
+            const updates = orders.map(async (order) => {
+                let answersObj: any = {};
+                if (order.answers && typeof order.answers === 'string') {
+                    try { answersObj = JSON.parse(order.answers); } catch { }
+                }
+
+                answersObj.hubStatus = targetStatus;
+                if (targetStatus === 'handed_over') {
+                    answersObj.hubHandoverAt = new Date().toISOString();
+                    answersObj.hubReceivedBy = session.user.name || session.user.email || 'Hub Staff';
+                } else {
+                    answersObj.hubHandoverAt = null;
+                    answersObj.hubReceivedBy = null;
+                }
+
+                return prisma.order.update({
+                    where: { id: order.id },
+                    data: {
+                        answers: JSON.stringify(answersObj)
+                    }
+                });
+            });
+
+            await Promise.all(updates);
+            return NextResponse.json({ success: true, count: ids.length });
+        }
+
         if (action === 'bulk_delete') {
             await prisma.order.deleteMany({
                 where: { id: { in: ids } }

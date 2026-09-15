@@ -156,6 +156,12 @@ export async function submitVerification(orderId: string, payload: { riderAnswer
             };
         }
 
+        if (targetStatus === 'completed' || targetStatus === 'picked_up') {
+            if (!answersObj.hubStatus) {
+                answersObj.hubStatus = 'pending';
+            }
+        }
+
         if (targetStatus === 'failed') {
             if (!answersObj.failLog) answersObj.failLog = [];
             answersObj.failLog.push({ 

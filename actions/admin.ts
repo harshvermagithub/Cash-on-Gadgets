@@ -469,6 +469,75 @@ export async function assignRider(orderId: string, riderId: string) {
     return { success: true };
 }
 
+export async function restoreOrder(orderId: string) {
+    await requirePartnerOrAbove();
+    const order = await prisma.order.findUnique({ where: { id: orderId } });
+    if (!order) throw new Error('Order not found');
+
+    const session = await getSession();
+    let answersObj: any = {};
+    if (order.answers && typeof order.answers === 'string') {
+        try { answersObj = JSON.parse(order.answers); } catch { }
+    }
+
+    if (!answersObj.restoreLog) answersObj.restoreLog = [];
+    answersObj.restoreLog.push({
+        date: new Date().toISOString(),
+        restoredBy: session?.user?.email || 'Admin',
+        previousStatus: order.status
+    });
+
+    const restoredStatus = order.riderId ? 'assigned' : 'Pending Pickup';
+
+    await prisma.order.update({
+        where: { id: orderId },
+        data: {
+            status: restoredStatus,
+            answers: JSON.stringify(answersObj)
+        }
+    });
+
+    revalidatePath('/admin/orders');
+    return { success: true, status: restoredStatus };
+}
+
+export async function deleteOrder(orderId: string) {
+    await requirePartnerOrAbove();
+    await prisma.order.delete({ where: { id: orderId } });
+    revalidatePath('/admin/orders');
+    return { success: true };
+}
+
+export async function updateOrderHubStatus(orderId: string, hubStatus: 'handed_over' | 'pending') {
+    await requirePartnerOrAbove();
+    const order = await prisma.order.findUnique({ where: { id: orderId } });
+    if (!order) throw new Error('Order not found');
+
+    const session = await getSession();
+    let answersObj: any = {};
+    if (order.answers && typeof order.answers === 'string') {
+        try { answersObj = JSON.parse(order.answers); } catch { }
+    }
+
+    answersObj.hubStatus = hubStatus;
+    if (hubStatus === 'handed_over') {
+        answersObj.hubHandoverAt = new Date().toISOString();
+        answersObj.hubReceivedBy = session?.user?.name || session?.user?.email || 'Hub Staff';
+    } else {
+        answersObj.hubHandoverAt = null;
+        answersObj.hubReceivedBy = null;
+    }
+
+    await prisma.order.update({
+        where: { id: orderId },
+        data: { answers: JSON.stringify(answersObj) }
+    });
+
+    revalidatePath('/admin/orders');
+    revalidatePath('/admin/riders');
+    return { success: true, hubStatus };
+}
+
 // --- Evaluation Rules ---
 
 export async function getEvaluationRules(category: string) {

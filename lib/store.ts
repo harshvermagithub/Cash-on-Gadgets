@@ -39,6 +39,9 @@ export interface Order {
     riderAnswers?: unknown;
     verificationImages?: string[];
     offeredPrice?: number | null;
+    hubStatus?: 'pending' | 'handed_over' | null;
+    hubHandoverAt?: string | null;
+    hubReceivedBy?: string | null;
 }
 
 export type Brand = PrismaBrand;
@@ -662,6 +665,15 @@ export const db = {
 };
 
 function mapPrismaOrderToAppOrder(o: PrismaOrder & { orderNumber?: number, user?: any }): Order {
+    let answersObj: any = null;
+    try {
+        answersObj = o.answers ? JSON.parse(o.answers) : null;
+    } catch {
+        answersObj = null;
+    }
+    const isCompleted = o.status === 'completed';
+    const hubStatus = answersObj?.hubStatus || (isCompleted ? 'pending' : null);
+
     return {
         id: o.id,
         orderNumber: o.orderNumber,
@@ -680,9 +692,12 @@ function mapPrismaOrderToAppOrder(o: PrismaOrder & { orderNumber?: number, user?
         pincode: o.pincode,
         location: (o.locationLat && o.locationLng) ? { lat: o.locationLat, lng: o.locationLng } : null,
         riderId: o.riderId,
-        answers: o.answers ? JSON.parse(o.answers) : null,
+        answers: answersObj,
         riderAnswers: o.riderAnswers ? JSON.parse(o.riderAnswers) : null,
         verificationImages: o.verificationImages || [],
-        offeredPrice: o.offeredPrice
+        offeredPrice: o.offeredPrice,
+        hubStatus,
+        hubHandoverAt: answersObj?.hubHandoverAt || null,
+        hubReceivedBy: answersObj?.hubReceivedBy || null,
     };
 }

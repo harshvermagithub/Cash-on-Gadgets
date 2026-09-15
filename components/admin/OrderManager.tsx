@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { assignRider } from '@/actions/admin';
 import { Rider, Order } from '@/lib/store'; // Need to export Order from store/lib
-import { Calendar, MapPin, Smartphone, User, CheckCircle2, Eye, X, Download, Phone, Mail, AlertTriangle, Trash2, CheckSquare, Square, Camera } from 'lucide-react';
+import { Calendar, MapPin, Smartphone, User, CheckCircle2, Eye, X, Download, Phone, Mail, AlertTriangle, Trash2, CheckSquare, Square, Camera, RotateCcw, Building2, Clock } from 'lucide-react';
 import OrderDetails from '@/components/OrderDetails';
 import { useRouter } from 'next/navigation';
 
@@ -27,6 +27,7 @@ export default function OrderManager({
     const [activeTab, setActiveTab] = useState<'to_be_assigned' | 'pending_pickup' | 'completed' | 'failed'>(
         isRider ? 'pending_pickup' : 'to_be_assigned'
     );
+    const [completedSubTab, setCompletedSubTab] = useState<'all' | 'pending' | 'handed_over'>('all');
 
     // Sync if server sends new orders (e.g. from polling or navigations)
     useEffect(() => {
@@ -69,12 +70,27 @@ export default function OrderManager({
     const completedOrders = sortedOrders.filter(o => o.status === 'completed');
     const failedOrders = sortedOrders.filter(o => o.status === 'failed');
 
+    const handoverPendingOrders = completedOrders.filter(o => {
+        const ans = typeof o.answers === 'string' ? JSON.parse(o.answers) : (o.answers as any);
+        return ans?.hubStatus !== 'handed_over';
+    });
+    const handedOverOrders = completedOrders.filter(o => {
+        const ans = typeof o.answers === 'string' ? JSON.parse(o.answers) : (o.answers as any);
+        return ans?.hubStatus === 'handed_over';
+    });
+
+    const filteredCompletedOrders = completedSubTab === 'pending'
+        ? handoverPendingOrders
+        : completedSubTab === 'handed_over'
+            ? handedOverOrders
+            : completedOrders;
+
     const displayedOrders = activeTab === 'to_be_assigned'
         ? toBeAssignedOrders
         : activeTab === 'pending_pickup'
             ? pendingPickupOrders
             : activeTab === 'completed'
-                ? completedOrders
+                ? filteredCompletedOrders
                 : failedOrders;
 
     const handleBulkFail = async () => {
@@ -99,6 +115,46 @@ export default function OrderManager({
         }
     };
 
+    const handleBulkRestore = async () => {
+        if (selectedOrderIds.length === 0) return;
+        if (!confirm(`Restore ${selectedOrderIds.length} failed orders back to active status?`)) return;
+
+        setIsBulkProcessing(true);
+        try {
+            await fetch('/api/admin/orders/bulk', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'bulk_restore', ids: selectedOrderIds })
+            });
+            setSelectedOrderIds([]);
+            window.location.reload();
+        } catch {
+            alert('Failed to process bulk restore');
+        } finally {
+            setIsBulkProcessing(false);
+        }
+    };
+
+    const handleBulkHubHandover = async () => {
+        if (selectedOrderIds.length === 0) return;
+        if (!confirm(`Mark ${selectedOrderIds.length} completed orders as Handed Over to Hub?`)) return;
+
+        setIsBulkProcessing(true);
+        try {
+            await fetch('/api/admin/orders/bulk', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'bulk_hub_handover', ids: selectedOrderIds, hubStatus: 'handed_over' })
+            });
+            setSelectedOrderIds([]);
+            window.location.reload();
+        } catch {
+            alert('Failed to process bulk hub handover');
+        } finally {
+            setIsBulkProcessing(false);
+        }
+    };
+
     const handleBulkDelete = async () => {
         if (selectedOrderIds.length === 0) return;
         if (!confirm(`CAUTION: This will PERMANENTLY delete ${selectedOrderIds.length} orders. Proceed?`)) return;
@@ -116,6 +172,61 @@ export default function OrderManager({
             alert('Failed to process bulk delete');
         } finally {
             setIsBulkProcessing(false);
+        }
+    };
+
+    const handleRestoreOrder = async (orderId: string) => {
+        if (!confirm("Restore this failed order back to active status?")) return;
+        try {
+            const res = await fetch('/api/admin/orders/' + orderId, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'restore_order' })
+            });
+            if (res.ok) {
+                window.location.reload();
+            } else {
+                alert("Failed to restore order");
+            }
+        } catch {
+            alert("Error restoring order");
+        }
+    };
+
+    const handleUpdateHubStatus = async (orderId: string, hubStatus: 'handed_over' | 'pending') => {
+        const msg = hubStatus === 'handed_over'
+            ? "Confirm that this device has been handed over to the Hub?"
+            : "Revert this device to Handover Pending?";
+        if (!confirm(msg)) return;
+        try {
+            const res = await fetch('/api/admin/orders/' + orderId, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'update_hub_status', hubStatus })
+            });
+            if (res.ok) {
+                window.location.reload();
+            } else {
+                alert("Failed to update hub status");
+            }
+        } catch {
+            alert("Error updating hub status");
+        }
+    };
+
+    const handleDeleteOrder = async (orderId: string) => {
+        if (!confirm("Are you sure you want to permanently delete this order? This action cannot be undone.")) return;
+        try {
+            const res = await fetch('/api/admin/orders/' + orderId, {
+                method: 'DELETE'
+            });
+            if (res.ok) {
+                window.location.reload();
+            } else {
+                alert("Failed to delete order");
+            }
+        } catch {
+            alert("Error deleting order");
         }
     };
 
@@ -166,70 +277,132 @@ export default function OrderManager({
 
     return (
         <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-                <div className="flex flex-wrap bg-muted/50 p-1 rounded-lg border border-border/50 gap-1">
-                    <button
-                        onClick={() => setActiveTab('to_be_assigned')}
-                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'to_be_assigned' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-                    >
-                        To Be Assigned <span className="ml-1.5 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs">{toBeAssignedOrders.length}</span>
-                    </button>
+            <div className="flex flex-col gap-3 mb-4">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div className="flex flex-wrap bg-muted/50 p-1 rounded-lg border border-border/50 gap-1">
+                        <button
+                            onClick={() => setActiveTab('to_be_assigned')}
+                            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'to_be_assigned' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                            To Be Assigned <span className="ml-1.5 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs">{toBeAssignedOrders.length}</span>
+                        </button>
 
-                    <button
-                        onClick={() => setActiveTab('pending_pickup')}
-                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'pending_pickup' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-                    >
-                        In Transit <span className="ml-1.5 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs">{pendingPickupOrders.length}</span>
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('completed')}
-                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'completed' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-                    >
-                        Completed <span className="ml-1.5 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs">{completedOrders.length}</span>
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('failed')}
-                        className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'failed' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
-                    >
-                        Failed <span className="ml-1.5 px-2 py-0.5 rounded-full bg-red-100 text-red-700 text-xs">{failedOrders.length}</span>
-                    </button>
-                </div>
+                        <button
+                            onClick={() => setActiveTab('pending_pickup')}
+                            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'pending_pickup' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                            In Progress <span className="ml-1.5 px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs">{pendingPickupOrders.length}</span>
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('completed')}
+                            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'completed' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                            Completed <span className="ml-1.5 px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs">{completedOrders.length}</span>
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('failed')}
+                            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === 'failed' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                            Failed <span className="ml-1.5 px-2 py-0.5 rounded-full bg-red-100 text-red-700 text-xs">{failedOrders.length}</span>
+                        </button>
+                    </div>
 
-                <div className="flex items-center gap-2">
-                    {selectedOrderIds.length > 0 && (
-                        <div className="flex items-center gap-2 bg-muted p-1 rounded-lg border mr-2 animate-in fade-in slide-in-from-right-4">
-                            <span className="text-xs font-bold px-2 text-muted-foreground">{selectedOrderIds.length} selected</span>
-                            <button
-                                onClick={handleBulkFail}
-                                disabled={isBulkProcessing}
-                                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-100 text-red-700 rounded-md text-xs font-bold hover:bg-red-200 transition-colors disabled:opacity-50"
-                            >
-                                <AlertTriangle className="w-3.5 h-3.5" /> Fail Selected
-                            </button>
-                            {activeTab === 'failed' && (
+                    <div className="flex items-center gap-2">
+                        {selectedOrderIds.length > 0 && (
+                            <div className="flex items-center gap-2 bg-muted p-1 rounded-lg border mr-2 animate-in fade-in slide-in-from-right-4">
+                                <span className="text-xs font-bold px-2 text-muted-foreground">{selectedOrderIds.length} selected</span>
+                                
+                                {(activeTab === 'to_be_assigned' || activeTab === 'pending_pickup') && (
+                                    <button
+                                        onClick={handleBulkFail}
+                                        disabled={isBulkProcessing}
+                                        className="flex items-center gap-1.5 px-3 py-1.5 bg-red-100 text-red-700 rounded-md text-xs font-bold hover:bg-red-200 transition-colors disabled:opacity-50"
+                                    >
+                                        <AlertTriangle className="w-3.5 h-3.5" /> Fail Selected
+                                    </button>
+                                )}
+
+                                {activeTab === 'completed' && (
+                                    <>
+                                        <button
+                                            onClick={handleBulkHubHandover}
+                                            disabled={isBulkProcessing}
+                                            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 text-white rounded-md text-xs font-bold hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                                        >
+                                            <Building2 className="w-3.5 h-3.5" /> Mark Handed Over to Hub
+                                        </button>
+                                        <button
+                                            onClick={handleBulkDelete}
+                                            disabled={isBulkProcessing}
+                                            className="flex items-center gap-1.5 px-3 py-1.5 bg-red-100 text-red-700 rounded-md text-xs font-bold hover:bg-red-200 transition-colors disabled:opacity-50"
+                                        >
+                                            <Trash2 className="w-3.5 h-3.5" /> Delete Selected
+                                        </button>
+                                    </>
+                                )}
+
+                                {activeTab === 'failed' && (
+                                    <>
+                                        <button
+                                            onClick={handleBulkRestore}
+                                            disabled={isBulkProcessing}
+                                            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 text-white rounded-md text-xs font-bold hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                                        >
+                                            <RotateCcw className="w-3.5 h-3.5" /> Restore Selected
+                                        </button>
+                                        <button
+                                            onClick={handleBulkDelete}
+                                            disabled={isBulkProcessing}
+                                            className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 text-white rounded-md text-xs font-bold hover:bg-zinc-800 transition-colors disabled:opacity-50"
+                                        >
+                                            <Trash2 className="w-3.5 h-3.5" /> Delete Permanently
+                                        </button>
+                                    </>
+                                )}
+
                                 <button
-                                    onClick={handleBulkDelete}
-                                    disabled={isBulkProcessing}
-                                    className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 text-white rounded-md text-xs font-bold hover:bg-zinc-800 transition-colors disabled:opacity-50"
+                                    onClick={() => setSelectedOrderIds([])}
+                                    className="p-1.5 hover:bg-background rounded-md text-muted-foreground transition-colors"
                                 >
-                                    <Trash2 className="w-3.5 h-3.5" /> Delete Permanently
+                                    <X className="w-4 h-4" />
                                 </button>
-                            )}
-                            <button
-                                onClick={() => setSelectedOrderIds([])}
-                                className="p-1.5 hover:bg-background rounded-md text-muted-foreground transition-colors"
-                            >
-                                <X className="w-4 h-4" />
-                            </button>
-                        </div>
-                    )}
-                    <button
-                        onClick={handleExport}
-                        className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors shadow-sm shrink-0"
-                    >
-                        <Download className="w-4 h-4" /> Export CSV
-                    </button>
+                            </div>
+                        )}
+                        <button
+                            onClick={handleExport}
+                            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors shadow-sm shrink-0"
+                        >
+                            <Download className="w-4 h-4" /> Export CSV
+                        </button>
+                    </div>
                 </div>
+
+                {/* Sub-filters for Completed Orders: Hub Handover State */}
+                {activeTab === 'completed' && (
+                    <div className="flex flex-wrap items-center gap-2 p-1 bg-muted/40 rounded-lg border border-border/40 w-fit text-xs">
+                        <span className="text-muted-foreground font-semibold px-2 uppercase tracking-wider text-[10px]">Hub Handover:</span>
+                        <button
+                            onClick={() => setCompletedSubTab('all')}
+                            className={`px-3 py-1.5 rounded-md font-bold transition-all ${completedSubTab === 'all' ? 'bg-background shadow-xs text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                            All Completed ({completedOrders.length})
+                        </button>
+                        <button
+                            onClick={() => setCompletedSubTab('pending')}
+                            className={`px-3 py-1.5 rounded-md font-bold transition-all flex items-center gap-1.5 ${completedSubTab === 'pending' ? 'bg-amber-100 text-amber-800 shadow-xs dark:bg-amber-950 dark:text-amber-200' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                            <Clock className="w-3.5 h-3.5 text-amber-600" />
+                            Handover Pending ({handoverPendingOrders.length})
+                        </button>
+                        <button
+                            onClick={() => setCompletedSubTab('handed_over')}
+                            className={`px-3 py-1.5 rounded-md font-bold transition-all flex items-center gap-1.5 ${completedSubTab === 'handed_over' ? 'bg-emerald-100 text-emerald-800 shadow-xs dark:bg-emerald-950 dark:text-emerald-200' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                            <Building2 className="w-3.5 h-3.5 text-emerald-600" />
+                            Handed Over to Hub ({handedOverOrders.length})
+                        </button>
+                    </div>
+                )}
             </div>
 
             {displayedOrders.length > 0 && (
@@ -277,9 +450,10 @@ export default function OrderManager({
                                         <span className={`px-2 py-0.5 rounded-full text-xs font-bold uppercase ${order.status === 'completed' ? 'bg-green-100 text-green-700' :
                                             order.status === 'failed' ? 'bg-red-100 text-red-700' :
                                                 order.status === 'assigned' ? 'bg-blue-100 text-blue-700' :
-                                                    'bg-amber-100 text-amber-700'
+                                                    order.status === 'picked_up' ? 'bg-purple-100 text-purple-700' :
+                                                        'bg-amber-100 text-amber-700'
                                             }`}>
-                                            {order.status}
+                                            {order.status === 'assigned' ? 'In Progress' : order.status === 'picked_up' ? 'Picked Up (In Progress)' : order.status}
                                         </span>
                                         <span suppressHydrationWarning className="text-xs text-muted-foreground flex items-center gap-1">
                                             <Calendar className="w-3 h-3" />
@@ -379,7 +553,8 @@ export default function OrderManager({
                                 </div>
 
                                 <div className="w-full lg:w-auto min-w-[300px] border-t lg:border-t-0 lg:border-l pt-4 lg:pt-0 lg:pl-6 space-y-4">
-                                    {!isRider && (
+                                    {/* Action Column for Unassigned / In Progress orders */}
+                                    {!isRider && order.status !== 'completed' && order.status !== 'failed' && (
                                         <div>
                                             <label className="text-sm font-medium mb-1 block text-slate-500 uppercase tracking-tighter text-[10px]">Assign Field Executive</label>
                                             <div className="flex gap-2">
@@ -432,6 +607,90 @@ export default function OrderManager({
                                                 className="w-full mt-2 py-2 border border-red-200 text-red-600 hover:bg-red-50 rounded-lg text-xs font-bold transition-colors"
                                             >
                                                 Fail Order
+                                            </button>
+                                        </div>
+                                    )}
+
+                                    {/* Action Column for Completed Orders: Hub Handover & Delete */}
+                                    {order.status === 'completed' && (() => {
+                                        const isHandedOver = answers.hubStatus === 'handed_over';
+                                        return (
+                                            <div className="bg-muted/40 p-4 rounded-xl border border-border/50 space-y-3">
+                                                <div className="flex items-center justify-between gap-2">
+                                                    <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Hub Handover</span>
+                                                    {isHandedOver ? (
+                                                        <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 flex items-center gap-1">
+                                                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Handed Over to Hub
+                                                        </span>
+                                                    ) : (
+                                                        <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 flex items-center gap-1">
+                                                            <Clock className="w-3.5 h-3.5 text-amber-600" /> Handover Pending
+                                                        </span>
+                                                    )}
+                                                </div>
+
+                                                {isHandedOver ? (
+                                                    <div className="space-y-2">
+                                                        <p className="text-xs text-muted-foreground">
+                                                            Device safely received at hub
+                                                            {answers.hubHandoverAt ? ` on ${new Date(answers.hubHandoverAt).toLocaleDateString()} at ${new Date(answers.hubHandoverAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : ''}
+                                                            {answers.hubReceivedBy ? ` (${answers.hubReceivedBy})` : ''}.
+                                                        </p>
+                                                        <button
+                                                            onClick={() => handleUpdateHubStatus(order.id, 'pending')}
+                                                            className="w-full py-1.5 px-3 border border-border text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg text-xs font-medium transition-colors"
+                                                        >
+                                                            Revert to Handover Pending
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <div className="space-y-2">
+                                                        <p className="text-xs text-amber-900/80 dark:text-amber-300/80 font-medium">
+                                                            Device is with {assignedRider ? assignedRider.name : 'delivery executive'}. Pending handover to the central hub.
+                                                        </p>
+                                                        <button
+                                                            onClick={() => handleUpdateHubStatus(order.id, 'handed_over')}
+                                                            className="w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-2"
+                                                        >
+                                                            <Building2 className="w-4 h-4" /> Mark Handed Over to Hub
+                                                        </button>
+                                                    </div>
+                                                )}
+
+                                                <button
+                                                    onClick={() => handleDeleteOrder(order.id)}
+                                                    className="w-full mt-2 py-2 border border-red-200 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
+                                                >
+                                                    <Trash2 className="w-3.5 h-3.5" /> Delete Order
+                                                </button>
+                                            </div>
+                                        );
+                                    })()}
+
+                                    {/* Action Column for Failed Orders: Restore & Delete */}
+                                    {order.status === 'failed' && (
+                                        <div className="bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/30 p-4 rounded-xl space-y-3">
+                                            <div>
+                                                <span className="text-[10px] font-bold uppercase tracking-wider text-red-600 block mb-1">Failure Reason</span>
+                                                <p className="text-xs text-red-900 dark:text-red-300 font-medium">
+                                                    {answers.failLog && answers.failLog.length > 0
+                                                        ? answers.failLog[answers.failLog.length - 1].reason
+                                                        : "Marked as failed"}
+                                                </p>
+                                            </div>
+
+                                            <button
+                                                onClick={() => handleRestoreOrder(order.id)}
+                                                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-2 shadow-sm"
+                                            >
+                                                <RotateCcw className="w-4 h-4" /> Restore Order
+                                            </button>
+
+                                            <button
+                                                onClick={() => handleDeleteOrder(order.id)}
+                                                className="w-full py-2 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
+                                            >
+                                                <Trash2 className="w-3.5 h-3.5" /> Delete Permanently
                                             </button>
                                         </div>
                                     )}
@@ -540,23 +799,7 @@ export default function OrderManager({
                                         </div>
                                     )}
 
-                                    {activeTab === 'failed' && (
-                                        <button
-                                            onClick={async () => {
-                                                if (confirm("Permanently delete this failed order?")) {
-                                                    await fetch('/api/admin/orders/bulk', {
-                                                        method: 'POST',
-                                                        headers: { 'Content-Type': 'application/json' },
-                                                        body: JSON.stringify({ action: 'bulk_delete', ids: [order.id] })
-                                                    });
-                                                    window.location.reload();
-                                                }
-                                            }}
-                                            className="w-full mt-2 py-2 border border-zinc-200 text-zinc-600 hover:bg-zinc-50 rounded-lg text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
-                                        >
-                                            <Trash2 className="w-3.5 h-3.5" /> Delete Permanently
-                                        </button>
-                                    )}
+
 
                                 </div>
                             </div>
