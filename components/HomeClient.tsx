@@ -20,6 +20,18 @@ export function HomeClient({ initialBrands, activeCities = [], displayPrices = [
     const router = useRouter();
 
     const handleCategorySelect = (category: string) => {
+        if (category === 'bulk-orders') {
+            router.push('/contact?topic=bulk');
+            return;
+        }
+        if (category === 'repair') {
+            router.push('/repair');
+            return;
+        }
+        if (category === 'unbreakable-screenguard') {
+            router.push('/screen-guard');
+            return;
+        }
         router.push(`/sell?category=${category}`);
     };
 

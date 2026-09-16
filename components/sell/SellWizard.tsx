@@ -125,6 +125,10 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
     }, [step, selectedBrand, selectedModel, selectedVariant, category]);
 
     const handleCategorySelect = async (cat: string) => {
+        if (cat === 'bulk-orders') {
+            router.push('/contact?topic=bulk');
+            return;
+        }
         let targetCategory = cat;
         if (cat === 'repair') {
             setIsRepair(true);

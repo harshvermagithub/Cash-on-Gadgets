@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 interface CategorySelectorProps {
     onSelect: (category: string) => void;
@@ -18,6 +19,73 @@ const CartLogoBadge = ({ width = 20 }: { width?: number }) => {
 
 const SmartphoneGraphic = () => (
     <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            {/* Center Phone Wallpaper Gradients */}
+            <linearGradient id="sp-hero-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#030712" />
+                <stop offset="40%" stopColor="#082f49" />
+                <stop offset="75%" stopColor="#064e3b" />
+                <stop offset="100%" stopColor="#022c22" />
+            </linearGradient>
+
+            <linearGradient id="sp-hero-wave1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.85" />
+                <stop offset="45%" stopColor="#3b82f6" stopOpacity="0.75" />
+                <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.35" />
+            </linearGradient>
+
+            <linearGradient id="sp-hero-wave2" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#10b981" stopOpacity="0.95" />
+                <stop offset="50%" stopColor="#059669" stopOpacity="0.7" />
+                <stop offset="100%" stopColor="#047857" stopOpacity="0.2" />
+            </linearGradient>
+
+            <radialGradient id="sp-hero-glow" cx="50%" cy="50%" r="55%">
+                <stop offset="0%" stopColor="#10b981" stopOpacity="0.3" />
+                <stop offset="60%" stopColor="#0ea5e9" stopOpacity="0.12" />
+                <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+            </radialGradient>
+
+            <linearGradient id="sp-glass-sheen" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="0.18" />
+                <stop offset="35%" stopColor="#ffffff" stopOpacity="0.04" />
+                <stop offset="60%" stopColor="#ffffff" stopOpacity="0" />
+            </linearGradient>
+
+            {/* Left Phone Wallpaper Gradients */}
+            <linearGradient id="sp-left-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#090514" />
+                <stop offset="60%" stopColor="#1e1b4b" />
+                <stop offset="100%" stopColor="#312e81" />
+            </linearGradient>
+            <linearGradient id="sp-left-ribbon" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#a855f7" stopOpacity="0.75" />
+                <stop offset="100%" stopColor="#6366f1" stopOpacity="0.25" />
+            </linearGradient>
+
+            {/* Right Phone Wallpaper Gradients */}
+            <linearGradient id="sp-right-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#021a13" />
+                <stop offset="60%" stopColor="#064e3b" />
+                <stop offset="100%" stopColor="#065f46" />
+            </linearGradient>
+            <linearGradient id="sp-right-ribbon" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#34d399" stopOpacity="0.75" />
+                <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0.25" />
+            </linearGradient>
+
+            {/* Screen Clip Paths */}
+            <clipPath id="sp-hero-screen-clip">
+                <rect x="3.5" y="3.5" width="57" height="115" rx="11" />
+            </clipPath>
+            <clipPath id="sp-left-screen-clip">
+                <rect x="2.5" y="2.5" width="41" height="91" rx="8" />
+            </clipPath>
+            <clipPath id="sp-right-screen-clip">
+                <rect x="2.5" y="2.5" width="43" height="93" rx="8" />
+            </clipPath>
+        </defs>
+
         {/* Left Tilted Phone */}
         <motion.g
             animate={{ y: [0, -3, 0], rotate: [-16, -18, -16] }}
@@ -25,13 +93,26 @@ const SmartphoneGraphic = () => (
             style={{ transformOrigin: '40px 90px' }}
         >
             <g transform="translate(25, 26)">
-                <rect x="0" y="0" width="46" height="96" rx="11" className="fill-slate-800/90 stroke-slate-700" strokeWidth="1.5" />
-                <rect x="3" y="3" width="40" height="90" rx="8" className="fill-[#020617]" />
-                <circle cx="23" cy="48" r="16" className="fill-blue-600/30" />
-                <rect x="8" y="14" width="9" height="9" rx="2.5" className="fill-blue-400/80" />
-                <rect x="21" y="14" width="9" height="9" rx="2.5" className="fill-purple-400/80" />
-                <rect x="8" y="68" width="28" height="12" rx="3" className="fill-slate-800/80 stroke-slate-700/60" strokeWidth="0.8" />
-                <line x1="12" y1="74" x2="30" y2="74" className="stroke-cyan-400" strokeWidth="1.2" strokeLinecap="round" />
+                {/* Phone Body */}
+                <rect x="0" y="0" width="46" height="96" rx="11" className="fill-slate-900 stroke-slate-700/80" strokeWidth="1.5" />
+                <g clipPath="url(#sp-left-screen-clip)">
+                    {/* Screen Base */}
+                    <rect x="2.5" y="2.5" width="41" height="91" rx="8" fill="url(#sp-left-bg)" />
+                    {/* Curved Wallpaper Ribbon */}
+                    <path d="M 0 35 Q 20 20 45 50 L 45 95 L 0 95 Z" fill="url(#sp-left-ribbon)" />
+                    <circle cx="20" cy="50" r="14" fill="#a855f7" fillOpacity="0.25" />
+                    {/* Camera Punchhole */}
+                    <circle cx="23" cy="7" r="1.5" fill="#000000" />
+                    {/* Glass Sheen */}
+                    <polygon points="3,3 25,3 0,45 0,15" fill="url(#sp-glass-sheen)" />
+                    {/* Mini Lockscreen Clock */}
+                    <text x="23" y="24" textAnchor="middle" fontFamily="system-ui, sans-serif" fontSize="5.5" fontWeight="700" fill="#ffffff" opacity="0.85">09:41</text>
+                    {/* Mini Bottom Dock */}
+                    <rect x="6" y="74" width="31" height="11" rx="3.5" fill="rgba(255, 255, 255, 0.12)" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="0.5" />
+                    <circle cx="12" cy="79.5" r="2.2" fill="#818cf8" />
+                    <circle cx="21.5" cy="79.5" r="2.2" fill="#c084fc" />
+                    <circle cx="31" cy="79.5" r="2.2" fill="#38bdf8" />
+                </g>
             </g>
         </motion.g>
 
@@ -42,14 +123,26 @@ const SmartphoneGraphic = () => (
             style={{ transformOrigin: '160px 90px' }}
         >
             <g transform="translate(130, 22)">
-                <rect x="0" y="0" width="48" height="98" rx="11" className="fill-slate-800/90 stroke-slate-700" strokeWidth="1.5" />
-                <rect x="3" y="3" width="42" height="92" rx="8" className="fill-[#020617]" />
-                <circle cx="24" cy="50" r="16" className="fill-emerald-600/30" />
-                <rect x="8" y="14" width="9" height="9" rx="2.5" className="fill-emerald-400/80" />
-                <rect x="21" y="14" width="9" height="9" rx="2.5" className="fill-amber-400/80" />
-                <rect x="8" y="70" width="28" height="12" rx="3" className="fill-slate-800/80 stroke-slate-700/60" strokeWidth="0.8" />
-                <circle cx="14" cy="76" r="2" className="fill-emerald-400" />
-                <line x1="19" y1="76" x2="31" y2="76" className="stroke-emerald-400" strokeWidth="1.2" strokeLinecap="round" />
+                {/* Phone Body */}
+                <rect x="0" y="0" width="48" height="98" rx="11" className="fill-slate-900 stroke-slate-700/80" strokeWidth="1.5" />
+                <g clipPath="url(#sp-right-screen-clip)">
+                    {/* Screen Base */}
+                    <rect x="2.5" y="2.5" width="43" height="93" rx="8" fill="url(#sp-right-bg)" />
+                    {/* Curved Wallpaper Ribbon */}
+                    <path d="M 0 45 Q 24 25 45 60 L 45 95 L 0 95 Z" fill="url(#sp-right-ribbon)" />
+                    <circle cx="22" cy="55" r="16" fill="#10b981" fillOpacity="0.25" />
+                    {/* Camera Punchhole */}
+                    <circle cx="24" cy="7" r="1.5" fill="#000000" />
+                    {/* Glass Sheen */}
+                    <polygon points="3,3 25,3 0,45 0,15" fill="url(#sp-glass-sheen)" />
+                    {/* Mini Lockscreen Clock */}
+                    <text x="24" y="24" textAnchor="middle" fontFamily="system-ui, sans-serif" fontSize="5.5" fontWeight="700" fill="#ffffff" opacity="0.85">09:41</text>
+                    {/* Mini Bottom Dock */}
+                    <rect x="7" y="76" width="33" height="11" rx="3.5" fill="rgba(255, 255, 255, 0.12)" stroke="rgba(255, 255, 255, 0.15)" strokeWidth="0.5" />
+                    <circle cx="13" cy="81.5" r="2.2" fill="#34d399" />
+                    <circle cx="23.5" cy="81.5" r="2.2" fill="#38bdf8" />
+                    <circle cx="34" cy="81.5" r="2.2" fill="#fbbf24" />
+                </g>
             </g>
         </motion.g>
 
@@ -59,41 +152,96 @@ const SmartphoneGraphic = () => (
             transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
         >
             <g transform="translate(68, 12)">
-                <rect x="0" y="0" width="64" height="122" rx="15" className="fill-slate-900 stroke-slate-700 shadow-xl" strokeWidth="2" />
-                <rect x="4" y="4" width="56" height="114" rx="11" className="fill-[#020617]" />
+                {/* Premium Outer Titanium Frame */}
+                <rect x="0" y="0" width="64" height="122" rx="15" className="fill-slate-950 stroke-slate-700/80 shadow-2xl" strokeWidth="1.8" />
+                <rect x="2" y="2" width="60" height="118" rx="13" className="stroke-white/10" strokeWidth="0.8" />
 
-                {/* Dynamic Island */}
-                <rect x="22" y="7" width="20" height="5" rx="2.5" className="fill-black" />
+                {/* OLED Screen with Silk Wave Wallpaper */}
+                <g clipPath="url(#sp-hero-screen-clip)">
+                    {/* Deep Midnight Blue/Green OLED Base */}
+                    <rect x="3.5" y="3.5" width="57" height="115" rx="11" fill="url(#sp-hero-bg)" />
 
-                {/* OLED Wallpaper Waves */}
-                <g clipPath="url(#phone-screen-clip)">
-                    <clipPath id="phone-screen-clip">
-                        <rect x="4" y="4" width="56" height="114" rx="11" />
-                    </clipPath>
-                    
-                    <motion.circle cx="28" cy="65" r="32" className="fill-blue-600/30" animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 4, repeat: Infinity }} />
-                    <motion.circle cx="38" cy="85" r="26" className="fill-emerald-500/25" animate={{ scale: [1.2, 1, 1.2] }} transition={{ duration: 4, repeat: Infinity }} />
+                    {/* Ambient Glow */}
+                    <rect x="3.5" y="3.5" width="57" height="115" fill="url(#sp-hero-glow)" />
 
-                    {/* App Grid */}
-                    <g transform="translate(10, 18)">
-                        <rect x="0" y="0" width="10" height="10" rx="3" className="fill-blue-500" />
-                        <rect x="14" y="0" width="10" height="10" rx="3" className="fill-emerald-500" />
-                        <rect x="28" y="0" width="10" height="10" rx="3" className="fill-amber-500" />
-                    </g>
-
-                    {/* Embedded Logo Badge */}
-                    <g transform="translate(32, 48)">
-                        <CartLogoBadge width={26} />
-                    </g>
-
-                    {/* Glowing Audio / Activity Wave Widget */}
-                    <rect x="8" y="72" width="48" height="26" rx="6" className="fill-slate-800/80 stroke-slate-700/60" strokeWidth="1" />
+                    {/* Swirling Fluid Waves (Silk Wallpaper Art) */}
                     <motion.path
-                        d="M 12 85 Q 20 77 30 85 T 46 85"
-                        className="stroke-emerald-400 fill-none" strokeWidth="2" strokeLinecap="round"
-                        animate={{ pathLength: [0.2, 1, 0.2] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                        d="M 3 42 C 22 25, 38 65, 61 38 L 61 120 L 3 120 Z"
+                        fill="url(#sp-hero-wave1)"
+                        animate={{ d: [
+                            "M 3 42 C 22 25, 38 65, 61 38 L 61 120 L 3 120 Z",
+                            "M 3 48 C 24 35, 36 58, 61 45 L 61 120 L 3 120 Z",
+                            "M 3 42 C 22 25, 38 65, 61 38 L 61 120 L 3 120 Z"
+                        ] }}
+                        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                     />
+                    <motion.path
+                        d="M 3 68 C 20 48, 42 82, 61 62 L 61 120 L 3 120 Z"
+                        fill="url(#sp-hero-wave2)"
+                        animate={{ d: [
+                            "M 3 68 C 20 48, 42 82, 61 62 L 61 120 L 3 120 Z",
+                            "M 3 62 C 22 55, 40 75, 61 58 L 61 120 L 3 120 Z",
+                            "M 3 68 C 20 48, 42 82, 61 62 L 61 120 L 3 120 Z"
+                        ] }}
+                        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                    />
+
+                    {/* Subtle Pulsing Center Energy Orb */}
+                    <motion.circle
+                        cx="32" cy="58" r="20"
+                        fill="#10b981" fillOpacity="0.2"
+                        animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.35, 0.2] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    />
+
+                    {/* Glass Sheen / Screen Reflection */}
+                    <polygon points="4,4 42,4 4,80" fill="url(#sp-glass-sheen)" />
+
+                    {/* Status Bar: Time + Icons */}
+                    <text x="8.5" y="10.8" fontFamily="system-ui, sans-serif" fontSize="4.5" fontWeight="700" fill="#ffffff" opacity="0.95">9:41</text>
+                    
+                    {/* Status Icons: 5G / Wifi / Battery */}
+                    <g transform="translate(43, 7.5)">
+                        {/* Wifi Waves */}
+                        <path d="M 0 3.5 Q 2.5 1.2 5 3.5" stroke="#ffffff" strokeWidth="0.6" strokeLinecap="round" fill="none" opacity="0.85" />
+                        <path d="M 1 4.5 Q 2.5 3 4 4.5" stroke="#ffffff" strokeWidth="0.6" strokeLinecap="round" fill="none" opacity="0.85" />
+                        {/* Battery Pill */}
+                        <rect x="7" y="0.8" width="6" height="3.2" rx="1" stroke="#ffffff" strokeWidth="0.5" fill="none" opacity="0.85" />
+                        <rect x="7.8" y="1.5" width="3.5" height="1.8" rx="0.5" fill="#10b981" />
+                    </g>
+
+                    {/* Dynamic Island */}
+                    <rect x="22" y="6.5" width="20" height="5" rx="2.5" fill="#000000" />
+                    <circle cx="37" cy="9" r="1" fill="#0284c7" opacity="0.8" />
+
+                    {/* Centered Frosted Glass Cash Widget with Cart Badge */}
+                    <g transform="translate(8, 20)">
+                        <rect x="0" y="0" width="48" height="42" rx="8" fill="rgba(255, 255, 255, 0.09)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="0.8" />
+                        
+                        {/* Logo in Center */}
+                        <g transform="translate(24, 18)">
+                            <CartLogoBadge width={26} />
+                        </g>
+
+                        {/* Instant Cash Pill */}
+                        <rect x="6" y="31.5" width="36" height="7.5" rx="3.75" fill="rgba(16, 185, 129, 0.25)" stroke="rgba(52, 211, 153, 0.5)" strokeWidth="0.6" />
+                        <text x="24" y="36.8" textAnchor="middle" fontFamily="system-ui, sans-serif" fontSize="3.6" fontWeight="800" fill="#34d399" letterSpacing="0.4">
+                            INSTANT CASH
+                        </text>
+                    </g>
+
+                    {/* Quick App Grid / Widgets (Frosted Glass Dock) */}
+                    <g transform="translate(8, 86)">
+                        <rect x="0" y="0" width="48" height="19" rx="6" fill="rgba(255, 255, 255, 0.12)" stroke="rgba(255, 255, 255, 0.18)" strokeWidth="0.8" />
+                        {/* 4 App Squircles */}
+                        <rect x="4" y="4" width="8" height="8" rx="2.5" fill="#10b981" />
+                        <rect x="15" y="4" width="8" height="8" rx="2.5" fill="#3b82f6" />
+                        <rect x="26" y="4" width="8" height="8" rx="2.5" fill="#06b6d4" />
+                        <rect x="37" y="4" width="8" height="8" rx="2.5" fill="#f59e0b" />
+                    </g>
+
+                    {/* iOS Home Indicator Bar */}
+                    <rect x="22" y="112" width="20" height="1.8" rx="0.9" fill="#ffffff" opacity="0.85" />
                 </g>
             </g>
         </motion.g>
@@ -645,6 +793,90 @@ const ScreenGuardGraphic = () => (
     </svg>
 );
 
+const BulkOrdersGraphic = () => (
+    <svg viewBox="0 0 200 150" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="bulk-laptop-screen" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#022c22" />
+                <stop offset="50%" stopColor="#064e3b" />
+                <stop offset="100%" stopColor="#020617" />
+            </linearGradient>
+            <linearGradient id="bulk-badge-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#10b981" />
+                <stop offset="100%" stopColor="#059669" />
+            </linearGradient>
+        </defs>
+
+        <motion.g animate={{ y: [0, -4, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
+            {/* Background Corporate Laptop */}
+            <g transform="translate(32, 18)">
+                {/* Laptop Display Lid */}
+                <rect x="0" y="0" width="104" height="68" rx="6" className="fill-slate-900 stroke-slate-700" strokeWidth="1.5" />
+                <rect x="4" y="4" width="96" height="60" rx="4" fill="url(#bulk-laptop-screen)" />
+                {/* Screen Graph / Stats */}
+                <g transform="translate(10, 12)">
+                    {/* Mini Bar Chart */}
+                    <rect x="0" y="24" width="7" height="20" rx="2" fill="#10b981" opacity="0.6" />
+                    <rect x="10" y="16" width="7" height="28" rx="2" fill="#10b981" opacity="0.8" />
+                    <rect x="20" y="6" width="7" height="38" rx="2" fill="#34d399" />
+                    <rect x="30" y="18" width="7" height="26" rx="2" fill="#059669" opacity="0.7" />
+                    {/* Analytics UI Lines */}
+                    <rect x="45" y="10" width="36" height="5" rx="2" fill="#ffffff" opacity="0.3" />
+                    <rect x="45" y="20" width="26" height="4" rx="2" fill="#34d399" opacity="0.7" />
+                    <rect x="45" y="28" width="30" height="4" rx="2" fill="#ffffff" opacity="0.2" />
+                    <rect x="45" y="36" width="20" height="4" rx="2" fill="#10b981" opacity="0.5" />
+                </g>
+                {/* Laptop Base */}
+                <path d="M -12 68 L 116 68 L 106 76 L -2 76 Z" className="fill-slate-800 stroke-slate-700" strokeWidth="1.2" />
+                <rect x="42" y="68" width="22" height="2.5" rx="1" fill="#475569" />
+            </g>
+
+            {/* Stacked Devices in Foreground: Tablet & Phone */}
+            {/* Tablet */}
+            <g transform="translate(98, 42) rotate(8)">
+                <rect x="0" y="0" width="46" height="64" rx="6" className="fill-slate-900 stroke-emerald-600/70" strokeWidth="1.5" />
+                <rect x="2.5" y="2.5" width="41" height="59" rx="4" className="fill-[#020617]" />
+                <rect x="6" y="8" width="34" height="20" rx="3" fill="#10b981" fillOpacity="0.15" />
+                <circle cx="23" cy="18" r="6" fill="#10b981" fillOpacity="0.3" />
+            </g>
+
+            {/* Front Smartphone */}
+            <g transform="translate(72, 50) rotate(-6)">
+                <rect x="0" y="0" width="36" height="68" rx="8" className="fill-slate-950 stroke-emerald-500" strokeWidth="1.8" />
+                <rect x="2" y="2" width="32" height="64" rx="6" className="fill-[#020617]" />
+                <rect x="12" y="4.5" width="12" height="3" rx="1.5" fill="#000000" />
+                <circle cx="18" cy="34" r="12" fill="#10b981" fillOpacity="0.2" />
+                {/* Cart Logo on Front Phone */}
+                <g transform="translate(18, 32)">
+                    <CartLogoBadge width={18} />
+                </g>
+            </g>
+
+            {/* Floating Certified Recycling Badge */}
+            <motion.g
+                transform="translate(144, 88)"
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+            >
+                <circle cx="0" cy="0" r="18" fill="#064e3b" stroke="#10b981" strokeWidth="2" />
+                {/* 3 Recycling Arrows */}
+                <path d="M 0 -11 L 3 -6 L -3 -6 Z" fill="#34d399" />
+                <path d="M 0 -10 A 10 10 0 0 1 9 4" fill="none" stroke="#34d399" strokeWidth="1.8" strokeLinecap="round" />
+                <path d="M 9 4 L 11 -1 L 6 1 Z" fill="#34d399" />
+                <path d="M 9 4 A 10 10 0 0 1 -9 4" fill="none" stroke="#34d399" strokeWidth="1.8" strokeLinecap="round" />
+                <path d="M -9 4 L -6 9 L -4 4 Z" fill="#34d399" />
+                <path d="M -9 4 A 10 10 0 0 1 0 -10" fill="none" stroke="#34d399" strokeWidth="1.8" strokeLinecap="round" />
+            </motion.g>
+
+            {/* Badge Center Recycle / Leaf */}
+            <g transform="translate(144, 88)">
+                <circle cx="0" cy="0" r="7" fill="#10b981" />
+                <text x="0" y="2.5" textAnchor="middle" fontFamily="system-ui, sans-serif" fontSize="6.5" fontWeight="900" fill="#022c22">♻</text>
+            </g>
+        </motion.g>
+    </svg>
+);
+
 // --- Data ---
 const categories = [
     {
@@ -735,10 +967,28 @@ const categories = [
         bgColors: 'bg-[#f0fdfa] dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(19,226,91,0.2)]',
         textColor: 'text-[#083344] dark:text-cyan-300'
     },
+    {
+        id: 'bulk-orders',
+        name: 'Bulk Orders',
+        subtext: 'CORPORATE & RECYCLING',
+        component: <BulkOrdersGraphic />,
+        bgColors: 'bg-[#ecfdf5] dark:bg-white/[0.03] dark:backdrop-blur-xl dark:border-white/10 dark:border dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_30px_rgba(16,185,129,0.2)]',
+        textColor: 'text-[#064e3b] dark:text-emerald-300'
+    },
 ];
 
 
 export default function CategorySelector({ onSelect }: CategorySelectorProps) {
+    const router = useRouter();
+
+    const handleClick = (id: string) => {
+        if (id === 'bulk-orders') {
+            router.push('/contact?topic=bulk');
+            return;
+        }
+        onSelect(id);
+    };
+
     return (
         <div className="space-y-8">
             <div className="text-center space-y-2 mb-12">
@@ -754,7 +1004,7 @@ export default function CategorySelector({ onSelect }: CategorySelectorProps) {
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ delay: index * 0.1, duration: 0.4 }}
                         viewport={{ once: true }}
-                        onClick={() => onSelect(cat.id)}
+                        onClick={() => handleClick(cat.id)}
                         className={`
                             relative h-60 md:h-72 w-full rounded-[2rem] overflow-hidden text-left
                             border transition-all duration-300 group
