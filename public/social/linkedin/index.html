@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fonzkart - Official LinkedIn Company Page Kit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --linkedin-blue: #0a66c2;
+            --linkedin-dark: #004182;
+            --bg-dark: #0b0f19;
+            --card-bg: #111827;
+            --border: rgba(255, 255, 255, 0.1);
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #f8fafc;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #10b981, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        /* Mockup Card */
+        .mockup-card {
+            background: #ffffff;
+            color: #000000;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            margin-bottom: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .banner-container {
+            width: 100%;
+            height: 191px;
+            background: #020617;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-bar {
+            padding: 0 32px 28px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .avatar-wrap {
+            position: relative;
+            margin-top: -60px;
+            display: flex;
+            align-items: flex-end;
+            gap: 20px;
+        }
+
+        .avatar-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 16px;
+            border: 4px solid #ffffff;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+            background: #ffffff;
+            object-fit: contain;
+        }
+
+        .title-details h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .verified-badge {
+            background: #0a66c2;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+
+        .title-details p {
+            font-size: 14px;
+            color: #475569;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .subtext {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+
+        .btn-linkedin {
+            background: var(--linkedin-blue);
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 8px 24px;
+            border-radius: 24px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--linkedin-blue);
+            border: 1.5px solid var(--linkedin-blue);
+            font-weight: 700;
+            font-size: 14px;
+            padding: 8px 20px;
+            border-radius: 24px;
+            text-decoration: none;
+        }
+
+        /* Asset Download Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+        }
+
+        .asset-preview {
+            background: #020617;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 16px 0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px;
+        }
+
+        .asset-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            background: #10b981;
+            color: #022c22;
+            font-weight: 800;
+            font-size: 14px;
+            padding: 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .download-btn:hover {
+            background: #34d399;
+            transform: translateY(-2px);
+        }
+
+        /* Copy fields */
+        .field-group {
+            margin-bottom: 18px;
+        }
+
+        .field-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .field-box {
+            background: #090d16;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #e2e8f0;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: inherit;
+        }
+
+        .field-box.multiline {
+            display: block;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-left: 10px;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary);
+            color: #022c22;
+        }
+
+        .step-list {
+            padding-left: 20px;
+            margin-top: 12px;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        .step-list li {
+            margin-bottom: 10px;
+        }
+
+        .step-list strong {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Fonzkart Official LinkedIn Page Kit</h1>
+            <p>Ready-to-upload branding assets, copy, and step-by-step instructions</p>
+        </header>
+
+        <!-- Live Mockup of LinkedIn Company Profile -->
+        <div class="mockup-card">
+            <div class="banner-container">
+                <img src="./fonzkart_linkedin_cover_banner_1128x191.png" alt="Fonzkart LinkedIn Cover Banner" />
+            </div>
+            <div class="profile-bar">
+                <div class="avatar-wrap">
+                    <img class="avatar-img" src="./fonzkart_linkedin_profile_logo_400x400.png" alt="Fonzkart Profile Logo" />
+                    <div class="title-details">
+                        <h2>Fonzkart <span class="verified-badge">✓</span></h2>
+                        <p>India's Most Trusted Re-Commerce Platform | Instant Cash for Old Gadgets with 3-Hr Doorstep Pickup</p>
+                        <div class="subtext">Retail • Bengaluru, Karnataka • 11-50 employees • NR Waste Management Pvt Ltd</div>
+                    </div>
+                </div>
+                <div class="action-btns">
+                    <a href="https://fonzkart.in" target="_blank" class="btn-linkedin">Visit website ↗</a>
+                    <a href="#" class="btn-outline">+ Follow</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Assets -->
+        <h2 style="font-size: 24px; margin-bottom: 20px; font-weight: 800;">1. Official Brand Assets for LinkedIn</h2>
+        <div class="grid-2">
+            <!-- Profile Logo -->
+            <div class="card">
+                <h3><span>🖼️</span> Profile Picture (Square Logo)</h3>
+                <p style="font-size: 13px; color: var(--text-muted);">Exact 400x400 px format recommended by LinkedIn for clear, crisp display on all mobile and desktop screens.</p>
+                <div class="asset-preview" style="height: 180px;">
+                    <img src="./fonzkart_linkedin_profile_logo_400x400.png" style="width: 140px; height: 140px;" alt="Logo Preview" />
+                </div>
+                <a href="./fonzkart_linkedin_profile_logo_400x400.png" download class="download-btn">⬇ Download Profile Logo (400x400 PNG)</a>
+            </div>
+
+            <!-- Cover Banner -->
+            <div class="card">
+                <h3><span>🏙️</span> Cover Banner (1128x191 & Retina)</h3>
+                <p style="font-size: 13px; color: var(--text-muted);">Crafted with safe left margins for the profile photo overlap, displaying instant cash, 3-hr pickup, and B2B recycling.</p>
+                <div class="asset-preview" style="height: 180px;">
+                    <img src="./fonzkart_linkedin_cover_banner_1128x191.png" style="width: 100%;" alt="Banner Preview" />
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <a href="./fonzkart_linkedin_cover_banner_1128x191.png" download class="download-btn">⬇ Standard (1128x191)</a>
+                    <a href="./fonzkart_linkedin_cover_banner_2256x382_retina.png" download class="download-btn" style="background:#38bdf8; color:#0c4a6e;">⬇ Retina (2x HD)</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copy-Paste Fields -->
+        <h2 style="font-size: 24px; margin-bottom: 20px; font-weight: 800;">2. Exact Copy & Details to Paste in LinkedIn</h2>
+        <div class="card" style="margin-bottom: 36px;">
+            <div class="field-group">
+                <div class="field-label">Page Name</div>
+                <div class="field-box">
+                    <span id="c_name">Fonzkart</span>
+                    <button class="copy-btn" onclick="copyText('c_name')">Copy</button>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <div class="field-label">LinkedIn Public URL</div>
+                <div class="field-box">
+                    <span id="c_url">linkedin.com/company/fonzkart</span>
+                    <button class="copy-btn" onclick="copyText('c_url')">Copy</button>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <div class="field-label">Website URL</div>
+                <div class="field-box">
+                    <span id="c_web">https://fonzkart.in</span>
+                    <button class="copy-btn" onclick="copyText('c_web')">Copy</button>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <div class="field-label">Tagline (under 120 chars)</div>
+                <div class="field-box">
+                    <span id="c_tagline">India's Most Trusted Re-Commerce Platform. Instant Cash for Old Gadgets with 3-Hour Doorstep Pickup.</span>
+                    <button class="copy-btn" onclick="copyText('c_tagline')">Copy</button>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <div class="field-label">Industry</div>
+                <div class="field-box">
+                    <span id="c_ind">Retail - Re-commerce / Environmental Services / Technology, Information and Internet</span>
+                    <button class="copy-btn" onclick="copyText('c_ind')">Copy</button>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <div class="field-label">Organization Size</div>
+                <div class="field-box">
+                    <span>11-50 employees</span>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <div class="field-label">Organization Type</div>
+                <div class="field-box">
+                    <span>Privately Held</span>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <div class="field-label">About Us / Overview (Paste in Page Description)</div>
+                <div class="field-box multiline" id="c_about">Fonzkart (a division of NR Waste Management Private Limited) is India's premier recommerce and electronics lifecycle platform. We provide consumers, businesses, and enterprises with the fastest, safest, and most rewarding way to monetize used consumer gadgets and responsibly dispose of end-of-life IT assets.
+
+Our consumer platform enables smartphone, tablet, laptop, and smartwatch owners to obtain guaranteed instant price quotes online, schedule complimentary 3-hour doorstep evaluation, and receive spot instant digital cash payment upon pickup.
+
+For enterprises and corporate organizations, Fonzkart offers comprehensive IT Asset Disposition (ITAD), bulk gadget buyback, and authorized e-waste recycling. Every acquired device undergoes a certified 100% data sanitization process, ensuring complete confidentiality and compliance with national electronic waste management standards.
+
+Core Capabilities:
+• B2C Doorstep Re-commerce (Smartphones, Laptops, Tablets, Watches, Consoles, TVs, Earbuds)
+• Instant On-the-Spot Cash / Bank Payout
+• B2B & Corporate IT Asset Liquidation
+• Certified 100% Data Wipe & Data Sanitization
+• Government-Compliant E-Waste Recycling & Responsible Green Disposal
+• Unbreakable Screen Protection & Quick Repairs
+
+Headquartered in Bengaluru, India, Fonzkart is on a mission to extend technology lifecycles, eliminate e-waste landfill contamination, and deliver unbeatable convenience to digital India.</div>
+                <div style="margin-top: 8px; text-align: right;">
+                    <button class="copy-btn" style="padding: 6px 16px;" onclick="copyText('c_about')">Copy Full About Us Text</button>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <div class="field-label">Specialties / Keywords (Up to 20)</div>
+                <div class="field-box">
+                    <span id="c_specialties">Re-Commerce, Smartphone Buyback, Laptop Liquidation, Reverse Logistics, E-Waste Recycling, IT Asset Disposition (ITAD), Certified Data Wipe, Doorstep Gadget Pickup, Electronics Refurbishment, Circular Economy</span>
+                    <button class="copy-btn" onclick="copyText('c_specialties')">Copy</button>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <div class="field-label">Headquarters Location</div>
+                <div class="field-box">
+                    <span id="c_address">#69 8th cross Hegde Nagar, SRK Nagar Post, Bangalore, Karnataka - 560077, India</span>
+                    <button class="copy-btn" onclick="copyText('c_address')">Copy</button>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <div class="field-label">Official Contact</div>
+                <div class="field-box">
+                    <span>Phone: +91 90603 36060 | Email: connect@fonzkart.in / ceo@fonzkart.in</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- How to Create Step-by-Step -->
+        <h2 style="font-size: 24px; margin-bottom: 20px; font-weight: 800;">3. Step-by-Step Creation Walkthrough on LinkedIn</h2>
+        <div class="card" style="margin-bottom: 36px;">
+            <ol class="step-list">
+                <li>Log in to your LinkedIn account on your computer at <strong>linkedin.com</strong>.</li>
+                <li>In the top right navigation bar, click the <strong>For Business</strong> grid icon (or <strong>Work</strong> icon).</li>
+                <li>Scroll to the bottom of the popup menu and click <strong>Create a Company Page +</strong>.</li>
+                <li>Select <strong>Company</strong> (Small, medium, and large businesses).</li>
+                <li>Fill in the Company Details using the copy buttons above (Name: <strong>Fonzkart</strong>, Website: <strong>https://fonzkart.in</strong>, Industry: <strong>Retail / Re-commerce</strong>, etc.).</li>
+                <li>Upload the <strong>Profile Logo</strong> (<code>fonzkart_linkedin_profile_logo_400x400.png</code>) downloaded above.</li>
+                <li>Check the verification box (<em>"I verify that I am an authorized representative of this organization..."</em>) and click <strong>Create Page</strong>.</li>
+                <li>Once the page opens, click the edit pen icon on the cover image and upload the <strong>Cover Banner</strong> (<code>fonzkart_linkedin_cover_banner_1128x191.png</code>).</li>
+                <li>Add the <strong>About Us</strong> description, <strong>Specialties</strong>, and <strong>Location</strong> from Section 2.</li>
+                <li>Click <strong>Publish</strong>! Your official Fonzkart LinkedIn Company Page is now live!</li>
+            </ol>
+        </div>
+
+        <!-- First Post Template -->
+        <h2 style="font-size: 24px; margin-bottom: 20px; font-weight: 800;">4. First Announcement Post Template</h2>
+        <div class="card">
+            <div class="field-group">
+                <div class="field-label">Ready-to-Publish Launch Post</div>
+                <div class="field-box multiline" id="c_post">🚀 Exciting News: Fonzkart is officially on LinkedIn!
+
+We are thrilled to launch the official LinkedIn page for Fonzkart (a division of NR Waste Management Private Limited). 
+
+At Fonzkart, our mission is to redefine how India sells, liquidates, and recycles consumer electronics. Whether you are an individual wanting instant cash for an old smartphone or an enterprise seeking certified, compliant IT asset liquidation with 100% data sanitization, we've got you covered:
+
+⚡ Guaranteed Instant Price Quotes
+🚚 Free 3-Hour Doorstep Evaluation & Pickup
+💵 Immediate Spot Cash & Bank Transfers
+🛡️ Certified 100% Data Wipe for Complete Privacy
+🏢 Corporate Bulk Buyback & Government-Compliant E-Waste Recycling
+
+Follow our page for the latest updates on circular economy, re-commerce insights, sustainability initiatives, and corporate partnerships.
+
+👉 Check your device value today: https://fonzkart.in
+📞 Partner with our corporate team: connect@fonzkart.in | +91 90603 36060
+
+#Fonzkart #ReCommerce #CircularEconomy #Sustainability #EWasteManagement #SmartphoneBuyback #ITAD #BangaloreStartups #GreenTech</div>
+                <div style="margin-top: 8px; text-align: right;">
+                    <button class="copy-btn" style="padding: 6px 16px;" onclick="copyText('c_post')">Copy Launch Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyText(id) {
+            const el = document.getElementById(id);
+            const text = el.innerText || el.textContent;
+            navigator.clipboard.writeText(text.trim()).then(() => {
+                alert('Copied to clipboard!');
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+            });
+        }
+    </script>
+</body>
+</html>

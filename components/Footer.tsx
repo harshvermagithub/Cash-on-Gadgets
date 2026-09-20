@@ -25,7 +25,7 @@ export default function Footer() {
                             <Link href="https://www.instagram.com/fonzkart?igsh=ZWJuZnJlbHkwMnVi" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                                 <Instagram className="h-5 w-5" />
                             </Link>
-                            <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                            <Link href="https://www.linkedin.com/company/fonzkart" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                                 <Linkedin className="h-5 w-5" />
                             </Link>
                         </div>
