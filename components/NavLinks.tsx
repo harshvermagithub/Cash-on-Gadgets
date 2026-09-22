@@ -42,7 +42,7 @@ export function NavLinks({ session, isAdminUser }: { session: { user?: NavLinksS
     ];
 
     if (session && isAdminUser) {
-        primaryLinks.push({ href: '/admin', label: 'Admin Panel', badge: undefined, badgePulse: false });
+        primaryLinks.push({ href: '/admin', label: 'Admin Panel' });
     }
 
     // Reset dropdown on route change during render (React recommended pattern)

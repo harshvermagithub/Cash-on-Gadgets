@@ -18,7 +18,8 @@ import {
     Radio,
     Crown,
     Sparkles,
-    CheckCircle2
+    CheckCircle2,
+    LayoutDashboard
 } from 'lucide-react';
 import { useNotifications } from '../NotificationProvider';
 import { logout } from '@/lib/session';
@@ -267,12 +268,12 @@ export function AdminHeader({ user }: { user?: { name: string; email: string; ro
                                     </Link>
 
                                     <Link 
-                                        href="/admin/settings" 
+                                        href="/admin/admins" 
                                         onClick={() => setIsMenuOpen(false)}
                                         className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-foreground hover:bg-accent transition-colors"
                                     >
                                         <Settings className="w-4 h-4 text-primary shrink-0" />
-                                        <span className="font-semibold">System Settings</span>
+                                        <span className="font-semibold">Manage Admins & Roles</span>
                                     </Link>
                                 </div>
 
