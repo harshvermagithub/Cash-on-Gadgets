@@ -167,11 +167,7 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
         setSkippedVariant(false);
 
         if (category === 'unbreakable-screenguard') {
-            if (user) {
-                window.location.hash = 'final_quote';
-            } else {
-                window.location.hash = 'login_check';
-            }
+            window.location.hash = 'final_quote';
             return;
         }
 
@@ -282,11 +278,7 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
                             category={category}
                             onComplete={(collectedAnswers) => {
                                 setAnswers(collectedAnswers);
-                                if (user) {
-                                    window.location.hash = 'final_quote';
-                                } else {
-                                    window.location.hash = 'login_check';
-                                }
+                                window.location.hash = 'final_quote';
                             }}
                             onBack={() => window.history.back()}
                         />
@@ -312,6 +304,7 @@ export default function SellWizard({ initialBrands, initialCategory, initialBran
                             category={category}
                             isRepair={isRepair}
                             user={user}
+                            onUserLogin={(loggedInUser) => setUser(loggedInUser)}
                             onRecalculate={() => {
                                 if (category === 'unbreakable-screenguard') window.location.hash = 'model';
                                 else window.location.hash = 'checklist';

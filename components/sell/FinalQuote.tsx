@@ -2,6 +2,7 @@
 import { CheckCircle, Truck, Wallet, Loader2, MapPin, Calendar, Clock, Zap, ArrowRight, ArrowLeft, X } from "lucide-react";
 import { useState, useEffect } from 'react';
 import { placeOrder, checkPincodeAvailability, requestServiceArea } from '@/actions/orders';
+import { quickRegister, quickLogin } from '@/actions/inlineAuth';
 import { calculatePrice } from '@/actions/priceCalculation';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -19,19 +20,26 @@ interface FinalQuoteProps {
     category?: string;
     onRecalculate?: () => void;
     initialPincode?: string;
+    onUserLogin?: (user: any) => void;
 }
 
 type BookingStep = 'contact' | 'quote' | 'address' | 'schedule' | 'payment';
 
-export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, user, category, onRecalculate, initialPincode }: FinalQuoteProps) {
-    // If repair, start at address. Else if user logged in, skip contact and go to quote. Else contact.
+export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, user, category, onRecalculate, initialPincode, onUserLogin }: FinalQuoteProps) {
+    // If repair, start at address. Else start directly at quote (Final Offer) for all users.
     const [bookingStep, setBookingStep] = useState<BookingStep>(
-        isRepair ? 'address' : (user ? 'quote' : 'contact')
+        isRepair ? 'address' : 'quote'
     );
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // User session tracking
+    const [currentUser, setCurrentUser] = useState<any>(user);
+    useEffect(() => {
+        if (user) setCurrentUser(user);
+    }, [user]);
+
     // Form Data
-    const [phone, setPhone] = useState('');
+    const [phone, setPhone] = useState(user?.phone || '');
     const [address, setAddress] = useState('');
     const [pincode, setPincode] = useState(initialPincode || '');
     const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
@@ -53,6 +61,17 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
     const [showPincodePopup, setShowPincodePopup] = useState(false);
     const [isSendingRequest, setIsSendingRequest] = useState(false);
     const [requestSent, setRequestSent] = useState(false);
+    const [requestPhone, setRequestPhone] = useState(user?.phone || '');
+
+    // Quick Auth Modal States for Guest Checkout
+    const [showAuthModal, setShowAuthModal] = useState(false);
+    const [authMode, setAuthMode] = useState<'register' | 'login'>('register');
+    const [authName, setAuthName] = useState('');
+    const [authPhone, setAuthPhone] = useState('');
+    const [authEmail, setAuthEmail] = useState('');
+    const [authPassword, setAuthPassword] = useState('');
+    const [authError, setAuthError] = useState('');
+    const [isAuthLoading, setIsAuthLoading] = useState(false);
 
     const router = useRouter();
 
@@ -204,9 +223,11 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
     };
 
     const handleSendRequest = async () => {
+        const phoneToSend = requestPhone.trim() || phone.trim() || currentUser?.phone || '';
+        if (phoneToSend.length !== 10) return;
         setIsSendingRequest(true);
         try {
-            await requestServiceArea(pincode, phone, address || detectedAddress);
+            await requestServiceArea(pincode, phoneToSend, address || detectedAddress);
             setRequestSent(true);
         } catch (error) {
             console.error(error);
@@ -215,12 +236,12 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
         }
     };
 
-    const handleConfirmOrder = async () => {
+    const executeOrderPlacement = async (activeUser: any) => {
         setIsSubmitting(true);
         try {
             const finalAnswers = {
                 ...answers,
-                phone,
+                phone: phone || authPhone || activeUser?.phone || '',
                 scheduledDate: dates[selectedDate].fullDate,
                 scheduledSlot: selectedSlot,
                 isExpress,
@@ -234,18 +255,71 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
 
             await placeOrder(deviceInfo.name, deviceInfo.variant, finalPrice, address, pincode, location, finalAnswers);
             router.push('/orders');
-        } catch {
-            // Backup redirect flow if placeOrder fails (e.g. auth)
+        } catch (error) {
+            console.error('Order placement failed:', error);
             router.push('/login');
         } finally {
             setIsSubmitting(false);
         }
     };
 
+    const handleConfirmOrder = async () => {
+        if (!currentUser) {
+            if (phone) setAuthPhone(phone);
+            setShowAuthModal(true);
+            return;
+        }
+        await executeOrderPlacement(currentUser);
+    };
+
+    const handleAuthSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsAuthLoading(true);
+        setAuthError('');
+        try {
+            const formData = new FormData();
+            formData.append('email', authEmail);
+            formData.append('password', authPassword);
+            if (authMode === 'register') {
+                formData.append('name', authName);
+                formData.append('phone', authPhone);
+                const res = await quickRegister(formData);
+                if (res.error) {
+                    setAuthError(res.error);
+                    setIsAuthLoading(false);
+                    return;
+                }
+                if (res.success && res.user) {
+                    setCurrentUser(res.user);
+                    if (onUserLogin) onUserLogin(res.user);
+                    setShowAuthModal(false);
+                    await executeOrderPlacement(res.user);
+                }
+            } else {
+                const res = await quickLogin(formData);
+                if (res.error) {
+                    setAuthError(res.error);
+                    setIsAuthLoading(false);
+                    return;
+                }
+                if (res.success && res.user) {
+                    setCurrentUser(res.user);
+                    if (onUserLogin) onUserLogin(res.user);
+                    setShowAuthModal(false);
+                    await executeOrderPlacement(res.user);
+                }
+            }
+        } catch {
+            setAuthError('Authentication failed. Please try again.');
+        } finally {
+            setIsAuthLoading(false);
+        }
+    };
+
     // -------------------------------------------------------------------------
     // RENDER: STEP 0 - PINCODE POPUP (Only for Screen Guard if missing)
     // -------------------------------------------------------------------------
-    if (bookingStep === 'address' && !pincode && !isSubmitting) {
+    if (category === 'unbreakable-screenguard' && bookingStep === 'address' && !pincode && !isSubmitting) {
         return (
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
@@ -523,45 +597,90 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                             initial={{ scale: 0.95, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                            className="bg-card w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
+                            className="bg-card w-full max-w-md rounded-3xl shadow-2xl border border-border/80 p-6 sm:p-7 relative overflow-hidden"
                         >
-                            <div className="p-6 text-center space-y-4">
-                                <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-2">
-                                    <MapPin className="w-8 h-8 text-orange-500" />
+                            <button
+                                onClick={() => setShowPincodePopup(false)}
+                                className="absolute top-4 right-4 p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted/80 transition-colors"
+                                title="Close"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+
+                            <div className="text-center space-y-4">
+                                <div className="w-16 h-16 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-center mx-auto text-amber-500 shadow-sm">
+                                    <MapPin className="w-8 h-8" />
                                 </div>
-                                <h3 className="text-2xl font-bold">Area Not Serviceable</h3>
-                                <p className="text-muted-foreground">
-                                    We are currently not available in your area (Pincode: <b>{pincode}</b>), but we are expanding fast!
-                                </p>
-                                
+                                <div className="space-y-1">
+                                    <h3 className="text-2xl font-bold text-foreground">Area Not Serviceable</h3>
+                                    <p className="text-sm text-muted-foreground leading-relaxed">
+                                        We currently do not offer pickup in pincode <span className="font-bold text-foreground font-mono bg-muted px-2 py-0.5 rounded">{pincode}</span>, but we are expanding fast!
+                                    </p>
+                                </div>
+
                                 {requestSent ? (
-                                    <div className="bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 p-4 rounded-xl border border-green-200 dark:border-green-800/30 flex flex-col items-center gap-2">
-                                        <CheckCircle className="w-6 h-6" />
-                                        <p className="font-semibold text-sm">Request received! We'll notify you when we arrive.</p>
+                                    <div className="bg-emerald-500/10 border border-emerald-500/25 text-emerald-600 dark:text-emerald-400 p-5 rounded-2xl flex flex-col items-center gap-2 text-center my-2">
+                                        <CheckCircle className="w-8 h-8 text-emerald-500" />
+                                        <p className="font-bold text-base">Request Received!</p>
+                                        <p className="text-xs opacity-90 leading-relaxed">
+                                            We've recorded your location and will notify you as soon as Fonzkart starts operating in {pincode}.
+                                        </p>
                                     </div>
                                 ) : (
-                                    <p className="text-sm font-medium text-foreground bg-muted p-3 rounded-lg">
-                                        Would you like us to notify you when we start operating in your area?
-                                    </p>
+                                    <div className="space-y-4 text-left pt-2">
+                                        <div className="space-y-1.5">
+                                            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+                                                Mobile Number to Notify
+                                            </label>
+                                            <div className="flex items-center w-full border rounded-xl bg-background overflow-hidden focus-within:ring-2 focus-within:ring-primary/50">
+                                                <span className="px-3.5 py-3 bg-muted/40 text-muted-foreground text-sm font-semibold border-r border-border">+91</span>
+                                                <input
+                                                    type="tel"
+                                                    maxLength={10}
+                                                    value={requestPhone}
+                                                    onChange={(e) => setRequestPhone(e.target.value.replace(/\D/g, ''))}
+                                                    placeholder="9876543210"
+                                                    className="w-full px-3 py-3 text-sm bg-transparent outline-none font-medium"
+                                                />
+                                            </div>
+                                            <p className="text-[11px] text-muted-foreground">
+                                                We'll send you an alert as soon as our pickup executives reach your pincode.
+                                            </p>
+                                        </div>
+                                    </div>
                                 )}
-                            </div>
-                            
-                            <div className="flex border-t border-border/50 divide-x divide-border/50 bg-muted/20">
-                                <button
-                                    onClick={() => setShowPincodePopup(false)}
-                                    className="flex-1 py-4 text-sm font-bold text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-colors"
-                                >
-                                    Close
-                                </button>
-                                {!requestSent && (
-                                    <button
-                                        onClick={handleSendRequest}
-                                        disabled={isSendingRequest}
-                                        className="flex-1 py-4 text-sm font-bold text-primary hover:bg-primary/5 transition-colors flex items-center justify-center gap-2"
-                                    >
-                                        {isSendingRequest ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Send Request'}
-                                    </button>
-                                )}
+
+                                <div className="flex flex-col gap-2.5 pt-2">
+                                    {requestSent ? (
+                                        <button
+                                            onClick={() => setShowPincodePopup(false)}
+                                            className="w-full py-3.5 bg-primary text-primary-foreground font-bold rounded-xl shadow-lg hover:opacity-90 active:scale-[0.98] transition-all"
+                                        >
+                                            Done
+                                        </button>
+                                    ) : (
+                                        <>
+                                            <button
+                                                onClick={handleSendRequest}
+                                                disabled={isSendingRequest || requestPhone.length !== 10}
+                                                className="w-full py-4 bg-primary text-primary-foreground font-bold rounded-xl shadow-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                            >
+                                                {isSendingRequest ? (
+                                                    <><Loader2 className="w-5 h-5 animate-spin" /> Submitting Request...</>
+                                                ) : (
+                                                    <>Send Request <ArrowRight className="w-5 h-5" /></>
+                                                )}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowPincodePopup(false)}
+                                                className="w-full py-2.5 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                                            >
+                                                Change Pincode
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
                             </div>
                         </motion.div>
                     </motion.div>
@@ -713,6 +832,7 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
     // RENDER: STEP 5 - PAYMENT METHOD
     // -------------------------------------------------------------------------
     return (
+        <>
         <motion.div
             initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
             className="max-w-xl mx-auto py-8 space-y-6"
@@ -884,5 +1004,148 @@ export default function FinalQuote({ basePrice, answers, deviceInfo, isRepair, u
                 By confirming, you agree to our Terms of Service
             </p>
         </motion.div>
+
+        {/* INLINE AUTH MODAL FOR GUEST USERS */}
+        <AnimatePresence>
+            {showAuthModal && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                >
+                    <motion.div
+                        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                        className="bg-card w-full max-w-md rounded-3xl shadow-2xl border border-border/80 p-6 sm:p-7 relative overflow-hidden"
+                    >
+                        <button
+                            onClick={() => setShowAuthModal(false)}
+                            className="absolute top-4 right-4 p-2 text-muted-foreground hover:text-foreground rounded-full hover:bg-muted/80 transition-colors"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+
+                        <div className="text-center mb-6">
+                            <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-3 text-primary">
+                                <Truck className="w-6 h-6" />
+                            </div>
+                            <h3 className="text-2xl font-bold text-foreground">
+                                {authMode === 'register' ? 'Confirm Your Pickup' : 'Welcome Back'}
+                            </h3>
+                            <p className="text-sm text-muted-foreground mt-1">
+                                {authMode === 'register'
+                                    ? 'Please provide your details to lock in your offer and schedule pickup.'
+                                    : 'Sign in to confirm your pickup request.'}
+                            </p>
+                        </div>
+
+                        <form onSubmit={handleAuthSubmit} className="space-y-4">
+                            {authMode === 'register' && (
+                                <>
+                                    <div className="space-y-1.5">
+                                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">Full Name</label>
+                                        <input
+                                            type="text"
+                                            required
+                                            value={authName}
+                                            onChange={(e) => setAuthName(e.target.value)}
+                                            placeholder="e.g. Rahul Sharma"
+                                            className="w-full px-4 py-3 rounded-xl border bg-background text-sm outline-none focus:ring-2 focus:ring-primary/50"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-1.5">
+                                        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">Mobile Number</label>
+                                        <div className="flex items-center w-full border rounded-xl bg-background overflow-hidden focus-within:ring-2 focus-within:ring-primary/50">
+                                            <span className="px-3.5 py-3 bg-muted/40 text-muted-foreground text-sm font-semibold border-r border-border">+91</span>
+                                            <input
+                                                type="tel"
+                                                required
+                                                maxLength={10}
+                                                value={authPhone}
+                                                onChange={(e) => setAuthPhone(e.target.value.replace(/\D/g, ''))}
+                                                placeholder="9876543210"
+                                                className="w-full px-3 py-3 text-sm bg-transparent outline-none font-medium"
+                                            />
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">Email Address</label>
+                                <input
+                                    type="email"
+                                    required
+                                    value={authEmail}
+                                    onChange={(e) => setAuthEmail(e.target.value)}
+                                    placeholder="name@example.com"
+                                    className="w-full px-4 py-3 rounded-xl border bg-background text-sm outline-none focus:ring-2 focus:ring-primary/50"
+                                />
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">Password</label>
+                                <input
+                                    type="password"
+                                    required
+                                    value={authPassword}
+                                    onChange={(e) => setAuthPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    className="w-full px-4 py-3 rounded-xl border bg-background text-sm outline-none focus:ring-2 focus:ring-primary/50"
+                                />
+                            </div>
+
+                            {authError && (
+                                <div className="p-3 bg-destructive/10 border border-destructive/20 text-destructive text-xs rounded-xl font-medium text-center">
+                                    {authError}
+                                </div>
+                            )}
+
+                            <button
+                                type="submit"
+                                disabled={isAuthLoading || (authMode === 'register' && (!authName || authPhone.length !== 10))}
+                                className="w-full py-4 bg-primary text-primary-foreground font-bold rounded-xl shadow-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
+                            >
+                                {isAuthLoading ? (
+                                    <><Loader2 className="w-5 h-5 animate-spin" /> Verifying...</>
+                                ) : (
+                                    authMode === 'register' ? 'Confirm Pickup & Complete' : 'Sign In & Confirm'
+                                )}
+                            </button>
+
+                            <div className="pt-2 text-center text-xs text-muted-foreground">
+                                {authMode === 'register' ? (
+                                    <p>
+                                        Already have an account?{' '}
+                                        <button
+                                            type="button"
+                                            onClick={() => { setAuthMode('login'); setAuthError(''); }}
+                                            className="text-primary font-bold hover:underline"
+                                        >
+                                            Sign In
+                                        </button>
+                                    </p>
+                                ) : (
+                                    <p>
+                                        Need a new account?{' '}
+                                        <button
+                                            type="button"
+                                            onClick={() => { setAuthMode('register'); setAuthError(''); }}
+                                            className="text-primary font-bold hover:underline"
+                                        >
+                                            Create Account
+                                        </button>
+                                    </p>
+                                )}
+                            </div>
+                        </form>
+                    </motion.div>
+                </motion.div>
+            )}
+        </AnimatePresence>
+        </>
     );
 }
