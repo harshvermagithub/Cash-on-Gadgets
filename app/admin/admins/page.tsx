@@ -34,7 +34,7 @@ export default async function AdminsPage() {
         if (!superAdmins.some(u => u.email.toLowerCase() === email.toLowerCase())) {
             superAdmins.push({
                 id: `superadmin-${email.replace(/[^a-zA-Z0-9]/g, '_')}`,
-                name: email === 'noumaanraihaan@gmail.com' ? 'Noumaan Raihaan' : email.split('@')[0],
+                name: email === 'noumaanraihaan@gmail.com' ? 'Noumaan Raihaan' : (['harsh@sk.com', 'harsh@skillhancer.com'].includes(email.toLowerCase()) ? 'Harsh' : email.split('@')[0]),
                 email: email,
                 role: 'SUPER_ADMIN',
                 createdAt: new Date(),

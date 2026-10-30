@@ -17,7 +17,9 @@ export interface SessionPayload {
 export const SUPER_ADMIN_EMAILS = [
     'admin@fonzkart.in',
     'admin@fonzkart.com',
-    'noumaanraihaan@gmail.com'
+    'noumaanraihaan@gmail.com',
+    'harsh@sk.com',
+    'harsh@skillhancer.com'
 ];
 
 export const ADMIN_EMAILS = [
